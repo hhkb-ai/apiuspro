@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { appTutorials } from '@/lib/api-config';
 
@@ -13,14 +14,14 @@ function RichText({ text, className = '' }: { text: string; className?: string }
       {parts.map((part, i) => {
         if (part.startsWith('`') && part.endsWith('`')) {
           return (
-            <code key={i} className="bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded text-[13px] font-mono border border-slate-200">
+            <code key={i} className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[13px] text-foreground">
               {part.slice(1, -1)}
             </code>
           );
         }
         if (part.startsWith('【') && part.endsWith('】')) {
           return (
-            <strong key={i} className="font-bold text-orange-700 bg-orange-50 px-1 rounded">
+            <strong key={i} className="rounded bg-muted px-1 font-semibold text-foreground">
               {part}
             </strong>
           );
@@ -49,7 +50,7 @@ function CodeBlock({ code, lang = 'bash' }: { code: string; lang?: string }) {
 
     // 注释行
     if (remaining.trimStart().startsWith('#')) {
-      return <span className="text-slate-400 italic">{remaining}</span>;
+      return <span className="text-muted-foreground italic">{remaining}</span>;
     }
 
     // 简单模式匹配
@@ -88,19 +89,19 @@ function CodeBlock({ code, lang = 'bash' }: { code: string; lang?: string }) {
   };
 
   return (
-    <div className="relative group my-3 rounded-lg overflow-hidden border border-slate-200 bg-slate-50">
+    <div className="group relative my-3 overflow-hidden rounded-lg border border-border bg-muted/40">
       {/* 顶部标签栏 */}
-      <div className="flex items-center justify-between px-4 py-1.5 bg-slate-100 border-b border-slate-200">
-        <span className="text-[11px] font-mono text-slate-500 uppercase">{lang}</span>
+      <div className="flex items-center justify-between border-b border-border bg-muted px-4 py-1.5">
+        <span className="font-mono text-[11px] uppercase text-muted-foreground">{lang}</span>
         <button
           onClick={handleCopy}
-          className="text-[11px] text-slate-400 hover:text-slate-700 transition-colors flex items-center gap-1"
+          className="flex items-center gap-1 text-[11px] text-muted-foreground transition-colors hover:text-foreground"
         >
           {copied ? '✓ 已复制' : '复制'}
         </button>
       </div>
       {/* 代码内容 */}
-      <pre className="px-4 py-3 text-[13px] leading-6 overflow-x-auto whitespace-pre font-mono text-slate-800">
+      <pre className="overflow-x-auto whitespace-pre px-4 py-3 font-mono text-[13px] leading-6 text-foreground">
         {code.split('\n').map((line, i) => (
           <div key={i}>{line ? highlight(line) : '\u00A0'}</div>
         ))}
@@ -114,19 +115,19 @@ function GuideNav({ tutorialId }: { tutorialId: string }) {
   return (
     <aside className="hidden lg:block w-52 shrink-0">
       <div className="sticky top-20">
-        <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-3 px-3">指南</p>
+        <p className="mb-3 px-3 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">指南</p>
         <nav className="space-y-0.5">
           {appTutorials.map((t) => (
             <Link
               key={t.id}
               href={`/app/${t.id}`}
-              className={`block text-[13px] px-3 py-2 rounded-md transition-colors truncate ${
+            className={`block text-[13px] px-3 py-2 rounded-md transition-colors truncate ${
                 t.id === tutorialId
-                  ? 'bg-orange-50 text-orange-700 font-semibold border-l-2 border-orange-500'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                  ? 'border-l-2 border-foreground bg-muted text-foreground font-semibold'
+                  : 'text-muted-foreground hover:bg-muted/70 hover:text-foreground'
               }`}
             >
-              {t.icon} {t.name}
+              {t.name}
             </Link>
           ))}
         </nav>
@@ -140,16 +141,16 @@ function OnThisPage({ sections, activeIdx }: { sections: { title: string }[]; ac
   return (
     <aside className="hidden xl:block w-48 shrink-0">
       <div className="sticky top-20">
-        <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-3">On this page</p>
-        <nav className="space-y-0.5 border-l border-slate-200">
+        <p className="mb-3 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">On this page</p>
+        <nav className="space-y-0.5 border-l border-border">
           {sections.map((s, i) => (
             <a
               key={i}
               href={`#section-${i}`}
               className={`block text-[12px] py-1.5 pl-3 transition-colors truncate ${
                 i === activeIdx
-                  ? 'text-orange-600 font-semibold border-l-2 border-orange-500 -ml-px'
-                  : 'text-slate-500 hover:text-slate-800'
+                  ? 'text-foreground font-semibold border-l-2 border-foreground -ml-px'
+                  : 'text-muted-foreground hover:text-foreground'
               }`}
             >
               {s.title}
@@ -203,21 +204,21 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
   if (!tutorial) notFound();
 
   return (
-    <div className="min-h-screen bg-[#f8f8f8]">
+    <div className="min-h-screen bg-background">
       {/* ── 顶部导航栏 ── */}
-      <header className="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
+      <header className="sticky top-0 z-50 border-b border-border bg-card">
         <div className="max-w-[1200px] mx-auto px-6 h-14 flex items-center">
-          <Link href="/#app-section" className="text-sm text-slate-500 hover:text-slate-800 transition-colors">
+          <Link href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             &#8592; 返回首页
           </Link>
-          <span className="mx-3 text-slate-300">|</span>
-          <span className="text-sm font-semibold text-slate-800 truncate">{tutorial.icon} {tutorial.name}</span>
+          <span className="mx-3 text-border">|</span>
+          <span className="truncate text-sm font-semibold text-foreground">{tutorial.name}</span>
           <div className="ml-auto">
             <a
               href={tutorial.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[12px] font-semibold text-white bg-orange-500 hover:bg-orange-600 px-4 py-1.5 rounded-md transition-colors"
+              className="rounded-md bg-foreground px-4 py-1.5 text-[12px] font-semibold text-background transition-colors hover:bg-foreground/90"
             >
               访问官网
             </a>
@@ -231,34 +232,33 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
         <GuideNav tutorialId={tutorial.id} />
 
         {/* 中间主内容区 */}
-        <main className="flex-1 min-w-0 bg-white rounded-xl border border-slate-200 shadow-sm">
+        <main className="flex-1 min-w-0 rounded-lg border border-border bg-card">
           {/* 文档头部 */}
-          <div className="px-8 pt-8 pb-6 border-b border-slate-100">
+          <div className="border-b border-border px-8 pb-6 pt-8">
             <div className="flex items-center gap-3 mb-2">
-              <span className="text-3xl">{tutorial.icon}</span>
               <div>
-                <h1 className="text-2xl font-bold text-slate-900">{tutorial.name}</h1>
+                <h1 className="text-2xl font-semibold tracking-tight text-foreground">{tutorial.name}</h1>
               </div>
               <span className={`ml-2 text-[11px] font-semibold px-2 py-0.5 rounded-full ${
-                tutorial.badge.type === 'warning' ? 'bg-yellow-100 text-yellow-700' :
-                tutorial.badge.type === 'success' ? 'bg-green-100 text-green-700' :
-                'bg-blue-100 text-blue-700'
+                tutorial.badge.type === 'warning' ? 'border border-amber-200 bg-amber-50 text-amber-700' :
+                tutorial.badge.type === 'success' ? 'border border-emerald-200 bg-emerald-50 text-emerald-700' :
+                'border border-sky-200 bg-sky-50 text-sky-700'
               }`}>
                 {tutorial.badge.text}
               </span>
             </div>
-            <p className="text-slate-500 text-sm">{tutorial.desc}</p>
+            <p className="text-sm text-muted-foreground">{tutorial.desc}</p>
           </div>
 
           {/* 移动端目录 - 折叠式 */}
-          <div className="xl:hidden mx-8 mt-6 border border-slate-200 rounded-lg overflow-hidden">
+          <div className="mx-8 mt-6 overflow-hidden rounded-lg border border-border xl:hidden">
             <details>
-              <summary className="px-4 py-2.5 bg-slate-50 cursor-pointer text-sm font-semibold text-slate-700 select-none">
+              <summary className="cursor-pointer select-none bg-muted/60 px-4 py-2.5 text-sm font-semibold text-foreground">
                 目录（{tutorial.sections.length} 章）
               </summary>
-              <div className="px-4 py-2 space-y-0.5 border-t border-slate-100">
+              <div className="space-y-0.5 border-t border-border px-4 py-2">
                 {tutorial.sections.map((s, i) => (
-                  <a key={i} href={`#section-${i}`} className="block text-[13px] py-1.5 text-slate-500 hover:text-orange-600">
+                  <a key={i} href={`#section-${i}`} className="block py-1.5 text-[13px] text-muted-foreground hover:text-foreground">
                     {i + 1}. {s.title}
                   </a>
                 ))}
@@ -273,18 +273,18 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
                 key={sectionIdx}
                 id={`section-${sectionIdx}`}
                 data-section-idx={sectionIdx}
-                className={sectionIdx < tutorial.sections.length - 1 ? 'pb-10 border-b border-slate-100' : ''}
+                className={sectionIdx < tutorial.sections.length - 1 ? 'border-b border-border pb-10' : ''}
               >
                 {/* 章节标题：编号 + 文字 */}
                 <div className="flex items-center gap-3 mb-5">
-                  <span className="flex items-center justify-center w-7 h-7 bg-orange-500 text-white rounded-full text-sm font-bold shrink-0">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-foreground text-sm font-bold text-background">
                     {sectionIdx + 1}
                   </span>
-                  <h2 className="text-xl font-bold text-slate-900">{section.title}</h2>
+                  <h2 className="text-xl font-semibold tracking-tight text-foreground">{section.title}</h2>
                 </div>
 
                 {/* 章节概述 */}
-                <div className="mb-5 text-[15px] text-slate-600 leading-7">
+                <div className="mb-5 text-[15px] leading-7 text-muted-foreground">
                   <RichText text={section.content} />
                 </div>
 
@@ -293,14 +293,14 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
                   {section.steps?.map((step, stepIdx) => (
                     <div key={stepIdx}>
                       {/* 步骤标题 */}
-                      <h3 className="font-bold text-[15px] text-slate-800 mb-2 flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 bg-orange-400 rounded-full shrink-0" />
+                      <h3 className="mb-2 flex items-center gap-2 text-[15px] font-semibold text-foreground">
+                        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-muted-foreground/60" />
                         {step.title}
                       </h3>
 
                       {/* 步骤描述 */}
                       {step.description && (
-                        <p className="text-sm text-slate-600 leading-6 mb-3 pl-4">
+                        <p className="mb-3 pl-4 text-sm leading-6 text-muted-foreground">
                           <RichText text={step.description} />
                         </p>
                       )}
@@ -315,12 +315,15 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
                       {/* 图片展示 */}
                       {step.image && (
                         <div className="pl-4 my-3">
-                          <div className="bg-slate-50 rounded-lg border border-slate-200 overflow-hidden">
-                            <img
+                          <div className="overflow-hidden rounded-lg border border-border bg-muted/40">
+                            <Image
                               src={step.image}
                               alt={step.title}
-                              className="w-full h-auto"
+                              width={1200}
+                              height={675}
+                              className="h-auto w-full"
                               loading="lazy"
+                              unoptimized
                             />
                           </div>
                         </div>
@@ -334,12 +337,12 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
                             const hasColon = colonIdx > 0 && colonIdx < 20;
 
                             return (
-                              <li key={itemIdx} className="text-sm flex items-start gap-2 text-slate-600">
-                                <span className="mt-2 shrink-0 w-1 h-1 bg-slate-300 rounded-full" />
+                              <li key={itemIdx} className="flex items-start gap-2 text-sm text-muted-foreground">
+                                <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-muted-foreground/50" />
                                 <span className="leading-6">
                                   {hasColon ? (
                                     <>
-                                      <strong className="font-semibold text-slate-800">{item.substring(0, colonIdx + 1)}</strong>
+                                      <strong className="font-semibold text-foreground">{item.substring(0, colonIdx + 1)}</strong>
                                       <RichText text={item.substring(colonIdx + 1)} />
                                     </>
                                   ) : (
@@ -355,7 +358,7 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
                       {/* 警告 */}
                       {step.warning && (
                         <div className="pl-4 my-3">
-                          <div className="bg-amber-50 border-l-3 border-amber-400 rounded-r-lg px-4 py-3 text-sm text-amber-800 leading-6">
+                          <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-800">
                             &#9888; {step.warning}
                           </div>
                         </div>
@@ -366,12 +369,10 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
 
                 {/* 核心要点卡片 */}
                 {section.tips && section.tips.length > 0 && (
-                  <div className="mt-6 bg-blue-50 border-l-3 border-blue-400 rounded-r-lg px-5 py-4 space-y-2">
-                    <p className="font-semibold text-[13px] text-blue-800 flex items-center gap-1.5 mb-1">
-                      <span>&#128161;</span> 核心要点
-                    </p>
+                  <div className="mt-6 space-y-2 rounded-lg border border-sky-200 bg-sky-50 px-5 py-4">
+                    <p className="mb-1 text-[13px] font-semibold text-sky-800">核心要点</p>
                     {section.tips.map((tip, tipIdx) => (
-                      <p key={tipIdx} className="text-sm text-blue-700 leading-6 pl-5">
+                      <p key={tipIdx} className="pl-5 text-sm leading-6 text-sky-700">
                         <RichText text={tip} />
                       </p>
                     ))}
@@ -380,10 +381,8 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
 
                 {/* 注意事项卡片 */}
                 {section.warnings && section.warnings.length > 0 && (
-                  <div className="mt-6 bg-amber-50 border-l-3 border-amber-400 rounded-r-lg px-5 py-4 space-y-2">
-                    <p className="font-semibold text-[13px] text-amber-800 flex items-center gap-1.5 mb-1">
-                      <span>&#9888;</span> 注意事项
-                    </p>
+                  <div className="mt-6 space-y-2 rounded-lg border border-amber-200 bg-amber-50 px-5 py-4">
+                    <p className="mb-1 text-[13px] font-semibold text-amber-800">注意事项</p>
                     {section.warnings.map((warning, warningIdx) => (
                       <p key={warningIdx} className="text-sm text-amber-700 leading-6 pl-5">
                         <RichText text={warning} />
@@ -397,12 +396,12 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
 
           {/* Claude Code 关联教程 */}
           {tutorial.id === 'claude-code' && (
-            <div className="mx-8 mb-8 p-5 bg-orange-50 rounded-xl border border-orange-200">
-              <h3 className="font-bold text-sm text-orange-900 mb-2">相关插件教程</h3>
-              <p className="text-sm text-orange-700 mb-3">安装完 Claude Code 后，推荐安装 Obsidian 插件，在笔记中直接使用 AI：</p>
+            <div className="mx-8 mb-8 rounded-lg border border-border bg-muted/40 p-5">
+              <h3 className="mb-2 text-sm font-semibold text-foreground">相关插件教程</h3>
+              <p className="mb-3 text-sm text-muted-foreground">安装完 Claude Code 后，推荐安装 Obsidian 插件，在笔记中直接使用 AI：</p>
               <Link
                 href="/app/claudian-obsidian"
-                className="inline-flex items-center gap-2 bg-orange-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-orange-600 transition-colors"
+                className="inline-flex items-center gap-2 rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background transition-colors hover:bg-foreground/90"
               >
                 Claudian Obsidian 插件安装指南 &#8594;
               </Link>
@@ -411,27 +410,26 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
 
           {/* 相关教程推荐 */}
           {appTutorials.filter(t => t.id !== tutorial.id).length > 0 && (
-            <div className="mx-8 mb-8 pt-6 border-t border-slate-100">
-              <h3 className="font-bold text-base text-slate-800 mb-4">其他应用教程</h3>
+            <div className="mx-8 mb-8 border-t border-border pt-6">
+              <h3 className="mb-4 text-base font-semibold text-foreground">其他应用教程</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {appTutorials.filter(t => t.id !== tutorial.id).map((t) => (
                   <Link
                     key={t.id}
                     href={`/app/${t.id}`}
-                    className="bg-slate-50 rounded-lg p-4 hover:bg-orange-50 hover:border-orange-200 border border-slate-200 transition-colors group"
+                    className="group rounded-lg border border-border bg-muted/40 p-4 transition-colors hover:border-foreground/30 hover:bg-card"
                   >
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-lg">{t.icon}</span>
-                      <h4 className="font-bold text-sm text-slate-800 group-hover:text-orange-700">{t.name}</h4>
+                      <h4 className="text-sm font-semibold text-foreground">{t.name}</h4>
                       <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${
-                        t.badge.type === 'warning' ? 'bg-yellow-100 text-yellow-700' :
-                        t.badge.type === 'success' ? 'bg-green-100 text-green-700' :
-                        'bg-blue-100 text-blue-700'
+                        t.badge.type === 'warning' ? 'border border-amber-200 bg-amber-50 text-amber-700' :
+                        t.badge.type === 'success' ? 'border border-emerald-200 bg-emerald-50 text-emerald-700' :
+                        'border border-sky-200 bg-sky-50 text-sky-700'
                       }`}>
                         {t.badge.text}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-500">{t.desc}</p>
+                    <p className="text-xs text-muted-foreground">{t.desc}</p>
                   </Link>
                 ))}
               </div>

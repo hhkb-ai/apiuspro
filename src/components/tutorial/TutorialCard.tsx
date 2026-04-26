@@ -9,6 +9,8 @@ interface TutorialStep {
   description: string;
   image?: string;
   items?: string[];
+  code?: string;
+  codeLanguage?: string;
   warning?: string;
 }
 
@@ -23,29 +25,25 @@ interface TutorialData {
 
 interface TutorialCardProps {
   id: string;
-  icon: string;
   tutorial: TutorialData;
 }
 
-export function TutorialCard({ id, icon, tutorial }: TutorialCardProps) {
+export function TutorialCard({ id, tutorial }: TutorialCardProps) {
   return (
     <Card id={id} className="scroll-mt-4">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <span className="text-2xl">{icon}</span>
-          {tutorial.title}
-        </CardTitle>
+        <CardTitle>{tutorial.title}</CardTitle>
         <CardDescription>{tutorial.subtitle}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-6">
           {/* 步骤 */}
           {tutorial.steps.map((step, index) => (
-            <div key={index} className="border rounded-lg p-4 bg-muted/30">
+            <div key={index} className="rounded-lg border bg-muted/30 p-4">
               <div className="flex items-start gap-4">
                 {/* 步骤编号 */}
                 <div className="flex-shrink-0">
-                  <div className="w-8 h-8 rounded-full bg-foreground text-background flex items-center justify-center text-sm font-bold">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-foreground text-sm font-bold text-background">
                     {index + 1}
                   </div>
                 </div>
@@ -80,17 +78,29 @@ export function TutorialCard({ id, icon, tutorial }: TutorialCardProps) {
                     <ul className="space-y-2 text-sm">
                       {step.items.map((item, itemIndex) => (
                         <li key={itemIndex} className="flex items-start gap-2">
-                          <span className="text-green-600">✓</span>
+                          <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-muted-foreground/50" />
                           <span className="text-muted-foreground">{item}</span>
                         </li>
                       ))}
                     </ul>
                   )}
 
+                  {step.code && (
+                    <div className="overflow-hidden rounded-lg border bg-muted/40">
+                      {step.codeLanguage && (
+                        <div className="border-b px-4 py-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                          {step.codeLanguage}
+                        </div>
+                      )}
+                      <pre className="overflow-x-auto p-4 text-xs leading-6">
+                        <code>{step.code}</code>
+                      </pre>
+                    </div>
+                  )}
+
                   {/* 警告提示 */}
                   {step.warning && (
-                    <div className="flex items-start gap-2 p-3 bg-yellow-50 dark:bg-yellow-950/20 rounded-lg text-yellow-800 dark:text-yellow-200 text-sm">
-                      <span>⚠️</span>
+                    <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800 dark:bg-amber-950/20 dark:text-amber-200">
                       <span>{step.warning}</span>
                     </div>
                   )}
@@ -102,9 +112,9 @@ export function TutorialCard({ id, icon, tutorial }: TutorialCardProps) {
 
         {/* 提示信息 */}
         {tutorial.tips && tutorial.tips.length > 0 && (
-          <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
-            <p className="font-medium text-blue-800 dark:text-blue-200 mb-2">💡 提示</p>
-            <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
+          <div className="mt-6 rounded-lg border border-sky-200 bg-sky-50 p-4 dark:bg-sky-950/20">
+            <p className="mb-2 font-medium text-sky-800 dark:text-sky-200">提示</p>
+            <ul className="space-y-1 text-sm text-sky-700 dark:text-sky-300">
               {tutorial.tips.map((tip, index) => (
                 <li key={index}>• {tip}</li>
               ))}
@@ -114,9 +124,9 @@ export function TutorialCard({ id, icon, tutorial }: TutorialCardProps) {
 
         {/* 警告信息 */}
         {tutorial.warnings && tutorial.warnings.length > 0 && (
-          <div className="mt-4 p-4 bg-red-50 dark:bg-red-950/20 rounded-lg">
-            <p className="font-medium text-red-800 dark:text-red-200 mb-2">⚠️ 注意事项</p>
-            <ul className="text-sm text-red-700 dark:text-red-300 space-y-1">
+          <div className="mt-4 rounded-lg border border-red-200 bg-red-50 p-4 dark:bg-red-950/20">
+            <p className="mb-2 font-medium text-red-800 dark:text-red-200">注意事项</p>
+            <ul className="space-y-1 text-sm text-red-700 dark:text-red-300">
               {tutorial.warnings.map((warning, index) => (
                 <li key={index}>• {warning}</li>
               ))}
@@ -128,8 +138,8 @@ export function TutorialCard({ id, icon, tutorial }: TutorialCardProps) {
         {tutorial.advantages && tutorial.advantages.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-2">
             {tutorial.advantages.map((advantage, index) => (
-              <Badge key={index} variant="outline" className="bg-green-50 dark:bg-green-950/20 text-green-700 dark:text-green-300 border-green-200">
-                ✓ {advantage}
+              <Badge key={index} variant="outline" className="border-emerald-200 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/20 dark:text-emerald-300">
+                {advantage}
               </Badge>
             ))}
           </div>

@@ -4,34 +4,29 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: {
-    default: '新应用 | 扣子编程',
-    template: '%s | 扣子编程',
+    default: 'API知识站',
+    template: '%s | API知识站',
   },
-  description:
-    '扣子编程是一款一站式云端 Vibe Coding 开发平台。通过对话轻松构建智能体、工作流和网站，实现从创意到上线的无缝衔接。',
+  description: '一站式 API 学习、选型、购买教程与本地部署指南。',
   keywords: [
-    '扣子编程',
-    'Coze Code',
-    'Vibe Coding',
-    'AI 编程',
-    '智能体搭建',
-    '工作流搭建',
-    '网站搭建',
-    '网站部署',
-    '全栈开发',
-    'AI 工程师',
+    'API知识站',
+    'AI API',
+    'API购买教程',
+    'API测评',
+    '本地部署',
+    'OpenAI',
+    'Claude',
+    'Gemini',
   ],
-  authors: [{ name: 'Coze Code Team', url: 'https://code.coze.cn' }],
-  generator: 'Coze Code',
+  authors: [{ name: 'API知识站' }],
+  generator: 'Next.js',
   // icons: {
   //   icon: '',
   // },
   openGraph: {
-    title: '扣子编程 | 你的 AI 工程师已就位',
-    description:
-      '我正在使用扣子编程 Vibe Coding，让创意瞬间上线。告别拖拽，拥抱心流。',
-    url: 'https://code.coze.cn',
-    siteName: '扣子编程',
+    title: 'API知识站',
+    description: '一站式 API 学习、选型、购买教程与本地部署指南。',
+    siteName: 'API知识站',
     locale: 'zh_CN',
     type: 'website',
     // images: [
@@ -64,7 +59,7 @@ export default function RootLayout({
   const isDev = process.env.COZE_PROJECT_ENV === 'DEV';
 
   return (
-    <html lang="en">
+    <html lang="zh-CN">
       <body className={`antialiased`}>
         {isDev && <Inspector />}
         {children}

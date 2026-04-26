@@ -93,6 +93,8 @@ export interface TutorialStep {
   description: string;
   image?: string;
   items?: string[];
+  code?: string;
+  codeLanguage?: string;
   warning?: string;
 }
 
@@ -133,56 +135,98 @@ export const apiList: APIConfig[] = [
     icon: '🟢',
     badge: { text: '免费', type: 'success' },
     tutorial: {
-      title: '阿里云通义千问购买教程',
-      subtitle: '国内用户首选，简单易用',
+      title: '通义千问 API 购买与接入教程',
+      subtitle: '通过阿里云百炼或 DashScope 开通服务、获取密钥并完成首次调用',
       steps: [
         {
-          title: '注册阿里云账号',
-          description: '访问阿里云灵积模型服务平台，使用手机号快速注册',
-          image: '/images/tutorial/aliyun-step1.png',
+          title: '准备阿里云账号',
+          description: '使用通义千问 API 前，需要先完成阿里云账号注册与实名认证。',
+          image: '/images/tutorial/qwen-docx-1.png',
           items: [
-            '访问 dashscope.aliyun.com',
-            '使用手机号注册',
-            '完成实名认证（可选）'
+            '访问 aliyun.com，使用手机号或邮箱注册账号',
+            '进入「账号管理」中的「账号认证」',
+            '按个人或企业身份完成实名认证'
           ]
         },
         {
-          title: '开通服务',
-          description: '开通灵积模型服务，自动获得免费额度',
-          image: '/images/tutorial/aliyun-step2.png',
+          title: '开通百炼或 DashScope 服务',
+          description: '推荐从阿里云百炼平台进入，也可以使用 DashScope 灵积平台。',
+          image: '/images/tutorial/qwen-docx-1.png',
           items: [
-            '开通灵积模型服务',
-            '自动获得免费额度',
-            '无需绑定支付方式'
+            '进入 bailian.console.aliyun.com 或 dashscope.console.aliyun.com',
+            '搜索或找到「通义千问」服务并点击开通',
+            '新用户免费额度以控制台当前展示为准'
           ]
         },
         {
-          title: '创建API Key',
-          description: '在控制台创建API密钥',
-          image: '/images/tutorial/aliyun-step3.png',
+          title: '创建并保存 API Key',
+          description: '在 API-KEY 管理页面创建调用凭证，生成后立即保存。',
+          image: '/images/tutorial/qwen-docx-2.png',
           items: [
-            '进入控制台',
-            '创建新的 API Key',
-            '复制保存'
-          ]
+            '进入「API-KEY 管理」页面',
+            '点击「创建 API-KEY」',
+            '复制以 sk- 开头的密钥，并保存到安全位置'
+          ],
+          warning: 'API Key 通常只完整显示一次，不要写入前端代码或公开仓库。'
         },
         {
-          title: '开始使用',
-          description: '查看API文档，开始调用',
-          image: '/images/tutorial/aliyun-step4.png',
+          title: '配置环境变量并首次调用',
+          description: '通义千问支持 OpenAI 兼容接口，可用 OpenAI SDK 快速调用。',
+          image: '/images/tutorial/qwen-docx-2.png',
           items: [
-            '查看API文档',
-            '在线调试或本地调用',
-            '监控使用量'
+            '安装 openai 与 python-dotenv',
+            '设置 DASHSCOPE_API_KEY 环境变量',
+            'base_url 使用 DashScope 兼容模式地址'
+          ],
+          codeLanguage: 'python',
+          code: `import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ.get("DASHSCOPE_API_KEY"),
+    base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
+)
+
+response = client.chat.completions.create(
+    model="qwen-plus",
+    messages=[{"role": "user", "content": "请用一句话介绍通义千问"}],
+)
+
+print(response.choices[0].message.content)`
+        },
+        {
+          title: '按场景选择模型',
+          description: '通义千问覆盖轻量、通用、旗舰和长文本等场景，按任务选择即可。',
+          image: '/images/tutorial/qwen-docx-2.png',
+          items: [
+            'Qwen-Turbo：适合简单对话、实时翻译和低成本高频调用',
+            'Qwen-Plus：适合多数通用对话、摘要、问答和中等复杂代码任务',
+            'Qwen-Max：适合复杂推理、深度创作和企业级高质量任务',
+            'Qwen-Long：适合长文档总结、论文分析、合同解析和代码仓库理解'
+          ],
+          warning: '模型价格、免费额度和上下文长度会随平台更新，正式购买前以控制台为准。'
+        },
+        {
+          title: '查看用量与控制成本',
+          description: '开通后在控制台查看免费额度、到期时间和后付费账单。',
+          image: '/images/tutorial/qwen-docx-1.png',
+          items: [
+            '在「模型用量」页面查看剩余额度',
+            '免费额度用尽后按输入和输出 Token 计费',
+            '批量推理或缓存能力可进一步降低成本'
           ]
         }
       ],
       tips: [
-        '国内直接访问，无需代理',
-        '每月100万tokens免费额度',
-        '支持支付宝充值'
+        '优先通过环境变量管理 DASHSCOPE_API_KEY',
+        '日常开发建议从 qwen-plus 或 qwen-turbo 开始测试',
+        '长文档任务优先评估 Qwen-Long'
       ],
-      advantages: ['免费额度大', '国内直连', '文档完善']
+      warnings: [
+        '实名认证完成前，部分服务可能无法开通',
+        '不要把 API Key 写入公开代码、截图或客户端页面'
+      ],
+      advantages: ['免费额度大', '国内直连', 'OpenAI 兼容接口', '模型选择丰富']
     }
   },
   {
@@ -196,32 +240,86 @@ export const apiList: APIConfig[] = [
     icon: '🟢',
     badge: { text: '免费', type: 'success' },
     tutorial: {
-      title: '智谱AI购买教程',
-      subtitle: '开源模型领先者',
+      title: '智谱 AI API 购买与接入教程',
+      subtitle: '从注册登录、实名认证、创建密钥到购买资源包和接入指南',
       steps: [
         {
-          title: '注册账号',
-          description: '访问智谱开放平台注册',
-          image: '/images/tutorial/zhipu-step1.png',
+          title: '访问官网并进入登录注册',
+          description: '先打开智谱 AI 开放平台，从右上角进入登录或注册流程。',
+          image: '/images/tutorial/zhipu-pdf-home.png',
           items: [
             '访问 open.bigmodel.cn',
-            '使用手机号注册',
-            '完成验证'
+            '点击右上角「登录 / 注册」',
+            '确认进入 BigModel 控制台入口'
           ]
         },
         {
-          title: '获取API Key',
-          description: '在控制台创建API密钥',
-          image: '/images/tutorial/zhipu-step2.png',
+          title: '完成账号注册与登录',
+          description: '选择手机号或邮箱注册，完成验证码校验后登录平台。',
+          image: '/images/tutorial/zhipu-pdf-register.png',
           items: [
-            '进入控制台',
-            '创建API Key',
-            '新用户有免费额度'
+            '选择「手机号注册」或「邮箱注册」',
+            '填写验证码并完成注册',
+            '使用注册手机号、邮箱和密码登录'
+          ]
+        },
+        {
+          title: '完成实名认证',
+          description: '智谱 AI 要求完成实名认证后，才能开通 API 额度或购买资源包。',
+          image: '/images/tutorial/zhipu-pdf-verify.png',
+          items: [
+            '登录后进入控制台或账号设置',
+            '打开「个人中心」并进入实名认证页面',
+            '个人上传身份证信息，企业上传营业执照信息',
+            '等待审核通过，通常几分钟内完成'
+          ],
+          warning: '实名认证未完成时，API 额度开通、资源包购买等功能可能受限。'
+        },
+        {
+          title: '创建并保存 API Key',
+          description: '在控制台左侧找到 API 密钥管理或 Access Key，创建调用密钥。',
+          image: '/images/tutorial/zhipu-pdf-api-key.png',
+          items: [
+            '进入「API 密钥管理」或「Access Key」',
+            '点击「创建 API Key」并填写名称',
+            '复制生成的 API Key / Secret Key',
+            '立即保存到本地安全位置'
+          ],
+          warning: '关闭页面后密钥通常不会再完整显示，不要写入公开仓库或前端代码。'
+        },
+        {
+          title: '购买资源包或充值账户',
+          description: '免费额度可先用于开发测试，正式使用前可在财务页面购买或充值。',
+          image: '/images/tutorial/zhipu-pdf-billing.png',
+          items: [
+            '进入控制台，点击「财务」',
+            '在账户页面选择资源包或充值',
+            '可使用微信或支付宝完成支付',
+            '支付后回到控制台确认额度或余额'
+          ]
+        },
+        {
+          title: '查看 Coding Plan 接入指南',
+          description: '需要进行 API 部署时，可以在 Coding Plan 的接入指南中按官方步骤接入。',
+          image: '/images/tutorial/zhipu-pdf-coding-plan.png',
+          items: [
+            '进入 Coding Plan 页面',
+            '打开「接入指南」查看官方 API 接入步骤',
+            '按所选模型复制调用参数和密钥配置',
+            '先小规模测试，再扩大并发或正式接入业务'
           ]
         }
       ],
-      tips: ['支持本地部署', '开源生态友好'],
-      advantages: ['开源可部署', '性价比高']
+      tips: [
+        '新用户通常可领取一定免费 Tokens 额度，适合先做开发测试',
+        'API Key 建议只保存在服务端环境变量或安全配置中',
+        'Coding Plan 适合按官方指南快速完成模型接入'
+      ],
+      warnings: [
+        '实名认证完成前，额度开通和资源包购买可能不可用',
+        '密钥关闭页面后可能无法再次完整查看，请生成后立即保存'
+      ],
+      advantages: ['国内直连', '免费体验额度', 'GLM 系列模型', 'Coding Plan 接入指南']
     }
   },
   {
@@ -235,32 +333,116 @@ export const apiList: APIConfig[] = [
     icon: '🟢',
     badge: { text: '免费', type: 'success' },
     tutorial: {
-      title: 'Kimi购买教程',
-      subtitle: '长文本处理专家',
+      title: 'Kimi API 购买与接入教程',
+      subtitle: '从平台注册、创建密钥到完成首次调用的精简流程',
       steps: [
         {
-          title: '注册账号',
-          description: '访问月之暗面开放平台',
-          image: '/images/tutorial/kimi-step1.png',
+          title: '准备账号与环境',
+          description: '先准备好开放平台账号和本地调用环境，云端 API 不需要额外硬件。',
+          image: '/images/tutorial/kimi-pdf-platform.png',
           items: [
-            '访问 platform.moonshot.cn',
-            '使用手机号注册',
-            '完成验证'
+            '进入 platform.moonshot.cn 或 platform.kimi.ai',
+            '使用手机号或企业邮箱注册并登录',
+            '本地调试建议准备 Python 3.10+ 或 Node.js 环境'
           ]
         },
         {
-          title: '获取API Key',
-          description: '创建API密钥开始使用',
-          image: '/images/tutorial/kimi-step2.png',
+          title: '创建并保存 API Key',
+          description: '在用户中心进入 API Keys 页面，新建密钥后立即保存。',
+          image: '/images/tutorial/kimi-pdf-api-key.png',
           items: [
-            '进入控制台',
-            '创建API Key',
-            '查看使用文档'
+            '点击「创建新密钥」或「Create New Key」',
+            '填写应用名称，例如 my-first-api',
+            '复制生成的 sk-xxx 密钥，并配置到环境变量'
+          ],
+          codeLanguage: 'bash',
+          code: `export MOONSHOT_API_KEY="sk-your-api-key-here"
+
+# Windows PowerShell
+$env:MOONSHOT_API_KEY="sk-your-api-key-here"`,
+          warning: 'API Key 通常只显示一次，不要写进前端代码、公开仓库或截图里。'
+        },
+        {
+          title: '快速测试接口',
+          description: '先用最小请求确认密钥、网络和接口地址都可用。',
+          image: '/images/tutorial/kimi-pdf-test-call.png',
+          items: [
+            '接口地址为 https://api.moonshot.cn/v1/chat/completions',
+            'Authorization 使用 Bearer $MOONSHOT_API_KEY',
+            '返回 JSON 回复即代表基础调用成功'
+          ],
+          codeLanguage: 'bash',
+          code: `curl -X POST https://api.moonshot.cn/v1/chat/completions \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer $MOONSHOT_API_KEY" \\
+  -d '{
+    "model": "moonshot-v1-8k",
+    "messages": [
+      { "role": "user", "content": "你好，请介绍一下自己" }
+    ],
+    "temperature": 0.7
+  }'`
+        },
+        {
+          title: '选择合适模型',
+          description: '按任务长度和推理需求选择模型，正式使用前先做小额测试。',
+          image: '/images/tutorial/kimi-pdf-models.png',
+          items: [
+            'moonshot-v1-8k：适合基础对话和功能验证',
+            'moonshot-v1-32k：适合较长文本生成与摘要',
+            'moonshot-v1-128k：适合长文档处理和资料问答',
+            'kimi-k2.5 / kimi-k2.6：适合深度推理、Agent 和多模态任务'
+          ],
+          warning: '模型列表、免费额度和价格可能变化，购买前以开放平台控制台为准。'
+        },
+        {
+          title: '接入项目或客户端',
+          description: 'Kimi 兼容 OpenAI 接口，可直接接入代码项目、Agent 框架或第三方客户端。',
+          image: '/images/tutorial/kimi-pdf-integration.png',
+          items: [
+            'OpenAI SDK：设置 api_key 与 base_url 后即可调用',
+            'LobeChat 等客户端：填写 API Key、API 地址和模型名称',
+            'OpenClaw 等 Agent 工具：按 OpenAI Provider 方式配置'
+          ],
+          codeLanguage: 'python',
+          code: `import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ.get("MOONSHOT_API_KEY"),
+    base_url="https://api.moonshot.cn/v1",
+)
+
+completion = client.chat.completions.create(
+    model="moonshot-v1-8k",
+    messages=[{"role": "user", "content": "请介绍一下 Kimi 的核心能力"}],
+    temperature=0.7,
+)
+
+print(completion.choices[0].message.content)`
+        },
+        {
+          title: '排查常见问题',
+          description: '调用失败时，优先检查密钥、请求头、网络和频率限制。',
+          image: '/images/tutorial/kimi-pdf-troubleshooting.png',
+          items: [
+            'API Key 无效：检查格式是否为 sk-xxx，并确认 Authorization 请求头为 Bearer sk-xxx',
+            '请求超时：把超时时间设置到 60 秒以上，并检查网络连通性',
+            'HTTP 429：降低并发，加入延迟重试',
+            '响应异常：检查模型名称、messages 结构和 Content-Type'
           ]
         }
       ],
-      tips: ['支持20万字长文本', '文件解析能力强'],
-      advantages: ['超长上下文', '文件解析']
+      tips: [
+        '优先使用环境变量管理 MOONSHOT_API_KEY，避免密钥泄露',
+        '长文本任务优先评估 moonshot-v1-128k，实时聊天可开启流式输出',
+        '第三方客户端只要支持 OpenAI 兼容接口，通常都能接入 Kimi'
+      ],
+      warnings: [
+        '不要把 API Key 写入前端代码或公开仓库',
+        '免费额度通常有速率限制，批量任务建议做并发控制和失败重试'
+      ],
+      advantages: ['国内直连', 'OpenAI 兼容接口', '超长上下文', '客户端集成方便']
     }
   },
   {
@@ -272,7 +454,101 @@ export const apiList: APIConfig[] = [
     proxy: false,
     features: ['多模态', '企业集成', '微信生态'],
     icon: '🟢',
-    badge: { text: '免费', type: 'success' }
+    badge: { text: '免费', type: 'success' },
+    tutorial: {
+      title: '腾讯混元 API 购买与接入教程',
+      subtitle: '从腾讯云开通、创建密钥到完成首次调用的精简流程',
+      steps: [
+        {
+          title: '注册账号并开通混元',
+          description: '先注册腾讯云账号并完成认证，然后在混元大模型控制台开通服务。',
+          image: '/images/tutorial/tencent-pdf-setup.png',
+          items: [
+            '访问腾讯云官网注册账号，国内用户按提示完成实名认证',
+            '登录后进入「混元大模型控制台」',
+            '阅读并同意服务条款，点击「立即开通」'
+          ]
+        },
+        {
+          title: '创建并保存密钥',
+          description: '在 API 密钥页面创建访问凭证，保存 SecretId 和 SecretKey。',
+          image: '/images/tutorial/tencent-pdf-api-key.png',
+          items: [
+            '进入 API 密钥页面，点击创建密钥',
+            '填写参数和昵称后生成 SecretId / SecretKey',
+            '立即复制保存，后续代码调用需要用到'
+          ],
+          warning: 'SecretKey 只应保存在本地环境变量或服务端配置中，不要提交到公开仓库。'
+        },
+        {
+          title: '配置环境变量并首次调用',
+          description: '混元 API 兼容 OpenAI 接口，可用标准 OpenAI SDK 快速完成调用。',
+          image: '/images/tutorial/tencent-pdf-python.png',
+          items: [
+            '将 SecretId / SecretKey 写入运行环境',
+            'base_url 设置为 https://api.hunyuan.cloud.tencent.com/v1',
+            '先用 hunyuan-turbos-latest 做基础对话测试'
+          ],
+          codeLanguage: 'python',
+          code: `import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ.get("TENCENT_SECRET_KEY"),
+    base_url="https://api.hunyuan.cloud.tencent.com/v1",
+)
+
+completion = client.chat.completions.create(
+    model="hunyuan-turbos-latest",
+    messages=[{"role": "user", "content": "你好，请介绍一下腾讯混元"}],
+)
+
+print(completion.choices[0].message.content)`
+        },
+        {
+          title: '按场景选择模型',
+          description: '混元提供轻量、通用、推理、多模态和翻译模型，按任务成本和能力选择即可。',
+          image: '/images/tutorial/tencent-pdf-models.png',
+          items: [
+            'hunyuan-lite：轻量快速，适合基础对话和低成本场景',
+            'hunyuan-turbos-latest：主力通用模型，适合内容创作和代码生成',
+            'hunyuan-t1-latest：适合复杂推理、逻辑分析和代码调试',
+            'hunyuan-vision / Hunyuan-MT-7B：分别面向多模态和翻译任务'
+          ],
+          warning: '免费额度、后付费规则和模型价格可能调整，正式使用前以腾讯云控制台为准。'
+        },
+        {
+          title: '开启流式输出与进阶调用',
+          description: '需要实时回复或复杂项目时，可开启 stream，并按需接入 LangChain。',
+          image: '/images/tutorial/tencent-pdf-advanced.png',
+          items: [
+            '聊天类应用建议开启 stream，提升实时交互体验',
+            '复杂项目可使用 LangChain 的 ChatHunyuan',
+            'PHP、Java 等语言也可通过腾讯云官方 SDK 调用'
+          ]
+        },
+        {
+          title: '集成到应用框架',
+          description: '除了直接写代码，也可以把混元接入 Dify、LobeChat、HAI 等应用框架。',
+          image: '/images/tutorial/tencent-pdf-integration.png',
+          items: [
+            'LobeChat：选择模型提供商为腾讯混元，填写 API Key 后检查连接',
+            'Dify / HAI：在模型供应商中选择 Tencent Hunyuan 并配置密钥',
+            'LangChain Embedding：设置密钥后使用社区集成生成向量'
+          ]
+        }
+      ],
+      tips: [
+        '优先把密钥放到环境变量或 .env 文件中，避免硬编码泄露',
+        '内容生成可适当提高 temperature，代码生成建议使用较低 temperature',
+        '模型默认不启用联网搜索，如需搜索能力需按接口文档开启对应参数'
+      ],
+      warnings: [
+        '混元 API 通常为后付费模式，建议在费用中心开启预算或费用预警',
+        '批量调用前先小规模测试模型效果、延迟和成本'
+      ],
+      advantages: ['国内直连', '腾讯云生态', 'OpenAI 兼容接口', '多模型选择', '适合企业集成']
+    }
   },
   {
     id: 'doubao',
@@ -283,7 +559,100 @@ export const apiList: APIConfig[] = [
     proxy: false,
     features: ['抖音生态', '多模型', '高性价比'],
     icon: '🟢',
-    badge: { text: '免费', type: 'success' }
+    badge: { text: '免费', type: 'success' },
+    tutorial: {
+      title: '豆包 API 购买与接入教程',
+      subtitle: '通过火山引擎方舟开通豆包模型服务、创建 API Key 并完成首次调用',
+      steps: [
+        {
+          title: '注册火山引擎账号',
+          description: '先准备火山引擎账号，后续开通模型、创建密钥和查看账单都会在控制台完成。',
+          items: [
+            '访问 volcengine.com 或豆包大模型官网入口',
+            '使用手机号、邮箱或企业账号注册并登录',
+            '按页面提示完成实名认证，企业使用建议走企业认证'
+          ]
+        },
+        {
+          title: '进入火山方舟并开通服务',
+          description: '豆包 API 通常在火山方舟控制台中管理，开通后可选择具体模型或创建推理接入点。',
+          items: [
+            '在控制台搜索「火山方舟」或「豆包大模型」',
+            '进入模型服务页面，阅读并确认服务协议',
+            '按业务场景选择文本、视觉、语音、Embedding 或代码模型',
+            '如控制台要求创建推理接入点，先创建一个测试用 Endpoint'
+          ],
+          warning: '模型名称、区域和接入点 ID 可能会随控制台更新，请以当前控制台展示为准。'
+        },
+        {
+          title: '创建并保存 API Key',
+          description: '在 API Key 管理页面创建调用密钥，生成后立即复制保存到安全位置。',
+          items: [
+            '进入「API Key 管理」或「密钥管理」页面',
+            '点击创建密钥，为密钥添加便于识别的名称',
+            '复制生成的 API Key，并保存到密码管理器或服务器环境变量',
+            '为正式业务单独创建密钥，方便后续轮换和权限隔离'
+          ],
+          warning: 'API Key 不要写进前端代码、公开仓库、截图或客户端安装包。'
+        },
+        {
+          title: '配置环境变量并测试调用',
+          description: '火山方舟可使用官方 SDK 或 OpenAI 兼容方式接入。首次测试建议用最小请求确认密钥、地址和模型都可用。',
+          items: [
+            '本地安装 openai SDK',
+            '将 ARK_API_KEY 写入环境变量',
+            'base_url 可参考控制台接入说明，常见地址为 https://ark.cn-beijing.volces.com/api/v3',
+            'model 填写控制台提供的模型名或推理接入点 ID'
+          ],
+          codeLanguage: 'python',
+          code: `import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ.get("ARK_API_KEY"),
+    base_url="https://ark.cn-beijing.volces.com/api/v3",
+)
+
+response = client.chat.completions.create(
+    model="你的模型名或推理接入点 ID",
+    messages=[{"role": "user", "content": "请用一句话介绍豆包大模型。"}],
+)
+
+print(response.choices[0].message.content)`,
+          warning: '不同区域、套餐和模型的接入地址可能不同，复制控制台里的官方接入参数最稳。'
+        },
+        {
+          title: '选择模型与购买方式',
+          description: '测试跑通后，再按质量、速度和成本选择正式模型，并确认免费额度、资源包或后付费规则。',
+          items: [
+            '轻量对话：优先选择速度快、成本低的模型',
+            '复杂推理或代码任务：选择更高能力的旗舰或代码模型',
+            '图像、语音、Embedding 等任务：选择对应专项模型',
+            '购买前查看计费项、免费额度、资源包有效期和后付费开关'
+          ]
+        },
+        {
+          title: '查看用量并控制成本',
+          description: '正式接入前建议设置预算、告警和密钥管理流程，避免测试阶段意外产生高额调用。',
+          items: [
+            '在费用中心或方舟控制台查看调用量、Token 消耗和余额',
+            '为测试环境和生产环境使用不同 API Key',
+            '开启余额提醒或预算告警',
+            '批量任务先小规模压测，再放大并发和上下文长度'
+          ]
+        }
+      ],
+      tips: [
+        '个人开发者建议先用免费额度或小额充值完成端到端测试',
+        '已有 OpenAI SDK 项目可优先用兼容模式迁移，改动最少',
+        '模型名、Endpoint ID、地域和接入地址尽量从控制台复制，避免手填出错'
+      ],
+      warnings: [
+        '价格、免费额度和模型列表会随平台更新，购买前以火山引擎控制台为准',
+        'API Key 泄露后应立即禁用旧密钥并重新创建'
+      ],
+      advantages: ['国内直连', '字节生态', '模型选择丰富', '性价比高', 'OpenAI 兼容接入']
+    }
   },
   {
     id: 'deepseek',
@@ -294,7 +663,104 @@ export const apiList: APIConfig[] = [
     proxy: false,
     features: ['高性价比', '代码能力强', '推理模型', '开源'],
     icon: '🔵',
-    badge: { text: '热门', type: 'warning' }
+    badge: { text: '热门', type: 'warning' },
+    tutorial: {
+      title: 'DeepSeek API 购买与首次调用教程',
+      subtitle: '从注册认证、创建 API Key、充值到账户调用的精简流程',
+      steps: [
+        {
+          title: '注册 DeepSeek 账号',
+          description: '先进入 DeepSeek 开放平台，用手机号或邮箱完成账号注册和登录。',
+          image: '/images/tutorial/deepseek-docx-1.png',
+          items: [
+            '访问 platform.deepseek.com',
+            '点击 Sign Up 或登录入口创建账号',
+            '按页面提示完成手机号、邮箱或扫码登录'
+          ]
+        },
+        {
+          title: '完成实名认证',
+          description: '认证会影响 API 配额和后续付费调用权限，个人和企业按身份选择即可。',
+          image: '/images/tutorial/deepseek-docx-2.png',
+          items: [
+            '在账号设置或个人中心进入实名认证',
+            '个人开发者按要求提交身份证与人脸识别',
+            '企业用户提交营业执照及相关证明材料'
+          ],
+          warning: '认证通过后再创建密钥和充值，流程会更顺。'
+        },
+        {
+          title: '创建并保存 API Key',
+          description: '在 API Keys 管理页生成 Bearer Token，生成后立刻复制保存。',
+          image: '/images/tutorial/deepseek-docx-3.png',
+          items: [
+            '进入 API Keys 管理页面',
+            '点击 Create API Key 或 Generate New Token',
+            '为密钥命名，避免空格和特殊字符',
+            '复制完整密钥并保存到安全位置'
+          ],
+          warning: 'DeepSeek API Key 通常只完整显示一次，不要提交到 GitHub 或写进客户端代码。'
+        },
+        {
+          title: '充值并确认余额',
+          description: '正式持续调用通常需要账户余额，测试前先确认充值和账单状态。',
+          image: '/images/tutorial/deepseek-docx-2.png',
+          items: [
+            '进入账单、余额或 Usage 页面',
+            '选择合适充值档位，例如 10、20、50 或 100 元',
+            '可使用支付宝、微信等本地支付方式',
+            '支付成功后检查账户余额是否更新'
+          ]
+        },
+        {
+          title: '配置环境变量并首次调用',
+          description: 'DeepSeek 兼容 OpenAI SDK，配置 base_url 后即可用熟悉的方式调用。',
+          image: '/images/tutorial/deepseek-docx-4.png',
+          items: [
+            '安装 openai 和 python-dotenv',
+            '将 DEEPSEEK_API_KEY 写入环境变量或 .env',
+            'base_url 指向 https://api.deepseek.com'
+          ],
+          codeLanguage: 'python',
+          code: `import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ.get("DEEPSEEK_API_KEY"),
+    base_url="https://api.deepseek.com",
+)
+
+response = client.chat.completions.create(
+    model="deepseek-chat",
+    messages=[{"role": "user", "content": "你好，请用一句话介绍你自己。"}],
+)
+
+print(response.choices[0].message.content)`
+        },
+        {
+          title: '选择模型并控制成本',
+          description: '首次跑通后，再根据速度、推理能力和成本切换模型。',
+          image: '/images/tutorial/deepseek-docx-4.png',
+          items: [
+            'deepseek-chat：通用对话和基础问答，适合入门测试',
+            'deepseek-v4-flash：响应快、性价比高，适合实时对话和客服',
+            'deepseek-v4-pro：推理能力更强，适合复杂代码、长文档和技术问答',
+            '在控制台查看用量、余额和预算告警'
+          ],
+          warning: '模型名称、免费试用和价格会随平台调整，正式使用前请以控制台和官方文档为准。'
+        }
+      ],
+      tips: [
+        '推荐用 .env 或环境变量保存 DEEPSEEK_API_KEY',
+        'OpenAI SDK 兼容模式最适合迁移已有代码',
+        '个人开发者可先从 deepseek-chat 或 flash 类模型开始控制成本'
+      ],
+      warnings: [
+        '不要在前端、公开仓库或截图中暴露 API Key',
+        '所有调用都会按模型计价扣除余额，建议定期查看用量'
+      ],
+      advantages: ['性价比高', '国内直连', 'OpenAI 兼容接口', '代码与推理能力强']
+    }
   },
   // ---------- 需要代理 ----------
   {
@@ -640,186 +1106,171 @@ export const appTutorials: AppTutorial[] = [
   {
     id: 'claude-code',
     name: 'Claude Code',
-    desc: 'Anthropic官方命令行AI编程工具，支持终端内编码、文件编辑、Git操作',
+    desc: '命令行 AI 编程工具，支持安装后接入 DeepSeek 等模型用于本地开发',
     url: 'https://claude.com/product/claude-code',
     icon: '💻',
     badge: { text: '热门', type: 'warning' },
     sections: [
       {
-        title: '什么是 Claude Code',
-        content: 'Claude Code 是 Anthropic 推出的命令行 AI 编程工具。与 Cursor 等 IDE 插件不同，Claude Code 直接在终端中运行，通过自然语言指令完成代码编写、文件编辑、Git 操作等任务，是 Vibe Coding 的核心工具。',
+        title: '安装 Node.js',
+        content: 'Claude Code 是 JavaScript 编写的命令行工具，Windows 电脑需要先安装 Node.js 运行环境。',
         steps: [
           {
-            title: '核心优势',
-            description: '理解项目结构、自动编辑文件、执行命令、Git 操作一体化',
-            items: [
-              '终端内直接运行，无需额外 IDE',
-              '理解项目上下文，智能代码生成',
-              '支持 Git 操作：提交、分支、合并',
-              '可配置使用不同 AI 模型和 API',
-              '支持 OpenAI、DeepSeek、Gemini 等第三方 API'
-            ]
-          }
-        ],
-        tips: [
-          'Claude Code 按用量计费，1次对话约 6.88 元人民币',
-          '20次对话约 140 元，100次约 700 元',
-          '可通过配置第三方 API（如 DeepSeek）大幅降低成本'
-        ]
-      },
-      {
-        title: '前置准备：安装 Git',
-        content: 'Claude Code 依赖 Git 进行版本控制操作，需要先安装 Git。',
-        steps: [
-          {
-            title: '下载 Git',
-            description: '访问 Git 官网下载对应系统的安装包',
-            items: [
-              '官网地址：https://git-scm.com/install/windows',
-              '国内镜像：https://registry.npmmirror.com/binary.html?path=git-for-windows/',
-              '下载 64-bit 安装包（如 Git-2.53.0.2-64-bit.exe）'
-            ],
-            image: '/images/tutorial/claude-code-git-download.png'
-          },
-          {
-            title: '安装 Git',
-            description: '运行安装程序，保持默认选项即可',
-            items: [
-              '双击安装包运行',
-              '安装路径建议保持默认',
-              '在 Environment Variables 中确认 Git 已添加到 PATH'
-            ]
-          },
-          {
-            title: '验证安装',
-            description: '打开命令行，检查 Git 版本',
-            code: 'git -v',
-            items: [
-              '如果显示 git version 2.53.0.windows.2 说明安装成功',
-              '如提示命令不存在，需检查 PATH 环境变量'
-            ]
-          }
-        ],
-        tips: [
-          'Windows 用户推荐使用 Git Bash 终端',
-          '安装完成后重启命令行窗口'
-        ],
-        warnings: [
-          '必须安装 Git，否则 Claude Code 无法正常运行',
-          '不要使用过旧版本的 Git，建议 2.40+'
-        ]
-      },
-      {
-        title: '前置准备：安装 Node.js',
-        content: 'Claude Code 基于 Node.js 运行，需要安装 Node.js 20+ LTS 版本。',
-        steps: [
-          {
-            title: '下载 Node.js',
-            description: '访问 Node.js 官网下载 LTS 版本',
+            title: '下载 Node.js 安装包',
+            description: '访问 Node.js 官网，下载 Windows Installer (.msi) 安装程序。',
+            image: '/images/tutorial/claude-code-pdf-node.png',
             items: [
               '官网地址：https://nodejs.org/zh-cn/download',
-              '选择 Windows Installer (.msi) 64-bit',
-              '当前 LTS 版本：v24.14.0'
-            ]
-          },
-          {
-            title: '安装并验证',
-            description: '运行安装程序后，验证 Node.js 和 NPM',
-            code: '# 查看 Node 版本\nnode -v\n# 查看 NPM 版本\nnpm -v',
-            items: [
-              'Node.js 版本需 20+ 以上',
-              'NPM 会随 Node.js 一起安装',
-              'NPM 用于后续安装 Claude Code'
+              '双击 .msi 文件，按默认流程一路 Next 到 Finish',
+              '安装时勾选 Automatically install the necessary tools'
             ]
           }
         ],
         tips: [
-          '推荐安装 LTS 版本，更加稳定',
-          'NPM 是 Node.js 的包管理器，Claude Code 通过 NPM 安装'
+          'Node.js 安装完成后会自带 npm，后续安装 Claude Code 会用到 npm',
+          '安装完成后重新打开终端，避免旧终端读取不到环境变量'
+        ]
+      },
+      {
+        title: '安装 Git Bash',
+        content: 'Claude Code 在 Windows 上依赖 Bash 环境，建议安装 Git for Windows，并使用附带的 Git Bash。',
+        steps: [
+          {
+            title: '下载并安装 Git',
+            description: '下载 Git for Windows x64 Setup，保持默认选项安装即可。',
+            image: '/images/tutorial/claude-code-pdf-git.png',
+            items: [
+              '官网地址：https://git-scm.com/install/windows',
+              '选择 Git for Windows/x64 Setup',
+              '双击安装包，按默认选项完成安装'
+            ]
+          }
+        ],
+        tips: [
+          'Git Bash 会提供类 Linux 的命令行环境',
+          '后续运行 Claude Code 时，优先使用 Git Bash 或新打开的终端'
+        ],
+        warnings: [
+          '只用 Windows 默认 CMD/PowerShell 可能会遇到兼容问题'
         ]
       },
       {
         title: '安装 Claude Code',
-        content: '使用 NPM 全局安装 Claude Code，只需一条命令。',
+        content: '前置环境准备好后，在 Windows 终端中使用 npm 全局安装 Claude Code，并验证版本。',
         steps: [
           {
-            title: '设置国内镜像（推荐）',
-            description: '国内用户建议先设置阿里云镜像加速下载',
-            code: 'npm config set registry https://registry.npmmirror.com'
-          },
-          {
-            title: '安装 Claude Code',
-            description: '使用 NPM 全局安装',
+            title: '执行安装命令',
+            description: '打开 Windows 的 cmd 或 Git Bash，运行 npm 全局安装命令。',
+            image: '/images/tutorial/claude-code-pdf-install.png',
             code: 'npm install -g @anthropic-ai/claude-code'
           },
           {
-            title: '验证安装',
-            description: '检查 Claude Code 是否安装成功',
-            code: 'claude --version'
+            title: '验证安装结果',
+            description: '分别检查 Git、Node.js 和 Claude Code 是否安装成功。',
+            code: 'git -v\nnode -v\nclaude --version',
+            items: [
+              '能显示版本号就代表对应工具已安装成功',
+              '如果提示命令不存在，重新打开终端或检查 PATH'
+            ]
           },
           {
             title: '启动 Claude Code',
-            description: '在项目目录下启动 Claude Code',
-            code: '# 进入项目目录\ncd 你的项目路径\n# 启动 Claude Code\nclaude',
-            items: [
-              '首次启动会显示欢迎界面和入门提示',
-              '配置文件保存在 C:\\Users\\你的用户名\\.claude.json',
-              '模型可以在设置中切换（如 Sonnet 4.6 等）'
-            ]
+            description: '进入项目目录后执行 claude，打开 Claude Code 交互界面。',
+            code: 'claude'
           }
         ],
         tips: [
-          '安装失败时，尝试以管理员身份运行命令行',
-          '如果下载缓慢，确保已设置国内镜像'
-        ],
-        warnings: [
-          '必须在项目目录下启动 claude 命令',
-          '首次使用需登录 Anthropic 账号或配置 API Key'
+          'Claude Code 可以直接修改代码文件、运行测试命令并根据报错继续修复',
+          '国内用户后续可接入 DeepSeek 等模型，降低调用成本'
         ]
       },
       {
-        title: '配置第三方 API（降低成本）',
-        content: 'Claude Code 默认使用 Anthropic 官方 API，按量计费较贵。可通过配置第三方 API 大幅降低成本。',
+        title: '处理区域限制提示',
+        content: '直接执行 claude 时，部分国内环境可能遇到区域校验或 onboarding 报错，可按 PDF 中的方法调整本地配置。',
         steps: [
           {
-            title: '配置 DeepSeek API',
-            description: '使用 DeepSeek API 替代，成本极低',
-            code: '# 设置 DeepSeek API Key（替换为你的实际 Key）\nsetx ANTHROPIC_API_KEY "YOUR_DEEPSEEK_API_KEY"\n\n# 设置 DeepSeek API 端点\nsetx ANTHROPIC_BASE_URL "https://api.deepseek.com/v1"\n\n# 设置 DeepSeek 模型\nsetx ANTHROPIC_MODEL "deepseek-chat"',
+            title: '找到 Claude 配置文件',
+            description: '配置文件通常位于用户目录下的 `.claude.json`。',
+            image: '/images/tutorial/claude-code-pdf-onboarding.png',
             items: [
-              '访问 DeepSeek 官网注册并获取 API Key',
-              '可选模型：deepseek-chat、deepseek-coder、deepseek-reasoner',
-              '设置完成后重启命令行窗口'
+              '路径示例：`C:\\Users\\你的用户名\\.claude.json`',
+              '如果文件不存在，先运行一次 claude 再检查'
             ]
           },
           {
-            title: '配置 OpenAI API',
-            description: '使用 OpenAI API 替代',
-            code: 'setx ANTHROPIC_API_KEY "your-openai-api-key"\nsetx ANTHROPIC_BASE_URL "https://api.openai.com/v1"\nsetx ANTHROPIC_MODEL "gpt-4o"'
-          },
-          {
-            title: '配置 Google Gemini API',
-            description: '使用 Gemini API 替代',
-            code: 'setx ANTHROPIC_API_KEY "your-gemini-api-key"\nsetx ANTHROPIC_BASE_URL "https://generativelanguage.googleapis.com/v1beta"\nsetx ANTHROPIC_MODEL "gemini-pro"'
-          },
-          {
-            title: '验证配置',
-            description: '查看当前环境变量是否配置正确',
-            code: 'echo %ANTHROPIC_API_KEY%\necho %ANTHROPIC_BASE_URL%\necho %ANTHROPIC_MODEL%',
+            title: '添加 onboarding 配置',
+            description: '在 JSON 配置中加入 onboarding 完成标记，然后重新启动 Claude Code。',
+            code: '"hasCompletedOnboarding": true',
             items: [
-              '设置完成后重启命令行使环境变量生效',
-              '启动 claude 后检查是否正常工作'
+              '修改 JSON 时注意逗号和括号格式',
+              '保存后关闭旧终端，重新打开再执行 claude'
+            ]
+          }
+        ],
+        warnings: [
+          '配置项写错会导致 Claude Code 无法读取配置，修改前建议备份原文件'
+        ]
+      },
+      {
+        title: '接入 DeepSeek 模型',
+        content: '为了降低使用成本，可以把 Claude Code 接入 DeepSeek API。先在 DeepSeek 开放平台创建 API Key，再写入 Claude 配置。',
+        steps: [
+          {
+            title: '获取 DeepSeek API Key',
+            description: '访问 DeepSeek 开放平台，注册/登录并完成实名认证，在 API Keys 页面创建密钥。',
+            image: '/images/tutorial/claude-code-pdf-deepseek-config.png',
+            items: [
+              '访问 DeepSeek 开放平台',
+              '完成登录、实名认证和 API Key 创建',
+              '复制 API Key，后续写入 Claude 配置'
+            ]
+          },
+          {
+            title: '新建 settings.json',
+            description: '在用户目录下打开 `.claude` 文件夹，新建 `settings.json`，写入 DeepSeek 配置。',
+            code: `{
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "YOUR_DEEPSEEK_API_KEY",
+    "ANTHROPIC_BASE_URL": "https://api.deepseek.com/anthropic",
+    "ANTHROPIC_MODEL": "deepseek-v4-pro"
+  }
+}`,
+            items: [
+              '路径示例：`C:\\Users\\你的用户名\\.claude\\settings.json`',
+              '把 YOUR_DEEPSEEK_API_KEY 替换成真实密钥',
+              '保存后重新打开终端'
+            ],
+            warning: '不要把真实 API Key 上传到公开仓库或截图分享。'
+          }
+        ],
+        tips: [
+          'DeepSeek 模型适合日常开发测试，成本更容易控制',
+          '如果模型名后续变化，以 DeepSeek 控制台和官方文档为准'
+        ]
+      },
+      {
+        title: '启动并测试响应',
+        content: '完成配置后，重新打开终端执行 claude，用简单问题测试模型是否正常响应。',
+        steps: [
+          {
+            title: '启动 Claude Code 服务',
+            description: '重新打开一个新的终端，输入 claude。',
+            image: '/images/tutorial/claude-code-pdf-test.png',
+            code: 'claude'
+          },
+          {
+            title: '测试模型回复',
+            description: '在 Claude Code 页面里提问一个简单问题，例如比较 1.9 和 1.11 的大小。',
+            items: [
+              '模型能正常回答，说明 DeepSeek 接入成功',
+              '如果无响应，先检查 settings.json 路径、JSON 格式和 API Key',
+              '如果仍失败，再检查 DeepSeek 账户余额和模型名'
             ]
           }
         ],
         tips: [
-          'DeepSeek API 成本最低，适合日常使用',
-          'API Key 务必保密，不要泄露给他人',
-          '可随时切换不同 API 提供商'
-        ],
-        warnings: [
-          'setx 设置的环境变量需要重启命令行才能生效',
-          'API Key 丢失后需重新生成，无法找回',
-          '使用第三方 API 可能存在兼容性差异'
+          '第一次测试建议问简单问题，方便排除网络、密钥和模型配置问题',
+          '确认响应稳定后，再进入真实项目目录执行开发任务'
         ]
       }
     ]
@@ -1676,5 +2127,3 @@ export const appTutorials: AppTutorial[] = [
 export function getAppTutorialById(id: string) {
   return appTutorials.find(t => t.id === id);
 }
-
-

@@ -53,26 +53,26 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
   const needProxyAPIs = allTutorialAPIs.filter(a => a.proxy);
 
   return (
-    <div className="min-h-screen bg-[#f8f8f8]">
+    <div className="min-h-screen bg-background">
       {/* ── 顶部导航栏 ── */}
-      <header className="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
+      <header className="sticky top-0 z-50 border-b border-border bg-card">
         <div className="max-w-[1200px] mx-auto px-6 h-14 flex items-center">
-          <Link href="/tutorial" className="text-sm text-slate-500 hover:text-slate-800 transition-colors">
+          <Link href="/tutorial" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             &#8592; 返回教程列表
           </Link>
-          <span className="mx-3 text-slate-300">|</span>
-          <span className="text-sm font-semibold text-slate-800 truncate">{api.icon} {api.name} 购买教程</span>
+          <span className="mx-3 text-border">|</span>
+          <span className="truncate text-sm font-semibold text-foreground">{api.name} 购买教程</span>
           <span className={`ml-2 text-[11px] font-semibold px-2 py-0.5 rounded-full ${
-            needProxy ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700'
+            needProxy ? 'border border-amber-200 bg-amber-50 text-amber-700' : 'border border-emerald-200 bg-emerald-50 text-emerald-700'
           }`}>
             {needProxy ? '需要代理' : '无需代理'}
           </span>
-          <div className="ml-auto">
+          <div className="ml-auto flex shrink-0 items-center gap-2">
             <a
               href={api.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[12px] font-semibold text-white bg-orange-500 hover:bg-orange-600 px-4 py-1.5 rounded-md transition-colors"
+              className="rounded-md bg-foreground px-4 py-1.5 text-[12px] font-semibold text-background transition-colors hover:bg-foreground/90"
             >
               访问官网
             </a>
@@ -85,36 +85,36 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
         {/* 左侧指南导航 */}
         <aside className="hidden lg:block w-52 shrink-0">
           <div className="sticky top-20">
-            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-3 px-3">购买教程</p>
+            <p className="mb-3 px-3 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">购买教程</p>
             <nav className="space-y-0.5">
               {/* 无需代理分组 */}
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 mt-4 mb-1">🟢 无需代理</p>
+              <p className="mb-1 mt-4 px-3 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">无需代理</p>
               {noProxyAPIs.map((a) => (
                 <Link
                   key={a.id}
                   href={`/tutorial/${a.id}`}
                   className={`block text-[13px] px-3 py-2 rounded-md transition-colors truncate ${
                     a.id === id
-                      ? 'bg-orange-50 text-orange-700 font-semibold border-l-2 border-orange-500'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                      ? 'border-l-2 border-foreground bg-muted text-foreground font-semibold'
+                      : 'text-muted-foreground hover:bg-muted/70 hover:text-foreground'
                   }`}
                 >
-                  {a.icon} {a.name}
+                  {a.name}
                 </Link>
               ))}
               {/* 需要代理分组 */}
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 mt-4 mb-1">🟠 需要代理</p>
+              <p className="mb-1 mt-4 px-3 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">需要代理</p>
               {needProxyAPIs.map((a) => (
                 <Link
                   key={a.id}
                   href={`/tutorial/${a.id}`}
                   className={`block text-[13px] px-3 py-2 rounded-md transition-colors truncate ${
                     a.id === id
-                      ? 'bg-orange-50 text-orange-700 font-semibold border-l-2 border-orange-500'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                      ? 'border-l-2 border-foreground bg-muted text-foreground font-semibold'
+                      : 'text-muted-foreground hover:bg-muted/70 hover:text-foreground'
                   }`}
                 >
-                  {a.icon} {a.name}
+                  {a.name}
                 </Link>
               ))}
             </nav>
@@ -122,27 +122,26 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
         </aside>
 
         {/* 中间主内容区 */}
-        <main className="flex-1 min-w-0 bg-white rounded-xl border border-slate-200 shadow-sm">
+        <main className="flex-1 min-w-0 rounded-lg border border-border bg-card">
           {/* 文档头部 */}
-          <div className="px-8 pt-8 pb-6 border-b border-slate-100">
+          <div className="border-b border-border px-8 pb-6 pt-8">
             <div className="flex items-center gap-3 mb-2">
-              <span className="text-3xl">{api.icon}</span>
               <div>
-                <h1 className="text-2xl font-bold text-slate-900">{tutorial.title}</h1>
+                <h1 className="text-2xl font-semibold tracking-tight text-foreground">{tutorial.title}</h1>
               </div>
               <span className={`ml-2 text-[11px] font-semibold px-2 py-0.5 rounded-full ${
-                needProxy ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700'
+                needProxy ? 'border border-amber-200 bg-amber-50 text-amber-700' : 'border border-emerald-200 bg-emerald-50 text-emerald-700'
               }`}>
                 {needProxy ? '需要代理' : '无需代理'}
               </span>
             </div>
-            {tutorial.subtitle && <p className="text-slate-500 text-sm mt-1">{tutorial.subtitle}</p>}
+            {tutorial.subtitle && <p className="mt-1 text-sm text-muted-foreground">{tutorial.subtitle}</p>}
 
             {/* 优势标签 */}
             {tutorial.advantages && tutorial.advantages.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-4">
                 {tutorial.advantages.map((advantage, index) => (
-                  <span key={index} className="text-[12px] py-1 px-2.5 rounded-full border border-green-300 text-green-700 bg-green-50">
+                  <span key={index} className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[12px] text-emerald-700">
                     &#10003; {advantage}
                   </span>
                 ))}
@@ -151,14 +150,14 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
           </div>
 
           {/* 移动端目录 - 折叠式 */}
-          <div className="lg:hidden mx-8 mt-6 border border-slate-200 rounded-lg overflow-hidden">
+          <div className="mx-8 mt-6 overflow-hidden rounded-lg border border-border lg:hidden">
             <details>
-              <summary className="px-4 py-2.5 bg-slate-50 cursor-pointer text-sm font-semibold text-slate-700 select-none">
+              <summary className="cursor-pointer select-none bg-muted/60 px-4 py-2.5 text-sm font-semibold text-foreground">
                 教程步骤（{tutorial.steps.length} 步）
               </summary>
-              <div className="px-4 py-2 space-y-0.5 border-t border-slate-100">
+              <div className="space-y-0.5 border-t border-border px-4 py-2">
                 {tutorial.steps.map((step, i) => (
-                  <a key={i} href={`#step-${i}`} className="block text-[13px] py-1.5 text-slate-500 hover:text-orange-600">
+                  <a key={i} href={`#step-${i}`} className="block py-1.5 text-[13px] text-muted-foreground hover:text-foreground">
                     {i + 1}. {step.title}
                   </a>
                 ))}
@@ -172,25 +171,25 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
               <section
                 key={stepIdx}
                 id={`step-${stepIdx}`}
-                className={stepIdx < tutorial.steps.length - 1 ? 'pb-10 border-b border-slate-100' : ''}
+                className={stepIdx < tutorial.steps.length - 1 ? 'border-b border-border pb-10' : ''}
               >
                 {/* 步骤标题：编号 + 文字 */}
                 <div className="flex items-center gap-3 mb-5">
-                  <span className="flex items-center justify-center w-7 h-7 bg-orange-500 text-white rounded-full text-sm font-bold shrink-0">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-foreground text-sm font-bold text-background">
                     {stepIdx + 1}
                   </span>
-                  <h2 className="text-xl font-bold text-slate-900">{step.title}</h2>
+                  <h2 className="text-xl font-semibold tracking-tight text-foreground">{step.title}</h2>
                 </div>
 
                 {/* 步骤描述 */}
                 {step.description && (
-                  <p className="text-[15px] text-slate-600 leading-7 mb-4">{step.description}</p>
+                  <p className="mb-4 text-[15px] leading-7 text-muted-foreground">{step.description}</p>
                 )}
 
                 {/* 图片展示 */}
                 {step.image && (
                   <div className="my-4">
-                    <div className="bg-slate-50 rounded-lg border border-slate-200 overflow-hidden">
+                    <div className="overflow-hidden rounded-lg border border-border bg-muted/40">
                       <div className="aspect-video relative">
                         <Image src={step.image} alt={step.title} fill className="object-cover" unoptimized />
                       </div>
@@ -202,16 +201,17 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                 {step.items && step.items.length > 0 && (
                   <ul className="space-y-2 mb-4">
                     {step.items.map((item, itemIdx) => {
-                      const colonIdx = Math.max(item.indexOf('：'), item.indexOf(':'));
+                      const colonIndexes = [item.indexOf('：'), item.indexOf(':')].filter(index => index > 0);
+                      const colonIdx = colonIndexes.length > 0 ? Math.min(...colonIndexes) : -1;
                       const hasColon = colonIdx > 0 && colonIdx < 20;
 
                       return (
-                        <li key={itemIdx} className="text-sm flex items-start gap-2 text-slate-600">
-                          <span className="mt-2 shrink-0 w-1 h-1 bg-slate-300 rounded-full" />
+                        <li key={itemIdx} className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-muted-foreground/50" />
                           <span className="leading-6">
                             {hasColon ? (
                               <>
-                                <strong className="font-semibold text-slate-800">{item.substring(0, colonIdx + 1)}</strong>
+                                <strong className="font-semibold text-foreground">{item.substring(0, colonIdx + 1)}</strong>
                                 {item.substring(colonIdx + 1)}
                               </>
                             ) : (
@@ -224,9 +224,23 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                   </ul>
                 )}
 
+                {/* 代码块 */}
+                {step.code && (
+                  <div className="my-4 overflow-hidden rounded-lg border border-border bg-muted/40">
+                    {step.codeLanguage && (
+                      <div className="border-b border-border px-4 py-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                        {step.codeLanguage}
+                      </div>
+                    )}
+                    <pre className="overflow-x-auto p-4 text-xs leading-6 text-foreground">
+                      <code>{step.code}</code>
+                    </pre>
+                  </div>
+                )}
+
                 {/* 警告 */}
                 {step.warning && (
-                  <div className="my-4 bg-amber-50 border-l-3 border-amber-400 rounded-r-lg px-5 py-3 text-sm text-amber-800 leading-6">
+                  <div className="my-4 rounded-lg border border-amber-200 bg-amber-50 px-5 py-3 text-sm leading-6 text-amber-800">
                     &#9888; {step.warning}
                   </div>
                 )}
@@ -238,12 +252,10 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
           {(tutorial.tips && tutorial.tips.length > 0) || (tutorial.warnings && tutorial.warnings.length > 0) ? (
             <div className="mx-8 mb-8 grid grid-cols-1 md:grid-cols-2 gap-4">
               {tutorial.tips && tutorial.tips.length > 0 && (
-                <div className="bg-blue-50 border-l-3 border-blue-400 rounded-r-lg px-5 py-4 space-y-2">
-                  <p className="font-semibold text-[13px] text-blue-800 flex items-center gap-1.5 mb-1">
-                    <span>&#128161;</span> 使用提示
-                  </p>
+                <div id="tips-section" className="space-y-2 rounded-lg border border-sky-200 bg-sky-50 px-5 py-4">
+                  <p className="mb-1 text-[13px] font-semibold text-sky-800">使用提示</p>
                   {tutorial.tips.map((tip, index) => (
-                    <p key={index} className="text-sm text-blue-700 leading-6 pl-5">
+                    <p key={index} className="pl-5 text-sm leading-6 text-sky-700">
                       {tip}
                     </p>
                   ))}
@@ -251,10 +263,8 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
               )}
 
               {tutorial.warnings && tutorial.warnings.length > 0 && (
-                <div className="bg-amber-50 border-l-3 border-amber-400 rounded-r-lg px-5 py-4 space-y-2">
-                  <p className="font-semibold text-[13px] text-amber-800 flex items-center gap-1.5 mb-1">
-                    <span>&#9888;</span> 注意事项
-                  </p>
+                <div id="warnings-section" className="space-y-2 rounded-lg border border-amber-200 bg-amber-50 px-5 py-4">
+                  <p className="mb-1 text-[13px] font-semibold text-amber-800">注意事项</p>
                   {tutorial.warnings.map((warning, index) => (
                     <p key={index} className="text-sm text-amber-700 leading-6 pl-5">
                       {warning}
@@ -267,21 +277,20 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
 
           {/* 相关教程推荐 */}
           {relatedAPIs.length > 0 && (
-            <div className="mx-8 mb-8 pt-6 border-t border-slate-100">
-              <h3 className="font-bold text-base text-slate-800 mb-4">相关教程推荐</h3>
+            <div className="mx-8 mb-8 border-t border-border pt-6">
+              <h3 className="mb-4 text-base font-semibold text-foreground">相关教程推荐</h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {relatedAPIs.map((related) => (
                   <Link
                     key={related.id}
                     href={`/tutorial/${related.id}`}
-                    className="bg-slate-50 rounded-lg p-4 hover:bg-orange-50 hover:border-orange-200 border border-slate-200 transition-colors group"
+                    className="group rounded-lg border border-border bg-muted/40 p-4 transition-colors hover:border-foreground/30 hover:bg-card"
                   >
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-lg">{related.icon}</span>
-                      <h4 className="font-bold text-sm text-slate-800 group-hover:text-orange-700">{related.name}</h4>
+                    <div className="mb-1 flex items-center gap-2">
+                      <h4 className="text-sm font-semibold text-foreground">{related.name}</h4>
                     </div>
-                    <p className="text-xs text-slate-500">{related.desc}</p>
-                    <div className="text-xs text-orange-500 mt-2 font-medium">查看教程 &#8594;</div>
+                    <p className="text-xs text-muted-foreground">{related.desc}</p>
+                    <div className="mt-2 text-xs font-medium text-foreground">查看教程 &#8594;</div>
                   </Link>
                 ))}
               </div>
@@ -292,13 +301,13 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
         {/* 右侧 On this page 目录 */}
         <aside className="hidden xl:block w-48 shrink-0">
           <div className="sticky top-20">
-            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-3">On this page</p>
-            <nav className="space-y-0.5 border-l border-slate-200">
+            <p className="mb-3 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">On this page</p>
+            <nav className="space-y-0.5 border-l border-border">
               {tutorial.steps.map((step, i) => (
                 <a
                   key={i}
                   href={`#step-${i}`}
-                  className="block text-[12px] py-1.5 pl-3 transition-colors truncate text-slate-500 hover:text-slate-800"
+                  className="block truncate py-1.5 pl-3 text-[12px] text-muted-foreground transition-colors hover:text-foreground"
                 >
                   {step.title}
                 </a>
@@ -307,7 +316,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
               {tutorial.tips && tutorial.tips.length > 0 && (
                 <a
                   href="#tips-section"
-                  className="block text-[12px] py-1.5 pl-3 transition-colors truncate text-slate-500 hover:text-slate-800"
+                  className="block truncate py-1.5 pl-3 text-[12px] text-muted-foreground transition-colors hover:text-foreground"
                 >
                   使用提示
                 </a>
@@ -316,7 +325,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
               {tutorial.warnings && tutorial.warnings.length > 0 && (
                 <a
                   href="#warnings-section"
-                  className="block text-[12px] py-1.5 pl-3 transition-colors truncate text-slate-500 hover:text-slate-800"
+                  className="block truncate py-1.5 pl-3 text-[12px] text-muted-foreground transition-colors hover:text-foreground"
                 >
                   注意事项
                 </a>

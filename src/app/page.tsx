@@ -1,294 +1,363 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import { apiList, appTutorials } from '@/lib/api-config';
 
-// 页面数据
 const pages = [
-  { id: 'tutorial', name: '购买教程', desc: '各大API购买流程指南', url: '/tutorial' },
-  { id: 'cloud-api', name: 'API列表', desc: '国内外API官网链接', url: '/cloud-api' },
-  { id: 'local-deploy', name: '本地部署', desc: 'Ollama/LM Studio部署', url: '/local-deploy' },
+  { id: 'cloud-api', name: 'API 列表', desc: '先看官网入口、代理要求和免费额度', url: '/cloud-api', tag: '优先查看' },
+  { id: 'tutorial', name: '购买教程', desc: '按步骤完成注册、支付与 API Key 创建', url: '/tutorial', tag: '新手推荐' },
+  { id: 'local-deploy', name: '本地部署', desc: 'Ollama / LM Studio 等本地模型方案', url: '/local-deploy', tag: '进阶路线' },
 ];
 
-// 快捷标签数据
+const navLinks = [
+  { name: 'API官网', href: '/cloud-api' },
+  { name: 'API测评', href: '/api-review' },
+  { name: '购买教程', href: '/tutorial' },
+  { name: 'API应用', href: '#app-section' },
+  { name: '本地部署', href: '/local-deploy' },
+];
+
 const quickLinks = [
   { name: 'OpenAI', id: 'openai' },
   { name: '通义千问', id: 'aliyun' },
   { name: 'Claude', id: 'claude' },
   { name: 'Gemini', id: 'gemini' },
   { name: 'DeepSeek', id: 'deepseek' },
-  { name: '智谱GLM', id: 'zhipu' },
+  { name: '智谱 GLM', id: 'zhipu' },
   { name: 'Kimi', id: 'kimi' },
 ];
+
+const featuredAPIs = [
+  apiList.find(a => a.id === 'aliyun')!,
+  apiList.find(a => a.id === 'zhipu')!,
+  apiList.find(a => a.id === 'deepseek')!,
+  apiList.find(a => a.id === 'openai')!,
+  apiList.find(a => a.id === 'claude')!,
+  apiList.find(a => a.id === 'gemini')!,
+];
+
+const stats = [
+  { value: `${apiList.length}+`, label: 'API 官网入口' },
+  { value: `${apiList.filter(api => api.tutorial).length}`, label: '购买教程' },
+  { value: `${appTutorials.length}`, label: '应用教程' },
+];
+
+function badgeClass(type: string) {
+  if (type === 'success') {
+    return 'border-emerald-200 bg-emerald-50 text-emerald-700';
+  }
+  if (type === 'warning') {
+    return 'border-amber-200 bg-amber-50 text-amber-700';
+  }
+  return 'border-sky-200 bg-sky-50 text-sky-700';
+}
+
+function accessText(proxy?: boolean) {
+  return proxy ? '需要代理' : '无需代理';
+}
 
 export default function Home() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [activeTab, setActiveTab] = useState<'cloud' | 'app'>('cloud');
 
-  // 合并API数据
-  const allAPIs = apiList;
-  const featuredAPIs = [
-    apiList.find(a => a.id === 'aliyun')!,
-    apiList.find(a => a.id === 'zhipu')!,
-    apiList.find(a => a.id === 'deepseek')!,
-    apiList.find(a => a.id === 'openai')!,
-    apiList.find(a => a.id === 'claude')!,
-    apiList.find(a => a.id === 'gemini')!,
-  ];
-
-  // 搜索结果
-  const getSearchResults = () => {
+  const searchResults = useMemo(() => {
     if (!searchQuery.trim()) return { apis: [], tutorials: [], pages: [], apps: [] };
+
     const q = searchQuery.toLowerCase().trim();
     return {
-      apis: allAPIs.filter(api => api.name.toLowerCase().includes(q) || api.desc.toLowerCase().includes(q)).slice(0, 3),
-      tutorials: allAPIs.filter(api => api.tutorial && api.name.toLowerCase().includes(q)).slice(0, 3),
+      apis: apiList
+        .filter(api => api.name.toLowerCase().includes(q) || api.desc.toLowerCase().includes(q))
+        .slice(0, 4),
+      tutorials: apiList
+        .filter(api => api.tutorial && api.name.toLowerCase().includes(q))
+        .slice(0, 3),
       pages: pages.filter(page => page.name.toLowerCase().includes(q) || page.desc.toLowerCase().includes(q)),
-      apps: appTutorials.filter(app => app.name.toLowerCase().includes(q) || app.desc.toLowerCase().includes(q)).slice(0, 3),
+      apps: appTutorials
+        .filter(app => app.name.toLowerCase().includes(q) || app.desc.toLowerCase().includes(q))
+        .slice(0, 3),
     };
-  };
+  }, [searchQuery]);
 
-  const searchResults = getSearchResults();
-
-  // 精确匹配
-  const exactMatch = searchQuery.trim() ? allAPIs.find(api => api.name.toLowerCase() === searchQuery.toLowerCase().trim() || api.id.toLowerCase() === searchQuery.toLowerCase().trim()) : null;
+  const exactMatch = searchQuery.trim()
+    ? apiList.find(api =>
+        api.name.toLowerCase() === searchQuery.toLowerCase().trim() ||
+        api.id.toLowerCase() === searchQuery.toLowerCase().trim(),
+      )
+    : null;
 
   return (
     <div className="min-h-screen bg-background">
-      {/* 顶部导航栏 */}
-      <header className="border-b border-border bg-background sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-4">
-              <Link href="/" className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-foreground rounded-lg flex items-center justify-center">
-                  <span className="text-background font-bold text-sm">API</span>
-                </div>
-                <span className="font-bold text-lg hidden sm:block">API知识站</span>
-              </Link>
-              <span className="text-muted-foreground text-sm hidden md:block">适合初学者的API学习平台</span>
-            </div>
-            <nav className="flex items-center gap-3 sm:gap-5">
-              <Link href="/cloud-api" className="font-bold text-foreground hover:text-foreground/80 text-sm sm:text-base">API官网</Link>
-              <Link href="/api-review" className="font-bold text-foreground hover:text-foreground/80 text-sm sm:text-base">API测评</Link>
-              <Link href="/tutorial" className="font-bold text-foreground hover:text-foreground/80 text-sm sm:text-base">购买教程</Link>
-              <Link href="#app-section" className="font-bold text-foreground hover:text-foreground/80 text-sm sm:text-base">API应用</Link>
-              <Link href="/local-deploy" className="font-bold text-foreground hover:text-foreground/80 text-sm sm:text-base">本地部署</Link>
-            </nav>
-          </div>
-        </div>
-      </header>
-
-      {/* Hero区域 + 核心搜索区 */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold mb-4">API知识站</h1>
-          <p className="text-lg text-muted-foreground mb-8">一站式API学习平台，从入门到精通</p>
-
-          {/* 搜索框 */}
-          <div className="relative max-w-2xl mx-auto mb-4">
-            <div className="flex gap-2">
-              <Input
-                type="text"
-                placeholder="搜索API名称，如 OpenAI、通义千问..."
-                value={searchQuery}
-                onChange={(e) => { setSearchQuery(e.target.value); setShowSuggestions(true); }}
-                onFocus={() => setShowSuggestions(true)}
-                onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-                onKeyDown={(e) => e.key === 'Enter' && exactMatch && router.push(`/api/${exactMatch.id}`)}
-                className="flex-1 h-12 text-base px-4"
-              />
-              <Button className="h-12 px-6 bg-foreground text-background hover:bg-foreground/90" onClick={() => exactMatch && router.push(`/api/${exactMatch.id}`)}>搜索</Button>
-            </div>
-
-            {/* 搜索建议下拉 */}
-            {showSuggestions && searchQuery.trim() && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-background border rounded-xl shadow-lg z-10 overflow-hidden">
-                {searchResults.apis.length > 0 && (
-                  <>
-                    <div className="px-4 py-2 bg-muted text-xs font-medium text-muted-foreground">API</div>
-                    {searchResults.apis.map((api) => (
-                      <Link key={api.id} href={`/api/${api.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-muted">
-                        <div className="flex-1 min-w-0">
-                          <p className="font-medium truncate">{api.name}</p>
-                          <p className="text-sm text-muted-foreground truncate">{api.desc}</p>
-                        </div>
-                      </Link>
-                    ))}
-                  </>
-                )}
-                {searchResults.tutorials.length > 0 && (
-                  <>
-                    <div className="px-4 py-2 bg-muted text-xs font-medium text-muted-foreground">购买教程</div>
-                    {searchResults.tutorials.map((api) => (
-                      <Link key={api.id} href={`/tutorial/${api.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-muted">
-                        <div className="flex-1 min-w-0">
-                          <p className="font-medium truncate">{api.tutorial?.title || `${api.name}教程`}</p>
-                          <p className="text-sm text-muted-foreground truncate">{api.desc}</p>
-                        </div>
-                      </Link>
-                    ))}
-                  </>
-                )}
-                {searchResults.apps.length > 0 && (
-                  <>
-                    <div className="px-4 py-2 bg-muted text-xs font-medium text-muted-foreground">API应用</div>
-                    {searchResults.apps.map((app) => (
-                      <Link key={app.id} href={`#app-section`} className="flex items-center gap-3 px-4 py-3 hover:bg-muted">
-                        <div className="flex-1 min-w-0">
-                          <p className="font-medium truncate">{app.name}</p>
-                          <p className="text-sm text-muted-foreground truncate">{app.desc}</p>
-                        </div>
-                      </Link>
-                    ))}
-                  </>
-                )}
-                {searchResults.pages.length > 0 && (
-                  <>
-                    <div className="px-4 py-2 bg-muted text-xs font-medium text-muted-foreground">页面</div>
-                    {searchResults.pages.map((page) => (
-                      <Link key={page.id} href={page.url} className="flex items-center gap-3 px-4 py-3 hover:bg-muted">
-                        <div className="flex-1 min-w-0">
-                          <p className="font-medium truncate">{page.name}</p>
-                          <p className="text-sm text-muted-foreground truncate">{page.desc}</p>
-                        </div>
-                      </Link>
-                    ))}
-                  </>
-                )}
-                {searchResults.apis.length === 0 && searchResults.tutorials.length === 0 && searchResults.pages.length === 0 && searchResults.apps.length === 0 && (
-                  <div className="px-4 py-6 text-center text-muted-foreground">
-                    <p>未找到相关内容</p>
-                    <p className="text-sm mt-1">试试搜索 OpenAI、通义千问、Claude...</p>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* 精确匹配提示 */}
-          {exactMatch && searchQuery.trim() && (
-            <div className="flex items-center justify-center gap-2 text-sm mb-4">
-              <span className="text-muted-foreground">找到「{exactMatch.name}」</span>
-              <Button size="sm" onClick={() => router.push(`/api/${exactMatch.id}`)}>直接跳转</Button>
-              {exactMatch.tutorial && <Button size="sm" variant="outline" onClick={() => router.push(`/tutorial/${exactMatch.id}`)}>购买教程</Button>}
-            </div>
-          )}
-
-          {/* 搜索提示 */}
-          {!searchQuery.trim() && <p className="text-sm text-muted-foreground mb-6">直接输入API名称，精确匹配后可直达详情页</p>}
-
-          {/* 快捷标签 */}
-          <div className="flex flex-wrap justify-center gap-2 mb-8">
-            {quickLinks.map((link) => (
-              <Link key={link.id} href={`/api/${link.id}`} className="px-3 py-1.5 bg-muted rounded-full text-sm font-medium hover:bg-muted/80">
+      <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
+          <Link href="/" className="shrink-0">
+            <span className="block text-base font-semibold">API知识站</span>
+            <span className="hidden text-xs text-muted-foreground sm:block">API 学习与选型指南</span>
+          </Link>
+          <nav className="flex min-w-0 items-center gap-1 overflow-x-auto text-sm">
+            {navLinks.map(link => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="shrink-0 rounded-md px-3 py-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              >
                 {link.name}
               </Link>
             ))}
-          </div>
-
-          {/* 快捷入口卡片 */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
-            <Link href="/tutorial" className="bg-muted rounded-xl p-4 hover:shadow-md">
-              <p className="font-bold text-sm">购买教程</p>
-              <p className="text-xs text-muted-foreground mt-1">API购买流程指南</p>
-            </Link>
-            <Link href="/cloud-api" className="bg-muted rounded-xl p-4 hover:shadow-md">
-              <p className="font-bold text-sm">API列表</p>
-              <p className="text-xs text-muted-foreground mt-1">国内外API汇总</p>
-            </Link>
-            <Link href="/local-deploy" className="bg-muted rounded-xl p-4 hover:shadow-md">
-              <p className="font-bold text-sm">本地部署</p>
-              <p className="text-xs text-muted-foreground mt-1">Ollama等部署指南</p>
-            </Link>
-          </div>
+          </nav>
         </div>
-      </section>
+      </header>
 
-      {/* 内容分类区 */}
-      <section className="py-8 px-4 sm:px-6 lg:px-8 border-t border-border">
-        <div className="max-w-6xl mx-auto">
-          {/* 标签切换 */}
-          <div className="flex gap-2 mb-8 border-b border-border pb-4">
-            <button onClick={() => setActiveTab('cloud')} className={`px-6 py-3 font-bold ${activeTab === 'cloud' ? 'text-foreground border-b-2 border-foreground' : 'text-muted-foreground hover:text-foreground'}`}>云端API</button>
-            <button onClick={() => setActiveTab('app')} className={`px-6 py-3 font-bold ${activeTab === 'app' ? 'text-foreground border-b-2 border-foreground' : 'text-muted-foreground hover:text-foreground'}`}>API应用</button>
-          </div>
+      <main>
+        <section className="px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
+          <div className="mx-auto max-w-6xl">
+            <div className="mx-auto max-w-4xl text-center">
+              <div className="mb-5 inline-flex rounded-full border bg-card px-4 py-1.5 text-sm text-muted-foreground">
+                AI API 选型、购买、接入一站整理
+              </div>
+              <h1 className="mx-auto max-w-4xl text-3xl font-semibold leading-[1.18] sm:text-4xl lg:text-5xl">
+                <span className="block">更快找到可用的 AI API</span>
+                <span className="mt-1 block">少走接入弯路</span>
+              </h1>
+              <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
+                从官网入口、代理要求、免费额度到购买教程和本地部署，按真实使用路径整理。
+              </p>
+            </div>
 
-          {/* 云端API内容 */}
-          {activeTab === 'cloud' && (
-            <div className="space-y-6">
-              {/* 分类入口卡片 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-                <Link href="/cloud-api" className="bg-muted rounded-xl p-6 hover:shadow-md">
-                  <h3 className="font-bold">无需代理</h3>
-                  <p className="text-sm text-muted-foreground">国内直连，开箱即用</p>
-                </Link>
-                <Link href="/cloud-api" className="bg-muted rounded-xl p-6 hover:shadow-md">
-                  <h3 className="font-bold">需要代理</h3>
-                  <p className="text-sm text-muted-foreground">OpenAI、Claude、Gemini等</p>
-                </Link>
+            <div className="relative mx-auto mt-9 max-w-4xl">
+              <p className="mb-3 text-center text-sm font-medium text-foreground">搜索 API 或工具名称</p>
+              <div className="flex gap-3 rounded-lg border bg-card p-2 shadow-sm">
+                <Input
+                  type="text"
+                  placeholder="搜索 API 名称，如 OpenAI、通义千问..."
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setShowSuggestions(true);
+                  }}
+                  onFocus={() => setShowSuggestions(true)}
+                  onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                  onKeyDown={(e) => e.key === 'Enter' && exactMatch && router.push(`/api/${exactMatch.id}`)}
+                  className="h-12 flex-1 border-0 bg-transparent px-4 text-base shadow-none focus-visible:ring-0"
+                />
+                <Button
+                  className="h-12 px-7"
+                  onClick={() => exactMatch && router.push(`/api/${exactMatch.id}`)}
+                >
+                  搜索
+                </Button>
               </div>
 
-              {/* API卡片列表 */}
-              <h3 className="text-lg font-bold mb-4">精选API</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {featuredAPIs.map((api) => (
-                  <div key={api.id} className="bg-muted rounded-xl p-4 flex flex-col">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-bold text-base">{api.name}</h4>
-                      <Badge className={`text-xs ${api.badge.type === 'success' ? 'bg-green-500 text-white' : api.badge.type === 'warning' ? 'bg-yellow-500 text-white' : 'bg-blue-500 text-white'}`}>{api.badge.text}</Badge>
-                    </div>
-                    <p className="text-sm text-foreground mb-4 flex-1">{api.desc}</p>
-                    <div className="flex gap-2">
-                      <a href={api.url} target="_blank" rel="noopener noreferrer" className="flex-1"><Button className="w-full bg-foreground text-background hover:bg-foreground/90">官网入口</Button></a>
-                      <Link href={`/api/${api.id}`} className="flex-1"><Button variant="outline" className="w-full">详细说明</Button></Link>
-                    </div>
+              {showSuggestions && searchQuery.trim() && (
+                <div className="absolute left-0 right-0 top-full z-10 mt-2 overflow-hidden rounded-lg border bg-card shadow-sm">
+                  {searchResults.apis.length > 0 && (
+                    <>
+                      <div className="border-b bg-muted/60 px-4 py-2 text-xs font-medium text-muted-foreground">API</div>
+                      {searchResults.apis.map((api) => (
+                        <Link key={api.id} href={`/api/${api.id}`} className="block px-4 py-3 transition-colors hover:bg-muted/70">
+                          <p className="truncate font-medium">{api.name}</p>
+                          <p className="truncate text-sm text-muted-foreground">{api.desc}</p>
+                        </Link>
+                      ))}
+                    </>
+                  )}
+                  {searchResults.tutorials.length > 0 && (
+                    <>
+                      <div className="border-y bg-muted/60 px-4 py-2 text-xs font-medium text-muted-foreground">购买教程</div>
+                      {searchResults.tutorials.map((api) => (
+                        <Link key={api.id} href={`/tutorial/${api.id}`} className="block px-4 py-3 transition-colors hover:bg-muted/70">
+                          <p className="truncate font-medium">{api.tutorial?.title || `${api.name}教程`}</p>
+                          <p className="truncate text-sm text-muted-foreground">{api.desc}</p>
+                        </Link>
+                      ))}
+                    </>
+                  )}
+                  {searchResults.apps.length > 0 && (
+                    <>
+                      <div className="border-y bg-muted/60 px-4 py-2 text-xs font-medium text-muted-foreground">API应用</div>
+                      {searchResults.apps.map((app) => (
+                        <Link key={app.id} href={`/app/${app.id}`} className="block px-4 py-3 transition-colors hover:bg-muted/70">
+                          <p className="truncate font-medium">{app.name}</p>
+                          <p className="truncate text-sm text-muted-foreground">{app.desc}</p>
+                        </Link>
+                      ))}
+                    </>
+                  )}
+                  {searchResults.pages.length > 0 && (
+                    <>
+                      <div className="border-y bg-muted/60 px-4 py-2 text-xs font-medium text-muted-foreground">页面</div>
+                      {searchResults.pages.map((page) => (
+                        <Link key={page.id} href={page.url} className="block px-4 py-3 transition-colors hover:bg-muted/70">
+                          <p className="truncate font-medium">{page.name}</p>
+                          <p className="truncate text-sm text-muted-foreground">{page.desc}</p>
+                        </Link>
+                      ))}
+                    </>
+                  )}
+                  {searchResults.apis.length === 0 &&
+                    searchResults.tutorials.length === 0 &&
+                    searchResults.pages.length === 0 &&
+                    searchResults.apps.length === 0 && (
+                      <div className="px-4 py-6 text-center text-sm text-muted-foreground">
+                        未找到相关内容，试试 OpenAI、通义千问、Claude。
+                      </div>
+                    )}
+                </div>
+              )}
+            </div>
+
+            <div className="mx-auto mt-4 grid max-w-md grid-cols-3 gap-3 rounded-lg border bg-card p-4">
+              {stats.map(item => (
+                <div key={item.label} className="min-w-0 text-center">
+                  <p className="text-xl font-semibold">{item.value}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">{item.label}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mx-auto mt-6 grid max-w-5xl grid-cols-1 gap-3 sm:grid-cols-3">
+              {pages.map(page => (
+                <Link
+                  key={page.id}
+                  href={page.url}
+                  className="group rounded-lg border bg-card p-5 transition-colors hover:border-foreground/30"
+                >
+                  <div className="mb-3 flex items-center justify-between gap-3">
+                    <p className="font-semibold">{page.name}</p>
+                    <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground group-hover:text-foreground">
+                      {page.tag}
+                    </span>
                   </div>
-                ))}
-              </div>
+                  <p className="text-sm leading-6 text-muted-foreground">{page.desc}</p>
+                </Link>
+              ))}
+            </div>
 
-              <div className="text-center pt-4">
-                <Link href="/cloud-api"><Button variant="outline">查看更多API</Button></Link>
+            {exactMatch && searchQuery.trim() && (
+              <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
+                <span className="text-muted-foreground">找到「{exactMatch.name}」</span>
+                <Button size="sm" onClick={() => router.push(`/api/${exactMatch.id}`)}>直接跳转</Button>
+                {exactMatch.tutorial && (
+                  <Button size="sm" variant="outline" onClick={() => router.push(`/tutorial/${exactMatch.id}`)}>
+                    购买教程
+                  </Button>
+                )}
+              </div>
+            )}
+
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+              <span className="mr-1 text-sm text-muted-foreground">常用：</span>
+              {quickLinks.map((link) => (
+                <Link
+                  key={link.id}
+                  href={`/api/${link.id}`}
+                  className="rounded-full border bg-card px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="border-t border-border bg-card/40 px-4 py-12 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-6xl">
+            <div className="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">先从这里选</p>
+                <h2 className="mt-1 text-2xl font-semibold">精选 API</h2>
+                <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
+                  优先展示常用服务，卡片里直接标出访问条件和核心能力，方便快速比较。
+                </p>
+              </div>
+              <Link href="/cloud-api">
+                <Button variant="outline">查看全部</Button>
+              </Link>
+            </div>
+
+            <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <Link href="/cloud-api" className="rounded-lg border bg-card p-5 transition-colors hover:border-foreground/30">
+                <p className="font-semibold">无需代理</p>
+                <p className="mt-1 text-sm text-muted-foreground">国内直连，适合快速开箱和学习接入。</p>
+              </Link>
+              <Link href="/cloud-api" className="rounded-lg border bg-card p-5 transition-colors hover:border-foreground/30">
+                <p className="font-semibold">需要代理</p>
+                <p className="mt-1 text-sm text-muted-foreground">OpenAI、Claude、Gemini 等国际服务。</p>
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {featuredAPIs.map((api) => (
+                <article key={api.id} className="flex min-h-56 flex-col rounded-lg border bg-card p-5 transition-colors hover:border-foreground/30">
+                  <div className="mb-3 flex items-start justify-between gap-3">
+                    <div>
+                      <h3 className="font-semibold">{api.name}</h3>
+                      <p className="mt-1 text-xs text-muted-foreground">{accessText(api.proxy)}</p>
+                    </div>
+                    <Badge variant="outline" className={badgeClass(api.badge.type)}>{api.badge.text}</Badge>
+                  </div>
+                  <p className="flex-1 text-sm leading-6 text-muted-foreground">{api.desc}</p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {api.features.slice(0, 3).map(feature => (
+                      <span key={feature} className="rounded-full bg-muted px-2 py-1 text-xs text-muted-foreground">
+                        {feature}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="mt-5 flex gap-2">
+                    <a href={api.url} target="_blank" rel="noopener noreferrer" className="flex-1">
+                      <Button className="w-full" size="sm">官网入口</Button>
+                    </a>
+                    <Link href={`/api/${api.id}`} className="flex-1">
+                      <Button variant="outline" className="w-full" size="sm">详细说明</Button>
+                    </Link>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="app-section" className="border-t border-border px-4 py-12 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-6xl">
+            <div className="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">接入之后做什么</p>
+                <h2 className="mt-1 text-2xl font-semibold">API 应用教程</h2>
+                <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
+                  围绕常见工具和工作流整理教程，从安装到使用路径更清晰。
+                </p>
               </div>
             </div>
-          )}
 
-          {/* API应用内容 - 教程卡片列表 */}
-          {activeTab === 'app' && (
-            <div id="app-section" className="space-y-6">
-              <p className="text-muted-foreground">精选AI工具与应用教程，持续更新中</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {appTutorials.map((tutorial) => (
-                  <div key={tutorial.id} className="bg-muted rounded-xl p-4 flex flex-col">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-bold text-base">{tutorial.name}</h4>
-                      <Badge className={`text-xs ${tutorial.badge.type === 'warning' ? 'bg-yellow-500 text-white' : tutorial.badge.type === 'success' ? 'bg-green-500 text-white' : 'bg-blue-500 text-white'}`}>{tutorial.badge.text}</Badge>
-                    </div>
-                    <p className="text-sm text-foreground mb-1">{tutorial.desc}</p>
-                    <p className="text-xs text-muted-foreground mb-4">{tutorial.sections.length} 个章节</p>
-                    <div className="mt-auto">
-                      <Link href={`/app/${tutorial.id}`}><Button className="w-full bg-foreground text-background hover:bg-foreground/90">详细教程</Button></Link>
-                    </div>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {appTutorials.map((tutorial) => (
+                <article key={tutorial.id} className="flex min-h-48 flex-col rounded-lg border bg-card p-5 transition-colors hover:border-foreground/30">
+                  <div className="mb-3 flex items-start justify-between gap-3">
+                    <h3 className="font-semibold">{tutorial.name}</h3>
+                    <Badge variant="outline" className={badgeClass(tutorial.badge.type)}>{tutorial.badge.text}</Badge>
                   </div>
-                ))}
-              </div>
+                  <p className="text-sm leading-6 text-muted-foreground">{tutorial.desc}</p>
+                  <p className="mt-2 text-xs text-muted-foreground">{tutorial.sections.length} 个章节</p>
+                  <div className="mt-auto pt-5">
+                    <Link href={`/app/${tutorial.id}`}>
+                      <Button variant="outline" className="w-full" size="sm">详细教程</Button>
+                    </Link>
+                  </div>
+                </article>
+              ))}
             </div>
-          )}
-        </div>
-      </section>
+          </div>
+        </section>
+      </main>
 
-      {/* Footer */}
-      <footer className="border-t border-border py-8 px-4">
-        <div className="max-w-6xl mx-auto text-center text-sm text-muted-foreground">
-          <p>API知识站 - 适合初学者的API学习平台</p>
-        </div>
+      <footer className="border-t border-border px-4 py-8 text-center text-sm text-muted-foreground">
+        API知识站 - 适合初学者的 API 学习平台
       </footer>
     </div>
   );

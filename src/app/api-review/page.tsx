@@ -3,19 +3,35 @@ import { SidebarLayout } from '@/components/layout/SidebarLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { reviewDetails } from '@/lib/review-config';
+import type { ReviewDetail } from '@/lib/review-config';
 
-// 评分组件
+const reviews = Object.values(reviewDetails);
+
+function badgeClass(variant?: 'destructive' | 'success') {
+  if (variant === 'success') {
+    return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+  }
+  return '';
+}
+
+function averageScore(review: ReviewDetail) {
+  if (review.ratings.length === 0) return 0;
+  const total = review.ratings.reduce((sum, item) => sum + item.score, 0);
+  return total / review.ratings.length;
+}
+
 function Rating({ score }: { score: number }) {
   const fullStars = Math.floor(score);
   const hasHalf = score % 1 >= 0.5;
-  
+
   return (
     <div className="flex items-center gap-1">
-      {[...Array(fullStars)].map((_, i) => (
+      {Array.from({ length: fullStars }, (_, i) => (
         <span key={i} className="text-foreground">★</span>
       ))}
       {hasHalf && <span className="text-foreground">☆</span>}
-      {[...Array(5 - fullStars - (hasHalf ? 1 : 0))].map((_, i) => (
+      {Array.from({ length: 5 - fullStars - (hasHalf ? 1 : 0) }, (_, i) => (
         <span key={i + fullStars} className="text-muted-foreground/30">★</span>
       ))}
       <span className="ml-2 text-sm font-medium">{score.toFixed(1)}</span>
@@ -23,280 +39,157 @@ function Rating({ score }: { score: number }) {
   );
 }
 
-export default function APIReviewPage() {
+function ReviewCard({ review }: { review: ReviewDetail }) {
+  const score = averageScore(review);
+
   return (
-    <SidebarLayout>
-      <div className="p-6 lg:p-8">
-        {/* 页面标题 */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">API测评</h1>
-          <p className="text-muted-foreground">
-            详细的API性能评测与使用体验分享，帮助你选择最适合的AI服务
+    <Card className="overflow-hidden border-border/80 shadow-sm">
+      <CardHeader className="border-b bg-muted/25 px-5 py-5 sm:px-6">
+        <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-start">
+          <div className="min-w-0">
+            <CardTitle className="flex items-center gap-3 text-xl leading-tight">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border bg-card text-2xl">
+                {review.icon}
+              </span>
+              <span className="min-w-0">{review.name}</span>
+            </CardTitle>
+            <CardDescription className="mt-3 max-w-3xl text-[15px] leading-7">
+              {review.tlDr}
+            </CardDescription>
+          </div>
+          <div className="flex shrink-0 flex-col gap-3 lg:items-end">
+            <div className="rounded-md border bg-card px-3 py-2 text-sm">
+              <span className="text-muted-foreground">综合评分</span>
+              <span className="ml-2 font-semibold text-foreground">{score.toFixed(1)}</span>
+            </div>
+            <div className="flex flex-wrap gap-2 lg:justify-end">
+              {review.badges.map((badge) => (
+                <Badge
+                  key={badge.label}
+                  variant={badge.variant === 'destructive' ? 'destructive' : 'default'}
+                  className={badgeClass(badge.variant)}
+                >
+                  {badge.label}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent className="px-5 py-5 sm:px-6">
+        <div className="mb-5 border-l-4 border-foreground/70 bg-muted/35 px-4 py-3">
+          <p className="mb-1 text-sm font-semibold text-foreground">省流版</p>
+          <p className="text-sm leading-6 text-muted-foreground">
+            <strong>推荐指数：{score.toFixed(1)}/5</strong> | {review.tlDr}
           </p>
         </div>
 
-        {/* 测评概览 */}
+        <div className="mb-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {review.ratings.slice(0, 4).map((rating) => (
+            <div key={rating.label} className="min-h-24 rounded-md border bg-card p-3">
+              <div className="mb-1 flex items-center justify-between gap-2">
+                <span className="text-sm font-medium">{rating.label}</span>
+                <span className="text-xs text-muted-foreground">{rating.score.toFixed(1)}</span>
+              </div>
+              <Rating score={rating.score} />
+              <p className="mt-2 line-clamp-2 text-xs leading-5 text-muted-foreground">
+                {rating.detail}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mb-5 grid grid-cols-1 gap-4 text-sm text-muted-foreground md:grid-cols-2">
+          <div className="rounded-md border border-green-200 bg-green-50/45 p-4 dark:border-green-900 dark:bg-green-950/10">
+            <p className="mb-2 font-medium text-foreground">主要优点</p>
+            <ul className="space-y-2">
+              {review.pros.slice(0, 3).map((item) => (
+                <li key={item} className="flex gap-2 leading-6">
+                  <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-green-500" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="rounded-md border border-amber-200 bg-amber-50/55 p-4 dark:border-amber-900 dark:bg-amber-950/10">
+            <p className="mb-2 font-medium text-foreground">需要注意</p>
+            <ul className="space-y-2">
+              {review.cons.slice(0, 3).map((item) => (
+                <li key={item} className="flex gap-2 leading-6">
+                  <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-amber-500" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div className="border-t pt-5">
+          <Link href={`/api-review/${review.slug}`}>
+            <Button variant="outline">查看完整测评</Button>
+          </Link>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+export default function APIReviewPage() {
+  const useCaseCount = reviews.reduce((sum, review) => sum + review.useCases.length, 0);
+
+  return (
+    <SidebarLayout>
+      <div className="mx-auto max-w-5xl p-6 lg:p-8">
+        <div className="mb-10 border-b pb-8">
+          <p className="text-sm font-medium text-muted-foreground">Reviews</p>
+          <h1 className="mt-1 text-3xl font-semibold tracking-tight">API测评</h1>
+          <p className="mt-3 max-w-3xl text-[15px] leading-7 text-muted-foreground">
+            详细的 API 性能评测与使用体验分享，帮助你选择最适合的 AI 服务。
+          </p>
+        </div>
+
         <section className="mb-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Card className="bg-muted/50">
-              <CardContent className="p-4 text-center">
-                <p className="text-3xl font-bold">12+</p>
-                <p className="text-sm text-muted-foreground">已测评API</p>
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+            <Card className="border-border/80 shadow-sm">
+              <CardContent className="p-5 text-center">
+                <p className="text-3xl font-bold">{reviews.length}</p>
+                <p className="text-sm text-muted-foreground">已测评 API</p>
               </CardContent>
             </Card>
-            <Card className="bg-muted/50">
-              <CardContent className="p-4 text-center">
-                <p className="text-3xl font-bold">50+</p>
-                <p className="text-sm text-muted-foreground">测试用例</p>
+            <Card className="border-border/80 shadow-sm">
+              <CardContent className="p-5 text-center">
+                <p className="text-3xl font-bold">{useCaseCount}+</p>
+                <p className="text-sm text-muted-foreground">适用场景</p>
               </CardContent>
             </Card>
-            <Card className="bg-muted/50">
-              <CardContent className="p-4 text-center">
-                <p className="text-3xl font-bold">实时</p>
-                <p className="text-sm text-muted-foreground">性能监控</p>
+            <Card className="border-border/80 shadow-sm">
+              <CardContent className="p-5 text-center">
+                <p className="text-3xl font-bold">4项</p>
+                <p className="text-sm text-muted-foreground">评分维度</p>
               </CardContent>
             </Card>
-            <Card className="bg-muted/50">
-              <CardContent className="p-4 text-center">
-                <p className="text-3xl font-bold">客观</p>
-                <p className="text-sm text-muted-foreground">评测标准</p>
+            <Card className="border-border/80 shadow-sm">
+              <CardContent className="p-5 text-center">
+                <p className="text-3xl font-bold">持续</p>
+                <p className="text-sm text-muted-foreground">内容更新</p>
               </CardContent>
             </Card>
           </div>
         </section>
 
-        {/* 测评列表 */}
-        <section className="space-y-6">
-          {/* OpenAI GPT-4 测评 */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div>
-                  <CardTitle className="flex items-center gap-2 text-xl">
-                    <span className="text-2xl">🌍</span>
-                    OpenAI GPT-4
-                  </CardTitle>
-                  <CardDescription className="mt-1">
-                    最强大的语言模型，行业标准
-                  </CardDescription>
-                </div>
-                <div className="flex gap-2">
-                  <Badge variant="destructive">需代理</Badge>
-                  <Badge>付费</Badge>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              {/* 省流版 */}
-              <div className="mb-4 p-4 bg-muted/50 rounded-lg">
-                <p className="font-medium mb-2">⚡ 省流版</p>
-                <p className="text-sm text-muted-foreground">
-                  <strong>推荐指数：⭐⭐⭐⭐⭐</strong> | 功能最全面，质量最高，但价格较贵，需要代理访问。适合对质量要求高的专业用户。
-                </p>
-              </div>
-
-              {/* 评分详情 */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-                <div className="p-3 border rounded-lg">
-                  <span className="text-sm font-medium">质量</span>
-                  <Rating score={4.9} />
-                </div>
-                <div className="p-3 border rounded-lg">
-                  <span className="text-sm font-medium">速度</span>
-                  <Rating score={4.5} />
-                </div>
-                <div className="p-3 border rounded-lg">
-                  <span className="text-sm font-medium">性价比</span>
-                  <Rating score={3.5} />
-                </div>
-                <div className="p-3 border rounded-lg">
-                  <span className="text-sm font-medium">稳定性</span>
-                  <Rating score={4.8} />
-                </div>
-              </div>
-
-              {/* 详细评测 */}
-              <div className="space-y-3 text-sm text-muted-foreground mb-4">
-                <p><strong>优点：</strong></p>
-                <ul className="list-disc list-inside space-y-1 ml-2">
-                  <li>模型质量业界领先，理解能力强</li>
-                  <li>支持多模态（GPT-4V）</li>
-                  <li>生态完善，文档详尽</li>
-                  <li>API稳定，响应速度快</li>
-                </ul>
-                <p className="mt-3"><strong>缺点：</strong></p>
-                <ul className="list-disc list-inside space-y-1 ml-2">
-                  <li>价格较高，GPT-4约$0.03/1K tokens</li>
-                  <li>国内访问需要代理</li>
-                  <li>需要国际信用卡支付</li>
-                </ul>
-              </div>
-
-              <Button variant="outline">查看完整评测</Button>
-            </CardContent>
-          </Card>
-
-          {/* 阿里云通义千问测评 */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div>
-                  <CardTitle className="flex items-center gap-2 text-xl">
-                    <span className="text-2xl">🇨🇳</span>
-                    阿里云通义千问
-                  </CardTitle>
-                  <CardDescription className="mt-1">
-                    国内领先的大模型服务，免费额度充足
-                  </CardDescription>
-                </div>
-                <div className="flex gap-2">
-                  <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">无需代理</Badge>
-                  <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">免费额度</Badge>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              {/* 省流版 */}
-              <div className="mb-4 p-4 bg-muted/50 rounded-lg">
-                <p className="font-medium mb-2">⚡ 省流版</p>
-                <p className="text-sm text-muted-foreground">
-                  <strong>推荐指数：⭐⭐⭐⭐⭐</strong> | 国内用户首选，免费额度大，模型质量不错，访问速度快。适合国内初学者和个人开发者。
-                </p>
-              </div>
-
-              {/* 评分详情 */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-                <div className="p-3 border rounded-lg">
-                  <span className="text-sm font-medium">质量</span>
-                  <Rating score={4.5} />
-                </div>
-                <div className="p-3 border rounded-lg">
-                  <span className="text-sm font-medium">速度</span>
-                  <Rating score={4.8} />
-                </div>
-                <div className="p-3 border rounded-lg">
-                  <span className="text-sm font-medium">性价比</span>
-                  <Rating score={5.0} />
-                </div>
-                <div className="p-3 border rounded-lg">
-                  <span className="text-sm font-medium">稳定性</span>
-                  <Rating score={4.7} />
-                </div>
-              </div>
-
-              {/* 详细评测 */}
-              <div className="space-y-3 text-sm text-muted-foreground mb-4">
-                <p><strong>优点：</strong></p>
-                <ul className="list-disc list-inside space-y-1 ml-2">
-                  <li>每月100万tokens免费额度</li>
-                  <li>国内直接访问，速度快</li>
-                  <li>支持中文场景优化</li>
-                  <li>文档完善，易于上手</li>
-                </ul>
-                <p className="mt-3"><strong>缺点：</strong></p>
-                <ul className="list-disc list-inside space-y-1 ml-2">
-                  <li>复杂推理能力略逊于GPT-4</li>
-                  <li>部分高级功能需要付费</li>
-                </ul>
-              </div>
-
-              <Button variant="outline">查看完整评测</Button>
-            </CardContent>
-          </Card>
-
-          {/* Claude 测评 */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div>
-                  <CardTitle className="flex items-center gap-2 text-xl">
-                    <span className="text-2xl">🌍</span>
-                    Anthropic Claude
-                  </CardTitle>
-                  <CardDescription className="mt-1">
-                    安全可靠的长文本模型，200K上下文
-                  </CardDescription>
-                </div>
-                <div className="flex gap-2">
-                  <Badge variant="destructive">需代理</Badge>
-                  <Badge>付费</Badge>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              {/* 省流版 */}
-              <div className="mb-4 p-4 bg-muted/50 rounded-lg">
-                <p className="font-medium mb-2">⚡ 省流版</p>
-                <p className="text-sm text-muted-foreground">
-                  <strong>推荐指数：⭐⭐⭐⭐☆</strong> | 长文本处理能力最强，安全性高，代码能力强。适合需要处理大量文本的场景。
-                </p>
-              </div>
-
-              {/* 评分详情 */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-                <div className="p-3 border rounded-lg">
-                  <span className="text-sm font-medium">质量</span>
-                  <Rating score={4.8} />
-                </div>
-                <div className="p-3 border rounded-lg">
-                  <span className="text-sm font-medium">速度</span>
-                  <Rating score={4.0} />
-                </div>
-                <div className="p-3 border rounded-lg">
-                  <span className="text-sm font-medium">性价比</span>
-                  <Rating score={3.8} />
-                </div>
-                <div className="p-3 border rounded-lg">
-                  <span className="text-sm font-medium">稳定性</span>
-                  <Rating score={4.9} />
-                </div>
-              </div>
-
-              <Button variant="outline">查看完整评测</Button>
-            </CardContent>
-          </Card>
-
-          {/* 智谱AI 测评 */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div>
-                  <CardTitle className="flex items-center gap-2 text-xl">
-                    <span className="text-2xl">🇨🇳</span>
-                    智谱AI GLM
-                  </CardTitle>
-                  <CardDescription className="mt-1">
-                    开源模型领先者，支持本地部署
-                  </CardDescription>
-                </div>
-                <div className="flex gap-2">
-                  <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">无需代理</Badge>
-                  <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">免费试用</Badge>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              {/* 省流版 */}
-              <div className="mb-4 p-4 bg-muted/50 rounded-lg">
-                <p className="font-medium mb-2">⚡ 省流版</p>
-                <p className="text-sm text-muted-foreground">
-                  <strong>推荐指数：⭐⭐⭐⭐☆</strong> | 开源生态友好，可以本地部署，性价比高。适合有部署能力的开发者和研究者。
-                </p>
-              </div>
-
-              <Button variant="outline">查看完整评测</Button>
-            </CardContent>
-          </Card>
+        <section className="space-y-7">
+          {reviews.map((review) => (
+            <ReviewCard key={review.slug} review={review} />
+          ))}
         </section>
 
-        {/* 更多测评提示 */}
-        <Card className="bg-muted/50 mt-8">
+        <Card className="mt-8 border-border/80 shadow-sm">
           <CardContent className="p-6 text-center">
-            <p className="text-muted-foreground mb-4">
-              更多API测评持续更新中...
+            <p className="mx-auto mb-4 max-w-2xl text-sm leading-6 text-muted-foreground">
+              购买前建议同时查看官网、购买教程和测评结论，再用自己的真实任务小规模测试。
             </p>
             <Link href="/cloud-api">
-              <Button>查看所有API</Button>
+              <Button>查看所有 API</Button>
             </Link>
           </CardContent>
         </Card>

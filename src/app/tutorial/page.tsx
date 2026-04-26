@@ -3,51 +3,57 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { SidebarLayout } from '@/components/layout/SidebarLayout';
-import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import { apiList, APIConfig } from '@/lib/api-config';
 
-// 教程卡片组件
+function badgeClass(type: string) {
+  if (type === 'success') {
+    return 'border-emerald-200 bg-emerald-50 text-emerald-700';
+  }
+  if (type === 'warning') {
+    return 'border-amber-200 bg-amber-50 text-amber-700';
+  }
+  return 'border-sky-200 bg-sky-50 text-sky-700';
+}
+
 function TutorialCard({ api }: { api: APIConfig }) {
-  const badgeClass = api.badge.type === 'success' ? 'bg-green-500 text-white' : 'bg-yellow-500 text-white';
-  
   return (
-    <div className="bg-background rounded-xl p-4 flex flex-col border">
-      <div className="flex items-center justify-between mb-2">
-        <h3 className="font-bold text-base">{api.name}</h3>
-        <Badge className={`text-xs ${badgeClass}`}>{api.badge.text}</Badge>
+    <article className="flex min-h-44 flex-col rounded-lg border bg-card p-5 transition-colors hover:border-foreground/30">
+      <div className="mb-3 flex items-start justify-between gap-3">
+        <h3 className="font-semibold">{api.name}</h3>
+        <Badge variant="outline" className={badgeClass(api.badge.type)}>{api.badge.text}</Badge>
       </div>
-      <p className="text-sm text-foreground mb-3 flex-1">{api.desc}</p>
-      <div className="flex items-center gap-1 text-xs text-muted-foreground mb-3">
-        📖 {api.tutorial?.steps?.length || 0} 个步骤
-      </div>
-      <Link href={`/tutorial/${api.id}`}>
-        <Button variant="outline" className="w-full">查看教程</Button>
+      <p className="flex-1 text-sm leading-6 text-muted-foreground">{api.desc}</p>
+      <p className="mt-3 text-xs text-muted-foreground">{api.tutorial?.steps?.length || 0} 个步骤</p>
+      <Link href={`/tutorial/${api.id}`} className="mt-5">
+        <Button variant="outline" className="w-full" size="sm">查看教程</Button>
       </Link>
-    </div>
+    </article>
   );
 }
 
-// 板块组件
-function SectionCard({ title, apis, emptyText }: { title: string; apis: APIConfig[]; emptyText: string }) {
+function SectionCard({ title, desc, apis, emptyText }: { title: string; desc: string; apis: APIConfig[]; emptyText: string }) {
   return (
-    <div className="bg-muted rounded-xl p-4">
-      <div className="flex items-center gap-2 mb-4 pb-3 border-b border-border">
-        <h2 className="text-lg font-bold">{title}</h2>
-        <Badge variant="secondary" className="text-xs ml-auto">{apis.length} 个</Badge>
+    <section className="space-y-4">
+      <div className="flex items-end justify-between gap-3">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight">{title}</h2>
+          <p className="mt-1 text-sm text-muted-foreground">{desc}</p>
+        </div>
+        <Badge variant="outline" className="border-border bg-card text-muted-foreground">{apis.length} 个</Badge>
       </div>
       {apis.length > 0 ? (
-        <div className="space-y-3">
+        <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
           {apis.map((api) => <TutorialCard key={api.id} api={api} />)}
         </div>
       ) : (
-        <div className="text-center py-8 text-muted-foreground text-sm">
-          <p>{emptyText}</p>
+        <div className="rounded-lg border bg-card py-10 text-center text-sm text-muted-foreground">
+          {emptyText}
         </div>
       )}
-    </div>
+    </section>
   );
 }
 
@@ -57,66 +63,71 @@ export default function TutorialPage() {
   const noProxyWithTutorial = apiList.filter(api => !api.proxy && api.tutorial);
   const needProxyWithTutorial = apiList.filter(api => api.proxy && api.tutorial);
 
-  const filteredNoProxy = noProxyWithTutorial.filter(api => 
-    api.name.toLowerCase().includes(searchQuery.toLowerCase()) || api.desc.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredNoProxy = noProxyWithTutorial.filter(api =>
+    api.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    api.desc.toLowerCase().includes(searchQuery.toLowerCase()),
   );
-  
-  const filteredNeedProxy = needProxyWithTutorial.filter(api => 
-    api.name.toLowerCase().includes(searchQuery.toLowerCase()) || api.desc.toLowerCase().includes(searchQuery.toLowerCase())
+
+  const filteredNeedProxy = needProxyWithTutorial.filter(api =>
+    api.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    api.desc.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
     <SidebarLayout>
-      <div className="p-6 lg:p-8">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold mb-2">购买教程</h1>
-          <p className="text-muted-foreground">详细的API购买流程指南，按是否需要代理分类</p>
+      <div className="mx-auto max-w-6xl p-6 lg:p-8">
+        <div className="mb-8">
+          <p className="text-sm font-medium text-muted-foreground">Tutorials</p>
+          <h1 className="mt-1 text-3xl font-semibold tracking-tight">购买教程</h1>
+          <p className="mt-2 max-w-2xl text-muted-foreground">
+            按访问条件整理 API 购买流程，快速了解账号、支付、密钥和注意事项。
+          </p>
         </div>
 
-        {/* 搜索框 */}
-        <div className="mb-6">
-          <div className="relative max-w-md">
-            <Input
-              type="text"
-              placeholder="搜索API名称..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="px-4"
-            />
+        <div className="mb-8 max-w-xl">
+          <Input
+            type="text"
+            placeholder="搜索 API 名称..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="h-11 px-4"
+          />
+        </div>
+
+        <div className="mb-8 rounded-lg border bg-card p-5">
+          <h3 className="font-semibold">需要代理的 API 购买前建议确认</h3>
+          <div className="mt-3 grid gap-3 text-sm text-muted-foreground md:grid-cols-4">
+            <div>稳定网络环境</div>
+            <div>国际支付方式</div>
+            <div>账号风控风险</div>
+            <div>小额充值试用</div>
           </div>
         </div>
 
-        {/* 需要代理注意事项 */}
-        <Card className="mb-6 border-yellow-200 bg-yellow-50 dark:bg-yellow-950/20">
-          <CardContent className="p-4">
-            <h3 className="font-medium text-yellow-800 dark:text-yellow-200 mb-2">⚠️ 需代理API购买注意事项</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-yellow-700 dark:text-yellow-300">
-              <div>🌐 需要科学上网</div>
-              <div>💳 需要国际信用卡</div>
-              <div>⚠️ 账号可能被风控</div>
-              <div>💰 建议小额充值</div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* 无需代理/需要代理教程平行板块 */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <SectionCard title="🟢 无需代理" apis={filteredNoProxy} emptyText="没有找到匹配的无代理API教程" />
-          <SectionCard title="🟠 需要代理" apis={filteredNeedProxy} emptyText="没有找到匹配的需代理API教程" />
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
+          <SectionCard
+            title="无需代理"
+            desc="国内直连，注册和调用门槛更低。"
+            apis={filteredNoProxy}
+            emptyText="没有找到匹配的无代理 API 教程"
+          />
+          <SectionCard
+            title="需要代理"
+            desc="适合对模型能力有更高要求的场景。"
+            apis={filteredNeedProxy}
+            emptyText="没有找到匹配的需代理 API 教程"
+          />
         </div>
 
-        {/* 维护说明 */}
-        <Card className="bg-muted/50">
-          <CardContent className="p-6">
-            <h3 className="font-bold mb-4">添加新AI购买教程模板</h3>
-            <div className="bg-background rounded-lg p-4 text-sm font-mono overflow-x-auto mb-4">
-              <pre className="text-muted-foreground whitespace-pre-wrap">{`{
+        <div className="mt-10 rounded-lg border bg-card p-6">
+          <h3 className="font-semibold">添加新 AI 购买教程模板</h3>
+          <div className="mt-4 overflow-x-auto rounded-md border bg-muted/50 p-4 text-sm">
+            <pre className="whitespace-pre-wrap text-muted-foreground">{`{
   id: 'your-api-id',
   name: 'API名称',
   desc: 'API描述信息',
   url: 'https://xxx.com/',
-  proxy: false,  // true=需要代理, false=无需代理
-  icon: '🟢',
+  proxy: false,
   badge: { text: '免费', type: 'success' },
   tutorial: {
     title: 'XXX购买教程',
@@ -128,12 +139,11 @@ export default function TutorialPage() {
     advantages: ['优势1']
   }
 }`}</pre>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              修改文件：<code className="bg-muted px-2 py-1 rounded">src/lib/api-config.ts</code>
-            </p>
-          </CardContent>
-        </Card>
+          </div>
+          <p className="mt-4 text-sm text-muted-foreground">
+            修改文件：<code className="rounded bg-muted px-2 py-1">src/lib/api-config.ts</code>
+          </p>
+        </div>
       </div>
     </SidebarLayout>
   );
