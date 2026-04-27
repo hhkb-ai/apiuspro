@@ -800,8 +800,8 @@ print(response.choices[0].message.content)`,
           items: [
             '浏览器打开 chat.openai.com，点击 Sign up 用邮箱注册，按提示验证邮箱',
             '国内手机号可能收不到验证短信。两个解决办法：',
-            '接码平台：租用临时海外号码接收短信（有新号被封风险，自行承担）',
-            '买成品号（最省事）：在可靠代充平台（WildAI、PlusGO）购买已注册好的现成账号'
+            '使用海外手机号验证服务（有新号被封风险，自行承担，请选择合规平台）',
+            '买成品号（最省事）：在可靠代充平台购买已注册好的现成账号，请选择合规平台'
           ],
           warning: '购买现成账号时一定要选可靠的代充平台，避免买到被盗或被封的账号。'
         },
@@ -820,7 +820,7 @@ print(response.choices[0].message.content)`,
           description: 'OpenAI 官网只支持 Visa、Mastercard、American Express 国际信用卡。没有境外卡？三种替代方案供你选择。',
           items: [
             '代充平台（推荐）：支持支付宝/微信支付，无需境外卡，无需提供密码和信用卡信息',
-            '美区 Apple ID（iPhone 用户）：注册美区 Apple ID，淘宝购礼品卡充值，通过 ChatGPT App 内购订阅（价格比官网贵，含苹果抽成）',
+            '美区 Apple ID（iPhone 用户）：注册美区 Apple ID，通过正规渠道购礼品卡充值，通过 ChatGPT App 内购订阅（价格比官网贵，含苹果抽成）',
             '虚拟信用卡（不推荐新手）：风控极严、失败率高，需交开卡费，平台有跑路风险'
           ],
           warning: '选择代充平台时请仔细甄别，优先选择有口碑、有售后的大平台。'
@@ -876,7 +876,7 @@ print(response.choices[0].message.content)`,
           title: '国内用户替代方案与总结',
           description: '如果你在国内、没有境外卡，通过第三方代充平台是目前最省心的 GPT-5.5 订阅方式。',
           items: [
-            '代充平台（如 WildAI、PlusGO）：用支付宝/微信支付，平台替你完成 OpenAI 订阅。只需提供账号，不用密码和卡信息',
+            '代充平台：用支付宝/微信支付，平台替你完成 OpenAI 订阅。只需提供账号，不用密码和卡信息。请选择合规平台',
             '苹果内购路线：美区 Apple ID + 礼品卡充值 → ChatGPT App 内订阅。适合 iPhone/iPad 用户',
             '不建议国内用户尝试虚拟信用卡（VCC）方案，当前风控极严、成功率很低',
             '如果你需要把 GPT-5.5 接入自己的软件（API），也可以在代充平台购买 API 额度或代充值 OpenAI 账户余额'
@@ -886,14 +886,14 @@ print(response.choices[0].message.content)`,
       ],
       tips: [
         'Plus（$20/月）最适合 99% 个人用户，能用最新 GPT-5.5 模型，性价比最高',
-        '代充平台是目前国内用户最省心的订阅方式，用支付宝/微信就能完成',
+        '代充平台是目前国内用户较省心的订阅方式，用支付宝/微信就能完成，务必选择合规平台',
         'API 用户切记：Key 只显示一次，且 API 计费与 ChatGPT 订阅是完全独立的',
         '如果不确定选哪个方案，先买一个月 Plus 试试，随时可以取消续费'
       ],
       warnings: [
         '账号可能因 IP 频繁变动、支付异常等原因被风控，建议保持网络环境稳定',
         'API Key 绝对不要提交到公开仓库或前端代码',
-        '接码平台注册的账号存在被封风险，有条件的话建议购买正规代充平台的成品账号'
+        '海外手机号验证注册的账号存在被封风险，建议选择合规代充平台的成品账号'
       ],
       advantages: ['零基础友好', '三条购买路线全覆盖', '四种套餐详细对比', '国内支付替代方案', '含 API 开发者教程']
     }
@@ -954,7 +954,7 @@ print(response.choices[0].message.content)`,
           description: '官方推荐且最稳定的支付方式是 Visa、Mastercard、American Express 等外币信用卡。没有境外卡？三种替代方案供你选择。',
           items: [
             '代充平台（推荐）：支付宝/微信支付，确认平台有"封号包退款"承诺后再下单',
-            '美区 Apple ID（iPhone 用户）：购礼品卡充值，通过 Claude App 内 Apple ID 内购订阅',
+            '美区 Apple ID（iPhone 用户）：通过正规渠道购礼品卡充值，通过 Claude App 内 Apple ID 内购订阅',
             '虚拟信用卡（高风险）：Anthropic 对 VCC 拒付率极高、极易封号，新手请完全避开'
           ],
           warning: '选择代充平台时务必确认该平台是否承诺"封号包退款"条款，这是保护资金安全的关键。'
@@ -1008,8 +1008,8 @@ print(message.content)`,
           title: '路线四：国内用户替代方案与总结',
           description: '没有境外卡或极度担心封号的国内用户，建议走第三方代充或中转平台。',
           items: [
-            '最推荐方案：选择靠谱的第三方代充平台（如 WildAI、PlusGO），支持支付宝/微信支付，确认有"封号包退款"承诺后再下单',
-            '苹果内购路线：美区 Apple ID + 礼品卡充值 → Claude App 内订阅（比官网贵约 30%）',
+            '最推荐方案：选择合规的第三方代充平台，支持支付宝/微信支付，确认有"封号包退款"承诺后再下单',
+            '苹果内购路线：美区 Apple ID + 正规渠道礼品卡充值 → Claude App 内订阅（比官网贵约 30%）',
             '中转平台方案：寻找提供长周期售后与封号质保的 API 中转服务，按量付费，无需自己承担封号风险',
             '不推荐新手尝试虚拟信用卡方案，Anthropic 风控对 VCC 拒付率极高',
             'Pro（$20/月）适合大多数人，先买一个月试试，随时可取消续费'
@@ -1029,7 +1029,7 @@ print(message.content)`,
         'API Key 绝对不要提交到公开仓库或前端代码',
         '账单地址与 IP 所在国不一致 = 极高概率被封'
       ],
-      advantages: ['200K 超长上下文', '代码能力业界领先', '安全可靠', 'iOS App 体验优秀', '第三方代充渠道成熟']
+      advantages: ['200K 超长上下文', '代码能力业界领先', '安全可靠', 'iOS App 体验优秀']
     }
   },
   {
@@ -1081,7 +1081,7 @@ print(message.content)`,
           description: 'Google 官方支持国际信用卡（Visa、Mastercard）和 PayPal。没有境外卡？三种替代方案供你选择。',
           items: [
             '代充平台（推荐）：支付宝/微信支付，无需海外信用卡，适合快速体验和轻度使用',
-            'Google Play 内购（安卓）：将国内卡绑为美区 Google Play 付款方式，在 Gemini App 内购，部分用户可绕开地区限制',
+            'Google Play 内购（安卓）：将国内卡绑为美区 Google Play 付款方式，在 Gemini App 内购，部分用户可使用此方式完成支付',
             '虚拟信用卡（不推荐新手）：风控严格、失败率高，需开卡费和充值手续费'
           ],
           warning: '选择代充平台时请仔细甄别，优先选择有口碑、有售后的大平台。国内发行的双币卡也可能因账单地址问题被拒。'
@@ -1196,7 +1196,7 @@ export const proxyServices: APIConfig[] = [
 ];
 
 // ==================== 代理内容开关 ====================
-export const SHOW_PROXY_CONTENT = true;
+export const SHOW_PROXY_CONTENT = false;
 export const visibleAPIList: APIConfig[] = apiList;
 export const visibleProxyServices: APIConfig[] = SHOW_PROXY_CONTENT ? proxyServices : [];
 
@@ -1207,7 +1207,7 @@ export const faqCategories = [
     items: [
       {
         question: 'OpenAI不支持国内手机号',
-        answer: '解决方案：使用接码平台或跳过验证'
+        answer: '解决方案：尝试使用其他邮箱（Gmail/Outlook）注册，或选择正规海外验证服务'
       },
       {
         question: '邮箱被限制注册',
@@ -1224,7 +1224,7 @@ export const faqCategories = [
     items: [
       {
         question: '国内银行卡无法绑定',
-        answer: '解决方案：使用虚拟信用卡（如Depay）'
+        answer: '解决方案：优先使用官方支持的支付方式，或通过正规第三方支付服务平台完成支付'
       },
       {
         question: '扣费异常',
