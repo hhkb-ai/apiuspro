@@ -806,8 +806,8 @@ print(response.choices[0].message.content)`,
           warning: '购买现成账号时一定要选可靠的代充平台，避免买到被盗或被封的账号。'
         },
         {
-          title: '准备二：国际网络环境',
-          description: 'ChatGPT 的网站和订阅页面在国内无法直接访问，需要国际网络。',
+          title: '准备二：合适的网络环境',
+          description: 'ChatGPT 的网站和订阅页面在国内无法直接访问，需要合适的网络。',
           items: [
             '确保可以顺畅访问 chat.openai.com 和 platform.openai.com',
             '建议使用稳定节点，避免频繁切换 IP',
@@ -940,8 +940,8 @@ print(response.choices[0].message.content)`,
           ]
         },
         {
-          title: '准备二：国际网络环境',
-          description: 'Claude 官网需要通过国际网络才能稳定访问。',
+          title: '准备二：合适的网络环境',
+          description: 'Claude 官网需要通过合适的网络才能稳定访问。',
           items: [
             '确保可以顺畅访问 claude.ai',
             '建议使用稳定节点，避免频繁切换 IP',
@@ -1067,8 +1067,8 @@ print(message.content)`,
           ]
         },
         {
-          title: '准备二：国际网络环境',
-          description: 'Gemini 的网页端和应用端都需要通过国际网络才能稳定访问。',
+          title: '准备二：合适的网络环境',
+          description: 'Gemini 的网页端和应用端都需要通过合适的网络才能稳定访问。',
           items: [
             '确保可以顺畅访问 gemini.google.com',
             '建议使用稳定节点，避免频繁切换 IP',
@@ -1215,7 +1215,7 @@ export const faqCategories = [
       },
       {
         question: '账号被风控封禁',
-        answer: '解决方案：使用稳定的国际网络环境'
+        answer: '解决方案：使用合适的网络环境'
       }
     ]
   },

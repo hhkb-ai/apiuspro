@@ -46,7 +46,7 @@ function badgeClass(type: string) {
 
 function apiTypeText(apiType: 'no-proxy' | 'need-proxy' | 'proxy') {
   if (apiType === 'no-proxy') return '无需代理 - 国内直连';
-  if (apiType === 'need-proxy') return '需要代理 - 国际网络环境';
+  if (apiType === 'need-proxy') return '需要代理 - 合适的网络环境';
   return '代理服务 - 中转访问';
 }
 
