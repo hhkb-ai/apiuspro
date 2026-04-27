@@ -2,10 +2,17 @@ import { SidebarLayout } from '@/components/layout/SidebarLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { BreadcrumbSchema } from '@/components/seo/structured-data';
 
 export default function LocalDeployPage() {
   return (
     <SidebarLayout>
+      <BreadcrumbSchema
+        items={[
+          { name: 'API知识站', url: 'https://apiuspro.cn' },
+          { name: '本地部署', url: 'https://apiuspro.cn/local-deploy' },
+        ]}
+      />
       <div className="p-6 lg:p-8">
         {/* 页面标题 */}
         <div className="mb-8">

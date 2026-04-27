@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { apiList, APIConfig } from '@/lib/api-config';
+import { BreadcrumbSchema } from '@/components/seo/structured-data';
 
 function badgeClass(type: string) {
   if (type === 'success') {
@@ -75,6 +76,12 @@ export default function TutorialPage() {
 
   return (
     <SidebarLayout>
+      <BreadcrumbSchema
+        items={[
+          { name: 'API知识站', url: 'https://apiuspro.cn' },
+          { name: '购买教程', url: 'https://apiuspro.cn/tutorial' },
+        ]}
+      />
       <div className="mx-auto max-w-6xl p-6 lg:p-8">
         <div className="mb-8">
           <p className="text-sm font-medium text-muted-foreground">Tutorials</p>

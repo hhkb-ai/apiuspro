@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { getReviewDetail, getAllReviewSlugs } from '@/lib/review-config';
+import { BreadcrumbSchema, ArticleSchema } from '@/components/seo/structured-data';
 
 export function generateStaticParams() {
   return getAllReviewSlugs().map((slug) => ({ slug }));
@@ -48,6 +49,18 @@ export default async function ReviewDetailPage({ params }: { params: Promise<{ s
 
   return (
     <SidebarLayout>
+      <BreadcrumbSchema
+        items={[
+          { name: 'API知识站', url: 'https://apiuspro.cn' },
+          { name: 'API测评', url: 'https://apiuspro.cn/api-review' },
+          { name: review.name, url: `https://apiuspro.cn/api-review/${review.slug}` },
+        ]}
+      />
+      <ArticleSchema
+        title={`${review.name} 完整测评`}
+        description={review.tlDr}
+        url={`https://apiuspro.cn/api-review/${review.slug}`}
+      />
       <div className="mx-auto max-w-5xl p-6 lg:p-8">
         {/* 返回链接 */}
         <Link

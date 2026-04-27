@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TutorialCard } from '@/components/tutorial/TutorialCard';
 import { apiList, proxyServices, getAPIById, APIConfig } from '@/lib/api-config';
 import { getReviewSlugByAPIId } from '@/lib/review-config';
+import { BreadcrumbSchema } from '@/components/seo/structured-data';
 
 export function generateStaticParams() {
   const allAPIs = [...apiList, ...proxyServices];
@@ -61,6 +62,13 @@ export default async function APIDetailPage({ params }: { params: Promise<{ id: 
 
   return (
     <SidebarLayout>
+      <BreadcrumbSchema
+        items={[
+          { name: 'API知识站', url: 'https://apiuspro.cn' },
+          { name: 'API官网', url: 'https://apiuspro.cn/cloud-api' },
+          { name: api.name, url: `https://apiuspro.cn/api/${api.id}` },
+        ]}
+      />
       <div className="mx-auto max-w-6xl p-6 lg:p-8">
         <Link
           href="/cloud-api"

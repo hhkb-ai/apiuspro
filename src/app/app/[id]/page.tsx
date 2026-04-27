@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { appTutorials } from '@/lib/api-config';
+import { BreadcrumbSchema, ArticleSchema } from '@/components/seo/structured-data';
 
 /* ─── RichText: 解析 `code` 【重点】 标记 ─── */
 function RichText({ text, className = '' }: { text: string; className?: string }) {
@@ -205,6 +206,18 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
 
   return (
     <div className="min-h-screen bg-background">
+      <BreadcrumbSchema
+        items={[
+          { name: 'API知识站', url: 'https://apiuspro.cn' },
+          { name: 'API应用', url: 'https://apiuspro.cn/#app-section' },
+          { name: tutorial.name, url: `https://apiuspro.cn/app/${tutorial.id}` },
+        ]}
+      />
+      <ArticleSchema
+        title={`${tutorial.name} 使用教程`}
+        description={tutorial.desc}
+        url={`https://apiuspro.cn/app/${tutorial.id}`}
+      />
       {/* ── 顶部导航栏 ── */}
       <header className="sticky top-0 z-50 border-b border-border bg-card">
         <div className="max-w-[1200px] mx-auto px-6 h-14 flex items-center">

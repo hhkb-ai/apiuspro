@@ -34,7 +34,7 @@ export function WebSiteSchema() {
 export function OrganizationSchema() {
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'WebSite',
+    '@type': 'Organization',
     name: 'API知识站',
     url: 'https://apiuspro.cn',
   };

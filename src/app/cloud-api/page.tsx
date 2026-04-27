@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { apiList, proxyServices, APIConfig } from '@/lib/api-config';
+import { BreadcrumbSchema } from '@/components/seo/structured-data';
 
 function badgeClass(type: string) {
   if (type === 'success') {
@@ -122,6 +123,12 @@ export default function CloudAPIPage() {
 
   return (
     <SidebarLayout>
+      <BreadcrumbSchema
+        items={[
+          { name: 'API知识站', url: 'https://apiuspro.cn' },
+          { name: 'API官网', url: 'https://apiuspro.cn/cloud-api' },
+        ]}
+      />
       <div className="mx-auto max-w-6xl p-6 lg:p-8">
         <div className="mb-8">
           <p className="text-sm font-medium text-muted-foreground">Cloud API</p>

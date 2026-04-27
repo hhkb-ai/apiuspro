@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { reviewDetails } from '@/lib/review-config';
 import type { ReviewDetail } from '@/lib/review-config';
+import { BreadcrumbSchema } from '@/components/seo/structured-data';
 
 const reviews = Object.values(reviewDetails);
 
@@ -139,6 +140,12 @@ export default function APIReviewPage() {
 
   return (
     <SidebarLayout>
+      <BreadcrumbSchema
+        items={[
+          { name: 'API知识站', url: 'https://apiuspro.cn' },
+          { name: 'API测评', url: 'https://apiuspro.cn/api-review' },
+        ]}
+      />
       <div className="mx-auto max-w-5xl p-6 lg:p-8">
         <div className="mb-10 border-b pb-8">
           <p className="text-sm font-medium text-muted-foreground">Reviews</p>
