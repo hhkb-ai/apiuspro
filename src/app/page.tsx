@@ -357,7 +357,22 @@ export default function Home() {
       </main>
 
       <footer className="border-t border-border px-4 py-8 text-center text-sm text-muted-foreground">
-        API知识站 - 适合初学者的 API 学习平台
+        <p>API知识站 - 适合初学者的 API 学习平台</p>
+        <div className="mt-3 flex items-center justify-center gap-1.5">
+          <a
+            href="https://beian.mps.gov.cn/#/query/webSearch?code=44162102000181"
+            rel="noreferrer"
+            target="_blank"
+            className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
+          >
+            <img
+              src="https://beian.mps.gov.cn/img/logo01.dd7ff50e.png"
+              alt="公安备案图标"
+              className="h-4 w-4"
+            />
+            粤公网安备44162102000181号
+          </a>
+        </div>
       </footer>
     </div>
   );

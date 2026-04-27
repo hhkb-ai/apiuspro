@@ -99,10 +99,27 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
         </div>
       )}
 
-      <main className="flex-1 lg:ml-64">
-        <div className="pt-16 lg:pt-0">
+      <main className="flex-1 lg:ml-64 flex flex-col">
+        <div className="flex-1 pt-16 lg:pt-0">
           {children}
         </div>
+        <footer className="border-t border-border px-4 py-6 text-center text-sm text-muted-foreground">
+          <div className="flex items-center justify-center gap-1.5">
+            <a
+              href="https://beian.mps.gov.cn/#/query/webSearch?code=44162102000181"
+              rel="noreferrer"
+              target="_blank"
+              className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
+            >
+              <img
+                src="https://beian.mps.gov.cn/img/logo01.dd7ff50e.png"
+                alt="公安备案图标"
+                className="h-4 w-4"
+              />
+              粤公网安备44162102000181号
+            </a>
+          </div>
+        </footer>
       </main>
     </div>
   );
