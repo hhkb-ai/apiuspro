@@ -2,7 +2,9 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import Image from 'next/image';
-import { apiList, getAPIById, APIConfig } from '@/lib/api-config';
+import { apiList, getAPIById, SHOW_PROXY_CONTENT, type APIConfig } from '@/lib/api-config';
+import { BreadcrumbSchema, TechArticleSchema } from '@/components/seo/structured-data';
+import { CodeBlock } from '@/components/tutorial/CodeBlock';
 
 // 生成静态路径
 export function generateStaticParams() {
@@ -15,9 +17,20 @@ export function generateMetadata({ params }: { params: Promise<{ id: string }> }
   return params.then(({ id }) => {
     const api = getAPIById(id);
     if (!api || !api.tutorial) return { title: '教程未找到' };
+    const needsProxy = api.proxy ? '需代理' : '国内直连';
+    const canonicalUrl = `https://apiuspro.cn/tutorial/${api.id}`;
+    const firstStepImage = api.tutorial.steps[0]?.image;
     return {
       title: `${api.name} 购买教程`,
-      description: api.tutorial.subtitle || api.desc,
+      description: `${api.tutorial.title}：${api.tutorial.subtitle || api.desc}。${needsProxy}，分${api.tutorial.steps.length}步完成注册、支付与API Key接入。`,
+      alternates: { canonical: canonicalUrl },
+      openGraph: {
+        title: `${api.name} 购买教程 | API知识站`,
+        description: api.tutorial.subtitle || api.desc,
+        url: canonicalUrl,
+        type: 'article',
+        ...(firstStepImage ? { images: [{ url: firstStepImage, alt: api.name }] } : {}),
+      },
     };
   });
 }
@@ -53,7 +66,26 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
   const needProxyAPIs = allTutorialAPIs.filter(a => a.proxy);
 
   return (
-    <div className="min-h-screen bg-background">
+    <>
+      <BreadcrumbSchema
+        items={[
+          { name: 'API知识站', url: 'https://apiuspro.cn' },
+          { name: '购买教程', url: 'https://apiuspro.cn/tutorial' },
+          { name: tutorial.title, url: `https://apiuspro.cn/tutorial/${id}` },
+        ]}
+      />
+      <TechArticleSchema
+        title={tutorial.title}
+        description={tutorial.subtitle || api.desc}
+        url={`https://apiuspro.cn/tutorial/${id}`}
+        imageUrl={
+          tutorial.steps[0]?.image
+            ? `https://apiuspro.cn${tutorial.steps[0].image}`
+            : undefined
+        }
+        proficiencyLevel="Beginner"
+      />
+      <div className="min-h-screen bg-background">
       {/* ── 顶部导航栏 ── */}
       <header className="sticky top-0 z-50 border-b border-border bg-card">
         <div className="max-w-[1200px] mx-auto px-6 h-14 flex items-center">
@@ -103,8 +135,10 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                 </Link>
               ))}
               {/* 需要代理分组 */}
-              <p className="mb-1 mt-4 px-3 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">需要代理</p>
-              {needProxyAPIs.map((a) => (
+              {SHOW_PROXY_CONTENT && (
+                <p className="mb-1 mt-4 px-3 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">需要代理</p>
+              )}
+              {SHOW_PROXY_CONTENT && needProxyAPIs.map((a) => (
                 <Link
                   key={a.id}
                   href={`/tutorial/${a.id}`}
@@ -226,16 +260,11 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
 
                 {/* 代码块 */}
                 {step.code && (
-                  <div className="my-4 overflow-hidden rounded-lg border border-border bg-muted/40">
-                    {step.codeLanguage && (
-                      <div className="border-b border-border px-4 py-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-                        {step.codeLanguage}
-                      </div>
-                    )}
-                    <pre className="overflow-x-auto p-4 text-xs leading-6 text-foreground">
-                      <code>{step.code}</code>
-                    </pre>
-                  </div>
+                  <CodeBlock
+                    code={step.code}
+                    language={step.codeLanguage}
+                    explanation={step.codeExplanation}
+                  />
                 )}
 
                 {/* 警告 */}
@@ -335,5 +364,6 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
         </aside>
       </div>
     </div>
+    </>
   );
 }

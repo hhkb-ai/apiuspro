@@ -95,6 +95,7 @@ export interface TutorialStep {
   items?: string[];
   code?: string;
   codeLanguage?: string;
+  codeExplanation?: string;
   warning?: string;
 }
 
@@ -192,7 +193,8 @@ response = client.chat.completions.create(
     messages=[{"role": "user", "content": "请用一句话介绍通义千问"}],
 )
 
-print(response.choices[0].message.content)`
+print(response.choices[0].message.content)`,
+          codeExplanation: '调用 qwen-plus 模型，让它用一句话介绍通义千问并打印回复。成功执行即代表 API Key 和 base_url 配置正确。'
         },
         {
           title: '按场景选择模型',
@@ -360,6 +362,7 @@ print(response.choices[0].message.content)`
 
 # Windows PowerShell
 $env:MOONSHOT_API_KEY="sk-your-api-key-here"`,
+          codeExplanation: '将 Moonshot API Key 设置为环境变量，后续 curl 命令和 Python SDK 都会自动读取，避免在代码中硬编码密钥。',
           warning: 'API Key 通常只显示一次，不要写进前端代码、公开仓库或截图里。'
         },
         {
@@ -381,7 +384,8 @@ $env:MOONSHOT_API_KEY="sk-your-api-key-here"`,
       { "role": "user", "content": "你好，请介绍一下自己" }
     ],
     "temperature": 0.7
-  }'`
+  }'`,
+          codeExplanation: '使用 curl 快速测试 Kimi API 是否可用。返回 JSON 格式的 AI 回复即表示 API Key 和网络配置正确。'
         },
         {
           title: '选择合适模型',
@@ -419,7 +423,8 @@ completion = client.chat.completions.create(
     temperature=0.7,
 )
 
-print(completion.choices[0].message.content)`
+print(completion.choices[0].message.content)`,
+          codeExplanation: '使用 OpenAI SDK 兼容模式调用 Kimi API，获取 AI 对 Kimi 核心能力的介绍并打印回复。Kimi 兼容 OpenAI 接口格式，只需修改 base_url。'
         },
         {
           title: '排查常见问题',
@@ -503,7 +508,8 @@ completion = client.chat.completions.create(
     messages=[{"role": "user", "content": "你好，请介绍一下腾讯混元"}],
 )
 
-print(completion.choices[0].message.content)`
+print(completion.choices[0].message.content)`,
+          codeExplanation: '使用 OpenAI SDK 调用腾讯混元 API，让模型自我介绍并打印回复。成功执行即代表 SecretKey 和 base_url 配置正确。'
         },
         {
           title: '按场景选择模型',
@@ -619,6 +625,7 @@ response = client.chat.completions.create(
 )
 
 print(response.choices[0].message.content)`,
+          codeExplanation: '使用 OpenAI SDK 调用豆包大模型 API，让模型自我介绍并打印回复。将 model 替换为控制台里的实际模型名称或推理接入点 ID 后即可运行。',
           warning: '不同区域、套餐和模型的接入地址可能不同，复制控制台里的官方接入参数最稳。'
         },
         {
@@ -735,7 +742,8 @@ response = client.chat.completions.create(
     messages=[{"role": "user", "content": "你好，请用一句话介绍你自己。"}],
 )
 
-print(response.choices[0].message.content)`
+print(response.choices[0].message.content)`,
+          codeExplanation: '使用 OpenAI SDK 调用 DeepSeek API，让模型自我介绍并打印回复。成功执行即代表 API Key 和 base_url 配置正确。'
         },
         {
           title: '选择模型并控制成本',
@@ -773,62 +781,121 @@ print(response.choices[0].message.content)`
     icon: '🟠',
     badge: { text: '需代理', type: 'warning' },
     tutorial: {
-      title: 'OpenAI GPT购买教程',
-      subtitle: '世界上最强大的AI模型',
+      title: 'GPT-5.5 订阅与购买完全指南（零基础版）',
+      subtitle: '专为新手编写，含四种套餐对比、三条支付路线和国内替代方案，零基础也能完成订阅',
       steps: [
         {
-          title: '准备工作',
-          description: '准备必要的工具和账号',
-          image: '/images/tutorial/openai-step1.png',
+          title: '了解 GPT-5.5 订阅套餐',
+          description: '在购买前，先看清每种套餐的价格和区别，避免买错。目前 ChatGPT 提供四档订阅。',
           items: [
-            '准备科学上网工具',
-            '准备国际信用卡或虚拟卡',
-            '准备国外手机号（可选）'
-          ],
-          warning: '确保网络环境稳定，避免频繁切换IP'
-        },
-        {
-          title: '注册账号',
-          description: '访问OpenAI官网注册账号',
-          image: '/images/tutorial/openai-step2.png',
-          items: [
-            '访问 platform.openai.com',
-            '使用邮箱注册账号',
-            '完成邮箱验证'
+            'Go · $8/月 — 仅可用 GPT-5.3，不能使用最新 GPT-5.5，适合尝鲜',
+            'Plus · $20/月 — 可用 GPT-5.5 Standard 和 Thinking 模型，99% 个人用户最佳选择',
+            'Pro · $100/月 — 全部模型可用，编程次数是 Plus 的 5 倍，适合重度开发者',
+            'Pro · $200/月 — 全部模型可用，编程次数是 Plus 的 20 倍，适合顶尖科研'
           ]
         },
         {
-          title: '绑定支付方式',
-          description: '添加付款方式以便充值使用',
-          image: '/images/tutorial/openai-step3.png',
+          title: '准备一：注册 OpenAI 账号',
+          description: '没有账号就什么都买不了。先搞定这第一步。',
           items: [
-            '进入 Billing 设置',
-            '添加付款方式',
-            '完成卡片验证'
+            '浏览器打开 chat.openai.com，点击 Sign up 用邮箱注册，按提示验证邮箱',
+            '国内手机号可能收不到验证短信。两个解决办法：',
+            '接码平台：租用临时海外号码接收短信（有新号被封风险，自行承担）',
+            '买成品号（最省事）：在可靠代充平台（WildAI、PlusGO）购买已注册好的现成账号'
           ],
-          warning: '国内银行卡可能无法绑定，建议使用虚拟信用卡'
+          warning: '购买现成账号时一定要选可靠的代充平台，避免买到被盗或被封的账号。'
         },
         {
-          title: '获取API Key',
-          description: '创建API密钥开始使用',
-          image: '/images/tutorial/openai-step4.png',
+          title: '准备二：国际网络环境',
+          description: 'ChatGPT 的网站和订阅页面在国内无法直接访问，需要国际网络。',
           items: [
-            '进入 API Keys 页面',
-            '创建新的 Secret Key',
-            '妥善保存（只显示一次）'
+            '确保可以顺畅访问 chat.openai.com 和 platform.openai.com',
+            '建议使用稳定节点，避免频繁切换 IP',
+            '不稳定的网络可能导致支付中途断开、账号被风控'
+          ],
+          warning: '确保网络环境稳定，避免频繁切换 IP，否则账号可能被风控封禁。'
+        },
+        {
+          title: '准备三：选择适合你的支付方式',
+          description: 'OpenAI 官网只支持 Visa、Mastercard、American Express 国际信用卡。没有境外卡？三种替代方案供你选择。',
+          items: [
+            '代充平台（推荐）：支持支付宝/微信支付，无需境外卡，无需提供密码和信用卡信息',
+            '美区 Apple ID（iPhone 用户）：注册美区 Apple ID，淘宝购礼品卡充值，通过 ChatGPT App 内购订阅（价格比官网贵，含苹果抽成）',
+            '虚拟信用卡（不推荐新手）：风控极严、失败率高，需交开卡费，平台有跑路风险'
+          ],
+          warning: '选择代充平台时请仔细甄别，优先选择有口碑、有售后的大平台。'
+        },
+        {
+          title: '路线一：官网直充（有境外信用卡）',
+          description: '如果你有 Visa/Mastercard 国际卡，且网络能稳定访问 OpenAI 官网，这是最直接的购买方式。',
+          items: [
+            '打开 chat.openai.com → 登录 → 左下角头像 → My Plan 或 Upgrade to Plus',
+            '在套餐页面对比 Go / Plus / Pro / Pro 200，选好后点击 Upgrade',
+            '输入卡号、有效期、CVV（卡片背面三位安全码）和账单地址',
+            '确认金额无误后提交，几秒钟验证通过，账号即刻升级',
+            '注册邮箱会收到 OpenAI 确认邮件，在 ChatGPT 对话界面即可选择 GPT-5.5 模型'
           ]
+        },
+        {
+          title: '路线二：App 内购（iPhone / 安卓）',
+          description: '有美区 Apple ID 或海外 Google Play 账号的用户，可直接在手机 App 内完成订阅。',
+          items: [
+            'iPhone：App Store 搜索 ChatGPT → 下载 → 登录 → 右上角设置 → Upgrade to ChatGPT Plus',
+            '选择套餐后通过 Apple Pay 或美区 Apple ID 余额支付（比官网贵，含苹果抽成）',
+            '安卓：Google Play 下载 ChatGPT → 登录 → Settings → 升级入口 → Google Pay 支付',
+            'App 内购的好处：支付在苹果/谷歌生态内完成，无需直接向 OpenAI 填信用卡'
+          ]
+        },
+        {
+          title: '路线三：API 按量购买（仅限开发者）',
+          description: '不是程序员、不打算把 AI 嵌入到自己开发的软件里，可以跳过本节。普通用户用订阅套餐就全包含了。',
+          items: [
+            'API = 程序向 GPT-5.5 提问的"后门"，适合把 AI 嵌入自己的软件中',
+            '按 Token 计费：GPT-5.5 输入 $5/百万、输出 $30/百万，一次简单任务成本 < 1 分钱',
+            'platform.openai.com → 登录 → Billing → 绑卡（与 ChatGPT 订阅是独立计费）',
+            'API Keys → Create new secret key → 命名 → 创建 → 立刻复制保存'
+          ],
+          codeLanguage: 'python',
+          code: `# 先安装 openai 库：pip install openai
+import openai
+
+client = openai.OpenAI(api_key="YOUR_API_KEY")
+
+response = client.chat.completions.create(
+    model="gpt-5.5",
+    messages=[
+        {"role": "user", "content": "请用一句话解释什么是量子力学。"}
+    ]
+)
+
+print(response.choices[0].message.content)`,
+          codeExplanation: '使用 OpenAI Python SDK 调用 GPT-5.5 模型，让它用一句话解释量子力学并打印结果。替换 YOUR_API_KEY 为真实密钥后即可运行。',
+          warning: 'API Key 创建后仅显示一次，必须立刻复制保存。不要写入前端代码或公开仓库。API 与 ChatGPT 订阅是两套独立的计费系统，互不影响。'
+        },
+        {
+          title: '国内用户替代方案与总结',
+          description: '如果你在国内、没有境外卡，通过第三方代充平台是目前最省心的 GPT-5.5 订阅方式。',
+          items: [
+            '代充平台（如 WildAI、PlusGO）：用支付宝/微信支付，平台替你完成 OpenAI 订阅。只需提供账号，不用密码和卡信息',
+            '苹果内购路线：美区 Apple ID + 礼品卡充值 → ChatGPT App 内订阅。适合 iPhone/iPad 用户',
+            '不建议国内用户尝试虚拟信用卡（VCC）方案，当前风控极严、成功率很低',
+            '如果你需要把 GPT-5.5 接入自己的软件（API），也可以在代充平台购买 API 额度或代充值 OpenAI 账户余额'
+          ],
+          warning: '代充平台良莠不齐，下单前建议先搜索评价。优先选择有客服、支持退款的平台。'
         }
       ],
       tips: [
-        '新注册账号可能有免费额度',
-        '需要验证手机号才能使用免费额度',
-        '建议使用接码平台获取国外手机号'
+        'Plus（$20/月）最适合 99% 个人用户，能用最新 GPT-5.5 模型，性价比最高',
+        '代充平台是目前国内用户最省心的订阅方式，用支付宝/微信就能完成',
+        'API 用户切记：Key 只显示一次，且 API 计费与 ChatGPT 订阅是完全独立的',
+        '如果不确定选哪个方案，先买一个月 Plus 试试，随时可以取消续费'
       ],
       warnings: [
-        '账号可能被封禁，建议稳定使用同一IP',
-        '虚拟卡充值后及时使用，避免余额浪费'
+        '账号可能因 IP 频繁变动、支付异常等原因被风控，建议保持网络环境稳定',
+        'API Key 绝对不要提交到公开仓库或前端代码',
+        '接码平台注册的账号存在被封风险，有条件的话建议购买正规代充平台的成品账号'
       ],
-      advantages: ['功能最强大', '生态完善', '文档详尽']
+      advantages: ['零基础友好', '三条购买路线全覆盖', '四种套餐详细对比', '国内支付替代方案', '含 API 开发者教程']
     }
   },
   {
@@ -841,31 +908,128 @@ print(response.choices[0].message.content)`
     icon: '🟠',
     badge: { text: '需代理', type: 'warning' },
     tutorial: {
-      title: 'Anthropic Claude购买教程',
-      subtitle: '安全可靠的长文本模型',
+      title: 'Claude Opus 4.7 订阅与购买完全指南（零基础版）',
+      subtitle: '专为新手编写，含封号风险预警与避坑指南，四条路线覆盖所有支付场景，附 API 开发者接入教程',
       steps: [
         {
-          title: '准备工作',
-          description: '准备必要的工具',
-          image: '/images/tutorial/claude-step1.png',
+          title: '先读风险提示：Claude 风控极严，封号率极高',
+          description: 'Claude 的审核与风控极度严格。在开始购买前，务必了解以下事实。',
           items: [
-            '准备科学上网工具',
-            '准备国际信用卡'
+            '145 万个账号被封（仅 2025 年 7–12 月），风控审查 IP 和支付信息一致性',
+            '新用户操作稍有不慎，刚付完款账号就可能被立刻封禁',
+            '不存在"完全稳定、绝对不封号"的个人订阅渠道',
+            '最稳妥方式：找靠谱第三方中转平台，选提供长周期售后与封号质保的商家'
+          ],
+          warning: 'Anthropic 风控全球最严，请务必认真对待以上风险提示。不要心存侥幸。'
+        },
+        {
+          title: '了解 Claude 三档订阅套餐',
+          description: 'Claude 提供三档个人订阅，先了解区别再决定。',
+          items: [
+            'Claude Pro · $20/月 — 可用 Opus 4.7，有月度用量上限，适合轻度使用',
+            'Claude Max 5x · $100/月 — 可用 Opus 4.7，使用额度约为 Pro 的 5 倍，适合重度依赖 AI 的专业人士',
+            'Claude Max 20x · $200/月 — 可用 Opus 4.7，使用额度约为 Pro 的 20 倍，适合团队或核心生产力'
           ]
         },
         {
-          title: '注册并获取API',
-          description: '完成注册并创建API Key',
-          image: '/images/tutorial/claude-step2.png',
+          title: '准备一：注册 Google 账号',
+          description: 'Claude 使用 Google 账号一键登录，所以需要一个谷歌账号。',
           items: [
-            '访问 console.anthropic.com',
-            '完成注册',
-            '创建API Key'
+            '浏览器打开 accounts.google.com/signup，按提示填写信息完成注册',
+            '国内手机号可能收不到验证短信，可在可靠平台购买已注册好的 Google 账号'
           ]
+        },
+        {
+          title: '准备二：国际网络环境',
+          description: 'Claude 官网需要通过国际网络才能稳定访问。',
+          items: [
+            '确保可以顺畅访问 claude.ai',
+            '建议使用稳定节点，避免频繁切换 IP',
+            '账单地址、登录 IP、支付 IP 必须来自同一个国家，否则大概率触发风控被封'
+          ],
+          warning: 'IP 地址与账单地址不一致是封号的最常见原因，务必保持一致。'
+        },
+        {
+          title: '准备三：选择适合你的支付方式',
+          description: '官方推荐且最稳定的支付方式是 Visa、Mastercard、American Express 等外币信用卡。没有境外卡？三种替代方案供你选择。',
+          items: [
+            '代充平台（推荐）：支付宝/微信支付，确认平台有"封号包退款"承诺后再下单',
+            '美区 Apple ID（iPhone 用户）：购礼品卡充值，通过 Claude App 内 Apple ID 内购订阅',
+            '虚拟信用卡（高风险）：Anthropic 对 VCC 拒付率极高、极易封号，新手请完全避开'
+          ],
+          warning: '选择代充平台时务必确认该平台是否承诺"封号包退款"条款，这是保护资金安全的关键。'
+        },
+        {
+          title: '路线一：官网直充（有境外信用卡）',
+          description: '如果你有国际信用卡，且网络能稳定访问 Claude 官网，这是最直接的购买方式。',
+          items: [
+            'claude.ai → Log in → Continue with Google → 用谷歌账号登录',
+            '左下角头像 → Upgrade to Pro 或 Plans → 对比三档套餐 → Subscribe',
+            '输入卡号、有效期、CVV 和账单地址',
+            '关键：账单地址必须与 IP 所在国家一致，否则大概率被封',
+            '验证通过后账号立即升级，在对话界面即可选择 Opus 4.7 模型'
+          ]
+        },
+        {
+          title: '路线二：苹果手机内购（iOS App）',
+          description: '拥有美区 Apple ID 并有余额可用，且不介意支付少量溢价的 iPhone/iPad 用户。',
+          items: [
+            'App Store 搜索 Claude（开发者 Anthropic）→ 下载 → 谷歌账号登录',
+            '左上角菜单 → Upgrade to Claude Pro → Apple ID 支付确认',
+            '注意：App Store 订阅价格通常比官网贵约 30%（苹果渠道费）'
+          ]
+        },
+        {
+          title: '路线三：API 按量购买（仅限开发者）',
+          description: '不是程序员或没打算把 AI 嵌入到自己做的软件里，可以跳过本节。普通用户用订阅套餐就全包含了。',
+          items: [
+            'API = 程序向 Claude Opus 4.7 提问的"后门"，适合把 AI 嵌入自己的软件中',
+            '按 Token 计费：Opus 4.7 输入 $5/百万 Token、输出 $25/百万 Token',
+            'console.anthropic.com → 登录 → API Keys → 创建新密钥 → 立刻复制保存'
+          ],
+          codeLanguage: 'python',
+          code: `# 先安装 anthropic 库：pip install anthropic
+import anthropic
+
+client = anthropic.Anthropic(api_key="YOUR_API_KEY")
+
+message = client.messages.create(
+    model="claude-opus-4-7-20250416",
+    max_tokens=1024,
+    messages=[
+        {"role": "user", "content": "请为我创作一个科幻小说的开头。"}
+    ]
+)
+print(message.content)`,
+          codeExplanation: '使用 Anthropic 官方 Python SDK 调用 Claude Opus 4.7 模型，让它创作一个科幻小说开头并打印结果。替换 YOUR_API_KEY 为真实密钥后即可运行。',
+          warning: 'API Key 创建后仅显示一次，必须立刻复制保存。API 计费与 Claude 订阅是两套独立的计费系统。'
+        },
+        {
+          title: '路线四：国内用户替代方案与总结',
+          description: '没有境外卡或极度担心封号的国内用户，建议走第三方代充或中转平台。',
+          items: [
+            '最推荐方案：选择靠谱的第三方代充平台（如 WildAI、PlusGO），支持支付宝/微信支付，确认有"封号包退款"承诺后再下单',
+            '苹果内购路线：美区 Apple ID + 礼品卡充值 → Claude App 内订阅（比官网贵约 30%）',
+            '中转平台方案：寻找提供长周期售后与封号质保的 API 中转服务，按量付费，无需自己承担封号风险',
+            '不推荐新手尝试虚拟信用卡方案，Anthropic 风控对 VCC 拒付率极高',
+            'Pro（$20/月）适合大多数人，先买一个月试试，随时可取消续费'
+          ],
+          warning: 'Claude 封号是全球性问题，没有任何渠道能 100% 避免。保护资金的最佳方式是选择承诺封号退款的代充平台。'
         }
       ],
-      tips: ['支持200K上下文', '适合长文本处理场景'],
-      advantages: ['超长上下文', '安全性高', '代码能力强']
+      tips: [
+        'Claude Opus 4.7 输入 $5/百万 token、输出 $25/百万 token，成本可控',
+        '官网直充用户务必确保 IP、账单地址所属国家一致，这是避免封号的关键',
+        '第三方代充平台是当前国内用户风险最低的方式，前提是选择有"封号包退款"承诺的正规商家',
+        '先买一个月 Pro（$20）试试，合适再升级 Max，切莫一上来就买年付'
+      ],
+      warnings: [
+        'Claude 风控全球最严，2025年下半年即封禁 145 万个账号',
+        '不要使用虚拟信用卡（VCC），被拒付率极高且极易导致封号',
+        'API Key 绝对不要提交到公开仓库或前端代码',
+        '账单地址与 IP 所在国不一致 = 极高概率被封'
+      ],
+      advantages: ['200K 超长上下文', '代码能力业界领先', '安全可靠', 'iOS App 体验优秀', '第三方代充渠道成熟']
     }
   },
   {
@@ -878,81 +1042,120 @@ print(response.choices[0].message.content)`
     icon: '🟠',
     badge: { text: '需代理', type: 'warning' },
     tutorial: {
-      title: 'Google Gemini API 购买与使用指南',
-      subtitle: 'Google官方多模态AI模型',
+      title: 'Gemini 3 订阅与购买完全指南（零基础版）',
+      subtitle: '专为无 AI 知识的新手编写，四条路线覆盖所有支付场景，含套餐对比与最终购买建议',
       steps: [
         {
-          title: '第一步：购买前准备（三件套）',
-          description: '在开始购买 Gemini API 之前，请确保准备好以下三样东西',
-          image: '/images/tutorial/gemini-step1.png',
+          title: '了解 Gemini 订阅套餐',
+          description: '在购买前，先看清每种套餐的价格和区别，避免买错。目前个人用户主要通过 Google One 订阅 AI 服务。',
           items: [
-            '科学上网工具/VPN：确保能稳定访问Google服务，建议使用稳定的美国/日本/新加坡IP',
-            'Visa 或 MasterCard 国际信用卡：Google Cloud 需要绑定国际卡才能使用 Gemini API',
-            'Google 账号：需要一个 Gmail 邮箱账号，+86 国内手机号可注册 Google'
+            'Free · 免费 — 能用 Gemini 3 Pro 但每日配额极低，基本是体验级',
+            'AI Plus · $8/月 — 可用 Gemini 3 Pro，含 200GB 存储，可共享 5 位家庭成员，前 2 月半价',
+            'AI Pro · $20/月 — 可用 Pro + Thinking，2TB 存储，每日 Deep Research 20 份，99% 用户最佳选择',
+            'AI Ultra · $250/月 — 独家 Deep Think 模式，每日 1500 次 Thinking，30TB 存储，适合顶尖科研',
+            '年付优惠：AI Pro 首年仅 $99.99（原价 $199.99，相当于每月 $8.33）'
           ]
         },
         {
-          title: '第二步：创建 Google AI Studio API Key',
-          description: '通过 Google AI Studio 快速获取免费 API Key',
-          image: '/images/tutorial/gemini-step2.png',
+          title: '准备一：注册 Google 账号',
+          description: '没有 Google 账号就什么都买不了。先搞定这第一步。',
           items: [
-            '确保已开启科学上网，访问 aistudio.google.com',
-            '使用 Gmail 账号登录 Google AI Studio',
-            '点击 "Get API key" 按钮',
-            '选择 "Create API key in new project" 或使用已有项目',
-            '命名 API Key（如 MyFirstGeminiKey）',
-            '点击 "Create API key" 生成密钥（格式：AIza...）',
-            '保存好 API Key，这是调用 API 的凭证'
+            '浏览器打开 accounts.google.com/signup，按提示填写信息完成注册',
+            '国内手机号可能收不到验证短信。两个解决办法：',
+            '换网络节点：更换不同国家的网络环境后重试验证',
+            '买成品号：在可靠平台购买已注册好的 Google 账号，注意甄别信誉'
           ]
         },
         {
-          title: '第三步：Google Cloud 绑定支付方式',
-          description: '如需使用付费功能，需要在 Google Cloud Console 绑定支付方式',
-          image: '/images/tutorial/gemini-step3.png',
+          title: '准备二：国际网络环境',
+          description: 'Gemini 的网页端和应用端都需要通过国际网络才能稳定访问。',
           items: [
-            '访问 Google Cloud Console（console.cloud.google.com）',
-            '进入 "结算" → "支付方式"',
-            '点击 "添加支付方式"',
-            '填写 Visa/MasterCard 信用卡信息',
-            '完成支付方式绑定'
+            '确保可以顺畅访问 gemini.google.com',
+            '建议使用稳定节点，避免频繁切换 IP',
+            '不稳定的网络可能导致支付中途断开、账号被风控'
           ],
-          warning: 'Google 可能会扣款 $1 进行验证，验证后会自动退还'
+          warning: '确保网络环境稳定，避免频繁切换 IP。'
         },
         {
-          title: '第四步：启用 Gemini API',
-          description: '在 Google Cloud Console 中启用 Gemini API 服务',
-          image: '/images/tutorial/gemini-step4.png',
+          title: '准备三：选择适合你的支付方式',
+          description: 'Google 官方支持国际信用卡（Visa、Mastercard）和 PayPal。没有境外卡？三种替代方案供你选择。',
           items: [
-            '在 Google Cloud Console 中，进入 "API 和服务" → "库"',
-            '搜索 "Gemini" 找到相关 API',
-            '点击 "Gemini API" 进入详情页',
-            '点击 "启用" 按钮',
-            '等待 API 启用完成（可能需要几分钟）'
+            '代充平台（推荐）：支付宝/微信支付，无需海外信用卡，适合快速体验和轻度使用',
+            'Google Play 内购（安卓）：将国内卡绑为美区 Google Play 付款方式，在 Gemini App 内购，部分用户可绕开地区限制',
+            '虚拟信用卡（不推荐新手）：风控严格、失败率高，需开卡费和充值手续费'
+          ],
+          warning: '选择代充平台时请仔细甄别，优先选择有口碑、有售后的大平台。国内发行的双币卡也可能因账单地址问题被拒。'
+        },
+        {
+          title: '路线一：Google One 官方直充（有境外卡/PayPal）',
+          description: '如果你有国际信用卡或 PayPal，且网络能稳定访问 Google 服务，这是最直接的购买方式。',
+          items: [
+            'gemini.google.com → 登录 → 左下角或设置菜单 → 升级到 Gemini Advanced',
+            '对比套餐后点击"订阅"，填写信用卡信息或登录 PayPal',
+            '注意：账单地址需与网络 IP 所在国家一致，否则容易被拒',
+            '确认总额无误后提交，验证通过后账号立即升级，邮箱收到确认邮件'
           ]
         },
         {
-          title: '第五步：开始使用 Gemini API',
-          description: 'API Key 获取后即可开始调用 Gemini API',
-          image: '/images/tutorial/gemini-step5.png',
+          title: '路线二：App 内购（安卓手机 / 网页端）',
+          description: '拥有海外 Google Play 账号或支付方式的用户，可直接在手机 App 内完成订阅。',
           items: [
-            '常用模型：gemini-1.5-pro、gemini-1.5-flash',
-            '推荐使用 flash 版本，速度快且便宜',
-            'API 端点：https://generativelanguage.googleapis.com/v1beta/models/',
-            '保存 API Key 到安全的地方，不要泄露给他人'
+            'Google Play 下载 Gemini App → 登录 → 设置或侧边栏 → 找到升级入口',
+            '选择套餐，通过 Google Play 余额或绑定支付方式完成付款',
+            '技巧：将国内卡绑为美区 Google Play 付款方式，部分用户可成功订阅',
+            '也可在 gemini.google.com 网页端通过弹窗提示直接升级，流程同路线一'
           ]
+        },
+        {
+          title: '路线三：API 按量购买（仅限开发者）',
+          description: '不是程序员或没打算把 AI 嵌入到自己做的软件里，可以跳过本节。',
+          items: [
+            'API = 程序向 Gemini 提问的"后门"，适合把 AI 嵌入自己的软件中',
+            '按 Token 计费（1 Token ≈ 一个英文单词或一个汉字）：',
+            'Gemini 3 Pro（短文本）：输入 $2/百万、输出 $12/百万',
+            'Gemini 3 Pro（长文本 >200K）：输入 $4/百万、输出 $18/百万',
+            'Gemini 3.1 Flash-Lite：输入 $0.25/百万、输出 $1.50/百万（性价比最高）',
+            'Gemini 3 Deep Think：按次计费，需查看官方文档'
+          ],
+          codeLanguage: 'bash',
+          code: `# 获取 API Key：访问 aistudio.google.com，创建密钥（格式：AIza...）
+# 免费额度：每分钟 15 次，每天 1500 次，轻度开发和个人项目完全够用
+
+# 省钱技巧：
+# 1. 先用 Google AI Studio 免费额度开发和测试
+# 2. 注册 Google Cloud 开通 Vertex AI，新用户可获 $300 体验金
+# 3. 使用 Batch API 模式，成本可降低 50%`,
+          codeExplanation: '获取 Gemini API Key 并利用免费额度开发的简要步骤。Google AI Studio 提供的免费额度和 Vertex AI 新用户 $300 赠金可大幅降低前期成本。',
+          warning: 'API Key 创建后仅显示一次，必须立刻复制保存。API 计费与 Google One 订阅是两套独立的计费系统。'
+        },
+        {
+          title: '路线四：国内用户替代方案与最终购买建议',
+          description: '没有境外卡的国内用户首选第三方代充/聚合平台，支持微信和支付宝支付。最后附上各套餐决策指南。',
+          items: [
+            '国内用户首选：正规 AI 聚合平台，支持微信/支付宝，无需海外信用卡',
+            '安卓备用方案：美区 Google Play + 国内卡（账单地址填美国），在 App 内尝试内购',
+            '选 AI Plus（$8/月）：轻度至中度使用，性价比入门之选',
+            '选 AI Pro（$20/月）：学生、上班族、研究者的最佳方案，全面体验 Gemini 3',
+            '选 AI Ultra（$250/月）：尖端科研、关键决策，需要 Deep Think 超级推理',
+            '家人共用：AI Plus 可共享给最多 5 位家庭成员，人均成本极低',
+            'Google 允许随时降级或取消，下个账单周期生效，不会多扣钱',
+            '支付遇风控：尝试换账单地址，或确保 IP、支付地址来自同一国家'
+          ],
+          warning: '代充平台良莠不齐，下单前建议先搜索评价。优先选择有客服、支持退款的平台。'
         }
       ],
       tips: [
-        'Google AI Studio 提供免费额度，可直接创建 API Key 使用',
-        'Gemini API 支持多模态（文本、图片、视频）输入',
-        '建议使用 gemini-1.5-flash 模型，性价比更高'
+        'AI Pro（$20/月）是 99% 用户的最佳选择，包含 Gemini 3 核心能力 + 2TB 存储',
+        '新用户年付 AI Pro 首年低至 $99.99（原价 $199.99），相当于每月仅 $8.33',
+        'API 开发者优先利用免费额度开发测试，再用 Batch API 模式降低成本',
+        '家庭成员一起用买 AI Plus 最划算，人均成本极低'
       ],
       warnings: [
-        '确保使用稳定的科学上网工具，避免频繁切换 IP',
-        'API Key 一旦创建只显示一次，请妥善保存',
-        '如果账号被风控，可能需要更换 IP 或邮箱重新注册'
+        '账号可能因 IP 频繁变动、支付异常等原因被风控，建议保持网络环境稳定',
+        'API Key 绝对不要提交到公开仓库或前端代码',
+        '代充平台需仔细甄别，优先选择有口碑的大平台'
       ],
-      advantages: ['部分功能免费', '多模态能力强', '超长上下文（1M tokens）', 'Google官方支持']
+      advantages: ['多模态能力最强', 'Deep Think 超级推理', '2TB 云存储', '5 人家庭共享', '新用户首年半价', 'API 免费额度充裕']
     }
   }
 ];
@@ -992,6 +1195,11 @@ export const proxyServices: APIConfig[] = [
   }
 ];
 
+// ==================== 代理内容开关 ====================
+export const SHOW_PROXY_CONTENT = true;
+export const visibleAPIList: APIConfig[] = apiList;
+export const visibleProxyServices: APIConfig[] = SHOW_PROXY_CONTENT ? proxyServices : [];
+
 // ==================== 常见问题配置 ====================
 export const faqCategories = [
   {
@@ -1007,7 +1215,7 @@ export const faqCategories = [
       },
       {
         question: '账号被风控封禁',
-        answer: '解决方案：使用稳定的科学上网工具'
+        answer: '解决方案：使用稳定的国际网络环境'
       }
     ]
   },

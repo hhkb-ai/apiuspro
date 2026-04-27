@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { CodeBlock } from '@/components/tutorial/CodeBlock';
 
 interface TutorialStep {
   title: string;
@@ -11,6 +12,7 @@ interface TutorialStep {
   items?: string[];
   code?: string;
   codeLanguage?: string;
+  codeExplanation?: string;
   warning?: string;
 }
 
@@ -86,16 +88,11 @@ export function TutorialCard({ id, tutorial }: TutorialCardProps) {
                   )}
 
                   {step.code && (
-                    <div className="overflow-hidden rounded-lg border bg-muted/40">
-                      {step.codeLanguage && (
-                        <div className="border-b px-4 py-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-                          {step.codeLanguage}
-                        </div>
-                      )}
-                      <pre className="overflow-x-auto p-4 text-xs leading-6">
-                        <code>{step.code}</code>
-                      </pre>
-                    </div>
+                    <CodeBlock
+                      code={step.code}
+                      language={step.codeLanguage}
+                      explanation={step.codeExplanation}
+                    />
                   )}
 
                   {/* 警告提示 */}
