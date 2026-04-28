@@ -126,6 +126,115 @@ export interface APIConfig {
 export const apiList: APIConfig[] = [
   // ---------- 无需代理 ----------
   {
+    id: 'deepseek',
+    name: 'DeepSeek',
+    desc: '高性价比AI模型，代码与推理能力突出',
+    url: 'https://platform.deepseek.com/',
+    free: '赠送500万Tokens',
+    proxy: false,
+    features: ['高性价比', '代码能力强', '推理模型', '开源'],
+    icon: '🔵',
+    badge: { text: '热门', type: 'warning' },
+    tutorial: {
+      title: 'DeepSeek API 购买与首次调用教程',
+      subtitle: '从注册认证、创建 API Key、充值到账户调用的精简流程',
+      steps: [
+        {
+          title: '注册 DeepSeek 账号',
+          description: '先进入 DeepSeek 开放平台，用手机号或邮箱完成账号注册和登录。',
+          image: '/images/tutorial/deepseek-docx-1.png',
+          items: [
+            '访问 platform.deepseek.com',
+            '点击 Sign Up 或登录入口创建账号',
+            '按页面提示完成手机号、邮箱或扫码登录'
+          ]
+        },
+        {
+          title: '完成实名认证',
+          description: '认证会影响 API 配额和后续付费调用权限，个人和企业按身份选择即可。',
+          image: '/images/tutorial/deepseek-docx-2.png',
+          items: [
+            '在账号设置或个人中心进入实名认证',
+            '个人开发者按要求提交身份证与人脸识别',
+            '企业用户提交营业执照及相关证明材料'
+          ],
+          warning: '认证通过后再创建密钥和充值，流程会更顺。'
+        },
+        {
+          title: '创建并保存 API Key',
+          description: '在 API Keys 管理页生成 Bearer Token，生成后立刻复制保存。',
+          image: '/images/tutorial/deepseek-docx-3.png',
+          items: [
+            '进入 API Keys 管理页面',
+            '点击 Create API Key 或 Generate New Token',
+            '为密钥命名，避免空格和特殊字符',
+            '复制完整密钥并保存到安全位置'
+          ],
+          warning: 'DeepSeek API Key 通常只完整显示一次，不要提交到 GitHub 或写进客户端代码。'
+        },
+        {
+          title: '充值并确认余额',
+          description: '正式持续调用通常需要账户余额，测试前先确认充值和账单状态。',
+          image: '/images/tutorial/deepseek-docx-2.png',
+          items: [
+            '进入账单、余额或 Usage 页面',
+            '选择合适充值档位，例如 10、20、50 或 100 元',
+            '可使用支付宝、微信等本地支付方式',
+            '支付成功后检查账户余额是否更新'
+          ]
+        },
+        {
+          title: '配置环境变量并首次调用',
+          description: 'DeepSeek 兼容 OpenAI SDK，配置 base_url 后即可用熟悉的方式调用。',
+          image: '/images/tutorial/deepseek-docx-4.png',
+          items: [
+            '安装 openai 和 python-dotenv',
+            '将 DEEPSEEK_API_KEY 写入环境变量或 .env',
+            'base_url 指向 https://api.deepseek.com'
+          ],
+          codeLanguage: 'python',
+          code: `import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ.get("DEEPSEEK_API_KEY"),
+    base_url="https://api.deepseek.com",
+)
+
+response = client.chat.completions.create(
+    model="deepseek-chat",
+    messages=[{"role": "user", "content": "你好，请用一句话介绍你自己。"}],
+)
+
+print(response.choices[0].message.content)`,
+          codeExplanation: '使用 OpenAI SDK 调用 DeepSeek API，让模型自我介绍并打印回复。成功执行即代表 API Key 和 base_url 配置正确。'
+        },
+        {
+          title: '选择模型并控制成本',
+          description: '首次跑通后，再根据速度、推理能力和成本切换模型。',
+          image: '/images/tutorial/deepseek-docx-4.png',
+          items: [
+            'deepseek-chat：通用对话和基础问答，适合入门测试',
+            'deepseek-v4-flash：响应快、性价比高，适合实时对话和客服',
+            'deepseek-v4-pro：推理能力更强，适合复杂代码、长文档和技术问答',
+            '在控制台查看用量、余额和预算告警'
+          ],
+          warning: '模型名称、免费试用和价格会随平台调整，正式使用前请以控制台和官方文档为准。'
+        }
+      ],
+      tips: [
+        '推荐用 .env 或环境变量保存 DEEPSEEK_API_KEY',
+        'OpenAI SDK 兼容模式最适合迁移已有代码',
+        '个人开发者可先从 deepseek-chat 或 flash 类模型开始控制成本'
+      ],
+      warnings: [
+        '不要在前端、公开仓库或截图中暴露 API Key',
+        '所有调用都会按模型计价扣除余额，建议定期查看用量'
+      ],
+      advantages: ['性价比高', '国内直连', 'OpenAI 兼容接口', '代码与推理能力强']
+    }
+  },
+  {
     id: 'aliyun',
     name: '阿里云通义千问',
     desc: '国内领先的大模型服务，提供丰富的免费额度',
@@ -659,115 +768,6 @@ print(response.choices[0].message.content)`,
         'API Key 泄露后应立即禁用旧密钥并重新创建'
       ],
       advantages: ['国内直连', '字节生态', '模型选择丰富', '性价比高', 'OpenAI 兼容接入']
-    }
-  },
-  {
-    id: 'deepseek',
-    name: 'DeepSeek',
-    desc: '高性价比AI模型，代码与推理能力突出',
-    url: 'https://platform.deepseek.com/',
-    free: '赠送500万Tokens',
-    proxy: false,
-    features: ['高性价比', '代码能力强', '推理模型', '开源'],
-    icon: '🔵',
-    badge: { text: '热门', type: 'warning' },
-    tutorial: {
-      title: 'DeepSeek API 购买与首次调用教程',
-      subtitle: '从注册认证、创建 API Key、充值到账户调用的精简流程',
-      steps: [
-        {
-          title: '注册 DeepSeek 账号',
-          description: '先进入 DeepSeek 开放平台，用手机号或邮箱完成账号注册和登录。',
-          image: '/images/tutorial/deepseek-docx-1.png',
-          items: [
-            '访问 platform.deepseek.com',
-            '点击 Sign Up 或登录入口创建账号',
-            '按页面提示完成手机号、邮箱或扫码登录'
-          ]
-        },
-        {
-          title: '完成实名认证',
-          description: '认证会影响 API 配额和后续付费调用权限，个人和企业按身份选择即可。',
-          image: '/images/tutorial/deepseek-docx-2.png',
-          items: [
-            '在账号设置或个人中心进入实名认证',
-            '个人开发者按要求提交身份证与人脸识别',
-            '企业用户提交营业执照及相关证明材料'
-          ],
-          warning: '认证通过后再创建密钥和充值，流程会更顺。'
-        },
-        {
-          title: '创建并保存 API Key',
-          description: '在 API Keys 管理页生成 Bearer Token，生成后立刻复制保存。',
-          image: '/images/tutorial/deepseek-docx-3.png',
-          items: [
-            '进入 API Keys 管理页面',
-            '点击 Create API Key 或 Generate New Token',
-            '为密钥命名，避免空格和特殊字符',
-            '复制完整密钥并保存到安全位置'
-          ],
-          warning: 'DeepSeek API Key 通常只完整显示一次，不要提交到 GitHub 或写进客户端代码。'
-        },
-        {
-          title: '充值并确认余额',
-          description: '正式持续调用通常需要账户余额，测试前先确认充值和账单状态。',
-          image: '/images/tutorial/deepseek-docx-2.png',
-          items: [
-            '进入账单、余额或 Usage 页面',
-            '选择合适充值档位，例如 10、20、50 或 100 元',
-            '可使用支付宝、微信等本地支付方式',
-            '支付成功后检查账户余额是否更新'
-          ]
-        },
-        {
-          title: '配置环境变量并首次调用',
-          description: 'DeepSeek 兼容 OpenAI SDK，配置 base_url 后即可用熟悉的方式调用。',
-          image: '/images/tutorial/deepseek-docx-4.png',
-          items: [
-            '安装 openai 和 python-dotenv',
-            '将 DEEPSEEK_API_KEY 写入环境变量或 .env',
-            'base_url 指向 https://api.deepseek.com'
-          ],
-          codeLanguage: 'python',
-          code: `import os
-from openai import OpenAI
-
-client = OpenAI(
-    api_key=os.environ.get("DEEPSEEK_API_KEY"),
-    base_url="https://api.deepseek.com",
-)
-
-response = client.chat.completions.create(
-    model="deepseek-chat",
-    messages=[{"role": "user", "content": "你好，请用一句话介绍你自己。"}],
-)
-
-print(response.choices[0].message.content)`,
-          codeExplanation: '使用 OpenAI SDK 调用 DeepSeek API，让模型自我介绍并打印回复。成功执行即代表 API Key 和 base_url 配置正确。'
-        },
-        {
-          title: '选择模型并控制成本',
-          description: '首次跑通后，再根据速度、推理能力和成本切换模型。',
-          image: '/images/tutorial/deepseek-docx-4.png',
-          items: [
-            'deepseek-chat：通用对话和基础问答，适合入门测试',
-            'deepseek-v4-flash：响应快、性价比高，适合实时对话和客服',
-            'deepseek-v4-pro：推理能力更强，适合复杂代码、长文档和技术问答',
-            '在控制台查看用量、余额和预算告警'
-          ],
-          warning: '模型名称、免费试用和价格会随平台调整，正式使用前请以控制台和官方文档为准。'
-        }
-      ],
-      tips: [
-        '推荐用 .env 或环境变量保存 DEEPSEEK_API_KEY',
-        'OpenAI SDK 兼容模式最适合迁移已有代码',
-        '个人开发者可先从 deepseek-chat 或 flash 类模型开始控制成本'
-      ],
-      warnings: [
-        '不要在前端、公开仓库或截图中暴露 API Key',
-        '所有调用都会按模型计价扣除余额，建议定期查看用量'
-      ],
-      advantages: ['性价比高', '国内直连', 'OpenAI 兼容接口', '代码与推理能力强']
     }
   },
   // ---------- 需要代理 ----------

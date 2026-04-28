@@ -23,19 +23,19 @@ const navLinks = [
 ];
 
 const quickLinks = [
+  { name: 'DeepSeek', id: 'deepseek' },
   { name: 'OpenAI', id: 'openai' },
   { name: '通义千问', id: 'aliyun' },
   { name: 'Claude', id: 'claude' },
   { name: 'Gemini', id: 'gemini' },
-  { name: 'DeepSeek', id: 'deepseek' },
   { name: '智谱 GLM', id: 'zhipu' },
   { name: 'Kimi', id: 'kimi' },
 ];
 
 const featuredAPIs = [
+  apiList.find(a => a.id === 'deepseek')!,
   apiList.find(a => a.id === 'aliyun')!,
   apiList.find(a => a.id === 'zhipu')!,
-  apiList.find(a => a.id === 'deepseek')!,
   apiList.find(a => a.id === 'openai')!,
   apiList.find(a => a.id === 'claude')!,
   apiList.find(a => a.id === 'gemini')!,
