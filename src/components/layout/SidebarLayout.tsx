@@ -11,7 +11,7 @@ const navigation = [
   { name: 'API官网', href: '/cloud-api' },
   { name: 'API测评', href: '/api-review' },
   { name: '购买教程', href: '/tutorial' },
-  { name: 'API应用', href: '/', hash: '#app-section' },
+  { name: 'API应用', href: '/app' },
   { name: '本地部署', href: '/local-deploy' },
 ];
 
@@ -31,12 +31,11 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
 
         <nav className="flex-1 px-3 py-4 space-y-1.5">
           {navigation.map((item) => {
-            const href = item.hash && pathname === '/' ? item.hash : item.href + (item.hash || '');
-            const isActive = !item.hash && pathname === item.href;
+            const isActive = pathname === item.href;
             return (
               <Link
                 key={item.name}
-                href={href}
+                href={item.href}
                 className={cn(
                   'flex items-center px-3 py-2.5 rounded-md text-sm font-medium transition-colors',
                   isActive
@@ -77,12 +76,11 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
         <div className="lg:hidden fixed inset-0 top-16 bg-background z-40">
           <nav className="p-4 space-y-1.5">
             {navigation.map((item) => {
-              const href = item.hash && pathname === '/' ? item.hash : item.href + (item.hash || '');
-              const isActive = !item.hash && pathname === item.href;
+              const isActive = pathname === item.href;
               return (
                 <Link
                   key={item.name}
-                  href={href}
+                  href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
                   className={cn(
                     'flex items-center px-4 py-3 rounded-md text-base font-medium transition-colors',

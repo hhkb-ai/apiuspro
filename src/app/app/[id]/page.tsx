@@ -209,7 +209,7 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
       <BreadcrumbSchema
         items={[
           { name: 'API知识站', url: 'https://apiuspro.cn' },
-          { name: 'API应用', url: 'https://apiuspro.cn/#app-section' },
+          { name: 'API应用', url: 'https://apiuspro.cn/app' },
           { name: tutorial.name, url: `https://apiuspro.cn/app/${tutorial.id}` },
         ]}
       />

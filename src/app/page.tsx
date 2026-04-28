@@ -18,7 +18,7 @@ const navLinks = [
   { name: 'API官网', href: '/cloud-api' },
   { name: 'API测评', href: '/api-review' },
   { name: '购买教程', href: '/tutorial' },
-  { name: 'API应用', href: '#app-section' },
+  { name: 'API应用', href: '/app' },
   { name: '本地部署', href: '/local-deploy' },
 ];
 
