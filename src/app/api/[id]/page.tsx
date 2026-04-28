@@ -15,12 +15,36 @@ export function generateStaticParams() {
   return allAPIs.map((api) => ({ id: api.id }));
 }
 
-export function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
-  return params.then(({ id }) => {
-    const api = getAPIById(id);
-    if (!api) return { title: 'API未找到' };
-    return { title: `${api.name} - API详情`, description: api.desc };
-  });
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const api = getAPIById(id);
+  if (!api) return { title: 'API未找到' };
+
+  const title = `${api.name} API | 官网入口、购买教程与接入指南`;
+  const desc = `${api.name}：${api.desc}${api.free ? `。免费额度：${api.free}` : ''}。${api.proxy ? '需要代理访问' : '国内直连，无需代理'}。含详细购买教程与 API Key 获取步骤。`;
+
+  return {
+    title,
+    description: desc,
+    alternates: {
+      canonical: `https://apiuspro.cn/api/${api.id}`,
+    },
+    openGraph: {
+      title,
+      description: desc,
+      url: `https://apiuspro.cn/api/${api.id}`,
+      siteName: 'API知识站',
+      locale: 'zh_CN',
+      type: 'article',
+      images: [{ url: 'https://apiuspro.cn/opengraph-image', width: 1200, height: 630, alt: api.name }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description: desc,
+      images: ['https://apiuspro.cn/opengraph-image'],
+    },
+  };
 }
 
 function getAPIType(api: APIConfig): 'no-proxy' | 'need-proxy' | 'proxy' {

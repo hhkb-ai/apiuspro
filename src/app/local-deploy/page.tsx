@@ -1,8 +1,22 @@
+import type { Metadata } from 'next';
 import { SidebarLayout } from '@/components/layout/SidebarLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { BreadcrumbSchema } from '@/components/seo/structured-data';
+
+export const metadata: Metadata = {
+  title: 'AI 大模型本地部署指南 | Ollama、LM Studio 等方案',
+  description:
+    '本地部署 AI 大模型完整指南：Ollama、LM Studio、vLLM 等主流方案对比，含安装配置、硬件要求和模型推荐。',
+  alternates: { canonical: 'https://apiuspro.cn/local-deploy' },
+  openGraph: {
+    title: 'AI 大模型本地部署指南 | API知识站',
+    description: '本地部署 AI 大模型完整指南，含主流方案对比和硬件要求。',
+    url: 'https://apiuspro.cn/local-deploy',
+    type: 'website',
+  },
+};
 
 export default function LocalDeployPage() {
   return (

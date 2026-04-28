@@ -39,7 +39,7 @@ export const apiList: APIConfig[] = [
   {
     id: 'deepseek',
     name: 'DeepSeek',
-    desc: '高性价比AI模型，代码与推理能力突出',
+    desc: 'DeepSeek API 怎么买？2026 国内支付/充值教程，代码与推理能力突出',
     url: 'https://platform.deepseek.com/',
     free: '赠送500万Tokens',
     proxy: false,
@@ -47,7 +47,7 @@ export const apiList: APIConfig[] = [
     icon: '🔵',
     badge: { text: '热门', type: 'warning' },
     tutorial: {
-      title: 'DeepSeek API 购买与首次调用教程',
+      title: 'DeepSeek API 购买与首次调用教程（2026最新，支持国内支付）',
       subtitle: '从注册认证、创建 API Key、充值到账户调用的精简流程',
       steps: [
         {
@@ -148,7 +148,7 @@ print(response.choices[0].message.content)`,
   {
     id: 'aliyun',
     name: '阿里云通义千问',
-    desc: '国内领先的大模型服务，提供丰富的免费额度',
+    desc: '通义千问 API 怎么申请？免费额度获取与接入教程',
     url: 'https://dashscope.aliyun.com/',
     free: '100万tokens/月免费',
     proxy: false,
@@ -156,7 +156,7 @@ print(response.choices[0].message.content)`,
     icon: '🟢',
     badge: { text: '免费', type: 'success' },
     tutorial: {
-      title: '通义千问 API 购买与接入教程',
+      title: '通义千问 API 购买与接入教程（免费额度申请）',
       subtitle: '通过阿里云百炼或 DashScope 开通服务、获取密钥并完成首次调用',
       steps: [
         {
@@ -254,7 +254,7 @@ print(response.choices[0].message.content)`,
   {
     id: 'zhipu',
     name: '智谱AI',
-    desc: 'GLM系列开源模型，支持本地部署',
+    desc: '智谱AI 注册与免费试用教程，GLM 系列开源模型支持本地部署',
     url: 'https://open.bigmodel.cn/',
     free: '免费试用',
     proxy: false,
@@ -262,7 +262,7 @@ print(response.choices[0].message.content)`,
     icon: '🟢',
     badge: { text: '免费', type: 'success' },
     tutorial: {
-      title: '智谱 AI API 购买与接入教程',
+      title: '智谱 AI API 注册与购买教程（含免费试用额度）',
       subtitle: '从注册登录、实名认证、创建密钥到购买资源包和接入指南',
       steps: [
         {
@@ -347,7 +347,7 @@ print(response.choices[0].message.content)`,
   {
     id: 'kimi',
     name: '月之暗面 Kimi',
-    desc: '长文本处理优秀，支持20万字上下文',
+    desc: 'Kimi API 怎么用？长文本处理教程，支持 20 万字上下文',
     url: 'https://platform.moonshot.cn/',
     free: '免费额度',
     proxy: false,
@@ -355,7 +355,7 @@ print(response.choices[0].message.content)`,
     icon: '🟢',
     badge: { text: '免费', type: 'success' },
     tutorial: {
-      title: 'Kimi API 购买与接入教程',
+      title: 'Kimi API 购买与接入教程（长文本处理，怎么用详解）',
       subtitle: '从平台注册、创建密钥到完成首次调用的精简流程',
       steps: [
         {
@@ -473,7 +473,7 @@ print(completion.choices[0].message.content)`,
   {
     id: 'tencent',
     name: '腾讯混元',
-    desc: '多模态能力强，企业级服务',
+    desc: '腾讯混元 API 怎么开通？企业级多模态大模型接入教程',
     url: 'https://cloud.tencent.com/product/hunyuan',
     free: '新用户优惠',
     proxy: false,
@@ -481,7 +481,7 @@ print(completion.choices[0].message.content)`,
     icon: '🟢',
     badge: { text: '免费', type: 'success' },
     tutorial: {
-      title: '腾讯混元 API 购买与接入教程',
+      title: '腾讯混元 API 购买与接入教程（企业级开通指南）',
       subtitle: '从腾讯云开通、创建密钥到完成首次调用的精简流程',
       steps: [
         {
@@ -579,7 +579,7 @@ print(completion.choices[0].message.content)`,
   {
     id: 'doubao',
     name: '字节豆包',
-    desc: '抖音生态，模型能力强',
+    desc: '火山引擎豆包 API 注册与接入教程，字节跳动旗下大模型',
     url: 'https://www.volcengine.com/product/doubao',
     free: '免费额度',
     proxy: false,
@@ -587,7 +587,7 @@ print(completion.choices[0].message.content)`,
     icon: '🟢',
     badge: { text: '免费', type: 'success' },
     tutorial: {
-      title: '豆包 API 购买与接入教程',
+      title: '火山引擎豆包 API 注册与购买教程（字节跳动大模型）',
       subtitle: '通过火山引擎方舟开通豆包模型服务、创建 API Key 并完成首次调用',
       steps: [
         {
@@ -685,14 +685,14 @@ print(response.choices[0].message.content)`,
   {
     id: 'openai',
     name: 'OpenAI GPT',
-    desc: '最强大的语言模型，行业标准',
+    desc: 'GPT-5.5 国内怎么订阅？OpenAI 代充与支付教程',
     url: 'https://platform.openai.com/',
     proxy: true,
     features: ['GPT-4', 'GPT-4o', 'DALL-E', 'Whisper'],
     icon: '🟠',
     badge: { text: '需代理', type: 'warning' },
     tutorial: {
-      title: 'GPT-5.5 订阅与购买完全指南（零基础版）',
+      title: 'GPT-5.5 国内怎么订阅？代充与购买完全指南（零基础版）',
       subtitle: '专为新手编写，含四种套餐对比、三条支付路线和国内替代方案，零基础也能完成订阅',
       steps: [
         {
@@ -812,14 +812,14 @@ print(response.choices[0].message.content)`,
   {
     id: 'claude',
     name: 'Anthropic Claude',
-    desc: '安全可靠的长文本模型，200K上下文',
+    desc: 'Claude 国内怎么订阅？封号避坑指南，200K 长文本模型',
     url: 'https://www.anthropic.com/',
     proxy: true,
     features: ['200K上下文', '安全可靠', '代码能力强'],
     icon: '🟠',
     badge: { text: '需代理', type: 'warning' },
     tutorial: {
-      title: 'Claude Opus 4.7 订阅与购买完全指南（零基础版）',
+      title: 'Claude 国内怎么订阅？封号避坑与购买完全指南（零基础版）',
       subtitle: '专为新手编写，含封号风险预警与避坑指南，四条路线覆盖所有支付场景，附 API 开发者接入教程',
       steps: [
         {
@@ -946,14 +946,14 @@ print(message.content)`,
   {
     id: 'gemini',
     name: 'Google Gemini',
-    desc: '多模态能力强大，部分功能免费',
+    desc: 'Gemini 国内怎么用？免费 API 获取与订阅教程',
     url: 'https://ai.google.dev/',
     proxy: true,
     features: ['多模态', '长上下文', '免费API'],
     icon: '🟠',
     badge: { text: '需代理', type: 'warning' },
     tutorial: {
-      title: 'Gemini 3 订阅与购买完全指南（零基础版）',
+      title: 'Gemini 3 国内怎么用？免费 API 与订阅购买完全指南（零基础版）',
       subtitle: '专为无 AI 知识的新手编写，四条路线覆盖所有支付场景，含套餐对比与最终购买建议',
       steps: [
         {

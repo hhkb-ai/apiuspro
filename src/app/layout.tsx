@@ -19,6 +19,13 @@ export const metadata: Metadata = {
     'OpenAI',
     'Claude',
     'Gemini',
+    'DeepSeek',
+    '通义千问',
+    'API怎么买',
+    'API订阅',
+    'API代充',
+    'API免费额度',
+    'API注册教程',
   ],
   authors: [{ name: 'API知识站' }],
   generator: 'Next.js',
@@ -41,11 +48,14 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'API知识站',
     description: '一站式 AI API 学习、选型、购买教程与本地部署指南。',
-    images: ['/opengraph-image'],
+    images: ['https://apiuspro.cn/opengraph-image'],
   },
   robots: {
     index: true,
     follow: true,
+  },
+  alternates: {
+    canonical: 'https://apiuspro.cn',
   },
 };
 

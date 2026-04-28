@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SidebarLayout } from '@/components/layout/SidebarLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,6 +7,19 @@ import { Badge } from '@/components/ui/badge';
 import { reviewDetails } from '@/lib/review-config';
 import type { ReviewDetail } from '@/lib/review-config';
 import { BreadcrumbSchema } from '@/components/seo/structured-data';
+
+export const metadata: Metadata = {
+  title: 'AI API 完整测评对比 | 性能、价格与选购建议',
+  description:
+    'DeepSeek、OpenAI、Claude、通义千问、Gemini 等主流 AI API 的深度测评对比，含基准测试、定价分析和选购建议。',
+  alternates: { canonical: 'https://apiuspro.cn/api-review' },
+  openGraph: {
+    title: 'AI API 完整测评对比 | API知识站',
+    description: '主流 AI API 深度测评对比，含基准测试、定价分析和选购建议。',
+    url: 'https://apiuspro.cn/api-review',
+    type: 'website',
+  },
+};
 
 const reviews = Object.values(reviewDetails);
 

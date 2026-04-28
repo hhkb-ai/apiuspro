@@ -5,7 +5,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/api/', '/_next/', '/static/'],
+      disallow: ['/_next/', '/static/'],
     },
+    sitemap: 'https://apiuspro.cn/sitemap.xml',
   };
 }

@@ -12,12 +12,36 @@ export function generateStaticParams() {
   return getAllReviewSlugs().map((slug) => ({ slug }));
 }
 
-export function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  return params.then(({ slug }) => {
-    const review = getReviewDetail(slug);
-    if (!review) return { title: '测评未找到' };
-    return { title: `${review.name} - 完整测评`, description: review.tlDr };
-  });
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const review = getReviewDetail(slug);
+  if (!review) return { title: '测评未找到' };
+
+  const title = `${review.name} 完整测评 | 性能对比、价格与购买建议`;
+  const desc = `${review.name} 深度测评：${review.tlDr}。含基准测试、定价对比和选购建议。`;
+
+  return {
+    title,
+    description: desc,
+    alternates: {
+      canonical: `https://apiuspro.cn/api-review/${slug}`,
+    },
+    openGraph: {
+      title,
+      description: desc,
+      url: `https://apiuspro.cn/api-review/${slug}`,
+      siteName: 'API知识站',
+      locale: 'zh_CN',
+      type: 'article',
+      images: [{ url: 'https://apiuspro.cn/opengraph-image', width: 1200, height: 630, alt: review.name }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description: desc,
+      images: ['https://apiuspro.cn/opengraph-image'],
+    },
+  };
 }
 
 function StarRating({ score }: { score: number }) {
