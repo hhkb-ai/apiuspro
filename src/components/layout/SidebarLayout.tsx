@@ -102,7 +102,15 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
           {children}
         </div>
         <footer className="border-t border-border px-4 py-6 text-center text-sm text-muted-foreground">
-          <div className="flex items-center justify-center gap-1.5">
+          <div className="flex items-center justify-center gap-3">
+            <a
+              href="https://beian.miit.gov.cn/"
+              rel="noreferrer"
+              target="_blank"
+              className="transition-colors hover:text-foreground"
+            >
+              粤ICP备2026048178号
+            </a>
             <a
               href="https://beian.mps.gov.cn/#/query/webSearch?code=44162102000181"
               rel="noreferrer"

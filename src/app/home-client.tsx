@@ -358,7 +358,15 @@ export default function HomeClient() {
 
       <footer className="border-t border-border px-4 py-8 text-center text-sm text-muted-foreground">
         <p>API知识站 - 适合初学者的 API 学习平台</p>
-        <div className="mt-3 flex items-center justify-center gap-1.5">
+        <div className="mt-3 flex items-center justify-center gap-3">
+          <a
+            href="https://beian.miit.gov.cn/"
+            rel="noreferrer"
+            target="_blank"
+            className="transition-colors hover:text-foreground"
+          >
+            粤ICP备2026048178号
+          </a>
           <a
             href="https://beian.mps.gov.cn/#/query/webSearch?code=44162102000181"
             rel="noreferrer"
