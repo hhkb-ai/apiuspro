@@ -102,7 +102,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
           {children}
         </div>
         <footer className="border-t border-border px-4 py-6 text-center text-sm text-muted-foreground">
-          <div className="flex items-center justify-center gap-3">
+          <div className="flex flex-col items-center justify-center gap-2">
             <a
               href="https://beian.miit.gov.cn/"
               rel="noreferrer"

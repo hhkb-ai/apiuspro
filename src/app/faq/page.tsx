@@ -108,7 +108,7 @@ export default function FAQPage() {
             用户通过本网站所获取的任何第三方平台信息，请自行核实其合法合规性。
             本站不对第三方平台的服务质量、资金安全、账号封禁等风险承担责任。
           </p>
-          <div className="mt-4 flex items-center justify-center gap-3">
+          <div className="mt-4 flex flex-col items-center justify-center gap-2">
             <a
               href="https://beian.miit.gov.cn/"
               rel="noreferrer"
