@@ -108,6 +108,21 @@ export default function FAQPage() {
             用户通过本网站所获取的任何第三方平台信息，请自行核实其合法合规性。
             本站不对第三方平台的服务质量、资金安全、账号封禁等风险承担责任。
           </p>
+          <div className="mt-4 flex items-center justify-center gap-1.5">
+            <a
+              href="https://beian.mps.gov.cn/#/query/webSearch?code=44162102000181"
+              rel="noreferrer"
+              target="_blank"
+              className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
+            >
+              <img
+                src="/images/beian.png"
+                alt="公安备案图标"
+                className="h-4 w-4"
+              />
+              粤公网安备44162102000181号
+            </a>
+          </div>
         </footer>
       </div>
     </>

@@ -112,7 +112,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
               className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
             >
               <img
-                src="https://beian.mps.gov.cn/img/logo01.dd7ff50e.png"
+                src="/images/beian.png"
                 alt="公安备案图标"
                 className="h-4 w-4"
               />
