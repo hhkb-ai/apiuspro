@@ -108,7 +108,15 @@ export default function FAQPage() {
             用户通过本网站所获取的任何第三方平台信息，请自行核实其合法合规性。
             本站不对第三方平台的服务质量、资金安全、账号封禁等风险承担责任。
           </p>
-          <div className="mt-4 flex items-center justify-center gap-1.5">
+          <div className="mt-4 flex items-center justify-center gap-3">
+            <a
+              href="https://beian.miit.gov.cn/"
+              rel="noreferrer"
+              target="_blank"
+              className="transition-colors hover:text-foreground"
+            >
+              粤ICP备2026048178号
+            </a>
             <a
               href="https://beian.mps.gov.cn/#/query/webSearch?code=44162102000181"
               rel="noreferrer"

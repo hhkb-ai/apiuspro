@@ -57,6 +57,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://apiuspro.cn',
   },
+  other: {
+    'baidu-site-verification': 'codeva-ruS0096fnj',
+  },
 };
 
 export default function RootLayout({
