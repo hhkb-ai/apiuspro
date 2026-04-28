@@ -7,7 +7,7 @@ import { SidebarLayout } from '@/components/layout/SidebarLayout';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { apiList, proxyServices, APIConfig } from '@/lib/api-config';
+import { apiList, APIConfig } from '@/lib/api-config';
 import { BreadcrumbSchema } from '@/components/seo/structured-data';
 
 function badgeClass(type: string) {
@@ -62,9 +62,9 @@ function APISection({ title, desc, items }: { title: string; desc: string; items
 export default function CloudAPIPage() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeFilter, setActiveFilter] = useState<'all' | 'no-proxy' | 'need-proxy' | 'proxy'>('all');
+  const [activeFilter, setActiveFilter] = useState<'all' | 'no-proxy' | 'need-proxy'>('all');
 
-  const allAPIs = useMemo(() => [...apiList, ...proxyServices], []);
+  const allAPIs = useMemo(() => [...apiList], []);
 
   const matchedAPI = useMemo(() => {
     if (!searchQuery.trim()) return null;
@@ -89,36 +89,25 @@ export default function CloudAPIPage() {
       return {
         noProxy: noProxyAPIs.filter(api => api.name.toLowerCase().includes(query) || api.desc.toLowerCase().includes(query)),
         needProxy: [],
-        proxy: [],
       };
     }
     if (activeFilter === 'need-proxy') {
       return {
         noProxy: [],
         needProxy: needProxyAPIs.filter(api => api.name.toLowerCase().includes(query) || api.desc.toLowerCase().includes(query)),
-        proxy: [],
-      };
-    }
-    if (activeFilter === 'proxy') {
-      return {
-        noProxy: [],
-        needProxy: [],
-        proxy: proxyServices.filter(api => api.name.toLowerCase().includes(query) || api.desc.toLowerCase().includes(query)),
       };
     }
     return {
       noProxy: noProxyAPIs.filter(api => api.name.toLowerCase().includes(query) || api.desc.toLowerCase().includes(query)),
       needProxy: needProxyAPIs.filter(api => api.name.toLowerCase().includes(query) || api.desc.toLowerCase().includes(query)),
-      proxy: proxyServices.filter(api => api.name.toLowerCase().includes(query) || api.desc.toLowerCase().includes(query)),
     };
   };
 
-  const { noProxy, needProxy, proxy } = getFilteredAPIs();
+  const { noProxy, needProxy } = getFilteredAPIs();
   const filters = [
     { id: 'all', label: '全部' },
     { id: 'no-proxy', label: '无需代理' },
     { id: 'need-proxy', label: '需要代理' },
-    { id: 'proxy', label: '代理/中转' },
   ] as const;
 
   return (
@@ -193,13 +182,9 @@ export default function CloudAPIPage() {
           {(activeFilter === 'all' || activeFilter === 'need-proxy') && (
             <APISection title="需要代理" desc="国际主流 API，通常需要稳定网络和国际支付方式。" items={needProxy} />
           )}
-
-          {(activeFilter === 'all' || activeFilter === 'proxy') && (
-            <APISection title="代理/中转服务" desc="用于降低接入门槛或改善国内访问体验。" items={proxy} />
-          )}
         </div>
 
-        {noProxy.length === 0 && needProxy.length === 0 && proxy.length === 0 && (
+        {noProxy.length === 0 && needProxy.length === 0 && (
           <div className="rounded-lg border bg-card py-12 text-center text-muted-foreground">
             没有找到匹配的 API
           </div>
