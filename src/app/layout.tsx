@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     canonical: 'https://apiuspro.cn',
   },
   other: {
-    'baidu-site-verification': 'codeva-ruS0096fnj',
+    'msvalidate.01': 'BF3E423F579BD5F854833A4A587DFF93',
   },
 };
 
