@@ -1,12 +1,7 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import { WebSiteSchema, OrganizationSchema } from '@/components/seo/structured-data';
+import DevInspector from '@/components/dev-inspector';
 import './globals.css';
-
-const Inspector = dynamic(
-  () => import('react-dev-inspector').then(mod => ({ default: mod.Inspector })),
-  { ssr: false },
-);
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://apiuspro.cn'),
@@ -72,12 +67,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const isDev = process.env.COZE_PROJECT_ENV === 'DEV';
-
   return (
     <html lang="zh-CN">
       <body className={`antialiased`}>
-        {isDev && <Inspector />}
+        <DevInspector />
         <WebSiteSchema />
         <OrganizationSchema />
         {children}
