@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import Image from 'next/image';
+import { Button } from '@/components/ui/button';
 import { apiList, getAPIById, SHOW_PROXY_CONTENT, type APIConfig } from '@/lib/api-config';
 import { BreadcrumbSchema, TechArticleSchema } from '@/components/seo/structured-data';
 import { CodeBlock } from '@/components/tutorial/CodeBlock';
