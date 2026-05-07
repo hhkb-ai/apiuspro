@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
@@ -71,10 +71,144 @@ function useDebounce<T>(value: T, delay = 300): T {
   return debounced;
 }
 
+// 键盘导航 Hook
+interface FlatItem {
+  id: string;
+  name: string;
+  href: string;
+}
+
+function useSearchKeyboard({
+  items,
+  isOpen,
+  onClose,
+  inputRef,
+}: {
+  items: FlatItem[];
+  isOpen: boolean;
+  onClose: () => void;
+  inputRef: React.RefObject<HTMLInputElement | null>;
+}) {
+  const activeIndexRef = useRef(-1);
+  const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+
+  useEffect(() => {
+    activeIndexRef.current = -1;
+    itemRefs.current = itemRefs.current.slice(0, items.length);
+  }, [items]);
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (!isOpen || items.length === 0) return;
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        const next = Math.min(activeIndexRef.current + 1, items.length - 1);
+        activeIndexRef.current = next;
+        itemRefs.current[next]?.focus();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        const prev = activeIndexRef.current - 1;
+        if (prev < 0) {
+          activeIndexRef.current = -1;
+          inputRef.current?.focus();
+        } else {
+          activeIndexRef.current = prev;
+          itemRefs.current[prev]?.focus();
+        }
+      } else if (e.key === 'Escape') {
+        onClose();
+        inputRef.current?.focus();
+      }
+    },
+    [isOpen, items.length, onClose, inputRef],
+  );
+
+  const handleItemKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLAnchorElement>, index: number) => {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        const next = Math.min(index + 1, items.length - 1);
+        activeIndexRef.current = next;
+        itemRefs.current[next]?.focus();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (index === 0) {
+          activeIndexRef.current = -1;
+          inputRef.current?.focus();
+        } else {
+          activeIndexRef.current = index - 1;
+          itemRefs.current[index - 1]?.focus();
+        }
+      } else if (e.key === 'Escape') {
+        onClose();
+        inputRef.current?.focus();
+      }
+    },
+    [items.length, onClose, inputRef],
+  );
+
+  const setItemRef = useCallback(
+    (el: HTMLAnchorElement | null, index: number) => {
+      itemRefs.current[index] = el;
+    },
+    [],
+  );
+
+  return { handleKeyDown, handleItemKeyDown, setItemRef };
+}
+
+// 建议分组组件
+function SuggestionGroup({
+  label,
+  items,
+  startIndex,
+  onSelect,
+  setItemRef,
+  handleItemKeyDown,
+}: {
+  label: string;
+  items: { id: string; name: string; desc: string; href: string }[];
+  startIndex: number;
+  onSelect: () => void;
+  setItemRef: (el: HTMLAnchorElement | null, index: number) => void;
+  handleItemKeyDown: (e: React.KeyboardEvent<HTMLAnchorElement>, index: number) => void;
+}) {
+  if (items.length === 0) return null;
+
+  return (
+    <div role="group" aria-label={label}>
+      <div className="border-b bg-muted/60 px-4 py-2 text-xs font-medium text-muted-foreground">
+        {label}
+      </div>
+      {items.map((item, i) => {
+        const flatIndex = startIndex + i;
+        return (
+          <Link
+            key={item.id}
+            href={item.href}
+            ref={(el) => setItemRef(el, flatIndex)}
+            role="option"
+            aria-selected={false}
+            onClick={onSelect}
+            onKeyDown={(e) => handleItemKeyDown(e, flatIndex)}
+            className="flex flex-col gap-0.5 px-4 py-3 transition-colors hover:bg-muted/70 focus:bg-muted/70 focus:outline-none active:bg-muted/90"
+          >
+            <p className="truncate text-sm font-medium">{item.name}</p>
+            <p className="truncate text-xs text-muted-foreground">{item.desc}</p>
+          </Link>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function HomeClient() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // 防抖处理，避免每次按键都触发搜索计算
   const debouncedQuery = useDebounce(searchQuery, 200);
@@ -86,37 +220,73 @@ export default function HomeClient() {
   );
 
   // 搜索结果和精确匹配合并到一个 useMemo，共用同一个 normalizedQuery
-  const { searchResults, exactMatch } = useMemo(() => {
+  const { searchResults, exactMatch, hasResults, flatItems } = useMemo(() => {
     if (!normalizedQuery) {
       return {
         searchResults: { apis: [], tutorials: [], pages: [], apps: [] },
         exactMatch: null,
+        hasResults: false,
+        flatItems: [],
       };
     }
 
     const matchesQuery = (text: string) => text.toLowerCase().includes(normalizedQuery);
 
+    const apis = apiList
+      .filter(api => matchesQuery(api.name) || matchesQuery(api.desc))
+      .slice(0, 4)
+      .map(a => ({ ...a, href: `/api/${a.id}` }));
+    const tutorials = apiList
+      .filter(api => api.tutorial && (matchesQuery(api.name) || matchesQuery(api.desc)))
+      .slice(0, 3)
+      .map(a => ({ ...a, name: a.tutorial?.title || `${a.name}教程`, href: `/tutorial/${a.id}` }));
+    const apps = appTutorials
+      .filter(app => matchesQuery(app.name) || matchesQuery(app.desc))
+      .slice(0, 3)
+      .map(a => ({ ...a, href: `/app/${a.id}` }));
+    const pageItems = pages
+      .filter(page => matchesQuery(page.name) || matchesQuery(page.desc))
+      .map(p => ({ ...p, href: p.url }));
+
+    const flat = [...apis, ...tutorials, ...apps, ...pageItems];
+
     return {
-      searchResults: {
-        apis: apiList
-          .filter(api => matchesQuery(api.name) || matchesQuery(api.desc))
-          .slice(0, 4),
-        tutorials: apiList
-          .filter(api => api.tutorial && (matchesQuery(api.name) || matchesQuery(api.desc)))
-          .slice(0, 3),
-        pages: pages
-          .filter(page => matchesQuery(page.name) || matchesQuery(page.desc)),
-        apps: appTutorials
-          .filter(app => matchesQuery(app.name) || matchesQuery(app.desc))
-          .slice(0, 3),
-      },
+      searchResults: { apis, tutorials, apps, pages: pageItems },
       exactMatch: apiList.find(
         api =>
           api.name.toLowerCase() === normalizedQuery ||
           api.id.toLowerCase() === normalizedQuery
       ) ?? null,
+      hasResults: flat.length > 0,
+      flatItems: flat,
     };
   }, [normalizedQuery]);
+
+  const closeSuggestions = useCallback(() => setShowSuggestions(false), []);
+
+  const { handleKeyDown, handleItemKeyDown, setItemRef } = useSearchKeyboard({
+    items: flatItems,
+    isOpen: showSuggestions,
+    onClose: closeSuggestions,
+    inputRef,
+  });
+
+  // 点击建议框外部时关闭
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        closeSuggestions();
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [closeSuggestions]);
+
+  const handleSearch = useCallback(() => {
+    if (!normalizedQuery || !exactMatch) return;
+    router.push(`/api/${exactMatch.id}`);
+    closeSuggestions();
+  }, [exactMatch, normalizedQuery, router, closeSuggestions]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -156,86 +326,87 @@ export default function HomeClient() {
               </p>
             </div>
 
-            <div className="relative mx-auto mt-9 max-w-4xl">
+            <div ref={containerRef} className="relative mx-auto mt-9 max-w-4xl">
               <p className="mb-3 text-center text-sm font-medium text-foreground">搜索 API 或工具名称</p>
               <div className="flex gap-3 rounded-lg border bg-card p-2 shadow-sm">
-                <Input
-                  type="text"
-                  placeholder="搜索 API 名称，如 OpenAI、通义千问..."
+                <input
+                  ref={inputRef}
+                  type="search"
+                  placeholder="搜索 API，如 OpenAI、通义千问..."
                   value={searchQuery}
                   onChange={(e) => {
                     setSearchQuery(e.target.value);
                     setShowSuggestions(true);
                   }}
                   onFocus={() => setShowSuggestions(true)}
-                  onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-                  onKeyDown={(e) => e.key === 'Enter' && exactMatch && router.push(`/api/${exactMatch.id}`)}
+                  onKeyDown={(e) => {
+                    handleKeyDown(e);
+                    if (e.key === 'Enter') handleSearch();
+                  }}
+                  aria-label="搜索 API 或工具"
+                  aria-autocomplete="list"
+                  aria-expanded={showSuggestions && hasResults}
+                  aria-controls="search-suggestions"
                   className="h-12 flex-1 border-0 bg-transparent px-4 text-base shadow-none focus-visible:ring-0"
                 />
                 <Button
                   className="h-12 px-7"
-                  onClick={() => exactMatch && router.push(`/api/${exactMatch.id}`)}
+                  onClick={handleSearch}
+                  disabled={!normalizedQuery}
+                  aria-label="执行搜索"
                 >
                   搜索
                 </Button>
               </div>
 
-              {showSuggestions && searchQuery.trim() && (
-                <div className="absolute left-0 right-0 top-full z-10 mt-2 overflow-hidden rounded-lg border bg-card shadow-sm">
-                  {searchResults.apis.length > 0 && (
-                    <>
-                      <div className="border-b bg-muted/60 px-4 py-2 text-xs font-medium text-muted-foreground">API</div>
-                      {searchResults.apis.map((api) => (
-                        <Link key={api.id} href={`/api/${api.id}`} className="block px-4 py-3 transition-colors hover:bg-muted/70">
-                          <p className="truncate font-medium">{api.name}</p>
-                          <p className="truncate text-sm text-muted-foreground">{api.desc}</p>
-                        </Link>
-                      ))}
-                    </>
-                  )}
-                  {searchResults.tutorials.length > 0 && (
-                    <>
-                      <div className="border-y bg-muted/60 px-4 py-2 text-xs font-medium text-muted-foreground">购买教程</div>
-                      {searchResults.tutorials.map((api) => (
-                        <Link key={api.id} href={`/tutorial/${api.id}`} className="block px-4 py-3 transition-colors hover:bg-muted/70">
-                          <p className="truncate font-medium">{api.tutorial?.title || `${api.name}教程`}</p>
-                          <p className="truncate text-sm text-muted-foreground">{api.desc}</p>
-                        </Link>
-                      ))}
-                    </>
-                  )}
-                  {searchResults.apps.length > 0 && (
-                    <>
-                      <div className="border-y bg-muted/60 px-4 py-2 text-xs font-medium text-muted-foreground">API应用</div>
-                      {searchResults.apps.map((app) => (
-                        <Link key={app.id} href={`/app/${app.id}`} className="block px-4 py-3 transition-colors hover:bg-muted/70">
-                          <p className="truncate font-medium">{app.name}</p>
-                          <p className="truncate text-sm text-muted-foreground">{app.desc}</p>
-                        </Link>
-                      ))}
-                    </>
-                  )}
-                  {searchResults.pages.length > 0 && (
-                    <>
-                      <div className="border-y bg-muted/60 px-4 py-2 text-xs font-medium text-muted-foreground">页面</div>
-                      {searchResults.pages.map((page) => (
-                        <Link key={page.id} href={page.url} className="block px-4 py-3 transition-colors hover:bg-muted/70">
-                          <p className="truncate font-medium">{page.name}</p>
-                          <p className="truncate text-sm text-muted-foreground">{page.desc}</p>
-                        </Link>
-                      ))}
-                    </>
-                  )}
-                  {searchResults.apis.length === 0 &&
-                    searchResults.tutorials.length === 0 &&
-                    searchResults.pages.length === 0 &&
-                    searchResults.apps.length === 0 && (
+              {/* 计算各分组在 flatItems 中的起始索引 */}
+              {(() => {
+                const tutorialsStart = searchResults.apis.length;
+                const appsStart = tutorialsStart + searchResults.tutorials.length;
+                const pagesStart = appsStart + searchResults.apps.length;
+
+                return showSuggestions && normalizedQuery && (
+                  <div
+                    id="search-suggestions"
+                    role="listbox"
+                    aria-label="搜索建议"
+                    onMouseDown={(e) => e.preventDefault()}
+                    className="absolute left-0 right-0 top-full z-10 mt-2 max-h-[60vh] overflow-y-auto overscroll-contain rounded-lg border bg-card shadow-lg"
+                  >
+                    {hasResults ? (
+                      <>
+                        <SuggestionGroup label="API" items={searchResults.apis} startIndex={0}
+                          onSelect={closeSuggestions} setItemRef={setItemRef} handleItemKeyDown={handleItemKeyDown} />
+                        <SuggestionGroup label="购买教程" items={searchResults.tutorials} startIndex={tutorialsStart}
+                          onSelect={closeSuggestions} setItemRef={setItemRef} handleItemKeyDown={handleItemKeyDown} />
+                        <SuggestionGroup label="API 应用" items={searchResults.apps} startIndex={appsStart}
+                          onSelect={closeSuggestions} setItemRef={setItemRef} handleItemKeyDown={handleItemKeyDown} />
+                        <SuggestionGroup label="页面" items={searchResults.pages} startIndex={pagesStart}
+                          onSelect={closeSuggestions} setItemRef={setItemRef} handleItemKeyDown={handleItemKeyDown} />
+
+                        {exactMatch && (
+                          <div className="flex flex-wrap items-center gap-2 border-t bg-muted/40 px-4 py-3 text-sm">
+                            <span className="text-muted-foreground">找到「{exactMatch.name}」</span>
+                            <Button size="sm" onClick={() => { router.push(`/api/${exactMatch.id}`); closeSuggestions(); }}>
+                              直接跳转
+                            </Button>
+                            {exactMatch.tutorial && (
+                              <Button size="sm" variant="outline"
+                                onClick={() => { router.push(`/tutorial/${exactMatch.id}`); closeSuggestions(); }}>
+                                购买教程
+                              </Button>
+                            )}
+                          </div>
+                        )}
+                      </>
+                    ) : (
                       <div className="px-4 py-6 text-center text-sm text-muted-foreground">
                         未找到相关内容，试试 OpenAI、通义千问、Claude。
                       </div>
                     )}
-                </div>
-              )}
+                  </div>
+                );
+              })()}
             </div>
 
             <div className="mx-auto mt-4 grid max-w-md grid-cols-3 gap-3 rounded-lg border bg-card p-4">
