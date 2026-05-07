@@ -11,7 +11,7 @@ import { apiList, appTutorials } from '@/lib/api-config';
 const pages = [
   { id: 'cloud-api', name: 'API 列表', desc: '先看官网入口、代理要求和免费额度', url: '/cloud-api', tag: '优先查看' },
   { id: 'tutorial', name: '购买教程', desc: '按步骤完成注册、支付与 API Key 创建', url: '/tutorial', tag: '新手推荐' },
-  { id: 'local-deploy', name: '本地部署', desc: 'Ollama / LM Studio 等本地模型方案', url: '/local-deploy', tag: '进阶路线' },
+  { id: 'local-deploy', name: '本地部署', desc: '笔记本也能跑！Ollama 一键部署 Gemma 4、Qwen3.6 最新模型', url: '/local-deploy', tag: '进阶路线' },
 ];
 
 const navLinks = [
@@ -265,6 +265,60 @@ export default function HomeClient() {
           </div>
         </section>
 
+        {/* 快速入门 */}
+        <section className="border-t border-border px-4 py-12 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-6xl">
+            <div className="mb-8 text-center">
+              <p className="text-sm font-medium text-muted-foreground">新手必看</p>
+              <h2 className="mt-2 text-2xl font-semibold">3 分钟快速入门</h2>
+              <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
+                不知道从哪里开始？按照以下步骤，快速上手 AI API
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+              <div className="rounded-lg border bg-card p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-foreground text-sm font-bold text-background">1</span>
+                  <h3 className="font-semibold">选择 API</h3>
+                </div>
+                <p className="text-sm text-muted-foreground mb-4">
+                  根据需求选择合适的 API 服务。国内用户推荐 DeepSeek、通义千问，无需代理即可访问。
+                </p>
+                <Link href="/cloud-api">
+                  <span className="text-sm font-medium text-foreground hover:underline">查看 API 列表 →</span>
+                </Link>
+              </div>
+
+              <div className="rounded-lg border bg-card p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-foreground text-sm font-bold text-background">2</span>
+                  <h3 className="font-semibold">注册购买</h3>
+                </div>
+                <p className="text-sm text-muted-foreground mb-4">
+                  按照教程完成注册、认证和充值。大部分国产 API 支持支付宝/微信支付。
+                </p>
+                <Link href="/tutorial">
+                  <span className="text-sm font-medium text-foreground hover:underline">查看购买教程 →</span>
+                </Link>
+              </div>
+
+              <div className="rounded-lg border bg-card p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-foreground text-sm font-bold text-background">3</span>
+                  <h3 className="font-semibold">接入使用</h3>
+                </div>
+                <p className="text-sm text-muted-foreground mb-4">
+                  获取 API Key 后，即可在代码或工具中使用。国产 API 兼容 OpenAI 接口格式。
+                </p>
+                <Link href="/faq">
+                  <span className="text-sm font-medium text-foreground hover:underline">查看常见问题 →</span>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section className="border-t border-border bg-card/40 px-4 py-12 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
             <div className="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
@@ -351,6 +405,86 @@ export default function HomeClient() {
                   </div>
                 </article>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 更新日志 */}
+        <section className="border-t border-border px-4 py-8 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-6xl">
+            <div className="rounded-lg border bg-card p-6">
+              <h3 className="font-semibold mb-4">更新日志</h3>
+              <div className="space-y-4 text-sm">
+                {/* 2026-05-07 */}
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="font-mono text-xs bg-muted px-2 py-0.5 rounded">2026-05-07</span>
+                  </div>
+                  <ul className="ml-2 space-y-1 text-muted-foreground">
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-500 mt-0.5">★</span>
+                      <span>新增小米 MiMo API 购买教程</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-500 mt-0.5">★</span>
+                      <span>更新 Claude 支持 1M 上下文</span>
+                    </li>
+                    <li>优化本地部署教程结构</li>
+                  </ul>
+                </div>
+
+                {/* 2026-05-06 */}
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="font-mono text-xs bg-muted px-2 py-0.5 rounded">2026-05-06</span>
+                  </div>
+                  <ul className="ml-2 space-y-1 text-muted-foreground">
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-500 mt-0.5">★</span>
+                      <span>新增 Gemma 4、Qwen3.6 本地部署教程</span>
+                    </li>
+                    <li>SEO 优化：补充页面 metadata、修复 Bing 收录问题</li>
+                  </ul>
+                </div>
+
+                {/* 2026-04-28 */}
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="font-mono text-xs bg-muted px-2 py-0.5 rounded">2026-04-28</span>
+                    <span className="text-xs text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">重要更新</span>
+                  </div>
+                  <ul className="ml-2 space-y-1 text-muted-foreground">
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-500 mt-0.5">★</span>
+                      <span>上线 FAQ 常见问题页面</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-500 mt-0.5">★</span>
+                      <span>新增首页搜索功能、应用教程路由</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-500 mt-0.5">★</span>
+                      <span>DeepSeek V4 系列对比测评上线</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-500 mt-0.5">★</span>
+                      <span>恢复 GPT-5.5 / Claude Opus 4.7 / Gemini 3 购买教程</span>
+                    </li>
+                    <li>SEO 结构化数据、站点地图、OpenGraph 图片</li>
+                    <li>合规审查与敏感词中性化处理</li>
+                  </ul>
+                </div>
+
+                {/* 2026-04-24 */}
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="font-mono text-xs bg-muted px-2 py-0.5 rounded">2026-04-24</span>
+                  </div>
+                  <ul className="ml-2 space-y-1 text-muted-foreground">
+                    <li>网站初始上线</li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         </section>
