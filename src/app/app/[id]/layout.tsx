@@ -18,6 +18,13 @@ export async function generateMetadata({
   return {
     title: `${app.name} 使用教程`,
     description: `${app.name}：${app.desc}`,
+    keywords: [
+      `${app.name}教程`,
+      `${app.name}安装`,
+      `${app.name}配置`,
+      `${app.name}使用方法`,
+      `AI工具教程`,
+    ],
     alternates: { canonical: canonicalUrl },
     openGraph: {
       title: `${app.name} 使用教程 | API知识站`,

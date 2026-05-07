@@ -23,6 +23,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title,
     description: desc,
+    keywords: [
+      `${review.name}测评`,
+      `${review.name}怎么样`,
+      `${review.name}价格`,
+      `${review.name}和GPT对比`,
+      `AI模型测评`,
+      `API性能对比`,
+    ],
     alternates: {
       canonical: `https://apiuspro.cn/api-review/${slug}`,
     },

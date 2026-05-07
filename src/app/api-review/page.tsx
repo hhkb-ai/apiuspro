@@ -12,6 +12,20 @@ export const metadata: Metadata = {
   title: 'AI API 完整测评对比 | 性能、价格与选购建议',
   description:
     'DeepSeek、OpenAI、Claude、通义千问、Gemini 等主流 AI API 的深度测评对比，含基准测试、定价分析和选购建议。',
+  keywords: [
+    'AI API测评',
+    'API对比',
+    'Claude和GPT哪个好',
+    'DeepSeek和ChatGPT对比',
+    'AI模型评分',
+    'API性能对比',
+    'AI API价格对比',
+    '大模型基准测试',
+    'API选购建议',
+    'AI API推荐排名',
+    '哪个AI API最好用',
+    'API性价比对比',
+  ],
   alternates: { canonical: 'https://apiuspro.cn/api-review' },
   openGraph: {
     title: 'AI API 完整测评对比 | API知识站',
@@ -212,6 +226,44 @@ export default function APIReviewPage() {
             <Link href="/cloud-api">
               <Button>查看所有 API</Button>
             </Link>
+          </CardContent>
+        </Card>
+
+        {/* 权威基准引用 */}
+        <Card className="mt-8 border-border/80 shadow-sm">
+          <CardHeader>
+            <CardTitle>权威基准与数据来源</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4 text-sm text-muted-foreground">
+              <p>本站测评数据参考以下权威基准和官方来源：</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="p-4 rounded-lg border bg-card">
+                  <p className="font-medium text-foreground mb-2">代码能力基准</p>
+                  <ul className="space-y-1">
+                    <li>• SWE-bench Verified：代码修复能力评测</li>
+                    <li>• SWE-bench Pro：真实工程任务评测</li>
+                    <li>• CursorBench：IDE 编码能力评测</li>
+                  </ul>
+                </div>
+                <div className="p-4 rounded-lg border bg-card">
+                  <p className="font-medium text-foreground mb-2">综合能力基准</p>
+                  <ul className="space-y-1">
+                    <li>• GPQA Diamond：科学推理能力评测</li>
+                    <li>• HLE：综合知识考试评测</li>
+                    <li>• OSWorld：桌面自动化能力评测</li>
+                  </ul>
+                </div>
+              </div>
+              <div className="p-4 rounded-lg bg-muted/30">
+                <p className="font-medium text-foreground mb-2">数据来源说明</p>
+                <ul className="space-y-1">
+                  <li>• 官方参数：来自各厂商官方文档（Anthropic、OpenAI、Google 等）</li>
+                  <li>• 第三方基准：来自 DataLearnerAI、知乎、火山引擎等权威评测机构</li>
+                  <li>• 更新时间：最后更新 2026-05-07</li>
+                </ul>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>

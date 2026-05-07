@@ -23,6 +23,14 @@ export function generateMetadata({ params }: { params: Promise<{ id: string }> }
     return {
       title: `${api.name} 购买教程`,
       description: `${api.tutorial.title}：${api.tutorial.subtitle || api.desc}。${needsProxy}，分${api.tutorial.steps.length}步完成注册、支付与API Key接入。`,
+      keywords: [
+        `${api.name}购买教程`,
+        `${api.name}怎么买`,
+        `${api.name}订阅`,
+        `${api.name}注册`,
+        `${api.name} API Key`,
+        `API购买教程`,
+      ],
       alternates: { canonical: canonicalUrl },
       openGraph: {
         title: `${api.name} 购买教程 | API知识站`,

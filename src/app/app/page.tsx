@@ -10,6 +10,18 @@ export const metadata: Metadata = {
   title: 'API 应用教程',
   description:
     '围绕 Claude Code、OpenClaw、Obsidian 插件等常见 AI 工具和工作流整理的安装与使用教程。',
+  keywords: [
+    'Claude Code教程',
+    'AI工具教程',
+    'Claude Code安装',
+    'OpenClaw使用教程',
+    'Obsidian AI插件',
+    'AI编程工具',
+    'Claude Code配置',
+    'AI工作流教程',
+    'AI助手安装教程',
+    'LLM Wiki教程',
+  ],
   alternates: { canonical: 'https://apiuspro.cn/app' },
   openGraph: {
     title: 'API 应用教程 | API知识站',

@@ -26,6 +26,14 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   return {
     title,
     description: desc,
+    keywords: [
+      `${api.name} API`,
+      `${api.name}怎么买`,
+      `${api.name}购买教程`,
+      `${api.name}免费额度`,
+      `${api.name}价格`,
+      `AI API`,
+    ],
     alternates: {
       canonical: `https://apiuspro.cn/api/${api.id}`,
     },
@@ -166,6 +174,68 @@ export default async function APIDetailPage({ params }: { params: Promise<{ id: 
                   {feature}
                 </Badge>
               ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* 快速接入示例 */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>快速接入示例</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {/* Python 示例 */}
+              <div>
+                <p className="text-sm font-medium mb-2">Python</p>
+                <pre className="p-4 rounded-lg bg-muted overflow-x-auto text-sm">
+                  <code>{`from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="${api.url.includes('openai') ? 'https://api.openai.com/v1' : api.url + '/v1'}"
+)
+
+response = client.chat.completions.create(
+    model="${api.id === 'deepseek' ? 'deepseek-chat' : api.id === 'aliyun' ? 'qwen-turbo' : 'gpt-4'}",
+    messages=[{"role": "user", "content": "你好"}]
+)
+print(response.choices[0].message.content)`}</code>
+                </pre>
+              </div>
+
+              {/* curl 示例 */}
+              <div>
+                <p className="text-sm font-medium mb-2">curl</p>
+                <pre className="p-4 rounded-lg bg-muted overflow-x-auto text-sm">
+                  <code>{`curl ${api.url.includes('openai') ? 'https://api.openai.com/v1/chat/completions' : api.url + '/v1/chat/completions'} \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer YOUR_API_KEY" \\
+  -d '{
+    "model": "${api.id === 'deepseek' ? 'deepseek-chat' : api.id === 'aliyun' ? 'qwen-turbo' : 'gpt-4'}",
+    "messages": [{"role": "user", "content": "你好"}]
+  }'`}</code>
+                </pre>
+              </div>
+
+              {/* Node.js 示例 */}
+              <div>
+                <p className="text-sm font-medium mb-2">Node.js</p>
+                <pre className="p-4 rounded-lg bg-muted overflow-x-auto text-sm">
+                  <code>{`const OpenAI = require('openai');
+
+const client = new OpenAI({
+  apiKey: 'YOUR_API_KEY',
+  baseURL: '${api.url.includes('openai') ? 'https://api.openai.com/v1' : api.url + '/v1'}'
+});
+
+const response = await client.chat.completions.create({
+  model: '${api.id === 'deepseek' ? 'deepseek-chat' : api.id === 'aliyun' ? 'qwen-turbo' : 'gpt-4'}',
+  messages: [{role: 'user', content: '你好'}]
+});
+console.log(response.choices[0].message.content);`}</code>
+                </pre>
+              </div>
             </div>
           </CardContent>
         </Card>

@@ -37,6 +37,86 @@ export interface APIConfig {
 export const apiList: APIConfig[] = [
   // ---------- 无需代理 ----------
   {
+    id: 'mimo',
+    name: '小米MiMo',
+    desc: '小米MiMo API 怎么买？2026 推理模型接入教程，数学与代码能力突出',
+    url: 'https://mimo.xiaomi.com/',
+    free: '待确认',
+    proxy: false,
+    features: ['推理能力强', '数学能力突出', '代码生成', '小米出品'],
+    icon: '🟠',
+    badge: { text: '新上线', type: 'warning' },
+    tutorial: {
+      title: '小米 MiMo API 购买与接入教程（2026最新）',
+      subtitle: '从注册、获取 API Key 到首次调用的完整流程',
+      steps: [
+        {
+          title: '注册小米账号',
+          description: '使用小米账号登录 MiMo 开放平台。',
+          items: [
+            '访问 MiMo 开放平台官网',
+            '使用手机号或邮箱注册小米账号',
+            '完成账号登录'
+          ]
+        },
+        {
+          title: '开通 API 服务',
+          description: '在控制台开通 MiMo API 服务。',
+          items: [
+            '进入 MiMo 开放平台控制台',
+            '找到 API 服务入口并开通',
+            '了解免费额度和计费规则'
+          ]
+        },
+        {
+          title: '创建并保存 API Key',
+          description: '在 API 管理页面创建密钥。',
+          items: [
+            '进入「API Key 管理」页面',
+            '点击「创建 API Key」',
+            '复制密钥并保存到安全位置'
+          ],
+          warning: 'API Key 只会完整显示一次，务必立即保存。'
+        },
+        {
+          title: '配置环境变量并首次调用',
+          description: '使用 OpenAI 兼容接口调用 MiMo API。',
+          items: [
+            '安装 openai 和 python-dotenv',
+            '设置 MIMO_API_KEY 环境变量',
+            '配置 base_url 指向 MiMo API 地址'
+          ],
+          codeLanguage: 'python',
+          code: `import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ.get("MIMO_API_KEY"),
+    base_url="https://mimo.xiaomi.com/v1",
+)
+
+response = client.chat.completions.create(
+    model="mimo-7b",
+    messages=[{"role": "user", "content": "你好，请用一句话介绍你自己。"}],
+)
+
+print(response.choices[0].message.content)`,
+          codeExplanation: '使用 OpenAI SDK 调用 MiMo API。成功执行即代表配置正确。'
+        }
+      ],
+      tips: [
+        '推荐用 .env 或环境变量保存 API Key',
+        'MiMo 擅长推理和数学任务，适合相关场景使用',
+        '具体模型名称和价格请以官方文档为准'
+      ],
+      warnings: [
+        '不要在前端、公开仓库或截图中暴露 API Key',
+        '首次使用建议先了解免费额度和计费规则'
+      ],
+      advantages: ['推理能力强', '数学能力突出', '小米出品', '国内直连']
+    }
+  },
+  {
     id: 'deepseek',
     name: 'DeepSeek',
     desc: 'DeepSeek API 怎么买？2026 国内支付/充值教程，代码与推理能力突出',
@@ -347,11 +427,11 @@ print(response.choices[0].message.content)`,
   {
     id: 'kimi',
     name: '月之暗面 Kimi',
-    desc: 'Kimi API 怎么用？长文本处理教程，支持 20 万字上下文',
+    desc: 'Kimi API 怎么用？长文本处理教程，支持 128K tokens 上下文',
     url: 'https://platform.moonshot.cn/',
     free: '免费额度',
     proxy: false,
-    features: ['超长上下文', '文件解析', '联网搜索'],
+    features: ['128K上下文', '文件解析', '联网搜索'],
     icon: '🟢',
     badge: { text: '免费', type: 'success' },
     tutorial: {
@@ -685,10 +765,10 @@ print(response.choices[0].message.content)`,
   {
     id: 'openai',
     name: 'OpenAI GPT',
-    desc: 'GPT-5.5 国内怎么订阅？OpenAI 代充与支付教程',
+    desc: 'GPT-5.5 国内怎么订阅？1M上下文、代码能力最强',
     url: 'https://platform.openai.com/',
     proxy: true,
-    features: ['GPT-4', 'GPT-4o', 'DALL-E', 'Whisper'],
+    features: ['1M上下文', 'GPT-5.5', '代码能力最强', 'Agent能力强'],
     icon: '🟠',
     badge: { text: '需代理', type: 'warning' },
     tutorial: {
@@ -812,10 +892,10 @@ print(response.choices[0].message.content)`,
   {
     id: 'claude',
     name: 'Anthropic Claude',
-    desc: 'Claude 国内怎么订阅？封号避坑指南，200K 长文本模型',
+    desc: 'Claude 国内怎么订阅？封号避坑指南，1M上下文、代码能力最强',
     url: 'https://www.anthropic.com/',
     proxy: true,
-    features: ['200K上下文', '安全可靠', '代码能力强'],
+    features: ['1M上下文', '代码能力最强', '视觉能力提升', '安全可靠'],
     icon: '🟠',
     badge: { text: '需代理', type: 'warning' },
     tutorial: {
@@ -1117,16 +1197,20 @@ export const faqCategories = [
     title: '注册相关问题',
     items: [
       {
-        question: 'OpenAI不支持国内手机号',
-        answer: '解决方案：尝试使用其他邮箱（Gmail/Outlook）注册，或选择正规海外验证服务'
+        question: 'OpenAI 不支持国内手机号注册怎么办？',
+        answer: 'OpenAI 目前不支持中国大陆手机号注册。解决方案：①使用 Gmail 或 Outlook 等海外邮箱注册（QQ/163 邮箱可能被拒）；②注册时选择支持的国家/地区；③如果需要手机验证，可使用 Google Voice 等虚拟号码服务（存在一定风险）。建议国内用户优先考虑 DeepSeek、通义千问等无需代理的国产 API，注册流程更简单。'
       },
       {
-        question: '邮箱被限制注册',
-        answer: '解决方案：尝试Gmail或Outlook邮箱'
+        question: '注册时邮箱被限制或收不到验证邮件？',
+        answer: '常见原因和解决方案：①QQ/163 等国内邮箱可能被海外平台拦截，建议换用 Gmail 或 Outlook 注册；②检查垃圾邮件文件夹，验证邮件可能被误分类；③Gmail 注册时确保已开启"允许不够安全的应用访问"（部分平台需要）；④如果使用 Outlook，确认没有开启安全验证中的"安全附件"拦截。如果多次尝试仍失败，可能是 IP 被风控，建议更换网络环境或直接使用国产 API（DeepSeek、智谱等）绕过此问题。'
       },
       {
-        question: '账号被风控封禁',
-        answer: '解决方案：使用合适的网络环境'
+        question: '注册成功但账号被风控封禁了怎么办？',
+        answer: '账号被风控通常是因为网络环境异常（IP 频繁切换、使用数据中心 IP 等）。预防措施：①注册和使用时保持同一 IP 环境，避免频繁切换；②使用稳定的网络环境，不要使用公共 VPN 节点；③注册后先正常使用一段时间再进行高频调用。如果已被封禁：①尝试联系平台客服申诉，说明使用场景；②准备好注册时使用的邮箱和身份信息；③如果申诉失败，建议转向国产 API（DeepSeek、通义千问等），不存在风控问题。'
+      },
+      {
+        question: '国内注册 Claude（Anthropic）有什么注意事项？',
+        answer: 'Claude 目前对中国大陆地区有限制。注意事项：①注册时需要海外手机号验证，可使用 Google Voice 等服务；②使用 Gmail 邮箱注册成功率更高；③注册后保持稳定的网络环境，避免 IP 频繁变动；④Claude Pro 订阅需要海外支付方式。如果只是体验 Claude 模型能力，建议通过国产代理服务（如 API2D）接入，注册流程更简单且支持国内支付。详见本站 Claude 购买教程。'
       }
     ]
   },
@@ -1134,16 +1218,20 @@ export const faqCategories = [
     title: '支付相关问题',
     items: [
       {
-        question: '国内银行卡无法绑定',
-        answer: '解决方案：优先使用官方支持的支付方式，或通过正规第三方支付服务平台完成支付'
+        question: '国内银行卡无法绑定到海外 API 平台怎么办？',
+        answer: '海外 API 平台（OpenAI、Claude 等）通常不支持国内银联卡。解决方案：①使用支持外币支付的 Visa/Mastercard 信用卡（部分银行支持在线申请虚拟卡）；②通过正规第三方支付平台完成充值（注意甄别平台资质）；③最简单的方案：使用国产 API（DeepSeek、通义千问、智谱等），直接支持支付宝/微信支付，无需海外支付工具。'
       },
       {
-        question: '扣费异常',
-        answer: '解决方案：设置使用限额，监控消费'
+        question: 'API 调用扣费异常或超出预期怎么办？',
+        answer: 'API 按 Token 计费，如果不注意控制容易产生意外费用。预防和解决：①在 API 平台设置月度/日度使用限额（OpenAI、DeepSeek 等都支持）；②开发时先用小模型测试，确认逻辑正确后再切换到大模型；③使用流式响应时注意提前终止，避免生成过多无用内容；④定期查看 API 平台的用量统计页面，监控消费趋势；⑤代码中添加 Token 计数逻辑，输入超长时自动截断。'
       },
       {
-        question: '退款困难',
-        answer: '解决方案：小额充值，按需付费'
+        question: '充值后想退款但不知道怎么操作？',
+        answer: '各平台退款政策不同：①OpenAI：余额一般不支持退款，建议小额充值、按需使用；②DeepSeek：未使用的充值可联系客服申请退款；③国产平台通常支持退款，但可能需要扣除一定手续费。建议：①新平台先用免费额度测试，确认满足需求后再充值；②采用"小额多次"充值策略，避免大额充值后发现不合适；③部分平台支持设置自动充值阈值，低于某金额自动小额充值。'
+      },
+      {
+        question: '有没有免费的 AI API 可以用？',
+        answer: '有多家平台提供免费额度：①DeepSeek：注册即送 500 万 Token，足够日常开发测试；②通义千问（阿里云）：有免费额度，国内直连；③智谱 GLM：注册送 Token，有 Coding Plan 免费方案；④Google Gemini：免费版有调用限制但可体验；⑤OpenAI：新用户有 $5 免费额度。建议先用免费额度充分测试，确认模型能力和稳定性后再决定是否付费升级。详见本站各 API 详情页的"免费额度"信息。'
       }
     ]
   },
@@ -1151,33 +1239,99 @@ export const faqCategories = [
     title: '使用相关问题',
     items: [
       {
-        question: 'API Key泄露',
-        answer: '解决方案：立即删除旧Key，重新生成'
+        question: 'API Key 泄露了怎么办？',
+        answer: 'API Key 泄露可能导致他人盗用你的额度。发现泄露后立即：①登录 API 平台，删除（Revoke）泄露的 Key；②生成新的 API Key 替换；③检查用量统计，确认是否有异常调用；④如果产生异常费用，联系平台客服说明情况。预防措施：①永远不要将 API Key 硬编码到前端代码或公开仓库中；②使用环境变量或密钥管理服务存储 Key；③代码提交前检查是否包含敏感信息；④为不同环境（开发/测试/生产）使用不同的 Key；⑤设置 Key 的权限范围和使用限额。'
       },
       {
-        question: '调用频率限制',
-        answer: '解决方案：升级套餐或优化请求频率'
+        question: '遇到 429 Too Many Requests 错误怎么处理？',
+        answer: '429 错误表示调用频率超过了平台限制。解决方案：①检查你的 API 套餐的速率限制（RPM/TPM），在平台控制台可查看；②在代码中实现指数退避重试：首次等待 1 秒，第二次 2 秒，第三次 4 秒，逐步增加；③使用队列机制控制并发请求数，避免同时发送大量请求；④如果业务确实需要更高频率，升级到更高级别的套餐；⑤考虑使用多 Key 轮换策略分散请求压力。代码示例：使用 axios-retry 或自定义重试中间件自动处理 429 错误。'
       },
       {
-        question: '响应超时',
-        answer: '解决方案：增加超时时间，使用流式响应'
+        question: 'API 响应超时或返回很慢怎么办？',
+        answer: '响应慢的常见原因和优化方案：①输入 Token 过多：精简 prompt，减少不必要的上下文，控制输入长度；②模型选择：大模型（如 GPT-4o、Claude Opus）比小模型慢，非复杂任务可用更快的模型；③使用流式响应（Streaming）：设置 stream=true，用户可立即看到逐字输出，体感更快；④设置合理的超时时间：一般建议 30-60 秒，长文档处理可适当延长；⑤网络问题：国内调用海外 API 可能因网络延迟导致超时，考虑使用国产 API 或代理服务。'
+      },
+      {
+        question: '如何安全地在项目中存储和使用 API Key？',
+        answer: '推荐的安全实践：①使用环境变量存储 Key（.env 文件 + dotenv 库），不要硬编码；②将 .env 文件加入 .gitignore，防止误提交到代码仓库；③生产环境使用密钥管理服务（如阿里云 KMS、AWS Secrets Manager）；④为不同环境创建不同的 Key，便于隔离和轮换；⑤设置 Key 的最小权限和使用限额；⑥定期轮换 Key（建议每 3-6 个月更换一次）；⑦前端项目绝对不要暴露 API Key，应通过后端代理转发请求。'
       }
     ]
   },
   {
-    title: '其他常见问题',
+    title: '模型选择与对比',
     items: [
       {
-        question: '模型版本选择困难',
-        answer: '建议：GPT-4质量高，GPT-3.5性价比高'
+        question: '这么多 AI 模型，到底该选哪个？',
+        answer: '根据使用场景选择：①编程开发首选 Claude（代码理解力最强）或 DeepSeek（性价比最高）；②内容创作和中文场景首选 DeepSeek（中文表达好、价格低）或 Claude（创意能力强）；③数据分析首选 OpenAI（Code Interpreter 生态）或 Gemini（多模态能力强）；④预算有限首选 DeepSeek（价格仅为 GPT-5.5 的 1/10）或国产免费方案；⑤企业级应用首选阿里云通义千问（合规性好、稳定性高）。建议先用各平台的免费额度实际测试，再做最终决定。详见本站 API 测评页面的详细对比。'
       },
       {
-        question: '不知道选择哪个API',
-        answer: '建议：查看API测评页面对比'
+        question: 'GPT-5.5、Claude Opus、DeepSeek V4 之间怎么选？',
+        answer: '三个模型各有优势：①GPT-5.5：Agent 能力最强（Terminal-Bench 82.7%），工具链生态最成熟，适合构建复杂的 AI Agent 应用，但价格最高且需要代理；②Claude Opus：代码理解和长文档处理能力最强，200K 上下文窗口，适合编程和深度分析，价格中等，需要代理；③DeepSeek V4：性价比之王，代码和推理能力在国产模型中顶尖，价格仅为 GPT-5.5 的 1/10，国内直连无需代理。简单总结：追求极致能力选 Claude/GPT，追求性价比选 DeepSeek。'
       },
       {
-        question: '需要更多帮助',
-        answer: '建议：查看官方文档或社区讨论'
+        question: '免费模型和付费模型差距大吗？',
+        answer: '差距在缩小但仍明显：①免费版通常有调用频率限制和上下文长度限制，付费版无此限制；②付费版模型能力更强，特别是在复杂推理、代码生成和长文档处理方面；③免费版可能使用较旧的模型版本，付费版可使用最新模型。建议策略：①轻度使用和学习阶段用免费额度完全够用；②开发测试阶段用小模型（便宜/免费），上线时切换到大模型；③高频调用场景建议付费，体验和效率差距明显。'
+      },
+      {
+        question: '需要代理的 API 和不需要代理的有什么区别？',
+        answer: '核心区别在于访问方式和稳定性：①需要代理（OpenAI、Claude、Gemini）：服务器在海外，国内直连可能不稳定或无法访问，需要通过代理服务中转；模型能力通常更强，但接入成本和复杂度更高。②不需要代理（DeepSeek、通义千问、智谱、Kimi、混元、豆包）：服务器在国内，直连稳定，注册和支付流程简单，适合国内用户快速上手。建议：如果是初次接触 AI API，优先选择无需代理的国产 API，等熟悉后再根据需求考虑海外模型。'
+      }
+    ]
+  },
+  {
+    title: '开发接入问题',
+    items: [
+      {
+        question: '第一次调用 API 应该从哪里开始？',
+        answer: '新手入门建议：①选择一个国产 API（推荐 DeepSeek）注册账号，获取免费额度；②在控制台找到 API Key，复制保存；③使用 curl 或 Postman 先测试一个简单的请求，确认 Key 能正常工作；④然后在代码中使用官方 SDK（Python: pip install openai，Node.js: npm install openai）；⑤国产 API 通常兼容 OpenAI 接口格式，学会一个其他的都差不多。详见本站各 API 的购买教程，每个教程都包含从注册到首次调用的完整步骤。'
+      },
+      {
+        question: 'API Key 是什么？在哪里获取？',
+        answer: 'API Key 是调用 API 的身份凭证，类似于密码。获取方式：①登录 API 平台控制台（如 DeepSeek 平台、阿里云百炼）；②找到「API Key 管理」或「密钥管理」页面；③点击「创建 API Key」，复制保存。注意事项：API Key 只会完整显示一次，务必立即保存；不要泄露到公开场所（如 GitHub）；建议使用环境变量存储，不要硬编码在代码中。'
+      },
+      {
+        question: 'API 返回格式错误或解析失败怎么办？',
+        answer: '常见原因和排查：①检查请求参数格式是否正确（model、messages 等字段是否完整）；②确认 API Key 是否正确且未过期；③检查网络连接是否正常（海外 API 可能需要代理）；④查看返回的错误码和错误信息，平台文档中通常有详细的错误码说明；⑤如果是 JSON 解析失败，可能是返回了 HTML 错误页面（通常是认证失败或 IP 被封）。调试建议：先用 Postman 等工具手动测试，确认请求格式正确后再写入代码。'
+      },
+      {
+        question: '如何处理长文本输入超过 Token 限制的问题？',
+        answer: '各模型的 Token 限制不同，超限后会报错。解决方案：①使用 tiktoken 等库预先计算 Token 数，超过限制时自动截断或分段；②使用摘要模型先压缩长文本，再输入主模型处理；③选择上下文窗口更大的模型（Claude 200K、GPT-5.5 1M）；④对于超长文档，采用"分段处理 + 合并结果"的策略；⑤在 prompt 中明确告诉模型只关注关键部分，减少无用上下文。注意：上下文越长，调用成本越高且响应越慢，建议在效果和成本间找平衡。'
+      },
+      {
+        question: '什么是 Token？怎么计算？',
+        answer: 'Token 是 AI 模型处理文本的基本单位，类似于「字」或「词」。计算方式：①英文：1个单词约1-2个 Token，空格和标点也算；②中文：1个汉字约1.5-2个 Token；③代码：变量名、符号等都单独计算。粗略估算：1000个 Token 约等于 750个英文单词或 500个汉字。各平台的计费单位就是 Token 数，输入和输出都会计费。可以在平台控制台查看实际消耗。'
+      },
+      {
+        question: 'API 调用有免费额度吗？',
+        answer: '大部分国产 API 都有免费额度：①DeepSeek：新用户赠送 500 万 Tokens；②通义千问：每月 100 万 Tokens 免费；③智谱 GLM：新用户赠送一定额度；④Kimi：有免费试用额度。免费额度通常有调用频率限制（如每分钟 60 次），但足够学习和测试使用。建议：先用免费额度学习和测试，确认需求后再付费升级。详见各 API 的购买教程。'
+      }
+    ]
+  },
+  {
+    title: '本地部署相关问题',
+    items: [
+      {
+        question: '笔记本电脑能跑大模型吗？需要什么配置？',
+        answer: '可以！现在有很多轻量级模型专门针对笔记本优化。推荐配置：①最低配置：2GB RAM + CPU推理，可运行 Qwen3-0.6B 等超轻量模型；②推荐配置：4GB RAM，可运行 Qwen3-1.7B、Gemma4-1B；③标准配置：8GB RAM + 4GB 显存，可运行 Qwen3-8B、Gemma4-4B；④高性能配置：16GB RAM + 8GB 显存，可运行 Gemma4-12B、Qwen3-14B。没有独立显卡也可以用 CPU 推理，只是速度会慢一些。'
+      },
+      {
+        question: 'Gemma 4、Qwen3 和 Qwen3.6 有什么区别？',
+        answer: '三个都是2026年最新的开源模型：①Gemma 4：Google发布，采用Sparse MoE架构，原生支持多模态（文本+视觉），有1B/4B/12B三种尺寸；②Qwen3：阿里云发布，中文能力最强，有0.6B/1.7B/4B/8B/14B等多种尺寸；③Qwen3.6：阿里云最新发布，MoE架构（35B总参/3B激活），编程能力突出。选择建议：入门选Qwen3-0.6B，中文场景选Qwen3，编程场景选Qwen3.6，需要图片理解选Gemma4。'
+      },
+      {
+        question: 'Ollama 是什么？怎么安装？',
+        answer: 'Ollama 是最简单的本地大模型部署工具，支持一键安装和运行。安装步骤：①访问 ollama.ai 下载对应系统的安装包（Windows/macOS/Linux 都支持）；②双击安装，全程默认即可；③安装完成后打开终端，输入 ollama run qwen3:0.6b 即可下载并运行模型。Ollama 会自动管理模型下载、版本更新和 API 服务，非常适合新手。'
+      },
+      {
+        question: '本地部署用哪个模型比较好？',
+        answer: '根据需求和配置选择：①入门首选 Qwen3-0.6B，仅需2GB内存，速度最快；②中文场景推荐 Qwen3-1.7B 或 Qwen3-8B，中文理解能力最强；③多模态场景推荐 Gemma4-4B，支持文本+视觉；④高性能需求推荐 Gemma4-12B 或 Qwen3-14B，需要16GB内存。所有模型都可以用 ollama pull 命令一键下载。详见本站本地部署页面的完整指南。'
+      },
+      {
+        question: '本地模型和云端 API 哪个更好？',
+        answer: '各有优劣，按需选择：①本地部署优势：完全免费、数据隐私有保障、无需网络、可离线使用；劣势：模型能力通常弱于云端大模型、需要硬件资源。②云端 API 优势：模型能力更强、无需本地硬件、支持最新模型；劣势：按量付费、需要网络、数据经过云端。建议：轻度使用和隐私敏感场景用本地模型，重度使用和需要最强能力用云端 API。'
+      },
+      {
+        question: '本地模型运行速度很慢怎么办？',
+        answer: '优化方法：①使用更小的模型，如 Qwen3-0.6B 速度最快；②减少上下文长度，设置为 2048-4096 即可满足大部分对话需求；③如果有 NVIDIA 显卡，确保 Ollama 使用 GPU 推理（运行 nvidia-smi 检查）；④关闭其他大型应用释放内存；⑤笔记本用户保持电源连接并启用高性能模式；⑥Qwen3 和 Gemma4 都采用 MoE 架构，激活参数少，推理速度比传统 Dense 模型更快。'
       }
     ]
   }
@@ -1390,6 +1544,44 @@ export const appTutorials: AppTutorial[] = [
         tips: [
           '第一次测试建议问简单问题，方便排除网络、密钥和模型配置问题',
           '确认响应稳定后，再进入真实项目目录执行开发任务'
+        ]
+      },
+      {
+        title: '安装 ccswitch（推荐新手）',
+        content: 'ccswitch 是一个 Claude Code 配置切换工具，可以方便地在不同 AI 提供商之间切换，推荐新手安装使用。',
+        steps: [
+          {
+            title: '安装 ccswitch',
+            description: '使用 npm 全局安装 ccswitch 工具。',
+            code: 'npm install -g ccswitch',
+            items: [
+              '确保已安装 Node.js 和 npm',
+              '安装完成后重新打开终端'
+            ]
+          },
+          {
+            title: '查看帮助信息',
+            description: '运行 ccswitch 查看可用命令。',
+            code: 'ccswitch --help',
+            items: [
+              'ccswitch 支持多种 AI 提供商切换',
+              '可以管理多个 API Key 配置'
+            ]
+          },
+          {
+            title: '切换 AI 提供商',
+            description: '使用 ccswitch 快速切换不同的 AI 提供商。',
+            code: 'ccswitch provider',
+            items: [
+              '支持 Anthropic、OpenAI、DeepSeek 等',
+              '切换后自动更新 Claude Code 配置'
+            ]
+          }
+        ],
+        tips: [
+          'ccswitch 可以帮助新手快速切换不同的 AI 模型',
+          '切换配置后需要重新启动 Claude Code',
+          'GitHub 地址：https://github.com/TomokiMatsubuchi/ccswitch'
         ]
       }
     ]

@@ -21,12 +21,34 @@ function badgeClass(type: string) {
 }
 
 function APICard({ api }: { api: APIConfig }) {
+  // 速览信息
+  const scenario = api.features.slice(0, 2).join('、');
+  const proxyInfo = api.proxy ? '需要代理' : '无需代理';
+  const targetUsers = api.proxy ? '企业/研究' : '初学者/开发者';
+
   return (
     <article className="flex min-h-52 flex-col rounded-lg border bg-card p-5 transition-colors hover:border-foreground/30">
       <div className="mb-3 flex items-start justify-between gap-3">
         <h3 className="font-semibold">{api.name}</h3>
         <Badge variant="outline" className={badgeClass(api.badge.type)}>{api.badge.text}</Badge>
       </div>
+
+      {/* 速览信息 */}
+      <div className="mb-3 space-y-1 text-xs text-muted-foreground">
+        <div className="flex items-center gap-2">
+          <span className="font-medium text-foreground">适用：</span>
+          <span>{scenario}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="font-medium text-foreground">网络：</span>
+          <span>{proxyInfo}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="font-medium text-foreground">推荐：</span>
+          <span>{targetUsers}</span>
+        </div>
+      </div>
+
       <p className="flex-1 text-sm leading-6 text-muted-foreground">{api.desc}</p>
       <div className="mt-5 flex gap-2">
         <a href={api.url} target="_blank" rel="noopener noreferrer" className="flex-1">
@@ -128,6 +150,29 @@ export default function CloudAPIPage() {
         </div>
 
         <div className="mb-8 space-y-4">
+          {/* 快速决策条 */}
+          <div className="rounded-lg border bg-card p-4">
+            <p className="text-sm font-medium mb-3">我想做：</p>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { label: '代码生成', query: '代码' },
+                { label: '多模态检索', query: '多模态' },
+                { label: '长文本处理', query: '长文本' },
+                { label: '数学推理', query: '推理' },
+                { label: '免费试用', query: '免费' },
+              ].map((item) => (
+                <Button
+                  key={item.label}
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setSearchQuery(item.query)}
+                >
+                  {item.label}
+                </Button>
+              ))}
+            </div>
+          </div>
+
           <div className="relative max-w-xl">
             <Input
               type="text"

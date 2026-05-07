@@ -9,6 +9,20 @@ export const metadata: Metadata = {
   title: '常见问题 FAQ',
   description:
     'AI API 接入全流程 FAQ：涵盖注册验证、支付方式、API Key 安全、调用限制、代理选择等高频问题，帮助新手快速解决 API 使用中的常见障碍。',
+  keywords: [
+    'API常见问题',
+    'API Key安全',
+    'API调用限制',
+    'API报错怎么办',
+    'API注册验证',
+    'API支付方式',
+    'API代理选择',
+    'API免费额度',
+    '429错误解决',
+    'API接入问题',
+    'AI API FAQ',
+    'API使用教程',
+  ],
   alternates: { canonical: 'https://apiuspro.cn/faq' },
   openGraph: {
     title: '常见问题 FAQ | API知识站',

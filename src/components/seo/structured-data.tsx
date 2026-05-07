@@ -190,3 +190,57 @@ export function TechArticleSchema({
     />
   );
 }
+
+// ==================== HowTo Schema (用于教程指南) ====================
+interface HowToStep {
+  name: string;
+  text: string;
+  image?: string;
+  url?: string;
+}
+
+export function HowToSchema({
+  name,
+  description,
+  steps,
+  totalTime,
+  estimatedCost,
+  supply,
+  tool,
+}: {
+  name: string;
+  description: string;
+  steps: HowToStep[];
+  totalTime?: string;
+  estimatedCost?: string;
+  supply?: string[];
+  tool?: string[];
+}) {
+  const jsonLd: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name,
+    description,
+    step: steps.map((step, index) => ({
+      '@type': 'HowToStep',
+      position: index + 1,
+      name: step.name,
+      text: step.text,
+      ...(step.image && { image: step.image }),
+      ...(step.url && { url: step.url }),
+    })),
+    inLanguage: 'zh-CN',
+  };
+
+  if (totalTime) jsonLd.totalTime = totalTime;
+  if (estimatedCost) jsonLd.estimatedCost = estimatedCost;
+  if (supply) jsonLd.supply = supply.map(s => ({ '@type': 'HowToSupply', name: s }));
+  if (tool) jsonLd.tool = tool.map(t => ({ '@type': 'HowToTool', name: t }));
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}

@@ -125,32 +125,6 @@ export default function TutorialPage() {
             emptyText="没有找到匹配的需代理 API 教程"
           />
         </div>
-
-        <div className="mt-10 rounded-lg border bg-card p-6">
-          <h3 className="font-semibold">添加新 AI 购买教程模板</h3>
-          <div className="mt-4 overflow-x-auto rounded-md border bg-muted/50 p-4 text-sm">
-            <pre className="whitespace-pre-wrap text-muted-foreground">{`{
-  id: 'your-api-id',
-  name: 'API名称',
-  desc: 'API描述信息',
-  url: 'https://xxx.com/',
-  proxy: false,
-  badge: { text: '免费', type: 'success' },
-  tutorial: {
-    title: 'XXX购买教程',
-    steps: [
-      { title: '步骤标题', description: '步骤描述', items: ['操作1', '操作2'] }
-    ],
-    tips: ['提示1'],
-    warnings: ['警告1'],
-    advantages: ['优势1']
-  }
-}`}</pre>
-          </div>
-          <p className="mt-4 text-sm text-muted-foreground">
-            修改文件：<code className="rounded bg-muted px-2 py-1">src/lib/api-config.ts</code>
-          </p>
-        </div>
       </div>
     </SidebarLayout>
   );

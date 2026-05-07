@@ -52,5 +52,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticPages, ...apiPages, ...tutorialPages, ...reviewPages, ...appPages];
+  // 场景推荐页
+  const useCasePages: MetadataRoute.Sitemap = [
+    { url: `${BASE_URL}/use-case`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${BASE_URL}/use-case/coding`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${BASE_URL}/use-case/knowledge`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
+  ];
+
+  return [...staticPages, ...apiPages, ...tutorialPages, ...reviewPages, ...appPages, ...useCasePages];
 }
