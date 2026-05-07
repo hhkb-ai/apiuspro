@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next';
 import { apiList, proxyServices, appTutorials } from '@/lib/api-config';
 import { reviewDetails } from '@/lib/review-config';
+import { getAllUseCaseIds } from '@/lib/use-case-config';
 
 const BASE_URL = 'https://apiuspro.cn';
 
@@ -8,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const allAPIs = [...apiList, ...proxyServices];
   const apisWithTutorial = apiList.filter((a: { tutorial?: unknown }) => a.tutorial);
   const reviewSlugs = Object.keys(reviewDetails);
+  const useCaseIds = getAllUseCaseIds();
   const now = new Date();
 
   // 静态页面
@@ -53,11 +55,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   // 场景推荐页
-  const useCasePages: MetadataRoute.Sitemap = [
+  const useCaseListPage: MetadataRoute.Sitemap = [
     { url: `${BASE_URL}/use-case`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${BASE_URL}/use-case/coding`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${BASE_URL}/use-case/knowledge`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
   ];
+  const useCaseDetailPages: MetadataRoute.Sitemap = useCaseIds.map(id => ({
+    url: `${BASE_URL}/use-case/${id}`,
+    lastModified: now,
+    changeFrequency: 'monthly' as const,
+    priority: 0.8,
+  }));
 
-  return [...staticPages, ...apiPages, ...tutorialPages, ...reviewPages, ...appPages, ...useCasePages];
+  return [...staticPages, ...apiPages, ...tutorialPages, ...reviewPages, ...appPages, ...useCaseListPage, ...useCaseDetailPages];
 }

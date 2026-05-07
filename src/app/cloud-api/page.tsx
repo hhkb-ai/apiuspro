@@ -241,6 +241,7 @@ export default function CloudAPIPage() {
             <li>点击官网入口可直接访问服务商控制台或官网。</li>
             <li>无需代理类 API 更适合初学者快速试用，部分服务提供免费额度。</li>
             <li>需要代理类 API 功能强，但通常需要稳定网络和国际支付方式。</li>
+            <li>不知道选哪个？试试 <Link href="/use-case" className="text-foreground hover:underline">按场景推荐</Link>，根据实际用途找到最合适的 API。</li>
           </ul>
         </div>
       </div>

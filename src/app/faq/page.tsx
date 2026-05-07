@@ -107,6 +107,9 @@ export default function FAQPage() {
                 <Link href="/cloud-api">
                   <Button variant="outline">浏览 API 列表</Button>
                 </Link>
+                <Link href="/use-case">
+                  <Button variant="outline">按场景推荐</Button>
+                </Link>
               </div>
             </CardContent>
           </Card>

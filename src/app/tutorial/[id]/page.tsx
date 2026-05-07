@@ -333,6 +333,17 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
               </div>
             </div>
           )}
+
+          {/* 场景推荐 */}
+          <div className="mx-8 mb-8 border-t border-border pt-6">
+            <h3 className="mb-3 text-base font-semibold text-foreground">不知道选哪个 API？</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              按实际使用场景选择，找到最适合你的模型。
+            </p>
+            <Link href="/use-case">
+              <Button variant="outline" size="sm">查看场景推荐 &#8594;</Button>
+            </Link>
+          </div>
         </main>
 
         {/* 右侧 On this page 目录 */}

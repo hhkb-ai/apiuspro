@@ -248,7 +248,7 @@ console.log(response.choices[0].message.content);`}</code>
         )}
 
         {relatedAPIs.length > 0 && (
-          <section>
+          <section className="mb-8">
             <h2 className="mb-4 text-xl font-semibold tracking-tight">相关 API 推荐</h2>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               {relatedAPIs.map((related) => (
@@ -267,6 +267,35 @@ console.log(response.choices[0].message.content);`}</code>
             </div>
           </section>
         )}
+
+        <section>
+          <h2 className="mb-4 text-xl font-semibold tracking-tight">适用场景</h2>
+          <div className="rounded-lg border bg-card p-6">
+            <p className="text-sm text-muted-foreground mb-4">
+              想知道 {api.name} 适合什么场景？查看按用途分类的推荐：
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <Link href="/use-case/coding">
+                <Button variant="outline" size="sm">编程开发</Button>
+              </Link>
+              <Link href="/use-case/knowledge">
+                <Button variant="outline" size="sm">知识库</Button>
+              </Link>
+              <Link href="/use-case/content-creation">
+                <Button variant="outline" size="sm">内容创作</Button>
+              </Link>
+              <Link href="/use-case/chatbot">
+                <Button variant="outline" size="sm">智能客服</Button>
+              </Link>
+              <Link href="/use-case/translation">
+                <Button variant="outline" size="sm">翻译</Button>
+              </Link>
+              <Link href="/use-case/education">
+                <Button variant="outline" size="sm">教育辅导</Button>
+              </Link>
+            </div>
+          </div>
+        </section>
       </div>
     </SidebarLayout>
   );
