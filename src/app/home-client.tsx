@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
@@ -61,35 +61,62 @@ function accessText(proxy?: boolean) {
   return proxy ? '需要代理' : '无需代理';
 }
 
+// 自定义防抖 Hook
+function useDebounce<T>(value: T, delay = 300): T {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+  return debounced;
+}
+
 export default function HomeClient() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
 
-  const searchResults = useMemo(() => {
-    if (!searchQuery.trim()) return { apis: [], tutorials: [], pages: [], apps: [] };
+  // 防抖处理，避免每次按键都触发搜索计算
+  const debouncedQuery = useDebounce(searchQuery, 200);
 
-    const q = searchQuery.toLowerCase().trim();
+  // 统一规范化，避免重复调用 toLowerCase/trim
+  const normalizedQuery = useMemo(
+    () => debouncedQuery.toLowerCase().trim(),
+    [debouncedQuery]
+  );
+
+  // 搜索结果和精确匹配合并到一个 useMemo，共用同一个 normalizedQuery
+  const { searchResults, exactMatch } = useMemo(() => {
+    if (!normalizedQuery) {
+      return {
+        searchResults: { apis: [], tutorials: [], pages: [], apps: [] },
+        exactMatch: null,
+      };
+    }
+
+    const matchesQuery = (text: string) => text.toLowerCase().includes(normalizedQuery);
+
     return {
-      apis: apiList
-        .filter(api => api.name.toLowerCase().includes(q) || api.desc.toLowerCase().includes(q))
-        .slice(0, 4),
-      tutorials: apiList
-        .filter(api => api.tutorial && api.name.toLowerCase().includes(q))
-        .slice(0, 3),
-      pages: pages.filter(page => page.name.toLowerCase().includes(q) || page.desc.toLowerCase().includes(q)),
-      apps: appTutorials
-        .filter(app => app.name.toLowerCase().includes(q) || app.desc.toLowerCase().includes(q))
-        .slice(0, 3),
+      searchResults: {
+        apis: apiList
+          .filter(api => matchesQuery(api.name) || matchesQuery(api.desc))
+          .slice(0, 4),
+        tutorials: apiList
+          .filter(api => api.tutorial && (matchesQuery(api.name) || matchesQuery(api.desc)))
+          .slice(0, 3),
+        pages: pages
+          .filter(page => matchesQuery(page.name) || matchesQuery(page.desc)),
+        apps: appTutorials
+          .filter(app => matchesQuery(app.name) || matchesQuery(app.desc))
+          .slice(0, 3),
+      },
+      exactMatch: apiList.find(
+        api =>
+          api.name.toLowerCase() === normalizedQuery ||
+          api.id.toLowerCase() === normalizedQuery
+      ) ?? null,
     };
-  }, [searchQuery]);
-
-  const exactMatch = searchQuery.trim()
-    ? apiList.find(api =>
-        api.name.toLowerCase() === searchQuery.toLowerCase().trim() ||
-        api.id.toLowerCase() === searchQuery.toLowerCase().trim(),
-      )
-    : null;
+  }, [normalizedQuery]);
 
   return (
     <div className="min-h-screen bg-background">
