@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { WebSiteSchema, OrganizationSchema } from '@/components/seo/structured-data';
+import { ThemeProvider } from '@/components/theme-provider';
 import DevInspector from '@/components/dev-inspector';
 import './globals.css';
 
@@ -26,6 +27,14 @@ export const metadata: Metadata = {
     'API代充',
     'API免费额度',
     'API注册教程',
+    'AI编程助手推荐',
+    '写代码用哪个AI',
+    'AI数据分析工具',
+    '个人知识库AI',
+    'Claude和GPT哪个好',
+    '国产AI API推荐',
+    'AI API场景推荐',
+    'AI API对比',
   ],
   authors: [{ name: 'API知识站' }],
   generator: 'Next.js',
@@ -68,12 +77,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN">
+    <html lang="zh-CN" suppressHydrationWarning>
       <body className={`antialiased`}>
-        <DevInspector />
-        <WebSiteSchema />
-        <OrganizationSchema />
-        {children}
+        <ThemeProvider>
+          <DevInspector />
+          <WebSiteSchema />
+          <OrganizationSchema />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

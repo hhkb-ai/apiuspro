@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { ThemeToggle } from '@/components/theme-toggle';
 import { apiList, appTutorials } from '@/lib/api-config';
 
 const pages = [
@@ -192,10 +192,10 @@ function SuggestionGroup({
             aria-selected={false}
             onClick={onSelect}
             onKeyDown={(e) => handleItemKeyDown(e, flatIndex)}
-            className="flex flex-col gap-0.5 px-4 py-3 transition-colors hover:bg-muted/70 focus:bg-muted/70 focus:outline-none active:bg-muted/90"
+            className="flex flex-col gap-0.5 px-3 py-2.5 transition-colors hover:bg-muted/70 focus:bg-muted/70 focus:outline-none active:bg-muted/90 sm:px-4 sm:py-3"
           >
-            <p className="truncate text-sm font-medium">{item.name}</p>
-            <p className="truncate text-xs text-muted-foreground">{item.desc}</p>
+            <p className="truncate text-sm font-medium sm:text-base">{item.name}</p>
+            <p className="truncate text-xs text-muted-foreground sm:text-sm">{item.desc}</p>
           </Link>
         );
       })}
@@ -301,7 +301,7 @@ export default function HomeClient() {
               <Link
                 key={link.name}
                 href={link.href}
-                className="shrink-0 rounded-md px-3 py-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                className="shrink-0 rounded-md px-2 py-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground sm:px-3 sm:py-2"
               >
                 {link.name}
               </Link>
@@ -311,11 +311,14 @@ export default function HomeClient() {
       </header>
 
       <main>
-        <section className="px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
+        <section className="px-4 py-8 sm:px-6 sm:py-14 lg:px-8">
           <div className="mx-auto max-w-6xl">
             <div className="mx-auto max-w-4xl text-center">
-              <div className="mb-5 inline-flex rounded-full border bg-card px-4 py-1.5 text-sm text-muted-foreground">
-                AI API 选型、购买、接入一站整理
+              <div className="mb-5 inline-flex items-center gap-2">
+                <span className="inline-flex rounded-full border bg-card px-4 py-1.5 text-sm text-muted-foreground">
+                  AI API 选型、购买、接入一站整理
+                </span>
+                <ThemeToggle />
               </div>
               <h1 className="mx-auto max-w-4xl text-3xl font-semibold leading-[1.18] sm:text-4xl lg:text-5xl">
                 <span className="block">更快找到可用的 AI API</span>
@@ -326,9 +329,9 @@ export default function HomeClient() {
               </p>
             </div>
 
-            <div ref={containerRef} className="relative mx-auto mt-9 max-w-4xl">
+            <div ref={containerRef} className="relative mx-auto mt-6 px-1 sm:mt-9 sm:max-w-4xl sm:px-0">
               <p className="mb-3 text-center text-sm font-medium text-foreground">搜索 API 或工具名称</p>
-              <div className="flex gap-3 rounded-lg border bg-card p-2 shadow-sm">
+              <div className="flex gap-2 rounded-lg border bg-card p-1.5 shadow-sm sm:gap-3 sm:p-2">
                 <input
                   ref={inputRef}
                   type="search"
@@ -347,10 +350,10 @@ export default function HomeClient() {
                   aria-autocomplete="list"
                   aria-expanded={showSuggestions && hasResults}
                   aria-controls="search-suggestions"
-                  className="h-12 flex-1 border-0 bg-transparent px-4 text-base shadow-none focus-visible:ring-0"
+                  className="h-10 flex-1 border-0 bg-transparent px-3 text-base shadow-none focus-visible:ring-0 sm:h-12 sm:px-4"
                 />
                 <Button
-                  className="h-12 px-7"
+                  className="h-10 px-4 text-sm sm:h-12 sm:px-7 sm:text-base"
                   onClick={handleSearch}
                   disabled={!normalizedQuery}
                   aria-label="执行搜索"
@@ -371,7 +374,7 @@ export default function HomeClient() {
                     role="listbox"
                     aria-label="搜索建议"
                     onMouseDown={(e) => e.preventDefault()}
-                    className="absolute left-0 right-0 top-full z-10 mt-2 max-h-[60vh] overflow-y-auto overscroll-contain rounded-lg border bg-card shadow-lg"
+                    className="absolute left-0 right-0 top-full z-10 mt-2 max-h-[50vh] overflow-y-auto overscroll-contain rounded-lg border bg-card shadow-lg sm:max-h-[480px]"
                   >
                     {hasResults ? (
                       <>
