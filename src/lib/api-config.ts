@@ -1390,41 +1390,63 @@ export const appTutorials: AppTutorial[] = [
         steps: [
           {
             title: '下载 Node.js 安装包',
-            description: '访问 Node.js 官网，下载 Windows Installer (.msi) 安装程序。',
+            description: '访问 Node.js 官网下载页面，选择 LTS（长期支持）版本的 Windows Installer (.msi)。',
             image: '/images/tutorial/claude-code-pdf-node.png',
             items: [
-              '官网地址：https://nodejs.org/zh-cn/download',
-              '双击 .msi 文件，按默认流程一路 Next 到 Finish',
-              '安装时勾选 Automatically install the necessary tools'
+              '打开官网：https://nodejs.org/zh-cn/download',
+              '页面会自动识别你的系统，点击下载 Windows Installer (.msi) 的 LTS 版本',
+              '如果页面没有自动识别，手动选择 Windows → x64 → .msi'
+            ]
+          },
+          {
+            title: '运行安装程序',
+            description: '双击下载好的 .msi 文件，按默认选项一路安装即可。',
+            image: '/images/tutorial/claude-code-pdf-node.png',
+            items: [
+              '双击 .msi 文件启动安装向导',
+              '勾选 I accept the terms in the License Agreement',
+              '安装路径保持默认，直接点 Next',
+              '勾选 Automatically install the necessary tools（推荐）',
+              '点击 Install → Finish 完成安装'
             ]
           }
         ],
         tips: [
           'Node.js 安装完成后会自带 npm，后续安装 Claude Code 会用到 npm',
-          '安装完成后重新打开终端，避免旧终端读取不到环境变量'
+          '安装完成后必须重新打开终端，否则旧终端读取不到 node 命令'
         ]
       },
       {
         title: '安装 Git Bash',
-        content: 'Claude Code 在 Windows 上依赖 Bash 环境，建议安装 Git for Windows，并使用附带的 Git Bash。',
+        content: 'Claude Code 在 Windows 上依赖 Bash 环境，建议安装 Git for Windows 并使用附带的 Git Bash。',
         steps: [
           {
-            title: '下载并安装 Git',
-            description: '下载 Git for Windows x64 Setup，保持默认选项安装即可。',
+            title: '下载 Git 安装包',
+            description: '访问 Git 官网下载页面，下载 Windows 版本的安装程序。',
             image: '/images/tutorial/claude-code-pdf-git.png',
             items: [
-              '官网地址：https://git-scm.com/install/windows',
-              '选择 Git for Windows/x64 Setup',
-              '双击安装包，按默认选项完成安装'
+              '打开官网：https://git-scm.com/install/windows',
+              '页面会自动开始下载 Git for Windows/x64 Setup',
+              '如果没有自动下载，点击页面上的 Click here to download 手动下载'
+            ]
+          },
+          {
+            title: '运行安装程序',
+            description: '双击下载好的 Git 安装包，保持默认选项一路安装。',
+            image: '/images/tutorial/claude-code-pdf-git.png',
+            items: [
+              '双击安装包启动安装向导',
+              '所有选项保持默认，一路点 Next 直到 Install',
+              '安装完成后点击 Finish'
             ]
           }
         ],
         tips: [
-          'Git Bash 会提供类 Linux 的命令行环境',
-          '后续运行 Claude Code 时，优先使用 Git Bash 或新打开的终端'
+          'Git Bash 会提供类 Linux 的命令行环境，比 CMD 更好用',
+          '安装完成后在任意文件夹右键可以看到 Git Bash Here 选项'
         ],
         warnings: [
-          '只用 Windows 默认 CMD/PowerShell 可能会遇到兼容问题'
+          '只用 Windows 默认 CMD/PowerShell 可能会遇到兼容问题，建议使用 Git Bash'
         ]
       },
       {
