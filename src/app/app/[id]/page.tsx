@@ -9,7 +9,7 @@ import { BreadcrumbSchema, ArticleSchema } from '@/components/seo/structured-dat
 
 /* ─── RichText: 解析 `code` 【重点】 标记 ─── */
 function RichText({ text, className = '' }: { text: string; className?: string }) {
-  const parts = text.split(/(`[^`]+`|【[^】]+】)/g);
+  const parts = text.split(/(`[^`]+`|【[^】]+】|(https?:\/\/[^\s]+))/g);
   return (
     <span className={className}>
       {parts.map((part, i) => {
@@ -25,6 +25,13 @@ function RichText({ text, className = '' }: { text: string; className?: string }
             <strong key={i} className="rounded bg-muted px-1 font-semibold text-foreground">
               {part}
             </strong>
+          );
+        }
+        if (part.startsWith('http://') || part.startsWith('https://')) {
+          return (
+            <a key={i} href={part} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">
+              {part}
+            </a>
           );
         }
         return <span key={i}>{part}</span>;

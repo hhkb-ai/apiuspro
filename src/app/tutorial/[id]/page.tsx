@@ -7,6 +7,25 @@ import { apiList, getAPIById, SHOW_PROXY_CONTENT, type APIConfig } from '@/lib/a
 import { BreadcrumbSchema, TechArticleSchema } from '@/components/seo/structured-data';
 import { CodeBlock } from '@/components/tutorial/CodeBlock';
 
+// 将文本中的 URL 转换为可点击链接
+function LinkText({ text }: { text: string }) {
+  const parts = text.split(/(https?:\/\/[^\s]+)/g);
+  return (
+    <>
+      {parts.map((part, i) => {
+        if (part.startsWith('http://') || part.startsWith('https://')) {
+          return (
+            <a key={i} href={part} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">
+              {part}
+            </a>
+          );
+        }
+        return <span key={i}>{part}</span>;
+      })}
+    </>
+  );
+}
+
 // 生成静态路径
 export function generateStaticParams() {
   const apisWithTutorial = apiList.filter(api => api.tutorial);
@@ -255,10 +274,10 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                             {hasColon ? (
                               <>
                                 <strong className="font-semibold text-foreground">{item.substring(0, colonIdx + 1)}</strong>
-                                {item.substring(colonIdx + 1)}
+                                <LinkText text={item.substring(colonIdx + 1)} />
                               </>
                             ) : (
-                              item
+                              <LinkText text={item} />
                             )}
                           </span>
                         </li>
@@ -294,7 +313,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                   <p className="mb-1 text-[13px] font-semibold text-sky-800">使用提示</p>
                   {tutorial.tips.map((tip, index) => (
                     <p key={index} className="pl-5 text-sm leading-6 text-sky-700">
-                      {tip}
+                      <LinkText text={tip} />
                     </p>
                   ))}
                 </div>
@@ -305,7 +324,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                   <p className="mb-1 text-[13px] font-semibold text-amber-800">注意事项</p>
                   {tutorial.warnings.map((warning, index) => (
                     <p key={index} className="text-sm text-amber-700 leading-6 pl-5">
-                      {warning}
+                      <LinkText text={warning} />
                     </p>
                   ))}
                 </div>

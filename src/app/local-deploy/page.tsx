@@ -2,6 +2,25 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { BreadcrumbSchema, HowToSchema, ArticleSchema } from '@/components/seo/structured-data';
 
+// 将文本中的 URL 转换为可点击链接
+function LinkText({ text }: { text: string }) {
+  const parts = text.split(/(https?:\/\/[^\s]+)/g);
+  return (
+    <>
+      {parts.map((part, i) => {
+        if (part.startsWith('http://') || part.startsWith('https://')) {
+          return (
+            <a key={i} href={part} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">
+              {part}
+            </a>
+          );
+        }
+        return <span key={i}>{part}</span>;
+      })}
+    </>
+  );
+}
+
 export const metadata: Metadata = {
   title: 'AI大模型本地部署教程 2026 | Ollama、Gemma 4、Qwen笔记本部署指南',
   description:
@@ -386,7 +405,7 @@ export default function LocalDeployPage() {
                     {step.items.map((item, itemIdx) => (
                       <li key={itemIdx} className="flex items-start gap-2 text-sm text-muted-foreground">
                         <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-muted-foreground/50" />
-                        <span className="leading-6">{item}</span>
+                        <span className="leading-6"><LinkText text={item} /></span>
                       </li>
                     ))}
                   </ul>
@@ -412,14 +431,14 @@ export default function LocalDeployPage() {
                 {/* 警告 */}
                 {step.warning && (
                   <div className="my-4 rounded-lg border border-amber-200 bg-amber-50 px-5 py-3 text-sm leading-6 text-amber-800">
-                    注意：{step.warning}
+                    注意：<LinkText text={step.warning} />
                   </div>
                 )}
 
                 {/* 提示 */}
                 {step.tip && (
                   <div className="my-4 rounded-lg border border-blue-200 bg-blue-50 px-5 py-3 text-sm leading-6 text-blue-800">
-                    提示：{step.tip}
+                    提示：<LinkText text={step.tip} />
                   </div>
                 )}
               </section>
