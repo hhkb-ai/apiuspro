@@ -14,6 +14,7 @@ interface TutorialStep {
   codeLanguage?: string;
   codeExplanation?: string;
   warning?: string;
+  important?: boolean;
 }
 
 interface TutorialData {
@@ -41,18 +42,25 @@ export function TutorialCard({ id, tutorial }: TutorialCardProps) {
         <div className="space-y-6">
           {/* 步骤 */}
           {tutorial.steps.map((step, index) => (
-            <div key={index} className="rounded-lg border bg-muted/30 p-4">
+            <div key={index} className={`rounded-lg border p-4 ${step.important ? 'border-amber-300 bg-amber-50/50 dark:border-amber-700 dark:bg-amber-950/30' : 'bg-muted/30'}`}>
               <div className="flex items-start gap-4">
                 {/* 步骤编号 */}
                 <div className="flex-shrink-0">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-foreground text-sm font-bold text-background">
+                  <div className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold ${step.important ? 'bg-amber-500 text-white' : 'bg-foreground text-background'}`}>
                     {index + 1}
                   </div>
                 </div>
                 
                 <div className="flex-1 space-y-3">
                   <div>
-                    <h4 className="font-semibold">{step.title}</h4>
+                    <h4 className="font-semibold">
+                      {step.title}
+                      {step.important && (
+                        <span className="ml-2 inline-flex items-center rounded-full bg-amber-500 px-2 py-0.5 text-[10px] font-bold text-white">
+                          重要
+                        </span>
+                      )}
+                    </h4>
                     <p className="text-sm text-muted-foreground">{step.description}</p>
                   </div>
 

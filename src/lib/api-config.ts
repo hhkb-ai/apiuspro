@@ -8,6 +8,7 @@ export interface TutorialStep {
   codeLanguage?: string;
   codeExplanation?: string;
   warning?: string;
+  important?: boolean;
 }
 
 export interface Tutorial {
@@ -54,7 +55,7 @@ export const apiList: APIConfig[] = [
           title: '注册小米账号',
           description: '使用小米账号登录 MiMo 开放平台。',
           items: [
-            '访问 MiMo 开放平台官网',
+            '访问 MiMo 开放平台官网：https://mimo.xiaomi.com',
             '使用手机号或邮箱注册小米账号',
             '完成账号登录'
           ]
@@ -71,6 +72,7 @@ export const apiList: APIConfig[] = [
         {
           title: '创建并保存 API Key',
           description: '在 API 管理页面创建密钥。',
+          important: true,
           items: [
             '进入「API Key 管理」页面',
             '点击「创建 API Key」',
@@ -135,7 +137,7 @@ print(response.choices[0].message.content)`,
           description: '先进入 DeepSeek 开放平台，用手机号或邮箱完成账号注册和登录。',
           image: '/images/tutorial/deepseek-docx-1.png',
           items: [
-            '访问 platform.deepseek.com',
+            '访问 DeepSeek 开放平台：https://platform.deepseek.com',
             '点击 Sign Up 或登录入口创建账号',
             '按页面提示完成手机号、邮箱或扫码登录'
           ]
@@ -154,6 +156,7 @@ print(response.choices[0].message.content)`,
         {
           title: '创建并保存 API Key',
           description: '在 API Keys 管理页生成 Bearer Token，生成后立刻复制保存。',
+          important: true,
           image: '/images/tutorial/deepseek-docx-3.png',
           items: [
             '进入 API Keys 管理页面',
@@ -244,7 +247,7 @@ print(response.choices[0].message.content)`,
           description: '使用通义千问 API 前，需要先完成阿里云账号注册与实名认证。',
           image: '/images/tutorial/qwen-docx-1.png',
           items: [
-            '访问 aliyun.com，使用手机号或邮箱注册账号',
+            '访问阿里云官网：https://aliyun.com，使用手机号或邮箱注册账号',
             '进入「账号管理」中的「账号认证」',
             '按个人或企业身份完成实名认证'
           ]
@@ -254,7 +257,7 @@ print(response.choices[0].message.content)`,
           description: '推荐从阿里云百炼平台进入，也可以使用 DashScope 灵积平台。',
           image: '/images/tutorial/qwen-docx-1.png',
           items: [
-            '进入 bailian.console.aliyun.com 或 dashscope.console.aliyun.com',
+            '进入 https://bailian.console.aliyun.com 或 https://dashscope.console.aliyun.com',
             '搜索或找到「通义千问」服务并点击开通',
             '新用户免费额度以控制台当前展示为准'
           ]
@@ -262,6 +265,7 @@ print(response.choices[0].message.content)`,
         {
           title: '创建并保存 API Key',
           description: '在 API-KEY 管理页面创建调用凭证，生成后立即保存。',
+          important: true,
           image: '/images/tutorial/qwen-docx-2.png',
           items: [
             '进入「API-KEY 管理」页面',
@@ -350,7 +354,7 @@ print(response.choices[0].message.content)`,
           description: '先打开智谱 AI 开放平台，从右上角进入登录或注册流程。',
           image: '/images/tutorial/zhipu-pdf-home.png',
           items: [
-            '访问 open.bigmodel.cn',
+            '访问智谱AI开放平台：https://open.bigmodel.cn',
             '点击右上角「登录 / 注册」',
             '确认进入 BigModel 控制台入口'
           ]
@@ -380,6 +384,7 @@ print(response.choices[0].message.content)`,
         {
           title: '创建并保存 API Key',
           description: '在控制台左侧找到 API 密钥管理或 Access Key，创建调用密钥。',
+          important: true,
           image: '/images/tutorial/zhipu-pdf-api-key.png',
           items: [
             '进入「API 密钥管理」或「Access Key」',
@@ -443,7 +448,7 @@ print(response.choices[0].message.content)`,
           description: '先准备好开放平台账号和本地调用环境，云端 API 不需要额外硬件。',
           image: '/images/tutorial/kimi-pdf-platform.png',
           items: [
-            '进入 platform.moonshot.cn 或 platform.kimi.ai',
+            '进入 https://platform.moonshot.cn 或 https://platform.kimi.ai',
             '使用手机号或企业邮箱注册并登录',
             '本地调试建议准备 Python 3.10+ 或 Node.js 环境'
           ]
@@ -451,6 +456,7 @@ print(response.choices[0].message.content)`,
         {
           title: '创建并保存 API Key',
           description: '在用户中心进入 API Keys 页面，新建密钥后立即保存。',
+          important: true,
           image: '/images/tutorial/kimi-pdf-api-key.png',
           items: [
             '点击「创建新密钥」或「Create New Key」',
@@ -569,7 +575,7 @@ print(completion.choices[0].message.content)`,
           description: '先注册腾讯云账号并完成认证，然后在混元大模型控制台开通服务。',
           image: '/images/tutorial/tencent-pdf-setup.png',
           items: [
-            '访问腾讯云官网注册账号，国内用户按提示完成实名认证',
+            '访问腾讯云官网注册账号：https://cloud.tencent.com，国内用户按提示完成实名认证',
             '登录后进入「混元大模型控制台」',
             '阅读并同意服务条款，点击「立即开通」'
           ]
@@ -577,6 +583,7 @@ print(completion.choices[0].message.content)`,
         {
           title: '创建并保存密钥',
           description: '在 API 密钥页面创建访问凭证，保存 SecretId 和 SecretKey。',
+          important: true,
           image: '/images/tutorial/tencent-pdf-api-key.png',
           items: [
             '进入 API 密钥页面，点击创建密钥',
@@ -674,7 +681,7 @@ print(completion.choices[0].message.content)`,
           title: '注册火山引擎账号',
           description: '先准备火山引擎账号，后续开通模型、创建密钥和查看账单都会在控制台完成。',
           items: [
-            '访问 volcengine.com 或豆包大模型官网入口',
+            '访问火山引擎官网：https://volcengine.com 或豆包大模型官网入口',
             '使用手机号、邮箱或企业账号注册并登录',
             '按页面提示完成实名认证，企业使用建议走企业认证'
           ]
@@ -693,6 +700,7 @@ print(completion.choices[0].message.content)`,
         {
           title: '创建并保存 API Key',
           description: '在 API Key 管理页面创建调用密钥，生成后立即复制保存到安全位置。',
+          important: true,
           items: [
             '进入「API Key 管理」或「密钥管理」页面',
             '点击创建密钥，为密钥添加便于识别的名称',
@@ -778,6 +786,7 @@ print(response.choices[0].message.content)`,
         {
           title: '了解 GPT-5.5 订阅套餐',
           description: '在购买前，先看清每种套餐的价格和区别，避免买错。目前 ChatGPT 提供四档订阅。',
+          important: true,
           items: [
             'Go · $8/月 — 仅可用 GPT-5.3，不能使用最新 GPT-5.5，适合尝鲜',
             'Plus · $20/月 — 可用 GPT-5.5 Standard 和 Thinking 模型，99% 个人用户最佳选择',
@@ -789,7 +798,7 @@ print(response.choices[0].message.content)`,
           title: '准备一：注册 OpenAI 账号',
           description: '没有账号就什么都买不了。先搞定这第一步。',
           items: [
-            '浏览器打开 chat.openai.com，点击 Sign up 用邮箱注册，按提示验证邮箱',
+            '浏览器打开 https://chat.openai.com，点击 Sign up 用邮箱注册，按提示验证邮箱',
             '国内手机号可能收不到验证短信。两个解决办法：',
             '使用海外手机号验证服务（有新号被封风险，自行承担，请选择合规平台）',
             '买成品号（最省事）：在可靠代充平台购买已注册好的现成账号，请选择合规平台'
@@ -800,7 +809,7 @@ print(response.choices[0].message.content)`,
           title: '准备二：合适的网络环境',
           description: 'ChatGPT 的网站和订阅页面在国内无法直接访问，需要合适的网络。',
           items: [
-            '确保可以顺畅访问 chat.openai.com 和 platform.openai.com',
+            '确保可以顺畅访问 OpenAI 官网：https://chat.openai.com 和 https://platform.openai.com',
             '建议使用稳定节点，避免频繁切换 IP',
             '不稳定的网络可能导致支付中途断开、账号被风控'
           ],
@@ -819,8 +828,9 @@ print(response.choices[0].message.content)`,
         {
           title: '路线一：官网直充（有境外信用卡）',
           description: '如果你有 Visa/Mastercard 国际卡，且网络能稳定访问 OpenAI 官网，这是最直接的购买方式。',
+          important: true,
           items: [
-            '打开 chat.openai.com → 登录 → 左下角头像 → My Plan 或 Upgrade to Plus',
+            '打开 https://chat.openai.com → 登录 → 左下角头像 → My Plan 或 Upgrade to Plus',
             '在套餐页面对比 Go / Plus / Pro / Pro 200，选好后点击 Upgrade',
             '输入卡号、有效期、CVV（卡片背面三位安全码）和账单地址',
             '确认金额无误后提交，几秒钟验证通过，账号即刻升级',
@@ -843,7 +853,7 @@ print(response.choices[0].message.content)`,
           items: [
             'API = 程序向 GPT-5.5 提问的"后门"，适合把 AI 嵌入自己的软件中',
             '按 Token 计费：GPT-5.5 输入 $5/百万、输出 $30/百万，一次简单任务成本 < 1 分钱',
-            'platform.openai.com → 登录 → Billing → 绑卡（与 ChatGPT 订阅是独立计费）',
+            'https://platform.openai.com → 登录 → Billing → 绑卡（与 ChatGPT 订阅是独立计费）',
             'API Keys → Create new secret key → 命名 → 创建 → 立刻复制保存'
           ],
           codeLanguage: 'python',
@@ -905,6 +915,7 @@ print(response.choices[0].message.content)`,
         {
           title: '先读风险提示：Claude 风控极严，封号率极高',
           description: 'Claude 的审核与风控极度严格。在开始购买前，务必了解以下事实。',
+          important: true,
           items: [
             '145 万个账号被封（仅 2025 年 7–12 月），风控审查 IP 和支付信息一致性',
             '新用户操作稍有不慎，刚付完款账号就可能被立刻封禁',
@@ -926,7 +937,7 @@ print(response.choices[0].message.content)`,
           title: '准备一：注册 Google 账号',
           description: 'Claude 使用 Google 账号一键登录，所以需要一个谷歌账号。',
           items: [
-            '浏览器打开 accounts.google.com/signup，按提示填写信息完成注册',
+            '浏览器打开 https://accounts.google.com/signup，按提示填写信息完成注册',
             '国内手机号可能收不到验证短信，可在可靠平台购买已注册好的 Google 账号'
           ]
         },
@@ -934,7 +945,7 @@ print(response.choices[0].message.content)`,
           title: '准备二：合适的网络环境',
           description: 'Claude 官网需要通过合适的网络才能稳定访问。',
           items: [
-            '确保可以顺畅访问 claude.ai',
+            '确保可以顺畅访问 Claude 官网：https://claude.ai',
             '建议使用稳定节点，避免频繁切换 IP',
             '账单地址、登录 IP、支付 IP 必须来自同一个国家，否则大概率触发风控被封'
           ],
@@ -953,8 +964,9 @@ print(response.choices[0].message.content)`,
         {
           title: '路线一：官网直充（有境外信用卡）',
           description: '如果你有国际信用卡，且网络能稳定访问 Claude 官网，这是最直接的购买方式。',
+          important: true,
           items: [
-            'claude.ai → Log in → Continue with Google → 用谷歌账号登录',
+            'https://claude.ai → Log in → Continue with Google → 用谷歌账号登录',
             '左下角头像 → Upgrade to Pro 或 Plans → 对比三档套餐 → Subscribe',
             '输入卡号、有效期、CVV 和账单地址',
             '关键：账单地址必须与 IP 所在国家一致，否则大概率被封',
@@ -976,7 +988,7 @@ print(response.choices[0].message.content)`,
           items: [
             'API = 程序向 Claude Opus 4.7 提问的"后门"，适合把 AI 嵌入自己的软件中',
             '按 Token 计费：Opus 4.7 输入 $5/百万 Token、输出 $25/百万 Token',
-            'console.anthropic.com → 登录 → API Keys → 创建新密钥 → 立刻复制保存'
+            'https://console.anthropic.com → 登录 → API Keys → 创建新密钥 → 立刻复制保存'
           ],
           codeLanguage: 'python',
           code: `# 先安装 anthropic 库：pip install anthropic
@@ -1039,6 +1051,7 @@ print(message.content)`,
         {
           title: '了解 Gemini 订阅套餐',
           description: '在购买前，先看清每种套餐的价格和区别，避免买错。目前个人用户主要通过 Google One 订阅 AI 服务。',
+          important: true,
           items: [
             'Free · 免费 — 能用 Gemini 3 Pro 但每日配额极低，基本是体验级',
             'AI Plus · $8/月 — 可用 Gemini 3 Pro，含 200GB 存储，可共享 5 位家庭成员，前 2 月半价',
@@ -1051,7 +1064,7 @@ print(message.content)`,
           title: '准备一：注册 Google 账号',
           description: '没有 Google 账号就什么都买不了。先搞定这第一步。',
           items: [
-            '浏览器打开 accounts.google.com/signup，按提示填写信息完成注册',
+            '浏览器打开 https://accounts.google.com/signup，按提示填写信息完成注册',
             '国内手机号可能收不到验证短信。两个解决办法：',
             '换网络节点：更换不同国家的网络环境后重试验证',
             '买成品号：在可靠平台购买已注册好的 Google 账号，注意甄别信誉'
@@ -1061,7 +1074,7 @@ print(message.content)`,
           title: '准备二：合适的网络环境',
           description: 'Gemini 的网页端和应用端都需要通过合适的网络才能稳定访问。',
           items: [
-            '确保可以顺畅访问 gemini.google.com',
+            '确保可以顺畅访问 Gemini 官网：https://gemini.google.com',
             '建议使用稳定节点，避免频繁切换 IP',
             '不稳定的网络可能导致支付中途断开、账号被风控'
           ],
@@ -1080,8 +1093,9 @@ print(message.content)`,
         {
           title: '路线一：Google One 官方直充（有境外卡/PayPal）',
           description: '如果你有国际信用卡或 PayPal，且网络能稳定访问 Google 服务，这是最直接的购买方式。',
+          important: true,
           items: [
-            'gemini.google.com → 登录 → 左下角或设置菜单 → 升级到 Gemini Advanced',
+            'https://gemini.google.com → 登录 → 左下角或设置菜单 → 升级到 Gemini Advanced',
             '对比套餐后点击"订阅"，填写信用卡信息或登录 PayPal',
             '注意：账单地址需与网络 IP 所在国家一致，否则容易被拒',
             '确认总额无误后提交，验证通过后账号立即升级，邮箱收到确认邮件'
@@ -1094,7 +1108,7 @@ print(message.content)`,
             'Google Play 下载 Gemini App → 登录 → 设置或侧边栏 → 找到升级入口',
             '选择套餐，通过 Google Play 余额或绑定支付方式完成付款',
             '技巧：将国内卡绑为美区 Google Play 付款方式，部分用户可成功订阅',
-            '也可在 gemini.google.com 网页端通过弹窗提示直接升级，流程同路线一'
+            '也可在 https://gemini.google.com 网页端通过弹窗提示直接升级，流程同路线一'
           ]
         },
         {
@@ -1319,7 +1333,7 @@ export const faqCategories = [
       },
       {
         question: 'Ollama 是什么？怎么安装？',
-        answer: 'Ollama 是最简单的本地大模型部署工具，支持一键安装和运行。安装步骤：①访问 ollama.ai 下载对应系统的安装包（Windows/macOS/Linux 都支持）；②双击安装，全程默认即可；③安装完成后打开终端，输入 ollama run qwen3:0.6b 即可下载并运行模型。Ollama 会自动管理模型下载、版本更新和 API 服务，非常适合新手。'
+        answer: 'Ollama 是最简单的本地大模型部署工具，支持一键安装和运行。安装步骤：①访问 https://ollama.ai 下载对应系统的安装包（Windows/macOS/Linux 都支持）；②双击安装，全程默认即可；③安装完成后打开终端，输入 ollama run qwen3:0.6b 即可下载并运行模型。Ollama 会自动管理模型下载、版本更新和 API 服务，非常适合新手。'
       },
       {
         question: '本地部署用哪个模型比较好？',
@@ -1386,224 +1400,295 @@ export const appTutorials: AppTutorial[] = [
     sections: [
       {
         title: '安装 Node.js',
-        content: 'Claude Code 是 JavaScript 编写的命令行工具，Windows 电脑需要先安装 Node.js 运行环境。',
+        content: 'Claude Code 是 JavaScript 编写的命令行工具，Windows 电脑需要先安装 Node.js 运行环境。Node.js 自带 npm 包管理器，后续安装 Claude Code 和其他工具都依赖它。建议选择 LTS（长期支持）版本，稳定性最好。',
         steps: [
           {
             title: '下载 Node.js 安装包',
-            description: '访问 Node.js 官网下载页面，选择 LTS（长期支持）版本的 Windows Installer (.msi)。',
+            description: '访问 Node.js 官网下载页面，选择 LTS（长期支持）版本的 Windows Installer (.msi)。LTS 版本经过充分测试，适合生产环境使用，而 Current 版本包含最新特性但可能存在兼容问题，不建议初学者使用。',
             image: '/images/tutorial/claude-code-pdf-node.png',
             items: [
               '打开官网：https://nodejs.org/zh-cn/download',
-              '页面会自动识别你的系统，点击下载 Windows Installer (.msi) 的 LTS 版本',
-              '如果页面没有自动识别，手动选择 Windows → x64 → .msi'
+              '页面会自动识别你的操作系统，首页会显示大号的 LTS 下载按钮，直接点击即可',
+              '如果没有自动识别，点击「下载」页签，找到 Windows Installer (.msi) 行，选择 LTS 版本',
+              '系统架构选择 x64（绝大多数现代电脑都是 64 位），如果你的电脑是 ARM 架构则选择 ARM64',
+              '下载的文件名类似 node-v22.x.x-x64.msi，大小约 30MB'
             ]
           },
           {
             title: '运行安装程序',
-            description: '双击下载好的 .msi 文件，按默认选项一路安装即可。',
+            description: '双击下载好的 .msi 文件启动安装向导。安装过程大约 1-2 分钟，按以下步骤操作。',
             image: '/images/tutorial/claude-code-pdf-node.png',
             items: [
-              '双击 .msi 文件启动安装向导',
-              '勾选 I accept the terms in the License Agreement',
-              '安装路径保持默认，直接点 Next',
-              '勾选 Automatically install the necessary tools（推荐）',
-              '点击 Install → Finish 完成安装'
+              '双击 .msi 文件，如果弹出 Windows 安全提示，点击「是」允许安装',
+              '欢迎界面：点击 Next 进入下一步',
+              '许可协议：勾选 I accept the terms in the License Agreement，点击 Next',
+              '安装路径：保持默认路径 C:\\Program Files\\nodejs\\ 即可，点击 Next',
+              '自定义安装：保持默认选项，点击 Next',
+              '工具安装：勾选 Automatically install the necessary tools（推荐），这会自动安装 Chocolatey 等辅助工具',
+              '点击 Install 开始安装，等待进度条完成',
+              '安装完成后点击 Finish 关闭向导'
+            ]
+          },
+          {
+            title: '验证安装是否成功',
+            description: '安装完成后，打开一个新的终端窗口，输入以下命令验证 Node.js 和 npm 是否正确安装。注意：必须是新开的终端，旧终端无法识别新安装的命令。',
+            code: 'node -v\nnpm -v',
+            items: [
+              'node -v 会显示版本号，如 v22.x.x，表示 Node.js 安装成功',
+              'npm -v 会显示 npm 版本号，如 10.x.x，表示包管理器可用',
+              '如果提示「不是内部或外部命令」，说明安装失败或未生效，请参考下方注意事项'
             ]
           }
         ],
         tips: [
-          'Node.js 安装完成后会自带 npm，后续安装 Claude Code 会用到 npm',
-          '安装完成后必须重新打开终端，否则旧终端读取不到 node 命令'
+          'Node.js 安装完成后会自带 npm 包管理器，后续安装 Claude Code 会用到 npm install -g 命令',
+          'LTS 版本的支持周期为 30 个月，足够覆盖日常开发需求，无需追求最新版本',
+          '安装过程中勾选 Automatically install the necessary tools 可以避免后续遇到编译依赖问题'
+        ],
+        warnings: [
+          '安装完成后必须关闭并重新打开终端（CMD / PowerShell / Git Bash），旧终端窗口读取不到新安装的 node 命令',
+          '如果之前安装过旧版 Node.js，建议先在「设置 → 应用」中卸载旧版本再安装新版，避免版本冲突',
+          '不要使用 Node.js Current 版本，某些 npm 包可能不兼容，选择 LTS 版本最稳妥'
         ]
       },
       {
         title: '安装 Git Bash',
-        content: 'Claude Code 在 Windows 上依赖 Bash 环境，建议安装 Git for Windows 并使用附带的 Git Bash。',
+        content: 'Claude Code 在 Windows 上依赖 Bash 环境，建议安装 Git for Windows 并使用附带的 Git Bash。Git Bash 提供了类 Linux 的命令行体验，支持常见的 Unix 命令（如 ls、cd、cat、grep），比 Windows 自带的 CMD 和 PowerShell 更适合开发使用。安装 Git 的同时会自动获得 Git Bash。',
         steps: [
           {
             title: '下载 Git 安装包',
-            description: '访问 Git 官网下载页面，下载 Windows 版本的安装程序。',
+            description: '访问 Git 官网下载页面，下载 Windows 版本的安装程序。官网会自动检测你的系统并推荐合适的版本。',
             image: '/images/tutorial/claude-code-pdf-git.png',
             items: [
               '打开官网：https://git-scm.com/install/windows',
-              '页面会自动开始下载 Git for Windows/x64 Setup',
-              '如果没有自动下载，点击页面上的 Click here to download 手动下载'
+              '页面会自动开始下载 Git for Windows/x64 Setup，文件名类似 Git-2.x.x-64-bit.exe',
+              '如果没有自动下载，点击页面上的 Click here to download link 手动触发下载',
+              '安装包大小约 60MB，下载需要一两分钟'
             ]
           },
           {
             title: '运行安装程序',
-            description: '双击下载好的 Git 安装包，保持默认选项一路安装。',
+            description: '双击下载好的 Git 安装包启动向导。Git 的安装界面步骤较多，但大多数保持默认即可，以下是关键步骤的详细说明。',
             image: '/images/tutorial/claude-code-pdf-git.png',
             items: [
-              '双击安装包启动安装向导',
-              '所有选项保持默认，一路点 Next 直到 Install',
-              '安装完成后点击 Finish'
+              'Information：直接点击 Next',
+              'Select Destination Location：保持默认路径，点击 Next',
+              'Select Components：保持默认勾选，点击 Next',
+              'Start Menu Folder：保持默认，点击 Next',
+              'Default Editor：选择 Use Visual Studio Code as Git\'s default editor（推荐），或保持默认的 Vim',
+              'Adjusting the name of the initial branch：选择 Let Git decide（默认即可），点击 Next',
+              'Adjusting your PATH environment：选择 Git from the command line and also from 3rd-party software（推荐选项，保持默认），点击 Next',
+              'Choosing SSH executable：选择 Use bundled OpenSSH（默认），点击 Next',
+              'Choosing HTTPS transport backend：选择 Use the OpenSSL library（默认），点击 Next',
+              'Configuring line ending conversions：选择 Checkout Windows-style, commit Unix-style line endings（默认），点击 Next',
+              'Configuring the terminal emulator：选择 Use MinTTY（推荐），它支持窗口缩放和字体调整，比 Windows\' default console 更好用',
+              'Choose the default behavior of git pull：选择 Default (fast-forward or merge)（默认），点击 Next',
+              'Choose a credential helper：选择 Git Credential Manager（默认），点击 Next',
+              'Configuring extra options：保持默认勾选，点击 Next',
+              'Configuring experimental options：保持默认（不勾选），点击 Install 开始安装',
+              '等待安装进度条完成，点击 Finish 关闭向导'
+            ]
+          },
+          {
+            title: '验证安装并打开 Git Bash',
+            description: '安装完成后，可以通过多种方式打开 Git Bash 来验证安装是否成功。',
+            code: 'git --version',
+            items: [
+              '方法一：在桌面或任意文件夹空白处右键，选择 Show more options → Git Bash Here（Windows 11）或直接看到 Git Bash Here（Windows 10）',
+              '方法二：按 Win 键，搜索 Git Bash，点击打开',
+              '方法三：打开 CMD 或 PowerShell，输入 git --version 验证',
+              '能显示类似 git version 2.x.x 的版本号就说明安装成功'
             ]
           }
         ],
         tips: [
-          'Git Bash 会提供类 Linux 的命令行环境，比 CMD 更好用',
-          '安装完成后在任意文件夹右键可以看到 Git Bash Here 选项'
+          'Git Bash 会提供类 Linux 的命令行环境，支持 ls、cd、cat、grep 等常用命令，比 CMD 更适合开发',
+          '安装完成后在任意文件夹右键可以看到 Git Bash Here 选项，可以直接在当前目录打开终端',
+          'Git Bash 的终端窗口（MinTTY）支持 Ctrl+Shift+C/V 进行复制粘贴，和 Windows 终端的操作一致',
+          '后续所有 Claude Code 相关操作都建议在 Git Bash 中执行，兼容性最好'
         ],
         warnings: [
-          '只用 Windows 默认 CMD/PowerShell 可能会遇到兼容问题，建议使用 Git Bash'
+          '只用 Windows 默认 CMD 或 PowerShell 运行 Claude Code 可能会遇到路径分隔符、权限等兼容问题，强烈建议使用 Git Bash',
+          '安装路径不要包含中文或特殊字符，否则可能导致部分功能异常',
+          '如果之前安装过旧版 Git，建议先卸载旧版再安装新版，避免 PATH 环境变量冲突'
         ]
       },
       {
         title: '安装 Claude Code',
-        content: '前置环境准备好后，在 Windows 终端中使用 npm 全局安装 Claude Code，并验证版本。',
+        content: '前置环境（Node.js 和 Git Bash）准备好后，在 Git Bash 中使用 npm 全局安装 Claude Code。安装完成后需要先跳过 onboarding 流程才能正常使用。',
         steps: [
           {
             title: '执行安装命令',
-            description: '打开 Windows 的 cmd 或 Git Bash，运行 npm 全局安装命令。',
+            description: '打开 Git Bash，运行以下 npm 全局安装命令。安装过程需要联网下载依赖，通常需要 1-3 分钟。',
             image: '/images/tutorial/claude-code-pdf-install.png',
-            code: 'npm install -g @anthropic-ai/claude-code'
+            code: 'npm install -g @anthropic-ai/claude-code',
+            items: [
+              '必须使用 Git Bash 执行，不要用 CMD 或 PowerShell',
+              '如果提示权限不足，在 Git Bash 中以管理员身份运行',
+              '安装过程中出现 WARN 警告可以忽略，不影响使用'
+            ]
           },
           {
             title: '验证安装结果',
-            description: '分别检查 Git、Node.js 和 Claude Code 是否安装成功。',
+            description: '安装完成后，分别检查三个工具是否正确安装。如果任何命令提示「不是内部或外部命令」，需要重新打开终端。',
             code: 'git -v\nnode -v\nclaude --version',
             items: [
-              '能显示版本号就代表对应工具已安装成功',
-              '如果提示命令不存在，重新打开终端或检查 PATH'
+              'git -v 显示 Git 版本号，如 git version 2.x.x',
+              'node -v 显示 Node.js 版本号，如 v22.x.x',
+              'claude --version 显示 Claude Code 版本号',
+              '三个命令都能正常输出版本号才算安装成功'
             ]
           },
           {
-            title: '启动 Claude Code',
-            description: '进入项目目录后执行 claude，打开 Claude Code 交互界面。',
-            code: 'claude'
+            title: '跳过 onboarding 流程',
+            description: '首次运行 claude 时会触发 onboarding 引导流程，国内环境可能遇到区域限制报错。直接修改配置文件跳过这一步。',
+            image: '/images/tutorial/claude-code-pdf-onboarding.png',
+            code: 'claude\n# 如果遇到区域限制或 onboarding 报错，按以下步骤处理：\n\n# 1. 先运行一次 claude，让它生成配置文件\n# 2. 找到配置文件并编辑\n# Windows 路径：C:\\Users\\你的用户名\\.claude.json\n# 在 JSON 中加入以下字段：\n"hasCompletedOnboarding": true',
+            items: [
+              '先运行一次 claude，让它自动生成 .claude.json 配置文件',
+              '配置文件路径：`C:\\Users\\你的用户名\\.claude.json`',
+              '用记事本或 VS Code 打开 .claude.json',
+              '在 JSON 对象中加入 `"hasCompletedOnboarding": true`',
+              '注意 JSON 格式：字段之间用逗号分隔，不要多逗号或少括号',
+              '保存后关闭终端，重新打开 Git Bash 再执行 claude'
+            ],
+            warning: '修改 JSON 前建议备份原文件，格式写错会导致 Claude Code 无法读取配置。'
           }
         ],
         tips: [
-          'Claude Code 可以直接修改代码文件、运行测试命令并根据报错继续修复',
-          '国内用户后续可接入 DeepSeek 等模型，降低调用成本'
-        ]
-      },
-      {
-        title: '处理区域限制提示',
-        content: '直接执行 claude 时，部分国内环境可能遇到区域校验或 onboarding 报错，可按 PDF 中的方法调整本地配置。',
-        steps: [
-          {
-            title: '找到 Claude 配置文件',
-            description: '配置文件通常位于用户目录下的 `.claude.json`。',
-            image: '/images/tutorial/claude-code-pdf-onboarding.png',
-            items: [
-              '路径示例：`C:\\Users\\你的用户名\\.claude.json`',
-              '如果文件不存在，先运行一次 claude 再检查'
-            ]
-          },
-          {
-            title: '添加 onboarding 配置',
-            description: '在 JSON 配置中加入 onboarding 完成标记，然后重新启动 Claude Code。',
-            code: '"hasCompletedOnboarding": true',
-            items: [
-              '修改 JSON 时注意逗号和括号格式',
-              '保存后关闭旧终端，重新打开再执行 claude'
-            ]
-          }
+          'Claude Code 可以直接修改代码文件、运行测试命令并根据报错继续修复，是强大的 AI 编程助手',
+          '安装完成后建议立即配置 ccswitch（见下一章），一键切换到适合国内使用的模型',
+          'Claude Code 的配置和数据都在用户目录下的 .claude 文件夹中'
         ],
         warnings: [
-          '配置项写错会导致 Claude Code 无法读取配置，修改前建议备份原文件'
+          '不要使用 Windows CMD 或 PowerShell 运行 Claude Code，路径分隔符和权限模型不同，容易出错',
+          '如果之前安装过旧版 Claude Code，先执行 npm uninstall -g @anthropic-ai/claude-code 卸载旧版'
         ]
       },
       {
-        title: '接入 DeepSeek 模型',
-        content: '为了降低使用成本，可以把 Claude Code 接入 DeepSeek API。先在 DeepSeek 开放平台创建 API Key，再写入 Claude 配置。',
+        title: '使用 ccswitch 配置模型（推荐）',
+        content: 'ccswitch 是一个 Claude Code 配置切换工具，可以一键完成模型接入，无需手动编辑配置文件。支持 DeepSeek、OpenAI、Anthropic 等多个提供商，推荐所有用户使用。下面以接入 DeepSeek 为例，演示完整流程。',
         steps: [
           {
             title: '获取 DeepSeek API Key',
-            description: '访问 DeepSeek 开放平台，注册/登录并完成实名认证，在 API Keys 页面创建密钥。',
+            description: '在使用 ccswitch 配置之前，需要先在 DeepSeek 开放平台创建一个 API Key。API Key 是调用模型服务的凭证，相当于密码，需要妥善保管。',
             image: '/images/tutorial/claude-code-pdf-deepseek-config.png',
             items: [
-              '访问 DeepSeek 开放平台',
-              '完成登录、实名认证和 API Key 创建',
-              '复制 API Key，后续写入 Claude 配置'
-            ]
-          },
-          {
-            title: '新建 settings.json',
-            description: '在用户目录下打开 `.claude` 文件夹，新建 `settings.json`，写入 DeepSeek 配置。',
-            code: `{
-  "env": {
-    "ANTHROPIC_AUTH_TOKEN": "YOUR_DEEPSEEK_API_KEY",
-    "ANTHROPIC_BASE_URL": "https://api.deepseek.com/anthropic",
-    "ANTHROPIC_MODEL": "deepseek-v4-pro"
-  }
-}`,
-            items: [
-              '路径示例：`C:\\Users\\你的用户名\\.claude\\settings.json`',
-              '把 YOUR_DEEPSEEK_API_KEY 替换成真实密钥',
-              '保存后重新打开终端'
+              '访问 DeepSeek 开放平台：https://platform.deepseek.com',
+              '注册账号并完成实名认证（国内平台，需要手机号验证）',
+              '登录后进入「API Keys」页面，点击「创建 API Key」',
+              '复制生成的 API Key，格式类似 sk-xxxxxxxxxxxxxxxx',
+              'API Key 只在创建时显示一次，务必立即复制保存',
+              '新注册用户通常会获得免费额度，足够日常测试使用'
             ],
-            warning: '不要把真实 API Key 上传到公开仓库或截图分享。'
-          }
-        ],
-        tips: [
-          'DeepSeek 模型适合日常开发测试，成本更容易控制',
-          '如果模型名后续变化，以 DeepSeek 控制台和官方文档为准'
-        ]
-      },
-      {
-        title: '启动并测试响应',
-        content: '完成配置后，重新打开终端执行 claude，用简单问题测试模型是否正常响应。',
-        steps: [
-          {
-            title: '启动 Claude Code 服务',
-            description: '重新打开一个新的终端，输入 claude。',
-            image: '/images/tutorial/claude-code-pdf-test.png',
-            code: 'claude'
+            warning: 'API Key 是敏感凭证，不要上传到公开仓库、截图分享或发送给他人。'
           },
-          {
-            title: '测试模型回复',
-            description: '在 Claude Code 页面里提问一个简单问题，例如比较 1.9 和 1.11 的大小。',
-            items: [
-              '模型能正常回答，说明 DeepSeek 接入成功',
-              '如果无响应，先检查 settings.json 路径、JSON 格式和 API Key',
-              '如果仍失败，再检查 DeepSeek 账户余额和模型名'
-            ]
-          }
-        ],
-        tips: [
-          '第一次测试建议问简单问题，方便排除网络、密钥和模型配置问题',
-          '确认响应稳定后，再进入真实项目目录执行开发任务'
-        ]
-      },
-      {
-        title: '安装 ccswitch（推荐新手）',
-        content: 'ccswitch 是一个 Claude Code 配置切换工具，可以方便地在不同 AI 提供商之间切换，推荐新手安装使用。',
-        steps: [
           {
             title: '安装 ccswitch',
-            description: '使用 npm 全局安装 ccswitch 工具。',
+            description: '使用 npm 全局安装 ccswitch 工具。ccswitch 会自动读取和修改 Claude Code 的配置文件，省去手动编辑 JSON 的麻烦。',
             code: 'npm install -g ccswitch',
             items: [
-              '确保已安装 Node.js 和 npm',
-              '安装完成后重新打开终端'
+              '确保已安装 Node.js 和 Claude Code（前面的步骤已完成）',
+              '安装完成后不需要额外配置，直接可用'
             ]
           },
           {
-            title: '查看帮助信息',
-            description: '运行 ccswitch 查看可用命令。',
-            code: 'ccswitch --help',
-            items: [
-              'ccswitch 支持多种 AI 提供商切换',
-              '可以管理多个 API Key 配置'
-            ]
-          },
-          {
-            title: '切换 AI 提供商',
-            description: '使用 ccswitch 快速切换不同的 AI 提供商。',
+            title: '切换到 DeepSeek 模型',
+            description: '运行 ccswitch provider 命令，在交互式界面中选择 DeepSeek 并填入 API Key。ccswitch 会自动完成所有配置，包括设置 API 地址、模型名称和认证信息。',
             code: 'ccswitch provider',
             items: [
-              '支持 Anthropic、OpenAI、DeepSeek 等',
-              '切换后自动更新 Claude Code 配置'
+              '运行命令后会显示可选的 AI 提供商列表',
+              '用方向键选择 DeepSeek，按回车确认',
+              '按提示粘贴你的 DeepSeek API Key',
+              'ccswitch 会自动更新 Claude Code 的 settings.json 配置文件',
+              '整个过程不需要手动编辑任何文件'
+            ]
+          },
+          {
+            title: '启动 Claude Code 测试',
+            description: '配置完成后，重新打开终端启动 Claude Code，用一个简单问题测试模型是否正常响应。',
+            image: '/images/tutorial/claude-code-pdf-test.png',
+            code: 'claude',
+            items: [
+              '关闭之前的终端，打开一个新的 Git Bash 窗口',
+              '输入 claude 启动 Claude Code',
+              '输入一个简单问题，例如：「请比较 1.9 和 1.11 哪个大」',
+              '模型能正常回答说明 DeepSeek 接入成功',
+              '如果无响应或报错，检查 API Key 是否正确、账户是否有余额'
             ]
           }
         ],
         tips: [
-          'ccswitch 可以帮助新手快速切换不同的 AI 模型',
-          '切换配置后需要重新启动 Claude Code',
-          'GitHub 地址：https://github.com/TomokiMatsubuchi/ccswitch'
+          'ccswitch 支持多个 AI 提供商：Anthropic（原版 Claude）、OpenAI、DeepSeek 等，随时可以切换',
+          '切换提供商后必须重新启动 Claude Code 才会生效',
+          'DeepSeek 模型适合日常开发测试，性价比高，是国内用户的首选',
+          'ccswitch GitHub 地址：https://github.com/TomokiMatsubuchi/ccswitch',
+          '确认模型响应稳定后，就可以进入真实项目目录执行开发任务了'
+        ],
+        warnings: [
+          '不要把真实 API Key 写在代码里或上传到 GitHub，泄露后他人可以盗用你的额度',
+          '如果切换提供商后 Claude Code 无响应，先检查新提供商的 API Key 是否有效、账户是否有余额',
+          'ccswitch 修改的是全局配置，切换后所有项目都会使用新的提供商'
+        ]
+      },
+      {
+        title: '接入 VS Code（推荐）',
+        content: 'Claude Code 提供了官方的 VS Code 扩展，安装后可以直接在编辑器内使用 AI 编程能力，无需切换到终端窗口。扩展支持代码补全、内联编辑、对话面板等功能，开发体验远好于纯命令行模式。前提条件：已按前面的步骤安装好 Claude Code 并配置好模型。',
+        steps: [
+          {
+            title: '安装 VS Code 扩展',
+            description: '在 VS Code 中搜索并安装 Claude Code 官方扩展。安装过程和普通扩展一样，几秒钟就能完成。',
+            items: [
+              '打开 VS Code，点击左侧边栏的扩展图标（或按 Ctrl+Shift+X）',
+              '在搜索框中输入 Claude Code',
+              '找到官方扩展「Claude Code」（发布者为 Anthropic），点击 Install 安装',
+              '安装完成后 VS Code 左侧边栏会出现 Claude Code 图标',
+              '也可以在终端中直接安装：code --install-extension anthropic.claude-code'
+            ]
+          },
+          {
+            title: '打开 Claude Code 面板',
+            description: '安装扩展后，在 VS Code 中打开 Claude Code 面板，确认扩展正常加载。',
+            items: [
+              '点击 VS Code 左侧边栏的 Claude Code 图标，打开侧边面板',
+              '面板底部会出现 Claude Code 的输入框，可以直接在这里提问',
+              '也可以按 Ctrl+Shift+P 打开命令面板，输入 Claude 搜索相关命令',
+              '如果面板提示需要登录或配置，说明前面的 Claude Code 安装或 ccswitch 配置未完成，请返回前面的步骤'
+            ]
+          },
+          {
+            title: '配置扩展使用 DeepSeek 模型',
+            description: '如果前面已经用 ccswitch 配置好了 DeepSeek，扩展会自动读取全局配置，无需额外设置。如果没有配置过，可以在扩展设置中指定模型和 API Key。',
+            items: [
+              '如果已用 ccswitch 配置：扩展会自动读取 ~/.claude/settings.json，直接可用',
+              '如果需要手动配置：按 Ctrl+, 打开设置，搜索 Claude',
+              '在扩展设置中填入 API Key、Base URL 和 Model Name',
+              '推荐使用 ccswitch 自动配置，避免手动填写出错'
+            ]
+          },
+          {
+            title: '在编辑器中使用 Claude Code',
+            description: '配置完成后，就可以在 VS Code 中直接使用 Claude Code 的各项功能。以下是常用操作。',
+            items: [
+              '侧边栏对话：点击 Claude Code 图标，在面板中输入问题或指令，和命令行体验一致',
+              '内联编辑：选中一段代码，按 Ctrl+K（或 Cmd+K），输入修改指令，Claude 会直接在编辑器中修改代码',
+              '代码解释：选中不理解的代码片段，在侧边栏提问「这段代码是什么意思」',
+              '错误修复：当终端或问题面板出现报错时，选中报错信息让 Claude 帮你修复',
+              '文件引用：在对话中输入 @文件名 可以引用特定文件作为上下文'
+            ]
+          }
+        ],
+        tips: [
+          'VS Code 扩展和命令行的 Claude Code 共享同一套配置，用 ccswitch 切换模型后两边都会生效',
+          '内联编辑（Ctrl+K）是最常用的功能，选中代码后直接描述你想怎么改，比手动改代码快很多',
+          '扩展会自动读取当前打开的工作区文件作为上下文，不需要手动指定项目路径',
+          '如果扩展面板没有响应，检查 Claude Code 是否正确安装：在 VS Code 终端中输入 claude --version 验证',
+          'VS Code 扩展支持多文件编辑，可以让 Claude 一次性修改多个相关文件'
+        ],
+        warnings: [
+          'VS Code 扩展依赖本地安装的 Claude Code CLI，如果命令行中 claude 命令不可用，扩展也无法使用',
+          '使用内联编辑时建议先保存当前文件，方便不满意时用 Ctrl+Z 撤回',
+          '不要在公共电脑上使用扩展的自动保存 API Key 功能，避免凭证泄露'
         ]
       }
     ]
@@ -1645,7 +1730,7 @@ export const appTutorials: AppTutorial[] = [
             title: '安装 Node.js（>=22）',
             description: 'OpenClaw 需要 Node.js 22 或更高版本',
             items: [
-              '访问 nodejs.org 下载 LTS 版本',
+              '访问 Node.js 官网下载 LTS 版本：https://nodejs.org',
               '安装完成后在命令行验证：node -v',
               '确保 NPM 也已安装：npm -v'
             ],
@@ -1655,8 +1740,8 @@ export const appTutorials: AppTutorial[] = [
             title: '安装 Git Bash',
             description: 'Windows 用户需要安装 Git Bash 来运行 OpenClaw',
             items: [
-              '访问 git-scm.com/download/windows 下载 Git',
-              '国内用户可使用镜像：registry.npmmirror.com',
+              '访问 Git 官网下载 Windows 版本：https://git-scm.com/download/windows',
+              '国内用户可使用镜像：https://registry.npmmirror.com',
               '安装完成后验证：git -v'
             ]
           }
@@ -1767,7 +1852,7 @@ export const appTutorials: AppTutorial[] = [
             description: '根据选择的模型输入对应的 API Key',
             items: [
               '如果选择 GLM Coding Plan：',
-              '访问 bigmodel.cn/glm-coding 注册获取 API Key',
+              '访问智谱AI Coding Plan 注册获取 API Key：https://bigmodel.cn/glm-coding',
               '选择 Coding-Plan-CN（国内）或 Coding-Plan-Global（国际）',
               '粘贴 API Key 完成认证'
             ]

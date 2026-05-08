@@ -10,8 +10,11 @@ function LinkText({ text }: { text: string }) {
       {parts.map((part, i) => {
         if (part.startsWith('http://') || part.startsWith('https://')) {
           return (
-            <a key={i} href={part} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">
-              {part}
+            <a key={i} href={part} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-md bg-foreground/10 px-2.5 py-1 text-sm font-medium text-foreground transition-colors hover:bg-foreground/20">
+              <svg className="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+              {part.replace(/^https?:\/\//, '').replace(/\/$/, '')}
             </a>
           );
         }
@@ -304,7 +307,7 @@ export default function LocalDeployPage() {
         supply={['笔记本电脑（8GB+ RAM）', '稳定的网络连接']}
         tool={['Ollama', '终端/命令行']}
         steps={[
-          { name: '安装 Ollama', text: '访问 ollama.ai 下载并安装 Ollama' },
+          { name: '安装 Ollama', text: '访问 https://ollama.ai 下载并安装 Ollama' },
           { name: '下载模型', text: '运行 ollama run gemma4:4b 下载模型' },
           { name: '开始使用', text: '在终端中与模型对话' },
         ]}

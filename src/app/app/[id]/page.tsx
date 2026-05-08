@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { use, useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
@@ -9,10 +9,12 @@ import { BreadcrumbSchema, ArticleSchema } from '@/components/seo/structured-dat
 
 /* ─── RichText: 解析 `code` 【重点】 标记 ─── */
 function RichText({ text, className = '' }: { text: string; className?: string }) {
-  const parts = text.split(/(`[^`]+`|【[^】]+】|(https?:\/\/[^\s]+))/g);
+  if (!text) return null;
+  const parts = text.split(/(`[^`]+`|【[^】]+】|https?:\/\/[^\s]+)/g).filter(Boolean);
   return (
     <span className={className}>
       {parts.map((part, i) => {
+        if (!part) return null;
         if (part.startsWith('`') && part.endsWith('`')) {
           return (
             <code key={i} className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[13px] text-foreground">
@@ -29,8 +31,11 @@ function RichText({ text, className = '' }: { text: string; className?: string }
         }
         if (part.startsWith('http://') || part.startsWith('https://')) {
           return (
-            <a key={i} href={part} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">
-              {part}
+            <a key={i} href={part} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-md bg-foreground/10 px-2.5 py-1 text-sm font-medium text-foreground transition-colors hover:bg-foreground/20">
+              <svg className="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+              {part.replace(/^https?:\/\//, '').replace(/\/$/, '')}
             </a>
           );
         }
@@ -172,18 +177,12 @@ function OnThisPage({ sections, activeIdx }: { sections: { title: string }[]; ac
 
 /* ─── 主页面 ─── */
 export default function AppTutorialPage({ params }: { params: Promise<{ id: string }> }) {
-  const [resolvedId, setResolvedId] = useState<string>('');
+  const { id } = use(params);
   const [activeSection, setActiveSection] = useState(0);
-
-  // Resolve params via useEffect to avoid state update during render
-  useEffect(() => {
-    params.then(p => setResolvedId(p.id));
-  }, [params]);
 
   // Scroll spy
   useEffect(() => {
-    if (!resolvedId) return;
-    const tutorial = appTutorials.find(t => t.id === resolvedId);
+    const tutorial = appTutorials.find(t => t.id === id);
     if (!tutorial) return;
 
     const observer = new IntersectionObserver(
@@ -204,11 +203,9 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
     });
 
     return () => observer.disconnect();
-  }, [resolvedId]);
+  }, [id]);
 
-  if (!resolvedId) return null;
-
-  const tutorial = appTutorials.find(t => t.id === resolvedId);
+  const tutorial = appTutorials.find(t => t.id === id);
   if (!tutorial) notFound();
 
   return (
@@ -353,7 +350,8 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
                       {step.items && step.items.length > 0 && (
                         <ul className="space-y-2 mb-2 pl-4">
                           {step.items.map((item, itemIdx) => {
-                            const colonIdx = Math.max(item.indexOf('：'), item.indexOf(':'));
+                            const colonIndexes = [item.indexOf('：'), item.indexOf(':')].filter(index => index > 0);
+                            const colonIdx = colonIndexes.length > 0 ? Math.min(...colonIndexes) : -1;
                             const hasColon = colonIdx > 0 && colonIdx < 20;
 
                             return (

@@ -15,8 +15,11 @@ function LinkText({ text }: { text: string }) {
       {parts.map((part, i) => {
         if (part.startsWith('http://') || part.startsWith('https://')) {
           return (
-            <a key={i} href={part} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">
-              {part}
+            <a key={i} href={part} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-md bg-foreground/10 px-2.5 py-1 text-sm font-medium text-foreground transition-colors hover:bg-foreground/20">
+              <svg className="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+              {part.replace(/^https?:\/\//, '').replace(/\/$/, '')}
             </a>
           );
         }
@@ -219,8 +222,8 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
               </summary>
               <div className="space-y-0.5 border-t border-border px-4 py-2">
                 {tutorial.steps.map((step, i) => (
-                  <a key={i} href={`#step-${i}`} className="block py-1.5 text-[13px] text-muted-foreground hover:text-foreground">
-                    {i + 1}. {step.title}
+                  <a key={i} href={`#step-${i}`} className={`block py-1.5 text-[13px] hover:text-foreground ${step.important ? 'font-semibold text-amber-600 dark:text-amber-400' : 'text-muted-foreground'}`}>
+                    {i + 1}. {step.important && '★ '}{step.title}
                   </a>
                 ))}
               </div>
@@ -233,11 +236,21 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
               <section
                 key={stepIdx}
                 id={`step-${stepIdx}`}
-                className={stepIdx < tutorial.steps.length - 1 ? 'border-b border-border pb-10' : ''}
+                className={`scroll-mt-[68px] ${stepIdx < tutorial.steps.length - 1 ? 'border-b border-border pb-10' : ''} ${step.important ? 'relative rounded-lg border-2 border-amber-300 bg-amber-50/30 p-6 -mx-2 dark:border-amber-700 dark:bg-amber-950/20' : ''}`}
               >
+                {/* 重要步骤标记 */}
+                {step.important && (
+                  <div className="absolute -top-3 left-4 flex items-center gap-1.5 rounded-full bg-amber-500 px-3 py-1 text-xs font-bold text-white shadow-sm">
+                    <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                    关键步骤
+                  </div>
+                )}
+
                 {/* 步骤标题：编号 + 文字 */}
                 <div className="flex items-center gap-3 mb-5">
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-foreground text-sm font-bold text-background">
+                  <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm font-bold ${step.important ? 'bg-amber-500 text-white' : 'bg-foreground text-background'}`}>
                     {stepIdx + 1}
                   </span>
                   <h2 className="text-xl font-semibold tracking-tight text-foreground">{step.title}</h2>
@@ -309,7 +322,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
           {(tutorial.tips && tutorial.tips.length > 0) || (tutorial.warnings && tutorial.warnings.length > 0) ? (
             <div className="mx-8 mb-8 grid grid-cols-1 md:grid-cols-2 gap-4">
               {tutorial.tips && tutorial.tips.length > 0 && (
-                <div id="tips-section" className="space-y-2 rounded-lg border border-sky-200 bg-sky-50 px-5 py-4">
+                <div id="tips-section" className="scroll-mt-[68px] space-y-2 rounded-lg border border-sky-200 bg-sky-50 px-5 py-4">
                   <p className="mb-1 text-[13px] font-semibold text-sky-800">使用提示</p>
                   {tutorial.tips.map((tip, index) => (
                     <p key={index} className="pl-5 text-sm leading-6 text-sky-700">
@@ -320,7 +333,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
               )}
 
               {tutorial.warnings && tutorial.warnings.length > 0 && (
-                <div id="warnings-section" className="space-y-2 rounded-lg border border-amber-200 bg-amber-50 px-5 py-4">
+                <div id="warnings-section" className="scroll-mt-[68px] space-y-2 rounded-lg border border-amber-200 bg-amber-50 px-5 py-4">
                   <p className="mb-1 text-[13px] font-semibold text-amber-800">注意事项</p>
                   {tutorial.warnings.map((warning, index) => (
                     <p key={index} className="text-sm text-amber-700 leading-6 pl-5">
@@ -375,9 +388,13 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                 <a
                   key={i}
                   href={`#step-${i}`}
-                  className="block truncate py-1.5 pl-3 text-[12px] text-muted-foreground transition-colors hover:text-foreground"
+                  className={`block truncate py-1.5 pl-3 text-[12px] transition-colors hover:text-foreground ${
+                    step.important
+                      ? 'font-semibold text-amber-600 dark:text-amber-400'
+                      : 'text-muted-foreground'
+                  }`}
                 >
-                  {step.title}
+                  {step.important && '★ '}{step.title}
                 </a>
               ))}
               {/* 使用提示 */}

@@ -5,6 +5,28 @@ import { Button } from '@/components/ui/button';
 import { faqCategories } from '@/lib/api-config';
 import { FAQSchema, BreadcrumbSchema } from '@/components/seo/structured-data';
 
+// 将文本中的 URL 转换为可点击链接
+function LinkText({ text }: { text: string }) {
+  const parts = text.split(/(https?:\/\/[^\s]+)/g);
+  return (
+    <>
+      {parts.map((part, i) => {
+        if (part.startsWith('http://') || part.startsWith('https://')) {
+          return (
+            <a key={i} href={part} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-md bg-foreground/10 px-2.5 py-1 text-sm font-medium text-foreground transition-colors hover:bg-foreground/20">
+              <svg className="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+              {part.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+            </a>
+          );
+        }
+        return <span key={i}>{part}</span>;
+      })}
+    </>
+  );
+}
+
 export const metadata: Metadata = {
   title: '常见问题 FAQ',
   description:
@@ -85,7 +107,7 @@ export default function FAQPage() {
                         <h3 className="mb-2 text-sm font-semibold text-foreground">
                           Q{idx + 1}：{item.question}
                         </h3>
-                        <p className="text-sm leading-6 text-muted-foreground">{item.answer}</p>
+                        <p className="text-sm leading-6 text-muted-foreground"><LinkText text={item.answer} /></p>
                       </CardContent>
                     </Card>
                   ))}
