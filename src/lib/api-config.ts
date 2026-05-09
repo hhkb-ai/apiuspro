@@ -2259,6 +2259,350 @@ export const appTutorials: AppTutorial[] = [
     ]
   },
   {
+    id: 'openclaw-feishu',
+    name: 'OpenClaw 接入飞书',
+    desc: '基于飞书开放平台创建机器人，并通过 OpenClaw Feishu 插件把本地 AI 助手接入飞书对话',
+    url: 'https://openclaw.ai',
+    icon: '💬',
+    badge: { text: '飞书', type: 'info' },
+    sections: [
+      {
+        title: '创建飞书应用',
+        content: '先在飞书开放平台创建企业自建应用。后续 OpenClaw 会通过这个应用的机器人能力接收消息并回复。',
+        steps: [
+          {
+            title: '注册飞书开放平台账号',
+            description: '打开飞书开放平台，按页面提示登录或注册账号。',
+            image: '/images/tutorial/openclaw-feishu-p01-01.png',
+            items: [
+              '访问飞书开放平台',
+              '使用飞书账号登录',
+              '按提示完成开发者或企业相关信息确认'
+            ]
+          },
+          {
+            title: '创建企业自建应用',
+            description: '在开发者后台创建企业自建应用，作为 OpenClaw 后续接入飞书的载体。',
+            image: '/images/tutorial/openclaw-feishu-p01-02.png',
+            items: [
+              '进入开发者后台',
+              '选择创建企业自建应用',
+              '填写应用名称和基础信息',
+              '创建完成后进入应用管理页面'
+            ]
+          }
+        ],
+        tips: [
+          '这里创建的是企业自建应用，不是应用商店应用',
+          '后续所有权限、机器人和事件配置都在这个应用里完成'
+        ]
+      },
+      {
+        title: '获取应用凭证',
+        content: 'OpenClaw 需要使用飞书应用的 App ID 和 App Secret 完成鉴权。创建应用后先把这两个值记录下来。',
+        steps: [
+          {
+            title: '进入凭证与基础信息',
+            description: '在飞书开放平台应用详情页中找到应用凭证区域。',
+            image: '/images/tutorial/openclaw-feishu-p02-01.png',
+            items: [
+              '进入刚创建的应用',
+              '打开凭证与基础信息页面',
+              '找到 App ID 和 App Secret'
+            ]
+          },
+          {
+            title: '记录 App ID 和 App Secret',
+            description: '复制并保存 App ID 和 App Secret，后续配置 OpenClaw Feishu 插件时会用到。',
+            image: '/images/tutorial/openclaw-feishu-p02-02.png',
+            items: [
+              'App ID 用于标识当前飞书应用',
+              'App Secret 用于服务端鉴权',
+              '建议保存到本地安全位置，不要公开截图或上传仓库'
+            ],
+            warning: 'App Secret 属于敏感凭证，不要发到公开聊天、文档或代码仓库。'
+          }
+        ]
+      },
+      {
+        title: '添加机器人能力',
+        content: '飞书应用需要先添加机器人能力，才能在飞书会话里接收用户消息并返回 OpenClaw 的响应。',
+        steps: [
+          {
+            title: '打开添加应用能力',
+            description: '在应用能力配置区域点击添加能力。',
+            image: '/images/tutorial/openclaw-feishu-p03-01.png',
+            items: [
+              '进入应用能力页面',
+              '点击添加应用能力',
+              '准备添加机器人能力'
+            ]
+          },
+          {
+            title: '选择添加机器人',
+            description: '在能力列表里选择机器人，并添加到当前应用。',
+            image: '/images/tutorial/openclaw-feishu-p03-02.png',
+            items: [
+              '选择机器人能力',
+              '确认添加',
+              '添加后进入机器人相关配置'
+            ]
+          }
+        ],
+        tips: [
+          '机器人能力是 OpenClaw 接入飞书聊天的核心入口',
+          '如果没有添加机器人，后续即使权限正确也无法正常对话'
+        ]
+      },
+      {
+        title: '配置应用权限',
+        content: '接入机器人后，需要开通聊天与群组相关权限。PDF 中特别强调：应用身份权限和用户权限都要开通。',
+        steps: [
+          {
+            title: '进入权限配置',
+            description: '打开权限管理页面，准备添加聊天与群组权限。',
+            image: '/images/tutorial/openclaw-feishu-p04-01.png',
+            items: [
+              '进入权限管理',
+              '切换到应用身份权限和用户权限相关区域',
+              '搜索 im: 快速定位消息权限'
+            ]
+          },
+          {
+            title: '添加聊天与群组权限',
+            description: '按需选择接收消息、发送消息、群组相关权限，并确保应用身份权限和用户权限都已开通。',
+            image: '/images/tutorial/openclaw-feishu-p04-02.png',
+            items: [
+              '搜索 im: 统一筛选消息相关权限',
+              '添加聊天消息权限',
+              '添加群组相关权限',
+              '同时检查应用身份权限和用户权限'
+            ],
+            warning: '只开通其中一类权限可能导致机器人能配置成功，但收发消息异常。'
+          },
+          {
+            title: '点击开通权限',
+            description: '权限选择完成后点击开通权限，并在确认弹窗里完成授权。',
+            image: '/images/tutorial/openclaw-feishu-p05-01.png',
+            items: [
+              '检查已选权限',
+              '点击开通权限',
+              '在确认弹窗里继续确认'
+            ]
+          }
+        ]
+      },
+      {
+        title: '启用机器人能力',
+        content: '机器人保存前需要先准备长连接。PDF 中说明：直接点击保存会失败，需要先运行一个长连接，再回到页面保存。',
+        steps: [
+          {
+            title: '进入机器人配置',
+            description: '回到机器人能力配置页，页面会提示需要配置订阅方式或长连接。',
+            image: '/images/tutorial/openclaw-feishu-p06-01.png',
+            items: [
+              '打开机器人能力配置',
+              '查看页面提示',
+              '点击弹出文本里的超链接'
+            ]
+          },
+          {
+            title: '按 Python 形式创建长连接',
+            description: '根据页面引导，使用 Python 形式创建长连接。长连接运行后再回到飞书开放平台保存配置。',
+            image: '/images/tutorial/openclaw-feishu-p06-02.png',
+            items: [
+              '按飞书页面提示选择 Python 形式',
+              '保持长连接运行',
+              '再回到机器人配置页面继续保存'
+            ],
+            warning: '如果没有先运行长连接，直接保存机器人配置可能会失败。'
+          },
+          {
+            title: '选择订阅方式并保存',
+            description: '点击订阅方式，完成机器人能力保存。',
+            image: '/images/tutorial/openclaw-feishu-p07-01.png',
+            items: [
+              '点击订阅方式',
+              '确认当前配置',
+              '点击保存'
+            ]
+          },
+          {
+            title: '确认保存成功',
+            description: '保存后确认页面没有报错，机器人能力已启用。',
+            image: '/images/tutorial/openclaw-feishu-p07-02.png',
+            items: [
+              '查看保存结果',
+              '如果失败，先确认长连接是否仍在运行',
+              '确认权限是否已经开通'
+            ]
+          }
+        ]
+      },
+      {
+        title: '添加接收消息事件',
+        content: '飞书应用部分最后需要添加接收消息事件，让机器人可以收到用户在飞书里发送的普通消息。',
+        steps: [
+          {
+            title: '点击添加事件',
+            description: '进入事件订阅配置，点击添加事件。',
+            image: '/images/tutorial/openclaw-feishu-p08-01.png',
+            items: [
+              '进入事件订阅页面',
+              '点击添加事件',
+              '准备搜索消息事件'
+            ]
+          },
+          {
+            title: '搜索并添加接收消息',
+            description: '搜索接收消息，选择对应事件并添加。',
+            image: '/images/tutorial/openclaw-feishu-p08-02.png',
+            items: [
+              '搜索接收消息',
+              '选择消息接收事件',
+              '点击添加',
+              '完成后飞书应用部分配置结束'
+            ]
+          }
+        ],
+        tips: [
+          '到这一步，飞书开放平台侧的应用、机器人、权限和事件已经配置完成',
+          '接下来切换到 OpenClaw 侧安装和配置 Feishu 插件'
+        ]
+      },
+      {
+        title: '安装 Feishu 插件',
+        content: '飞书应用配置完成后，在 OpenClaw 所在环境安装 Feishu 插件。PDF 中使用 WSL 执行安装命令。',
+        steps: [
+          {
+            title: '在 WSL 下安装插件',
+            description: '打开 WSL 终端，执行 OpenClaw Feishu 插件安装命令。',
+            image: '/images/tutorial/openclaw-feishu-p09-01.png',
+            code: 'openclaw plugins install @openclaw/feishu',
+            items: [
+              '确保 OpenClaw 已经安装完成',
+              '在 WSL 或当前 OpenClaw 运行环境执行命令',
+              '等待插件安装完成'
+            ]
+          },
+          {
+            title: '确认插件安装完成',
+            description: '安装完成后继续进入 OpenClaw 的插件配置向导。',
+            image: '/images/tutorial/openclaw-feishu-p09-02.png',
+            items: [
+              '观察终端输出是否有明显报错',
+              '如果下载失败，先检查网络和 npm 源',
+              '安装成功后开始配置 App ID 和 App Secret'
+            ]
+          }
+        ]
+      },
+      {
+        title: '通过向导配置',
+        content: '推荐使用 OpenClaw 的向导完成飞书插件配置，按截图依次填入前面保存的 App ID 和 App Secret。',
+        steps: [
+          {
+            title: '启动插件配置向导',
+            description: '进入 OpenClaw 插件配置流程，选择 Feishu 插件。',
+            image: '/images/tutorial/openclaw-feishu-p10-01.png',
+            items: [
+              '选择 Feishu 插件',
+              '进入交互式配置',
+              '按提示继续'
+            ]
+          },
+          {
+            title: '填写飞书应用凭证',
+            description: '按向导提示填入飞书开放平台里的 App ID 和 App Secret。',
+            image: '/images/tutorial/openclaw-feishu-p11-01.png',
+            items: [
+              '填入 App ID',
+              '填入 App Secret',
+              '检查没有复制多余空格',
+              '保存配置'
+            ],
+            warning: '如果 App ID 或 App Secret 填错，后续网关可以启动，但飞书消息无法正常鉴权。'
+          }
+        ],
+        tips: [
+          '新手优先使用向导配置，减少手动编辑配置文件的格式错误',
+          '配置完成后再启动 gateway 做真实消息测试'
+        ]
+      },
+      {
+        title: '通过配置文件配置（可选）',
+        content: '如果熟悉配置文件，也可以直接编辑 OpenClaw 配置。此方式适合已经明确配置结构的用户。',
+        steps: [
+          {
+            title: '打开配置文件',
+            description: '找到 OpenClaw 配置文件，定位 Feishu 插件相关配置。',
+            image: '/images/tutorial/openclaw-feishu-p12-01.png',
+            items: [
+              '先备份原配置文件',
+              '找到 Feishu 插件配置区域',
+              '确认字段位置和 JSON 格式'
+            ]
+          },
+          {
+            title: '写入飞书应用信息',
+            description: '把 App ID 和 App Secret 写入配置，并保存文件。',
+            image: '/images/tutorial/openclaw-feishu-p12-02.png',
+            items: [
+              '填写 App ID',
+              '填写 App Secret',
+              '保存后检查 JSON 或配置格式是否有效',
+              '不熟悉配置文件时优先回到向导方式'
+            ],
+            warning: '手动配置最常见的问题是逗号、引号或缩进错误。保存前建议先备份。'
+          }
+        ]
+      },
+      {
+        title: '启动并测试',
+        content: '配置完成后启动 OpenClaw Gateway，在飞书里找到机器人发送普通消息，并完成配对授权。',
+        steps: [
+          {
+            title: '启动网关',
+            description: '在终端启动 OpenClaw Gateway，让飞书插件开始监听和处理消息。',
+            image: '/images/tutorial/openclaw-feishu-p13-01.png',
+            code: 'openclaw gateway',
+            items: [
+              '保持 gateway 进程运行',
+              '确认终端没有报错',
+              '启动后再到飞书里测试机器人'
+            ]
+          },
+          {
+            title: '发送测试消息',
+            description: '在飞书中找到刚创建的机器人，发送一条普通消息。',
+            image: '/images/tutorial/openclaw-feishu-p13-02.png',
+            items: [
+              '打开飞书客户端',
+              '找到创建的机器人',
+              '发送一条普通消息',
+              '默认情况下机器人会回复一个配对码'
+            ]
+          },
+          {
+            title: '批准配对码',
+            description: '复制机器人返回的配对码，在终端执行批准命令。批准后即可正常与机器人对话。',
+            code: 'openclaw pairing approve feishu <配对码>',
+            items: [
+              '把 <配对码> 替换成飞书机器人实际返回的代码',
+              '执行批准命令',
+              '回到飞书再次发送消息测试',
+              '能正常回复即代表 OpenClaw 接入飞书完成'
+            ]
+          }
+        ],
+        tips: [
+          '第一次对话需要配对授权，完成后即可正常使用',
+          '如果飞书没有收到回复，优先检查 gateway 是否仍在运行、App ID 和 App Secret 是否正确、权限和事件是否完整'
+        ]
+      }
+    ]
+  },
+  {
     id: 'claudian-obsidian',
     name: 'Claudian Obsidian 插件',
     desc: '在Obsidian中直接使用Claude AI助手，结合笔记与AI提升效率',
