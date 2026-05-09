@@ -43,6 +43,13 @@ const featuredAPIs = [
   apiList.find(a => a.id === 'gemini')!,
 ];
 
+const highIntentLinks = [
+  { name: '新手先选 API', href: '/cloud-api', desc: '按访问条件和能力快速筛选' },
+  { name: '照教程拿 Key', href: '/tutorial', desc: '注册、支付、创建密钥一步步完成' },
+  { name: '接入 AI 工具', href: '/app', desc: 'Claude Code、CC Switch 等工具配置' },
+  { name: '按场景推荐', href: '/use-case', desc: '写代码、知识库、内容创作怎么选' },
+];
+
 const stats = [
   { value: `${apiList.length}+`, label: 'API 官网入口' },
   { value: `${apiList.filter(api => api.tutorial).length}`, label: '购买教程' },
@@ -313,7 +320,7 @@ export default function HomeClient() {
       </header>
 
       <main>
-        <section className="px-4 py-8 sm:px-6 sm:py-14 lg:px-8">
+        <section className="px-4 py-7 sm:px-6 sm:py-10 lg:px-8">
           <div className="mx-auto max-w-6xl">
             <div className="mx-auto max-w-4xl text-center">
               <div className="mb-5 inline-flex items-center gap-2">
@@ -433,11 +440,24 @@ export default function HomeClient() {
                 )}
               </div>
             )}
+
+            <div className="mx-auto mt-6 grid max-w-5xl grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {highIntentLinks.map(item => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="rounded-lg border bg-card p-4 transition-colors hover:border-foreground/30"
+                >
+                  <p className="text-sm font-semibold">{item.name}</p>
+                  <p className="mt-1 text-xs leading-5 text-muted-foreground">{item.desc}</p>
+                </Link>
+              ))}
+            </div>
           </div>
         </section>
 
         {/* 快速入门 */}
-        <section className="border-t border-border px-4 py-14 sm:px-6 lg:px-8">
+        <section className="border-t border-border px-4 py-10 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
             <div className="mb-8 text-center">
               <p className="text-sm font-medium text-muted-foreground">新手必看</p>
@@ -490,7 +510,7 @@ export default function HomeClient() {
           </div>
         </section>
 
-        <section className="border-t border-border px-4 py-12 sm:px-6 lg:px-8">
+        <section className="border-t border-border px-4 py-10 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
             <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
               <div>
@@ -522,7 +542,7 @@ export default function HomeClient() {
           </div>
         </section>
 
-        <section className="border-t border-border px-4 py-10 sm:px-6 lg:px-8">
+        <section className="border-t border-border px-4 py-8 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
             <p className="mb-5 text-center text-sm font-medium text-muted-foreground">常用 API</p>
             <div className="flex flex-wrap items-center justify-center gap-2">
@@ -539,7 +559,7 @@ export default function HomeClient() {
           </div>
         </section>
 
-        <section className="border-t border-border bg-card/40 px-4 py-12 sm:px-6 lg:px-8">
+        <section className="border-t border-border bg-card/40 px-4 py-10 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
             <div className="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
               <div>
@@ -597,7 +617,7 @@ export default function HomeClient() {
           </div>
         </section>
 
-        <section id="app-section" className="border-t border-border px-4 py-12 sm:px-6 lg:px-8">
+        <section id="app-section" className="border-t border-border px-4 py-10 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
             <div className="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
               <div>

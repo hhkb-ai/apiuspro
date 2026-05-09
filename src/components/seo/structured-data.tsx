@@ -191,6 +191,41 @@ export function TechArticleSchema({
   );
 }
 
+// ==================== ItemList Schema（用于列表和首页发现区） ====================
+interface ItemListEntry {
+  name: string;
+  url: string;
+  description?: string;
+}
+
+export function ItemListSchema({
+  name,
+  items,
+}: {
+  name: string;
+  items: ItemListEntry[];
+}) {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name,
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      url: item.url,
+      name: item.name,
+      ...(item.description && { description: item.description }),
+    })),
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
+
 // ==================== HowTo Schema (用于教程指南) ====================
 interface HowToStep {
   name: string;
@@ -234,8 +269,12 @@ export function HowToSchema({
 
   if (totalTime) jsonLd.totalTime = totalTime;
   if (estimatedCost) jsonLd.estimatedCost = estimatedCost;
-  if (supply) jsonLd.supply = supply.map(s => ({ '@type': 'HowToSupply', name: s }));
-  if (tool) jsonLd.tool = tool.map(t => ({ '@type': 'HowToTool', name: t }));
+  if (supply) {
+    jsonLd.supply = supply.map(s => ({ '@type': 'HowToSupply', name: s }));
+  }
+  if (tool) {
+    jsonLd.tool = tool.map(t => ({ '@type': 'HowToTool', name: t }));
+  }
 
   return (
     <script

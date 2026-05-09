@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { BeianLinks } from '@/components/layout/BeianLinks';
 import { apiList, getAPIById, SHOW_PROXY_CONTENT, type APIConfig } from '@/lib/api-config';
-import { BreadcrumbSchema, TechArticleSchema } from '@/components/seo/structured-data';
+import { BreadcrumbSchema, HowToSchema, TechArticleSchema } from '@/components/seo/structured-data';
 import { CodeBlock } from '@/components/tutorial/CodeBlock';
 import { DetailBackNav } from '@/components/navigation/ReturnNavigation';
 
@@ -117,6 +117,18 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
             : undefined
         }
         proficiencyLevel="Beginner"
+      />
+      <HowToSchema
+        name={tutorial.title}
+        description={tutorial.subtitle || api.desc}
+        steps={tutorial.steps.map((step, index) => ({
+          name: step.title,
+          text: step.description || step.items?.join('；') || `${tutorial.title} 第 ${index + 1} 步`,
+          image: step.image ? `https://apiuspro.cn${step.image}` : undefined,
+          url: `https://apiuspro.cn/tutorial/${id}#step-${index}`,
+        }))}
+        totalTime="PT20M"
+        tool={['浏览器', 'API 控制台', 'CC Switch']}
       />
       <div className="min-h-screen bg-background">
       {/* ── 顶部导航栏 ── */}
@@ -231,7 +243,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
           </div>
 
           {/* 教程步骤 */}
-          <div className="px-8 py-6 space-y-10">
+          <div className="space-y-10 px-5 py-6 sm:px-8">
             {tutorial.steps.map((step, stepIdx) => (
               <section
                 key={stepIdx}
@@ -265,8 +277,14 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                 {step.image && (
                   <div className="my-4">
                     <div className="overflow-hidden rounded-lg border border-border bg-muted/40">
-                      <div className="aspect-video relative">
-                        <Image src={step.image} alt={step.title} fill className="object-cover" unoptimized />
+                      <div className="relative aspect-[16/9]">
+                        <Image
+                          src={step.image}
+                          alt={step.title}
+                          fill
+                          className="object-contain"
+                          sizes="(min-width: 1280px) 760px, (min-width: 768px) calc(100vw - 18rem), calc(100vw - 2rem)"
+                        />
                       </div>
                     </div>
                   </div>

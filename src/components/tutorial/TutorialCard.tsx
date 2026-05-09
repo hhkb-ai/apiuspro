@@ -66,13 +66,14 @@ export function TutorialCard({ id, tutorial }: TutorialCardProps) {
 
                   {/* 图片区域 */}
                   {step.image && (
-                    <div className="relative w-full rounded-lg overflow-hidden border bg-background">
-                      <div className="aspect-video relative">
+                    <div className="relative w-full overflow-hidden rounded-lg border bg-background">
+                      <div className="relative aspect-[16/9]">
                         <Image
                           src={step.image}
                           alt={step.title}
                           fill
-                          className="object-cover"
+                          className="object-contain"
+                          sizes="(min-width: 1024px) 720px, calc(100vw - 4rem)"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
                             target.style.display = 'none';

@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { BeianLinks } from '@/components/layout/BeianLinks';
 import { appTutorials } from '@/lib/api-config';
-import { BreadcrumbSchema, ArticleSchema } from '@/components/seo/structured-data';
+import { ArticleSchema, BreadcrumbSchema, HowToSchema } from '@/components/seo/structured-data';
 import { DetailBackNav } from '@/components/navigation/ReturnNavigation';
 
 /* ─── RichText: 解析 `code` 【重点】 标记 ─── */
@@ -224,6 +224,20 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
         description={tutorial.desc}
         url={`https://apiuspro.cn/app/${tutorial.id}`}
       />
+      <HowToSchema
+        name={`${tutorial.name} 使用教程`}
+        description={tutorial.desc}
+        steps={tutorial.sections.flatMap((section, sectionIdx) =>
+          (section.steps || []).map((step, stepIdx) => ({
+            name: step.title,
+            text: step.description || step.items?.join('；') || section.content,
+            image: step.image ? `https://apiuspro.cn${step.image}` : undefined,
+            url: `https://apiuspro.cn/app/${tutorial.id}#section-${sectionIdx}-${stepIdx}`,
+          })),
+        )}
+        totalTime="PT30M"
+        tool={['浏览器', '终端', tutorial.name]}
+      />
       {/* ── 顶部导航栏 ── */}
       <header className="sticky top-0 z-50 border-b border-border bg-card">
         <div className="max-w-[1200px] mx-auto px-6 py-3 flex flex-wrap items-center gap-y-2">
@@ -284,7 +298,7 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
           </div>
 
           {/* 教程章节 */}
-          <div className="px-8 py-6 space-y-10">
+          <div className="space-y-10 px-5 py-6 sm:px-8">
             {tutorial.sections.map((section, sectionIdx) => (
               <section
                 key={sectionIdx}
@@ -308,7 +322,7 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
                 {/* 步骤列表 */}
                 <div className="space-y-6">
                   {section.steps?.map((step, stepIdx) => (
-                    <div key={stepIdx}>
+                    <div key={stepIdx} id={`section-${sectionIdx}-${stepIdx}`} className="scroll-mt-[68px]">
                       {/* 步骤标题 */}
                       <h3 className="mb-2 flex items-center gap-2 text-[15px] font-semibold text-foreground">
                         <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-muted-foreground/60" />
@@ -337,10 +351,10 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
                               src={step.image}
                               alt={step.title}
                               width={1200}
-                              height={675}
-                              className="h-auto w-full"
+                              height={1553}
+                              className="h-auto max-h-[760px] w-full object-contain"
                               loading="lazy"
-                              unoptimized
+                              sizes="(min-width: 1280px) 760px, (min-width: 768px) calc(100vw - 18rem), calc(100vw - 2rem)"
                             />
                           </div>
                         </div>
