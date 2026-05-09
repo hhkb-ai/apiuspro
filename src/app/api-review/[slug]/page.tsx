@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { getReviewDetail, getAllReviewSlugs } from '@/lib/review-config';
 import { BreadcrumbSchema, ArticleSchema } from '@/components/seo/structured-data';
+import { DetailBackNav } from '@/components/navigation/ReturnNavigation';
 
 export function generateStaticParams() {
   return getAllReviewSlugs().map((slug) => ({ slug }));
@@ -94,13 +95,7 @@ export default async function ReviewDetailPage({ params }: { params: Promise<{ s
         url={`https://apiuspro.cn/api-review/${review.slug}`}
       />
       <div className="mx-auto max-w-5xl p-6 lg:p-8">
-        {/* 返回链接 */}
-        <Link
-          href="/api-review"
-          className="mb-6 inline-block text-sm text-muted-foreground transition-colors hover:text-foreground"
-        >
-          &#8592; 返回API测评列表
-        </Link>
+        <DetailBackNav listHref="/api-review" listLabel="测评列表" />
 
         {/* 标题 */}
         <div className="mb-8 border-b pb-8">
@@ -302,9 +297,7 @@ export default async function ReviewDetailPage({ params }: { params: Promise<{ s
 
         {/* 底部导航 */}
         <div className="mt-8 flex flex-col justify-between gap-3 border-t pt-6 sm:flex-row sm:items-center">
-          <Link href="/api-review">
-            <Button variant="outline" className="w-full sm:w-auto">&#8592; 返回测评列表</Button>
-          </Link>
+          <DetailBackNav listHref="/api-review" listLabel="测评列表" className="mb-0" />
           <Link href="/cloud-api">
             <Button variant="outline" className="w-full sm:w-auto">查看所有API &#8594;</Button>
           </Link>

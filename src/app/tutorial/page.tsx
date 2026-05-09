@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { SidebarLayout } from '@/components/layout/SidebarLayout';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { apiList, APIConfig } from '@/lib/api-config';
 import { BreadcrumbSchema } from '@/components/seo/structured-data';
+import { RememberListLink } from '@/components/navigation/ReturnNavigation';
 
 function badgeClass(type: string) {
   if (type === 'success') {
@@ -28,9 +28,9 @@ function TutorialCard({ api }: { api: APIConfig }) {
       </div>
       <p className="flex-1 text-sm leading-6 text-muted-foreground">{api.desc}</p>
       <p className="mt-3 text-xs text-muted-foreground">{api.tutorial?.steps?.length || 0} 个步骤</p>
-      <Link href={`/tutorial/${api.id}`} className="mt-5">
+      <RememberListLink href={`/tutorial/${api.id}`} listLabel="教程列表" className="mt-5">
         <Button variant="outline" className="w-full" size="sm">查看教程</Button>
-      </Link>
+      </RememberListLink>
     </article>
   );
 }

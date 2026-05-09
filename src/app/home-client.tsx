@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { BeianLinks } from '@/components/layout/BeianLinks';
+import { RememberListLink } from '@/components/navigation/ReturnNavigation';
 import { apiList, appTutorials } from '@/lib/api-config';
 
 const pages = [
@@ -348,7 +350,6 @@ export default function HomeClient() {
                   }}
                   aria-label="搜索 API 或工具"
                   aria-autocomplete="list"
-                  aria-expanded={showSuggestions && hasResults}
                   aria-controls="search-suggestions"
                   className="h-10 flex-1 border-0 bg-transparent px-3 text-base shadow-none focus-visible:ring-0 sm:h-12 sm:px-4"
                 />
@@ -421,24 +422,6 @@ export default function HomeClient() {
               ))}
             </div>
 
-            <div className="mx-auto mt-6 grid max-w-5xl grid-cols-1 gap-3 sm:grid-cols-3">
-              {pages.map(page => (
-                <Link
-                  key={page.id}
-                  href={page.url}
-                  className="group rounded-lg border bg-card p-5 transition-colors hover:border-foreground/30"
-                >
-                  <div className="mb-3 flex items-center justify-between gap-3">
-                    <p className="font-semibold">{page.name}</p>
-                    <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground group-hover:text-foreground">
-                      {page.tag}
-                    </span>
-                  </div>
-                  <p className="text-sm leading-6 text-muted-foreground">{page.desc}</p>
-                </Link>
-              ))}
-            </div>
-
             {exactMatch && searchQuery.trim() && (
               <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
                 <span className="text-muted-foreground">找到「{exactMatch.name}」</span>
@@ -450,24 +433,11 @@ export default function HomeClient() {
                 )}
               </div>
             )}
-
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
-              <span className="mr-1 text-sm text-muted-foreground">常用：</span>
-              {quickLinks.map((link) => (
-                <Link
-                  key={link.id}
-                  href={`/api/${link.id}`}
-                  className="rounded-full border bg-card px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
-                >
-                  {link.name}
-                </Link>
-              ))}
-            </div>
           </div>
         </section>
 
         {/* 快速入门 */}
-        <section className="border-t border-border px-4 py-12 sm:px-6 lg:px-8">
+        <section className="border-t border-border px-4 py-14 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
             <div className="mb-8 text-center">
               <p className="text-sm font-medium text-muted-foreground">新手必看</p>
@@ -520,6 +490,55 @@ export default function HomeClient() {
           </div>
         </section>
 
+        <section className="border-t border-border px-4 py-12 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-6xl">
+            <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">内容入口</p>
+                <h2 className="mt-1 text-xl font-semibold">按需求继续浏览</h2>
+              </div>
+              <p className="max-w-xl text-sm leading-6 text-muted-foreground">
+                购买前看 API 列表，准备接入看购买教程，需要离线或低成本方案再看本地部署。
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              {pages.map(page => (
+                <Link
+                  key={page.id}
+                  href={page.url}
+                  className="group rounded-lg border bg-card p-5 transition-colors hover:border-foreground/30"
+                >
+                  <div className="mb-3 flex items-center justify-between gap-3">
+                    <p className="font-semibold">{page.name}</p>
+                    <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground group-hover:text-foreground">
+                      {page.tag}
+                    </span>
+                  </div>
+                  <p className="text-sm leading-6 text-muted-foreground">{page.desc}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="border-t border-border px-4 py-10 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-6xl">
+            <p className="mb-5 text-center text-sm font-medium text-muted-foreground">常用 API</p>
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              {quickLinks.map((link) => (
+                <Link
+                  key={link.id}
+                  href={`/api/${link.id}`}
+                  className="rounded-full border bg-card px-4 py-2 text-sm text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section className="border-t border-border bg-card/40 px-4 py-12 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
             <div className="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
@@ -568,9 +587,9 @@ export default function HomeClient() {
                     <a href={api.url} target="_blank" rel="noopener noreferrer" className="flex-1">
                       <Button className="w-full" size="sm">官网入口</Button>
                     </a>
-                    <Link href={`/api/${api.id}`} className="flex-1">
+                    <RememberListLink href={`/api/${api.id}`} listLabel="首页 API 精选" className="flex-1">
                       <Button variant="outline" className="w-full" size="sm">详细说明</Button>
-                    </Link>
+                    </RememberListLink>
                   </div>
                 </article>
               ))}
@@ -600,9 +619,9 @@ export default function HomeClient() {
                   <p className="text-sm leading-6 text-muted-foreground">{tutorial.desc}</p>
                   <p className="mt-2 text-xs text-muted-foreground">{tutorial.sections.length} 个章节</p>
                   <div className="mt-auto pt-5">
-                    <Link href={`/app/${tutorial.id}`}>
+                    <RememberListLink href={`/app/${tutorial.id}`} listLabel="首页应用教程">
                       <Button variant="outline" className="w-full" size="sm">详细教程</Button>
-                    </Link>
+                    </RememberListLink>
                   </div>
                 </article>
               ))}
@@ -693,28 +712,8 @@ export default function HomeClient() {
 
       <footer className="border-t border-border px-4 py-8 text-center text-sm text-muted-foreground">
         <p>API知识站 - 适合初学者的 API 学习平台</p>
-        <div className="mt-3 flex flex-col items-center justify-center gap-2">
-          <a
-            href="https://beian.miit.gov.cn/"
-            rel="noreferrer"
-            target="_blank"
-            className="transition-colors hover:text-foreground"
-          >
-            粤ICP备2026048178号
-          </a>
-          <a
-            href="https://beian.mps.gov.cn/#/query/webSearch?code=44162102000181"
-            rel="noreferrer"
-            target="_blank"
-            className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
-          >
-            <img
-              src="/images/beian.png"
-              alt="公安备案图标"
-              className="h-4 w-4"
-            />
-            粤公网安备44162102000181号
-          </a>
+        <div className="mt-3">
+          <BeianLinks />
         </div>
       </footer>
     </div>

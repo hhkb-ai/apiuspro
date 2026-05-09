@@ -41,52 +41,81 @@ export const apiList: APIConfig[] = [
     id: 'mimo',
     name: '小米MiMo',
     desc: '小米MiMo API 怎么买？2026 推理模型接入教程，数学与代码能力突出',
-    url: 'https://mimo.xiaomi.com/',
-    free: '待确认',
+    url: 'https://platform.xiaomimimo.com/',
+    free: 'Orbit 计划限时免费 Token',
     proxy: false,
     features: ['推理能力强', '数学能力突出', '代码生成', '小米出品'],
     icon: '🟠',
     badge: { text: '新上线', type: 'warning' },
     tutorial: {
       title: '小米 MiMo API 购买与接入教程（2026最新）',
-      subtitle: '从注册、获取 API Key 到首次调用的完整流程',
+      subtitle: '从小米账号准备、领取免费额度、购买套餐到创建 API Key 的完整流程',
       steps: [
         {
-          title: '注册小米账号',
-          description: '使用小米账号登录 MiMo 开放平台。',
+          title: '准备小米账号和付款方式',
+          description: '使用 MiMo 之前先确认小米账号、邮箱绑定和付款方式，避免后续领取额度或购买套餐时被卡住。',
+          image: '/images/tutorial/mimo-docx-login.png',
           items: [
-            '访问 MiMo 开放平台官网：https://mimo.xiaomi.com',
-            '使用手机号或邮箱注册小米账号',
-            '完成账号登录'
+            '访问小米账号页面：https://id.mi.com/',
+            '确认账号已经绑定邮箱，只用手机号注册的账号建议先补绑邮箱',
+            '国内用户准备支付宝或微信支付，海外用户可准备 Apple Pay 或信用卡',
+            '国内用户充值或购买前通常需要完成实名认证'
           ]
         },
         {
-          title: '开通 API 服务',
-          description: '在控制台开通 MiMo API 服务。',
+          title: '登录 MiMo 开放平台',
+          description: '进入 MiMo 开放平台，用小米账号登录后即可激活开发者账号。',
+          image: '/images/tutorial/mimo-docx-platform.png',
           items: [
-            '进入 MiMo 开放平台控制台',
-            '找到 API 服务入口并开通',
-            '了解免费额度和计费规则'
+            '访问 MiMo 开放平台：https://platform.xiaomimimo.com/',
+            '使用小米账号完成登录',
+            '登录后可查看文档、代币计划和控制台入口'
+          ]
+        },
+        {
+          title: '先领取免费额度',
+          description: '购买套餐前建议先申请 Orbit 计划免费 Token，通过后可在订阅计划页面看到赠送额度。',
+          image: '/images/tutorial/mimo-docx-orbit.png',
+          items: [
+            '访问 Orbit 计划页面：https://100t.xiaomimimo.com',
+            '按页面要求填写申请信息并提交',
+            '等待审核，通过后回到平台的「订阅计划」页面查看 Token 额度',
+            '免费 Token 有有效期，领取后建议尽快测试使用'
+          ],
+          warning: '免费额度规则、审核时间和有效期可能变化，请以 MiMo 官方页面为准。'
+        },
+        {
+          title: '购买或管理套餐',
+          description: '免费额度用完后，可在「代币计划」或控制台里查看订阅计划、账单和充值入口。',
+          image: '/images/tutorial/mimo-docx-console.png',
+          items: [
+            '在顶部导航进入「代币计划」或「控制台」',
+            '查看 Lite、Standard、Pro、Max 等套餐的月费、Credit 和适用场景',
+            '购买前确认 Credit 与 Token 的换算规则',
+            '首次购买、夜间调用或连续包月优惠以官方页面展示为准'
           ]
         },
         {
           title: '创建并保存 API Key',
-          description: '在 API 管理页面创建密钥。',
+          description: '进入控制台的 API 密钥页面，创建用于工具接入和代码调用的密钥。',
           important: true,
+          image: '/images/tutorial/mimo-docx-api-key.png',
           items: [
-            '进入「API Key 管理」页面',
-            '点击「创建 API Key」',
-            '复制密钥并保存到安全位置'
+            '进入控制台左侧的「API 密钥」页面',
+            '点击「新建 API Key」',
+            '复制生成的 Key，并保存到密码管理器或本地安全位置',
+            '忘记密钥内容时只能删除后重新创建'
           ],
           warning: 'API Key 只会完整显示一次，务必立即保存。'
         },
         {
           title: '配置环境变量并首次调用',
-          description: '使用 OpenAI 兼容接口调用 MiMo API。',
+          description: '使用 OpenAI 兼容接口调用 MiMo API，也可以在支持自定义 API 的 AI 工具中填入相同配置。',
           items: [
             '安装 openai 和 python-dotenv',
             '设置 MIMO_API_KEY 环境变量',
-            '配置 base_url 指向 MiMo API 地址'
+            '配置 Base URL：https://api.xiaomimimo.com/v1',
+            '模型可先选择 mimo-v2-flash（更快）或 mimo-v2-pro（更强）'
           ],
           codeLanguage: 'python',
           code: `import os
@@ -94,11 +123,11 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key=os.environ.get("MIMO_API_KEY"),
-    base_url="https://mimo.xiaomi.com/v1",
+    base_url="https://api.xiaomimimo.com/v1",
 )
 
 response = client.chat.completions.create(
-    model="mimo-7b",
+    model="mimo-v2-flash",
     messages=[{"role": "user", "content": "你好，请用一句话介绍你自己。"}],
 )
 
@@ -109,7 +138,8 @@ print(response.choices[0].message.content)`,
       tips: [
         '推荐用 .env 或环境变量保存 API Key',
         'MiMo 擅长推理和数学任务，适合相关场景使用',
-        '具体模型名称和价格请以官方文档为准'
+        '如果要接入 Claude Code、Codex、Gemini CLI、OpenCode 等 AI 工具，建议使用 CC Switch 统一管理 API Key、Base URL 和模型切换',
+        '具体模型名称、套餐价格和优惠活动请以官方文档为准'
       ],
       warnings: [
         '不要在前端、公开仓库或截图中暴露 API Key',
@@ -1391,304 +1421,582 @@ export interface AppTutorial {
 
 export const appTutorials: AppTutorial[] = [
   {
+    id: 'ccswitch',
+    name: 'CC Switch',
+    desc: '跨平台 AI 终端配置管理工具，统一管理 Claude Code、Codex、Gemini CLI、OpenCode、OpenClaw 的 API 供应商、模型、MCP 和 Skills。',
+    url: 'https://github.com/farion1231/cc-switch',
+    icon: '🔀',
+    badge: { text: '推荐', type: 'success' },
+    sections: [
+      {
+        title: 'CC Switch 是什么',
+        content: 'CC Switch 是一个开源的跨平台桌面端 AI 编程工具配置中心。它可以接管 Claude Code、Codex、Gemini CLI、OpenCode、OpenClaw 等工具的本地配置文件，用图形界面统一管理 API Key、Base URL、模型名称、代理、MCP 和 Skills，减少手动改 JSON、TOML、env 文件导致的配置错误。',
+        steps: [
+          {
+            title: '适合谁使用',
+            description: '如果你经常在多个 API 供应商或多个 AI 编程工具之间切换，CC Switch 能明显减少重复配置成本。',
+            items: [
+              '经常使用 Claude Code、Codex、Gemini CLI、OpenCode 或 OpenClaw',
+              '同时购买了 DeepSeek、Kimi、智谱、通义千问、MiMo、OpenAI 等多个 API',
+              '需要在便宜模型、强模型和备用节点之间快速切换',
+              '不想手动编辑 settings.json、AGENTS.md、CLAUDE.md 或环境变量文件'
+            ]
+          },
+          {
+            title: '核心能力',
+            description: '它不是单纯改 API 地址的小工具，而是把供应商配置、模型切换、MCP、Prompt 和 Skills 集中到一个面板里。',
+            items: [
+              '多供应商一键切换：内置常见模型厂商和中转服务商预设',
+              '配置可视化：在界面里填写 API Key、Endpoint、Model Name，降低格式错误概率',
+              '系统托盘热切换：运行任务时可快速切换下一个模型或供应商',
+              'MCP 与 Skills 管理：把多个 AI 终端工具的扩展能力集中维护',
+              '本地存储：配置数据保存在本机，适合重视密钥安全的用户'
+            ]
+          }
+        ],
+        tips: [
+          '项目地址：https://github.com/farion1231/cc-switch',
+          '配置前先准备好对应平台的 API Key、Base URL 和模型名称',
+          '密钥仍然属于敏感信息，不要把截图或配置文件公开发布'
+        ]
+      },
+      {
+        title: '下载与安装',
+        content: 'CC Switch 通过 GitHub Releases 发布安装包。Windows 用户优先下载 MSI，macOS 用户下载 DMG，Linux 用户按发行版选择 deb、rpm 或 AppImage。',
+        steps: [
+          {
+            title: '打开发布页面',
+            description: '进入 GitHub Releases 页面，展开最新版本的 Assets 区域。',
+            items: [
+              '访问：https://github.com/farion1231/cc-switch/releases',
+              '确认下载的是最新稳定版本',
+              '根据自己的系统选择安装包，不要下载源码压缩包当作软件安装包'
+            ]
+          },
+          {
+            title: 'Windows 安装',
+            description: 'Windows 用户推荐下载 `.msi` 安装包，双击后按向导安装。',
+            items: [
+              '优先选择 `CC-Switch-版本号-Windows.msi`',
+              '如果电脑没有管理员权限，可选择 Portable zip 便携版',
+              '便携版建议解压到不含中文和特殊字符的目录，例如 `D:\\Tools\\CC-Switch`'
+            ]
+          },
+          {
+            title: 'macOS 安装',
+            description: 'macOS 用户下载 `.dmg` 文件，打开后把 CC Switch 拖入 Applications。',
+            code: 'brew tap farion1231/ccswitch\nbrew install --cask cc-switch',
+            items: [
+              '普通用户推荐使用 DMG 图形安装',
+              '习惯 Homebrew 的用户可使用命令行安装',
+              '安装后从启动台或应用程序目录打开 CC Switch'
+            ]
+          },
+          {
+            title: 'Linux 安装',
+            description: 'Linux 用户按发行版选择对应包格式。AppImage 需要先赋予执行权限。',
+            code: '# Debian / Ubuntu\nsudo apt install ./CC-Switch-*.deb\n\n# Fedora / RHEL\nsudo dnf install ./CC-Switch-*.rpm\n\n# AppImage\nchmod +x CC-Switch-*.AppImage\n./CC-Switch-*.AppImage',
+            items: [
+              'Ubuntu、Debian、Linux Mint 优先使用 deb',
+              'Fedora、RHEL、CentOS、Rocky Linux 优先使用 rpm',
+              '不确定发行版时可使用 AppImage'
+            ]
+          }
+        ],
+        warnings: [
+          '只从官方 GitHub 项目或可信发布页下载安装包',
+          '安装前关闭来源不明的同名工具，避免混淆配置文件'
+        ]
+      },
+      {
+        title: '添加 API 供应商',
+        content: '安装完成后，第一步是为你正在使用的 AI 工具添加供应商。以 Claude Code 为例，选择对应工具标签后添加 DeepSeek、Kimi、智谱、通义、MiMo 或 OpenAI 等供应商。',
+        steps: [
+          {
+            title: '选择要配置的工具',
+            description: '打开 CC Switch 后，先选择 Claude Code、Codex、Gemini CLI、OpenCode 或 OpenClaw 对应标签，确保配置写入正确位置。',
+            items: [
+              '使用 Claude Code 就选择 Claude Code 标签',
+              '使用 Codex 就选择 Codex 标签',
+              '多个工具都用时，建议逐个工具分别配置和测试'
+            ],
+            warning: '不要在错误的工具标签下添加供应商，否则实际使用的 AI 工具可能读不到配置。'
+          },
+          {
+            title: '添加供应商预设',
+            description: '点击 Add Provider 或右上角加号，从内置预设中选择你购买的 API 平台。',
+            items: [
+              '优先使用内置预设，它会自动填好协议类型和常见 Endpoint',
+              '如果平台不在预设列表里，选择自定义供应商',
+              '填写 Provider Name、API Endpoint、API Key、Model Name',
+              '保存前检查 Base URL 末尾路径是否和平台文档一致'
+            ]
+          },
+          {
+            title: '示例：接入 OpenAI 兼容 API',
+            description: '多数国产和中转平台都提供 OpenAI 兼容格式，通常只需要填 API Key、Base URL 和模型名。',
+            code: 'Provider Name: DeepSeek\nAPI Endpoint: https://api.deepseek.com\nAPI Key: sk-xxxxxxxxxxxxxxxx\nModel Name: deepseek-chat',
+            items: [
+              'DeepSeek 可使用 `https://api.deepseek.com`',
+              'MiMo 可使用 `https://api.xiaomimimo.com/v1`',
+              '通义、Kimi、智谱等平台按各自官方文档填写',
+              '保存后用对应 AI 工具发起一次简单对话测试'
+            ]
+          }
+        ],
+        tips: [
+          '每个平台的 Base URL 和模型名可能会更新，最终以官方控制台或文档为准',
+          '建议先配置一个低成本模型用于日常任务，再配置一个强模型用于复杂任务',
+          '新增或切换供应商后，必要时重启对应 AI 终端工具以确保配置生效'
+        ]
+      },
+      {
+        title: '在 AI 工具里验证',
+        content: '供应商保存后，需要在实际工具中验证。验证目标不是只看 CC Switch 里是否保存成功，而是确认 Claude Code、Codex 或其他工具能读取新配置并正常调用模型。',
+        steps: [
+          {
+            title: '验证 Claude Code',
+            description: '打开一个新的终端窗口，进入项目目录后启动 Claude Code，发送一个简单问题。',
+            code: 'claude',
+            items: [
+              '建议重新打开终端，避免旧进程缓存旧配置',
+              '询问简单问题，例如「请用一句话介绍当前模型」',
+              '如果能正常回答，说明供应商配置已经生效',
+              '如果报 401、403 或余额不足，优先检查 API Key 和账户状态'
+            ]
+          },
+          {
+            title: '验证 Codex 或其他 CLI',
+            description: '选择对应工具标签配置后，用该工具自己的启动命令测试。',
+            items: [
+              'Codex、Gemini CLI、OpenCode、OpenClaw 都需要在各自标签下配置',
+              '确认工具读取的是 CC Switch 写入的配置路径',
+              '同一平台在不同工具下可能需要不同协议格式，保存前查看预设说明'
+            ]
+          },
+          {
+            title: '使用托盘热切换',
+            description: '配置多个供应商后，可以通过系统托盘快速切换当前模型。',
+            items: [
+              '日常轻量任务使用低成本模型',
+              '复杂重构、长上下文分析时切换到强模型',
+              '备用节点可作为 API 限流或故障时的替代方案',
+              '切换后如未立即生效，重启对应 AI 工具或新开会话再试'
+            ]
+          }
+        ],
+        warnings: [
+          '不同 AI 工具对热切换的响应方式不同，遇到不生效时先新开会话验证',
+          '不要把包含 API Key 的 CC Switch 配置库直接上传到公开仓库'
+        ]
+      },
+      {
+        title: '常见问题',
+        content: '大多数问题集中在 API Key、Base URL、模型名、工具标签选错和旧进程缓存配置这几类。',
+        steps: [
+          {
+            title: '保存后工具仍然没有响应',
+            description: '先确认配置写入的是你正在使用的工具标签，再重启终端和 AI 工具。',
+            items: [
+              '检查是否选错 Claude Code、Codex 或 OpenCode 标签',
+              '重新打开终端窗口',
+              '确认对应 AI 工具本身已经安装并能启动',
+              '查看 CC Switch 是否有配置保存失败或权限提示'
+            ]
+          },
+          {
+            title: '提示认证失败',
+            description: '认证失败通常来自 API Key 错误、复制了多余空格、账户未充值或平台权限未开通。',
+            items: [
+              '重新复制 API Key，避免前后空格',
+              '确认账号已完成实名、充值或套餐开通',
+              '检查 Key 是否被删除、禁用或过期',
+              '不要把 OpenAI 平台的 Key 填到其他供应商预设里'
+            ]
+          },
+          {
+            title: '提示模型不存在',
+            description: '模型名必须和供应商文档完全一致，大小写、连字符和版本号都可能影响调用。',
+            items: [
+              '在平台模型列表里复制模型 ID',
+              '使用 Fetch Models 或类似按钮拉取可用模型',
+              '确认当前 API Key 有权限访问该模型',
+              '不确定时先换成平台推荐的默认聊天模型测试'
+            ]
+          }
+        ],
+        tips: [
+          '排查顺序：工具标签 → API Key → Base URL → 模型名 → 账户余额 → 网络代理',
+          '配置成功后建议记录一组稳定可用的低成本模型，作为日常默认方案'
+        ]
+      }
+    ]
+  },
+  {
     id: 'claude-code',
     name: 'Claude Code',
-    desc: '命令行 AI 编程工具，支持安装后接入 DeepSeek 等模型用于本地开发',
+    desc: 'Claude Code 安装、区域限制处理、CC Switch 配置与 DeepSeek 模型接入完整教程',
     url: 'https://claude.com/product/claude-code',
     icon: '💻',
     badge: { text: '热门', type: 'warning' },
     sections: [
       {
         title: '安装 Node.js',
-        content: 'Claude Code 是 JavaScript 编写的命令行工具，Windows 电脑需要先安装 Node.js 运行环境。Node.js 自带 npm 包管理器，后续安装 Claude Code 和其他工具都依赖它。建议选择 LTS（长期支持）版本，稳定性最好。',
+        content: 'Claude Code 是由 JavaScript 编写的命令行工具，Windows 电脑需要先安装 Node.js 运行环境。Node.js 会同时提供 npm 包管理器，后续安装 Claude Code 和相关工具都依赖它。',
         steps: [
           {
             title: '下载 Node.js 安装包',
-            description: '访问 Node.js 官网下载页面，选择 LTS（长期支持）版本的 Windows Installer (.msi)。LTS 版本经过充分测试，适合生产环境使用，而 Current 版本包含最新特性但可能存在兼容问题，不建议初学者使用。',
-            image: '/images/tutorial/claude-code-pdf-node.png',
+            description: '访问 Node.js 中文下载页面，下载 Windows Installer (.msi)。新手建议选择 LTS 版本，稳定性更好。',
+            image: '/images/tutorial/claude-code-deepseek-p01-01.png',
             items: [
               '打开官网：https://nodejs.org/zh-cn/download',
-              '页面会自动识别你的操作系统，首页会显示大号的 LTS 下载按钮，直接点击即可',
-              '如果没有自动识别，点击「下载」页签，找到 Windows Installer (.msi) 行，选择 LTS 版本',
-              '系统架构选择 x64（绝大多数现代电脑都是 64 位），如果你的电脑是 ARM 架构则选择 ARM64',
-              '下载的文件名类似 node-v22.x.x-x64.msi，大小约 30MB'
+              '选择 Windows Installer (.msi)',
+              '普通 Windows 电脑选择 x64 版本即可',
+              '下载完成后双击安装包启动安装向导'
             ]
           },
           {
-            title: '运行安装程序',
-            description: '双击下载好的 .msi 文件启动安装向导。安装过程大约 1-2 分钟，按以下步骤操作。',
-            image: '/images/tutorial/claude-code-pdf-node.png',
+            title: '运行 Node.js 安装程序',
+            description: '安装过程保持默认即可，一路点击 Next，最后点击 Finish 完成安装。',
+            image: '/images/tutorial/claude-code-deepseek-p01-01.png',
             items: [
-              '双击 .msi 文件，如果弹出 Windows 安全提示，点击「是」允许安装',
-              '欢迎界面：点击 Next 进入下一步',
-              '许可协议：勾选 I accept the terms in the License Agreement，点击 Next',
-              '安装路径：保持默认路径 C:\\Program Files\\nodejs\\ 即可，点击 Next',
-              '自定义安装：保持默认选项，点击 Next',
-              '工具安装：勾选 Automatically install the necessary tools（推荐），这会自动安装 Chocolatey 等辅助工具',
-              '点击 Install 开始安装，等待进度条完成',
-              '安装完成后点击 Finish 关闭向导'
+              '安装路径保持默认',
+              '组件选项保持默认',
+              '一定要勾选 Automatically install the necessary tools',
+              '等待安装完成后关闭安装向导'
             ]
           },
           {
-            title: '验证安装是否成功',
-            description: '安装完成后，打开一个新的终端窗口，输入以下命令验证 Node.js 和 npm 是否正确安装。注意：必须是新开的终端，旧终端无法识别新安装的命令。',
+            title: '验证 Node.js 是否成功',
+            description: '安装完成后重新打开终端，检查 Node.js 和 npm 是否可用。',
             code: 'node -v\nnpm -v',
             items: [
-              'node -v 会显示版本号，如 v22.x.x，表示 Node.js 安装成功',
-              'npm -v 会显示 npm 版本号，如 10.x.x，表示包管理器可用',
-              '如果提示「不是内部或外部命令」，说明安装失败或未生效，请参考下方注意事项'
+              '能显示 node 版本号，说明 Node.js 安装成功',
+              '能显示 npm 版本号，说明包管理器可用',
+              '如果命令不存在，关闭终端后重新打开再试'
             ]
           }
         ],
         tips: [
-          'Node.js 安装完成后会自带 npm 包管理器，后续安装 Claude Code 会用到 npm install -g 命令',
-          'LTS 版本的支持周期为 30 个月，足够覆盖日常开发需求，无需追求最新版本',
-          '安装过程中勾选 Automatically install the necessary tools 可以避免后续遇到编译依赖问题'
+          'Node.js 是 Claude Code 在 Windows 上运行的前置环境',
+          'npm 后续会用于执行 `npm install -g @anthropic-ai/claude-code`',
+          '安装完成后必须新开终端，旧终端可能读取不到新环境变量'
         ],
         warnings: [
-          '安装完成后必须关闭并重新打开终端（CMD / PowerShell / Git Bash），旧终端窗口读取不到新安装的 node 命令',
-          '如果之前安装过旧版 Node.js，建议先在「设置 → 应用」中卸载旧版本再安装新版，避免版本冲突',
-          '不要使用 Node.js Current 版本，某些 npm 包可能不兼容，选择 LTS 版本最稳妥'
+          '如果之前装过旧版 Node.js，建议先卸载旧版本再安装新版',
+          '不要把 Node.js 安装到包含中文或特殊字符的路径'
         ]
       },
       {
-        title: '安装 Git Bash',
-        content: 'Claude Code 在 Windows 上依赖 Bash 环境，建议安装 Git for Windows 并使用附带的 Git Bash。Git Bash 提供了类 Linux 的命令行体验，支持常见的 Unix 命令（如 ls、cd、cat、grep），比 Windows 自带的 CMD 和 PowerShell 更适合开发使用。安装 Git 的同时会自动获得 Git Bash。',
+        title: '安装 Git / Git Bash',
+        content: 'Claude Code 底层依赖 Bash 环境。Windows 默认的 CMD 和 PowerShell 对部分命令行行为支持不完整，因此建议安装 Git for Windows，并使用它自带的 Git Bash。',
         steps: [
           {
-            title: '下载 Git 安装包',
-            description: '访问 Git 官网下载页面，下载 Windows 版本的安装程序。官网会自动检测你的系统并推荐合适的版本。',
-            image: '/images/tutorial/claude-code-pdf-git.png',
+            title: '下载 Git for Windows',
+            description: '访问 Git for Windows 下载页面，下载 Windows/x64 Setup 安装包。',
+            image: '/images/tutorial/claude-code-deepseek-p02-01.png',
             items: [
               '打开官网：https://git-scm.com/install/windows',
-              '页面会自动开始下载 Git for Windows/x64 Setup，文件名类似 Git-2.x.x-64-bit.exe',
-              '如果没有自动下载，点击页面上的 Click here to download link 手动触发下载',
-              '安装包大小约 60MB，下载需要一两分钟'
+              '页面通常会自动下载 Git for Windows/x64 Setup',
+              '如果没有自动下载，点击页面上的下载链接手动触发',
+              '下载完成后双击安装包'
             ]
           },
           {
-            title: '运行安装程序',
-            description: '双击下载好的 Git 安装包启动向导。Git 的安装界面步骤较多，但大多数保持默认即可，以下是关键步骤的详细说明。',
-            image: '/images/tutorial/claude-code-pdf-git.png',
+            title: '运行 Git 安装向导',
+            description: 'Git 安装步骤较多，新手保持默认选项一路 Next 即可。',
+            image: '/images/tutorial/claude-code-deepseek-p03-01.png',
             items: [
-              'Information：直接点击 Next',
-              'Select Destination Location：保持默认路径，点击 Next',
-              'Select Components：保持默认勾选，点击 Next',
-              'Start Menu Folder：保持默认，点击 Next',
-              'Default Editor：选择 Use Visual Studio Code as Git\'s default editor（推荐），或保持默认的 Vim',
-              'Adjusting the name of the initial branch：选择 Let Git decide（默认即可），点击 Next',
-              'Adjusting your PATH environment：选择 Git from the command line and also from 3rd-party software（推荐选项，保持默认），点击 Next',
-              'Choosing SSH executable：选择 Use bundled OpenSSH（默认），点击 Next',
-              'Choosing HTTPS transport backend：选择 Use the OpenSSL library（默认），点击 Next',
-              'Configuring line ending conversions：选择 Checkout Windows-style, commit Unix-style line endings（默认），点击 Next',
-              'Configuring the terminal emulator：选择 Use MinTTY（推荐），它支持窗口缩放和字体调整，比 Windows\' default console 更好用',
-              'Choose the default behavior of git pull：选择 Default (fast-forward or merge)（默认），点击 Next',
-              'Choose a credential helper：选择 Git Credential Manager（默认），点击 Next',
-              'Configuring extra options：保持默认勾选，点击 Next',
-              'Configuring experimental options：保持默认（不勾选），点击 Install 开始安装',
-              '等待安装进度条完成，点击 Finish 关闭向导'
+              '安装位置保持默认',
+              '组件选择保持默认',
+              '终端模拟器建议使用默认的 MinTTY',
+              '等待安装完成后点击 Finish'
             ]
           },
           {
-            title: '验证安装并打开 Git Bash',
-            description: '安装完成后，可以通过多种方式打开 Git Bash 来验证安装是否成功。',
-            code: 'git --version',
+            title: '验证 Git Bash 可用',
+            description: '安装完成后重新打开终端，确认 git 命令可以正常输出版本号。',
+            image: '/images/tutorial/claude-code-deepseek-p04-01.png',
+            code: 'git -v',
             items: [
-              '方法一：在桌面或任意文件夹空白处右键，选择 Show more options → Git Bash Here（Windows 11）或直接看到 Git Bash Here（Windows 10）',
-              '方法二：按 Win 键，搜索 Git Bash，点击打开',
-              '方法三：打开 CMD 或 PowerShell，输入 git --version 验证',
-              '能显示类似 git version 2.x.x 的版本号就说明安装成功'
+              '按 Win 键搜索 Git Bash 并打开',
+              '也可以在任意文件夹右键选择 Git Bash Here',
+              '执行 `git -v` 后能显示版本号即可'
             ]
           }
         ],
         tips: [
-          'Git Bash 会提供类 Linux 的命令行环境，支持 ls、cd、cat、grep 等常用命令，比 CMD 更适合开发',
-          '安装完成后在任意文件夹右键可以看到 Git Bash Here 选项，可以直接在当前目录打开终端',
-          'Git Bash 的终端窗口（MinTTY）支持 Ctrl+Shift+C/V 进行复制粘贴，和 Windows 终端的操作一致',
-          '后续所有 Claude Code 相关操作都建议在 Git Bash 中执行，兼容性最好'
+          '后续 Claude Code 相关命令优先在 Git Bash 中执行',
+          'Git Bash 能提供更接近 Linux 的命令行环境，兼容性更好'
         ],
         warnings: [
-          '只用 Windows 默认 CMD 或 PowerShell 运行 Claude Code 可能会遇到路径分隔符、权限等兼容问题，强烈建议使用 Git Bash',
-          '安装路径不要包含中文或特殊字符，否则可能导致部分功能异常',
-          '如果之前安装过旧版 Git，建议先卸载旧版再安装新版，避免 PATH 环境变量冲突'
+          '只用 CMD 或 PowerShell 运行 Claude Code 可能遇到路径、权限或 Bash 兼容问题',
+          '如果之前安装过旧版 Git，建议先卸载后再安装新版'
         ]
       },
       {
         title: '安装 Claude Code',
-        content: '前置环境（Node.js 和 Git Bash）准备好后，在 Git Bash 中使用 npm 全局安装 Claude Code。安装完成后需要先跳过 onboarding 流程才能正常使用。',
+        content: 'Node.js 和 Git Bash 准备好后，就可以通过 npm 安装 Claude Code。Claude Code 是新一代实干型 AI 编程智能体，可以根据指令修改代码、运行命令并继续修复报错。',
         steps: [
           {
             title: '执行安装命令',
-            description: '打开 Git Bash，运行以下 npm 全局安装命令。安装过程需要联网下载依赖，通常需要 1-3 分钟。',
-            image: '/images/tutorial/claude-code-pdf-install.png',
+            description: '打开 Git Bash，运行以下命令安装 Claude Code 最新版本。',
+            image: '/images/tutorial/claude-code-deepseek-p05-01.png',
             code: 'npm install -g @anthropic-ai/claude-code',
             items: [
-              '必须使用 Git Bash 执行，不要用 CMD 或 PowerShell',
-              '如果提示权限不足，在 Git Bash 中以管理员身份运行',
-              '安装过程中出现 WARN 警告可以忽略，不影响使用'
+              '安装过程需要联网下载依赖',
+              '如果出现权限问题，以管理员身份打开终端后重试',
+              '安装完成后不要关闭页面，继续执行版本检查'
             ]
           },
           {
             title: '验证安装结果',
-            description: '安装完成后，分别检查三个工具是否正确安装。如果任何命令提示「不是内部或外部命令」，需要重新打开终端。',
+            description: '安装完成后，在终端中依次检查 Git、Node.js 和 Claude Code 是否安装成功。',
             code: 'git -v\nnode -v\nclaude --version',
             items: [
-              'git -v 显示 Git 版本号，如 git version 2.x.x',
-              'node -v 显示 Node.js 版本号，如 v22.x.x',
-              'claude --version 显示 Claude Code 版本号',
-              '三个命令都能正常输出版本号才算安装成功'
+              '如果三个命令都显示版本号，说明基础环境安装成功',
+              '如果某个命令不存在，先关闭终端重新打开',
+              '仍然失败时，回到对应安装步骤重新安装'
             ]
-          },
-          {
-            title: '跳过 onboarding 流程',
-            description: '首次运行 claude 时会触发 onboarding 引导流程，国内环境可能遇到区域限制报错。直接修改配置文件跳过这一步。',
-            image: '/images/tutorial/claude-code-pdf-onboarding.png',
-            code: 'claude\n# 如果遇到区域限制或 onboarding 报错，按以下步骤处理：\n\n# 1. 先运行一次 claude，让它生成配置文件\n# 2. 找到配置文件并编辑\n# Windows 路径：C:\\Users\\你的用户名\\.claude.json\n# 在 JSON 中加入以下字段：\n"hasCompletedOnboarding": true',
-            items: [
-              '先运行一次 claude，让它自动生成 .claude.json 配置文件',
-              '配置文件路径：`C:\\Users\\你的用户名\\.claude.json`',
-              '用记事本或 VS Code 打开 .claude.json',
-              '在 JSON 对象中加入 `"hasCompletedOnboarding": true`',
-              '注意 JSON 格式：字段之间用逗号分隔，不要多逗号或少括号',
-              '保存后关闭终端，重新打开 Git Bash 再执行 claude'
-            ],
-            warning: '修改 JSON 前建议备份原文件，格式写错会导致 Claude Code 无法读取配置。'
           }
         ],
         tips: [
-          'Claude Code 可以直接修改代码文件、运行测试命令并根据报错继续修复，是强大的 AI 编程助手',
-          '安装完成后建议立即配置 ccswitch（见下一章），一键切换到适合国内使用的模型',
-          'Claude Code 的配置和数据都在用户目录下的 .claude 文件夹中'
+          'Claude Code 可以直接修改代码文件、运行测试命令并根据报错继续修复',
+          '国内用户后续建议通过 CC Switch 接入 DeepSeek，网络更稳、成本更低'
         ],
         warnings: [
-          '不要使用 Windows CMD 或 PowerShell 运行 Claude Code，路径分隔符和权限模型不同，容易出错',
-          '如果之前安装过旧版 Claude Code，先执行 npm uninstall -g @anthropic-ai/claude-code 卸载旧版'
+          '安装期间如果网络不稳定，npm 下载可能失败，重新执行安装命令即可',
+          '不要使用来源不明的第三方包，使用官方 npm 包名 `@anthropic-ai/claude-code`'
         ]
       },
       {
-        title: '使用 ccswitch 配置模型（推荐）',
-        content: 'ccswitch 是一个 Claude Code 配置切换工具，可以一键完成模型接入，无需手动编辑配置文件。支持 DeepSeek、OpenAI、Anthropic 等多个提供商，推荐所有用户使用。下面以接入 DeepSeek 为例，演示完整流程。',
+        title: '解决 onboarding / 区域限制',
+        content: '首次执行 `claude` 可能会触发 onboarding 引导。如果国内环境遇到区域限制或无法继续，可以通过修改 Claude Code 配置文件跳过 onboarding。',
         steps: [
           {
-            title: '获取 DeepSeek API Key',
-            description: '在使用 ccswitch 配置之前，需要先在 DeepSeek 开放平台创建一个 API Key。API Key 是调用模型服务的凭证，相当于密码，需要妥善保管。',
-            image: '/images/tutorial/claude-code-pdf-deepseek-config.png',
-            items: [
-              '访问 DeepSeek 开放平台：https://platform.deepseek.com',
-              '注册账号并完成实名认证（国内平台，需要手机号验证）',
-              '登录后进入「API Keys」页面，点击「创建 API Key」',
-              '复制生成的 API Key，格式类似 sk-xxxxxxxxxxxxxxxx',
-              'API Key 只在创建时显示一次，务必立即复制保存',
-              '新注册用户通常会获得免费额度，足够日常测试使用'
-            ],
-            warning: 'API Key 是敏感凭证，不要上传到公开仓库、截图分享或发送给他人。'
-          },
-          {
-            title: '安装 ccswitch',
-            description: '使用 npm 全局安装 ccswitch 工具。ccswitch 会自动读取和修改 Claude Code 的配置文件，省去手动编辑 JSON 的麻烦。',
-            code: 'npm install -g ccswitch',
-            items: [
-              '确保已安装 Node.js 和 Claude Code（前面的步骤已完成）',
-              '安装完成后不需要额外配置，直接可用'
-            ]
-          },
-          {
-            title: '切换到 DeepSeek 模型',
-            description: '运行 ccswitch provider 命令，在交互式界面中选择 DeepSeek 并填入 API Key。ccswitch 会自动完成所有配置，包括设置 API 地址、模型名称和认证信息。',
-            code: 'ccswitch provider',
-            items: [
-              '运行命令后会显示可选的 AI 提供商列表',
-              '用方向键选择 DeepSeek，按回车确认',
-              '按提示粘贴你的 DeepSeek API Key',
-              'ccswitch 会自动更新 Claude Code 的 settings.json 配置文件',
-              '整个过程不需要手动编辑任何文件'
-            ]
-          },
-          {
-            title: '启动 Claude Code 测试',
-            description: '配置完成后，重新打开终端启动 Claude Code，用一个简单问题测试模型是否正常响应。',
-            image: '/images/tutorial/claude-code-pdf-test.png',
+            title: '先启动一次 Claude Code',
+            description: '在终端执行 `claude`，让程序生成默认配置文件。如果出现区域限制报错，继续按下面步骤处理。',
+            image: '/images/tutorial/claude-code-deepseek-p05-01.png',
             code: 'claude',
             items: [
-              '关闭之前的终端，打开一个新的 Git Bash 窗口',
-              '输入 claude 启动 Claude Code',
-              '输入一个简单问题，例如：「请比较 1.9 和 1.11 哪个大」',
-              '模型能正常回答说明 DeepSeek 接入成功',
-              '如果无响应或报错，检查 API Key 是否正确、账户是否有余额'
+              '第一次执行可能会进入引导流程',
+              '如果提示无法继续或区域限制，不代表安装失败',
+              '继续找到配置文件并修改 onboarding 状态'
+            ]
+          },
+          {
+            title: '找到并编辑 Claude 配置文件',
+            description: '打开用户目录下的 `.claude.json`，加入已完成 onboarding 的配置项。',
+            image: '/images/tutorial/claude-code-deepseek-p06-01.png',
+            code: '# Windows 路径\nC:\\Users\\你的用户名\\.claude.json\n\n# 在 JSON 对象中加入：\n"hasCompletedOnboarding": true',
+            items: [
+              '路径中的“你的用户名”替换为当前 Windows 用户名',
+              '可以用记事本、VS Code 或其他编辑器打开',
+              '字段名必须是 `hasCompletedOnboarding`',
+              '值必须是 `true`，不要拼错'
+            ],
+            warning: '修改 JSON 前建议备份原文件。字段之间要用逗号分隔，不能多逗号或漏括号。'
+          },
+          {
+            title: '保存配置并重新启动',
+            description: '保存 `.claude.json` 后关闭编辑器，重新打开终端再执行 Claude Code。',
+            image: '/images/tutorial/claude-code-deepseek-p07-01.png',
+            items: [
+              '保存配置文件',
+              '关闭当前终端',
+              '重新打开 Git Bash 或终端',
+              '后续通过 CC Switch 接入 DeepSeek 模型'
             ]
           }
         ],
         tips: [
-          'ccswitch 支持多个 AI 提供商：Anthropic（原版 Claude）、OpenAI、DeepSeek 等，随时可以切换',
-          '切换提供商后必须重新启动 Claude Code 才会生效',
-          'DeepSeek 模型适合日常开发测试，性价比高，是国内用户的首选',
-          'ccswitch GitHub 地址：https://github.com/TomokiMatsubuchi/ccswitch',
-          '确认模型响应稳定后，就可以进入真实项目目录执行开发任务了'
-        ],
-        warnings: [
-          '不要把真实 API Key 写在代码里或上传到 GitHub，泄露后他人可以盗用你的额度',
-          '如果切换提供商后 Claude Code 无响应，先检查新提供商的 API Key 是否有效、账户是否有余额',
-          'ccswitch 修改的是全局配置，切换后所有项目都会使用新的提供商'
+          '这个步骤只处理 onboarding 状态，不负责配置模型供应商',
+          '模型供应商推荐交给 CC Switch 管理，避免手写配置出错'
         ]
       },
       {
-        title: '接入 VS Code（推荐）',
-        content: 'Claude Code 提供了官方的 VS Code 扩展，安装后可以直接在编辑器内使用 AI 编程能力，无需切换到终端窗口。扩展支持代码补全、内联编辑、对话面板等功能，开发体验远好于纯命令行模式。前提条件：已按前面的步骤安装好 Claude Code 并配置好模型。',
+        title: '安装 CC Switch',
+        content: 'CC Switch 是跨平台桌面端 AI 终端配置管理工具，可以统一管理 Claude Code、Codex、Gemini CLI、OpenCode、OpenClaw 的供应商、模型、MCP 和 Skills。这里用于把 Claude Code 接入 DeepSeek 模型。',
         steps: [
           {
-            title: '安装 VS Code 扩展',
-            description: '在 VS Code 中搜索并安装 Claude Code 官方扩展。安装过程和普通扩展一样，几秒钟就能完成。',
+            title: '打开 CC Switch 项目页面',
+            description: '访问 CC Switch 的 GitHub 项目页面，进入 Releases 下载 Windows 安装包。',
+            image: '/images/tutorial/claude-code-deepseek-p08-01.png',
             items: [
-              '打开 VS Code，点击左侧边栏的扩展图标（或按 Ctrl+Shift+X）',
-              '在搜索框中输入 Claude Code',
-              '找到官方扩展「Claude Code」（发布者为 Anthropic），点击 Install 安装',
-              '安装完成后 VS Code 左侧边栏会出现 Claude Code 图标',
-              '也可以在终端中直接安装：code --install-extension anthropic.claude-code'
+              '访问项目地址：https://github.com/farion1231/cc-switch',
+              '进入 Releases 页面',
+              '找到最新版本的 Assets 下载区'
             ]
           },
           {
-            title: '打开 Claude Code 面板',
-            description: '安装扩展后，在 VS Code 中打开 Claude Code 面板，确认扩展正常加载。',
+            title: '下载 Windows MSI 安装包',
+            description: 'Windows 用户优先下载 `CC-Switch-v版本号-Windows.msi`，不要下载源码压缩包。',
+            image: '/images/tutorial/claude-code-deepseek-p08-01.png',
             items: [
-              '点击 VS Code 左侧边栏的 Claude Code 图标，打开侧边面板',
-              '面板底部会出现 Claude Code 的输入框，可以直接在这里提问',
-              '也可以按 Ctrl+Shift+P 打开命令面板，输入 Claude 搜索相关命令',
-              '如果面板提示需要登录或配置，说明前面的 Claude Code 安装或 ccswitch 配置未完成，请返回前面的步骤'
-            ]
-          },
-          {
-            title: '配置扩展使用 DeepSeek 模型',
-            description: '如果前面已经用 ccswitch 配置好了 DeepSeek，扩展会自动读取全局配置，无需额外设置。如果没有配置过，可以在扩展设置中指定模型和 API Key。',
-            items: [
-              '如果已用 ccswitch 配置：扩展会自动读取 ~/.claude/settings.json，直接可用',
-              '如果需要手动配置：按 Ctrl+, 打开设置，搜索 Claude',
-              '在扩展设置中填入 API Key、Base URL 和 Model Name',
-              '推荐使用 ccswitch 自动配置，避免手动填写出错'
-            ]
-          },
-          {
-            title: '在编辑器中使用 Claude Code',
-            description: '配置完成后，就可以在 VS Code 中直接使用 Claude Code 的各项功能。以下是常用操作。',
-            items: [
-              '侧边栏对话：点击 Claude Code 图标，在面板中输入问题或指令，和命令行体验一致',
-              '内联编辑：选中一段代码，按 Ctrl+K（或 Cmd+K），输入修改指令，Claude 会直接在编辑器中修改代码',
-              '代码解释：选中不理解的代码片段，在侧边栏提问「这段代码是什么意思」',
-              '错误修复：当终端或问题面板出现报错时，选中报错信息让 Claude 帮你修复',
-              '文件引用：在对话中输入 @文件名 可以引用特定文件作为上下文'
+              '文件名通常类似 `CC-Switch-v3.14.1-Windows.msi`',
+              '下载成功后双击运行安装程序',
+              '安装向导保持默认，一路下一步即可',
+              '安装完成后打开 CC Switch'
             ]
           }
         ],
         tips: [
-          'VS Code 扩展和命令行的 Claude Code 共享同一套配置，用 ccswitch 切换模型后两边都会生效',
-          '内联编辑（Ctrl+K）是最常用的功能，选中代码后直接描述你想怎么改，比手动改代码快很多',
-          '扩展会自动读取当前打开的工作区文件作为上下文，不需要手动指定项目路径',
-          '如果扩展面板没有响应，检查 Claude Code 是否正确安装：在 VS Code 终端中输入 claude --version 验证',
-          'VS Code 扩展支持多文件编辑，可以让 Claude 一次性修改多个相关文件'
+          'CC Switch GitHub 地址：https://github.com/farion1231/cc-switch',
+          '如果需要更完整的图文说明，可查看本站 CC Switch 详细教程：https://apiuspro.cn/app/ccswitch'
         ],
         warnings: [
-          'VS Code 扩展依赖本地安装的 Claude Code CLI，如果命令行中 claude 命令不可用，扩展也无法使用',
-          '使用内联编辑时建议先保存当前文件，方便不满意时用 Ctrl+Z 撤回',
-          '不要在公共电脑上使用扩展的自动保存 API Key 功能，避免凭证泄露'
+          '只从官方 GitHub 项目或可信发布页下载安装包',
+          'Portable 便携版可以用，但新手优先选 MSI 安装包'
+        ]
+      },
+      {
+        title: '获取 DeepSeek API Key',
+        content: '接入 DeepSeek 前，需要先在 DeepSeek 开放平台创建 API Key。API Key 是调用模型的身份凭证，创建后要立即保存。',
+        steps: [
+          {
+            title: '进入 DeepSeek 开放平台',
+            description: '访问 DeepSeek 开放平台，注册或登录账号，并按页面要求完成实名认证。',
+            image: '/images/tutorial/claude-code-deepseek-p09-01.png',
+            items: [
+              '访问 DeepSeek 开放平台：https://platform.deepseek.com',
+              '注册或登录账号',
+              '按提示完成实名认证',
+              '进入 API Keys 页面'
+            ]
+          },
+          {
+            title: '创建并保存 API Key',
+            description: '在 API Keys 页面创建新的 API Key，复制后保存到安全位置。',
+            image: '/images/tutorial/claude-code-deepseek-p10-01.png',
+            items: [
+              '点击创建 API Key',
+              '复制生成的密钥',
+              '密钥通常只完整显示一次，忘记后只能重新创建',
+              '确认账号有可用额度或余额'
+            ],
+            warning: 'API Key 不要截图公开、上传到 GitHub 或发送给他人。'
+          }
+        ],
+        tips: [
+          'DeepSeek 适合国内开发测试，网络稳定且成本较低',
+          '建议先用小额额度测试，确认能正常响应后再用于真实项目'
+        ]
+      },
+      {
+        title: '使用 CC Switch 接入 DeepSeek',
+        content: '拿到 DeepSeek API Key 后，在 CC Switch 中选择 Claude Code 标签，并把 DeepSeek 配置保存进去。这样 Claude Code 后续就能通过 DeepSeek 模型响应。',
+        steps: [
+          {
+            title: '打开 Claude Code 配置页',
+            description: '打开 CC Switch，进入 Claude Code 对应页面，点击右上角添加或配置供应商。',
+            image: '/images/tutorial/claude-code-deepseek-p10-01.png',
+            items: [
+              '确认当前选中的是 Claude Code',
+              '点击右上角的添加或配置按钮',
+              '选择 DeepSeek 供应商预设'
+            ]
+          },
+          {
+            title: '填写 DeepSeek API Key 并保存',
+            description: '选择 DeepSeek 后，将刚才复制的 API Key 粘贴进去，保存配置。',
+            image: '/images/tutorial/claude-code-deepseek-p11-01.png',
+            code: 'Provider Name: DeepSeek\nAPI Endpoint: https://api.deepseek.com\nAPI Key: sk-xxxxxxxxxxxxxxxx\nModel Name: deepseek-chat',
+            items: [
+              'Provider 选择 DeepSeek',
+              '粘贴 DeepSeek API Key',
+              '确认模型名称和 API 地址无误',
+              '点击保存配置'
+            ]
+          },
+          {
+            title: '测试 CC Switch 连接状态',
+            description: '保存后点击页面中的测试或状态按钮。如果提示运行正常，说明 DeepSeek 已成功接入。',
+            image: '/images/tutorial/claude-code-deepseek-p11-01.png',
+            items: [
+              '点击测试按钮',
+              '确认状态正常',
+              '如果失败，优先检查 API Key、余额和模型名称',
+              '配置细节可参考：https://apiuspro.cn/app/ccswitch'
+            ]
+          }
+        ],
+        tips: [
+          'CC Switch 可以同时管理多个供应商，后续可在 DeepSeek、Kimi、智谱、OpenAI 等模型间切换',
+          '切换后如 Claude Code 未立即生效，重新打开终端再试'
+        ],
+        warnings: [
+          '一定要确认当前配置写入的是 Claude Code 标签，不要误写到其他工具标签',
+          '不要把包含 API Key 的配置文件上传到公开仓库'
+        ]
+      },
+      {
+        title: '启动 Claude Code 并测试模型',
+        content: 'DeepSeek 配置完成后，重新打开一个新的终端，执行 `claude` 启动 Claude Code，并用简单问题验证模型是否正常响应。',
+        steps: [
+          {
+            title: '重新打开终端启动 Claude Code',
+            description: '关闭旧终端，重新打开 Git Bash 或终端，然后执行 Claude Code 启动命令。',
+            image: '/images/tutorial/claude-code-deepseek-p12-01.png',
+            code: 'claude',
+            items: [
+              '必须重新打开终端，避免旧会话缓存旧配置',
+              '在终端输入 `claude`',
+              '等待 Claude Code 进入交互界面'
+            ]
+          },
+          {
+            title: '提出简单问题测试响应',
+            description: '在 Claude Code 中输入一个简单问题，例如“1.9 和 1.11 哪个大”。如果模型能正常回答，说明接入成功。',
+            image: '/images/tutorial/claude-code-deepseek-p12-01.png',
+            items: [
+              '先用简单问题测试，不要一开始就跑复杂项目',
+              '能正常回答说明 DeepSeek 模型接入成功',
+              '如果没有响应，检查 CC Switch 配置、API Key 和账户余额'
+            ]
+          }
+        ],
+        tips: [
+          '确认模型响应稳定后，再进入真实项目目录使用 Claude Code 处理代码任务',
+          '日常开发建议先用低成本模型，复杂任务再切换到更强模型'
+        ]
+      },
+      {
+        title: '进阶使用与补充入口',
+        content: '完成 Claude Code 与 DeepSeek 接入后，可以继续配置 VS Code 扩展、Obsidian 插件或查看 CC Switch 的完整教程，把命令行、编辑器和知识库工作流串起来。',
+        steps: [
+          {
+            title: '查看 CC Switch 详细教程',
+            description: '如果你还需要配置其他模型、MCP、Skills 或多个 AI 工具，建议继续阅读本站 CC Switch 独立教程。',
+            items: [
+              '详细教程入口：https://apiuspro.cn/app/ccswitch',
+              '适合继续配置 Codex、Gemini CLI、OpenCode、OpenClaw',
+              '适合统一管理多个 API Key 和模型供应商'
+            ]
+          },
+          {
+            title: '接入 VS Code 扩展',
+            description: 'Claude Code 提供 VS Code 扩展，安装后可以直接在编辑器内使用侧边栏对话、内联编辑和代码修复。',
+            items: [
+              '打开 VS Code 扩展市场',
+              '搜索 Claude Code',
+              '安装官方扩展',
+              '扩展会读取 Claude Code 的本地配置'
+            ]
+          },
+          {
+            title: '接入 Obsidian 插件',
+            description: '如果你使用 Obsidian 管理笔记，可以继续安装 Claudian Obsidian 插件，在知识库中调用 AI。',
+            items: [
+              '插件教程入口：https://apiuspro.cn/app/claudian-obsidian',
+              '适合把 Claude Code 工作流延伸到笔记和知识库场景',
+              '建议在 Claude Code 基础环境稳定后再配置'
+            ]
+          }
+        ],
+        tips: [
+          'VS Code 扩展和命令行 Claude Code 共享同一套本地配置',
+          'Obsidian 插件是进阶工作流，不影响 Claude Code 基础使用',
+          '需要更强配置管理时优先查看 `https://apiuspro.cn/app/ccswitch`'
         ]
       }
     ]

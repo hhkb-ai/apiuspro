@@ -1,13 +1,13 @@
 import { MetadataRoute } from 'next';
-import { apiList, proxyServices, appTutorials } from '@/lib/api-config';
+import { appTutorials, visibleAPIList, visibleProxyServices } from '@/lib/api-config';
 import { reviewDetails } from '@/lib/review-config';
 import { getAllUseCaseIds } from '@/lib/use-case-config';
 
 const BASE_URL = 'https://apiuspro.cn';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const allAPIs = [...apiList, ...proxyServices];
-  const apisWithTutorial = apiList.filter((a: { tutorial?: unknown }) => a.tutorial);
+  const allAPIs = [...visibleAPIList, ...visibleProxyServices];
+  const apisWithTutorial = visibleAPIList.filter((a: { tutorial?: unknown }) => a.tutorial);
   const reviewSlugs = Object.keys(reviewDetails);
   const useCaseIds = getAllUseCaseIds();
   const now = new Date();
@@ -18,6 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/cloud-api`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${BASE_URL}/tutorial`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${BASE_URL}/api-review`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${BASE_URL}/app`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${BASE_URL}/local-deploy`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE_URL}/faq`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
   ];

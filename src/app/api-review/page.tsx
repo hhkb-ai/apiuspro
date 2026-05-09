@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { reviewDetails } from '@/lib/review-config';
 import type { ReviewDetail } from '@/lib/review-config';
 import { BreadcrumbSchema } from '@/components/seo/structured-data';
+import { RememberListLink } from '@/components/navigation/ReturnNavigation';
 
 export const metadata: Metadata = {
   title: 'AI API 完整测评对比 | 性能、价格与选购建议',
@@ -154,9 +155,9 @@ function ReviewCard({ review }: { review: ReviewDetail }) {
         </div>
 
         <div className="border-t pt-5">
-          <Link href={`/api-review/${review.slug}`}>
+          <RememberListLink href={`/api-review/${review.slug}`} listLabel="测评列表">
             <Button variant="outline">查看完整测评</Button>
-          </Link>
+          </RememberListLink>
         </div>
       </CardContent>
     </Card>

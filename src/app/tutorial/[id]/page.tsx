@@ -3,9 +3,11 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
+import { BeianLinks } from '@/components/layout/BeianLinks';
 import { apiList, getAPIById, SHOW_PROXY_CONTENT, type APIConfig } from '@/lib/api-config';
 import { BreadcrumbSchema, TechArticleSchema } from '@/components/seo/structured-data';
 import { CodeBlock } from '@/components/tutorial/CodeBlock';
+import { DetailBackNav } from '@/components/navigation/ReturnNavigation';
 
 // 将文本中的 URL 转换为可点击链接
 function LinkText({ text }: { text: string }) {
@@ -119,10 +121,8 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
       <div className="min-h-screen bg-background">
       {/* ── 顶部导航栏 ── */}
       <header className="sticky top-0 z-50 border-b border-border bg-card">
-        <div className="max-w-[1200px] mx-auto px-6 h-14 flex items-center">
-          <Link href="/tutorial" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-            &#8592; 返回教程列表
-          </Link>
+        <div className="max-w-[1200px] mx-auto px-6 py-3 flex flex-wrap items-center gap-y-2">
+          <DetailBackNav listHref="/tutorial" listLabel="教程列表" className="mb-0" />
           <span className="mx-3 text-border">|</span>
           <span className="truncate text-sm font-semibold text-foreground">{api.name} 购买教程</span>
           <span className={`ml-2 text-[11px] font-semibold px-2 py-0.5 rounded-full ${
@@ -318,6 +318,24 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
             ))}
           </div>
 
+          {/* CC Switch 推荐 */}
+          <div id="ccswitch-section" className="mx-8 mb-8 rounded-lg border border-emerald-200 bg-emerald-50 px-5 py-4">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <p className="mb-1 text-[13px] font-semibold text-emerald-800">配置推荐：使用 CC Switch 接入 AI 工具</p>
+                <p className="text-sm leading-6 text-emerald-700">
+                  创建 API Key 后，建议用 CC Switch 统一填写 API Key、Base URL 和模型名称，再接入 Claude Code、Codex、Gemini CLI、OpenCode、OpenClaw 等工具，避免手动修改配置文件出错。
+                </p>
+              </div>
+              <Link
+                href="/app/ccswitch"
+                className="shrink-0 rounded-md bg-emerald-700 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-emerald-800"
+              >
+                查看 CC Switch 详细教程
+              </Link>
+            </div>
+          </div>
+
           {/* 使用提示和注意事项 */}
           {(tutorial.tips && tutorial.tips.length > 0) || (tutorial.warnings && tutorial.warnings.length > 0) ? (
             <div className="mx-8 mb-8 grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -406,6 +424,12 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                   使用提示
                 </a>
               )}
+              <a
+                href="#ccswitch-section"
+                className="block truncate py-1.5 pl-3 text-[12px] text-muted-foreground transition-colors hover:text-foreground"
+              >
+                CC Switch 推荐
+              </a>
               {/* 注意事项 */}
               {tutorial.warnings && tutorial.warnings.length > 0 && (
                 <a
@@ -422,28 +446,8 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
 
       <footer className="border-t border-border px-4 py-8 text-center text-sm text-muted-foreground">
         <p>API知识站 - 适合初学者的 AI API 学习平台</p>
-        <div className="mt-3 flex flex-col items-center justify-center gap-2">
-          <a
-            href="https://beian.miit.gov.cn/"
-            rel="noreferrer"
-            target="_blank"
-            className="transition-colors hover:text-foreground"
-          >
-            粤ICP备2026048178号
-          </a>
-          <a
-            href="https://beian.mps.gov.cn/#/query/webSearch?code=44162102000181"
-            rel="noreferrer"
-            target="_blank"
-            className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
-          >
-            <img
-              src="/images/beian.png"
-              alt="公安备案图标"
-              className="h-4 w-4"
-            />
-            粤公网安备44162102000181号
-          </a>
+        <div className="mt-3">
+          <BeianLinks />
         </div>
       </footer>
     </div>

@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { apiList, APIConfig } from '@/lib/api-config';
 import { BreadcrumbSchema } from '@/components/seo/structured-data';
+import { RememberListLink } from '@/components/navigation/ReturnNavigation';
 
 function badgeClass(type: string) {
   if (type === 'success') {
@@ -54,9 +55,9 @@ function APICard({ api }: { api: APIConfig }) {
         <a href={api.url} target="_blank" rel="noopener noreferrer" className="flex-1">
           <Button className="w-full" size="sm">官网入口</Button>
         </a>
-        <Link href={`/api/${api.id}`} className="flex-1">
+        <RememberListLink href={`/api/${api.id}`} listLabel="API 列表" className="flex-1">
           <Button variant="outline" className="w-full" size="sm">详细说明</Button>
-        </Link>
+        </RememberListLink>
       </div>
     </article>
   );

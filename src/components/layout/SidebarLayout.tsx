@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { BeianLinks } from '@/components/layout/BeianLinks';
 
 const navigation = [
   { name: '返回首页', href: '/' },
@@ -103,29 +104,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
           {children}
         </div>
         <footer className="border-t border-border px-4 py-6 text-center text-sm text-muted-foreground">
-          <div className="flex flex-col items-center justify-center gap-2">
-            <a
-              href="https://beian.miit.gov.cn/"
-              rel="noreferrer"
-              target="_blank"
-              className="transition-colors hover:text-foreground"
-            >
-              粤ICP备2026048178号
-            </a>
-            <a
-              href="https://beian.mps.gov.cn/#/query/webSearch?code=44162102000181"
-              rel="noreferrer"
-              target="_blank"
-              className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
-            >
-              <img
-                src="/images/beian.png"
-                alt="公安备案图标"
-                className="h-4 w-4"
-              />
-              粤公网安备44162102000181号
-            </a>
-          </div>
+          <BeianLinks />
         </footer>
       </main>
     </div>

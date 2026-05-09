@@ -124,12 +124,13 @@ const deploySteps = [
   },
   {
     title: '启动 API 服务',
-    description: '如果您需要在其他应用中使用本地模型，可以启动 API 服务。',
+    description: '如果您需要在其他应用中使用本地模型，可以启动 API 服务，并用 CC Switch 把本地兼容接口接入 Claude Code、Codex、OpenCode 等 AI 工具。',
     items: [
       'Ollama 默认会启动 API 服务，端口为 11434',
       '可以通过 http://localhost:11434 访问 API',
       '支持 OpenAI 兼容格式，可以替代云端 API 使用',
       '可以配合 ChatBox、Open WebUI 等工具使用',
+      '推荐使用 CC Switch 统一管理本地接口、云端 API 和多个 AI 工具的配置',
     ],
     code: '# 测试 API 是否正常工作\ncurl http://localhost:11434/api/generate -d \'{\"model\": \"gemma4:4b\", \"prompt": "你好"}\'\n\n# 如果安装了 jq，可以格式化输出\ncurl http://localhost:11434/api/generate -d \'{\"model\": \"gemma4:4b\", \"prompt": "你好"}\' | jq',
     codeLanguage: 'bash',
@@ -365,17 +366,24 @@ export default function LocalDeployPage() {
                 </a>
               ))}
               <a
-                href="#models"
+                href="#ccswitch"
                 className="inline-flex items-center gap-1 rounded-md bg-muted px-3 py-1.5 text-sm text-muted-foreground hover:bg-foreground hover:text-background transition-colors"
               >
                 <span className="font-medium">7</span>
+                <span className="hidden sm:inline">CC Switch</span>
+              </a>
+              <a
+                href="#models"
+                className="inline-flex items-center gap-1 rounded-md bg-muted px-3 py-1.5 text-sm text-muted-foreground hover:bg-foreground hover:text-background transition-colors"
+              >
+                <span className="font-medium">8</span>
                 <span className="hidden sm:inline">推荐模型</span>
               </a>
               <a
                 href="#faq"
                 className="inline-flex items-center gap-1 rounded-md bg-muted px-3 py-1.5 text-sm text-muted-foreground hover:bg-foreground hover:text-background transition-colors"
               >
-                <span className="font-medium">8</span>
+                <span className="font-medium">9</span>
                 <span className="hidden sm:inline">常见问题</span>
               </a>
             </div>
@@ -447,6 +455,24 @@ export default function LocalDeployPage() {
               </section>
             ))}
           </div>
+
+          {/* CC Switch 推荐 */}
+          <section id="ccswitch" className="mt-12 rounded-lg border border-emerald-200 bg-emerald-50 px-5 py-4">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <h2 className="mb-1 text-base font-semibold text-emerald-800">配置推荐：用 CC Switch 管理本地和云端模型</h2>
+                <p className="text-sm leading-6 text-emerald-700">
+                  启动 Ollama API 后，如果要接入 Claude Code、Codex、Gemini CLI、OpenCode 或 OpenClaw，建议使用 CC Switch 统一管理 Base URL、模型名和供应商切换。云端 API 与本地兼容接口可以放在同一个工具里管理，后续切换更方便。
+                </p>
+              </div>
+              <Link
+                href="/app/ccswitch"
+                className="shrink-0 rounded-md bg-emerald-700 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-emerald-800"
+              >
+                查看 CC Switch 详细教程
+              </Link>
+            </div>
+          </section>
 
           {/* 模型推荐 */}
           <section id="models" className="mt-12 pt-8 border-t border-border">

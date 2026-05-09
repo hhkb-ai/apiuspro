@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { SidebarLayout } from '@/components/layout/SidebarLayout';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { appTutorials } from '@/lib/api-config';
 import { BreadcrumbSchema } from '@/components/seo/structured-data';
+import { RememberListLink } from '@/components/navigation/ReturnNavigation';
 
 export const metadata: Metadata = {
   title: 'API 应用教程',
@@ -65,9 +65,9 @@ export default function AppListPage() {
               <p className="flex-1 text-sm leading-6 text-muted-foreground">{tutorial.desc}</p>
               <p className="mt-2 text-xs text-muted-foreground">{tutorial.sections.length} 个章节</p>
               <div className="mt-auto pt-5">
-                <Link href={`/app/${tutorial.id}`}>
+                <RememberListLink href={`/app/${tutorial.id}`} listLabel="应用教程列表">
                   <Button variant="outline" className="w-full" size="sm">详细教程</Button>
-                </Link>
+                </RememberListLink>
               </div>
             </article>
           ))}

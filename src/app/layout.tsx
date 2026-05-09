@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import { WebSiteSchema, OrganizationSchema } from '@/components/seo/structured-data';
 import { ThemeProvider } from '@/components/theme-provider';
 import DevInspector from '@/components/dev-inspector';
+import { ReturnPositionRestorer } from '@/components/navigation/ReturnNavigation';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -79,29 +81,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN" className="scroll-smooth" suppressHydrationWarning>
-      <head>
-        {/* 百度自动推送 */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function(){
-                var bp = document.createElement('script');
-                var curProtocol = window.location.protocol.split(':')[0];
-                if (curProtocol === 'https') {
-                  bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
-                } else {
-                  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-                }
-                var s = document.getElementsByTagName("script")[0];
-                s.parentNode.insertBefore(bp, s);
-              })();
-            `,
-          }}
-        />
-      </head>
       <body className={`antialiased`}>
+        <Script id="baidu-auto-push" strategy="afterInteractive">
+          {`
+            (function(){
+              var bp = document.createElement('script');
+              bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+              var s = document.getElementsByTagName('script')[0];
+              s.parentNode.insertBefore(bp, s);
+            })();
+          `}
+        </Script>
         <ThemeProvider>
           <DevInspector />
+          <ReturnPositionRestorer />
           <WebSiteSchema />
           <OrganizationSchema />
           {children}

@@ -6,18 +6,26 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TutorialCard } from '@/components/tutorial/TutorialCard';
-import { apiList, proxyServices, getAPIById, APIConfig } from '@/lib/api-config';
+import { APIConfig, visibleAPIList, visibleProxyServices } from '@/lib/api-config';
 import { getReviewSlugByAPIId } from '@/lib/review-config';
 import { BreadcrumbSchema } from '@/components/seo/structured-data';
+import { DetailBackNav } from '@/components/navigation/ReturnNavigation';
+
+function getVisibleAPIs() {
+  return [...visibleAPIList, ...visibleProxyServices];
+}
+
+function getVisibleAPIById(id: string) {
+  return getVisibleAPIs().find(api => api.id === id);
+}
 
 export function generateStaticParams() {
-  const allAPIs = [...apiList, ...proxyServices];
-  return allAPIs.map((api) => ({ id: api.id }));
+  return getVisibleAPIs().map((api) => ({ id: api.id }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
-  const api = getAPIById(id);
+  const api = getVisibleAPIById(id);
   if (!api) return { title: 'API未找到' };
 
   const title = `${api.name} API | 官网入口、购买教程与接入指南`;
@@ -56,15 +64,15 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 }
 
 function getAPIType(api: APIConfig): 'no-proxy' | 'need-proxy' | 'proxy' {
-  if (proxyServices.find(a => a.id === api.id)) return 'proxy';
+  if (visibleProxyServices.find(a => a.id === api.id)) return 'proxy';
   if (api.proxy) return 'need-proxy';
   return 'no-proxy';
 }
 
 function getRelatedAPIs(currentId: string, type: string): APIConfig[] {
-  if (type === 'no-proxy') return apiList.filter(a => !a.proxy && a.id !== currentId).slice(0, 3);
-  if (type === 'need-proxy') return apiList.filter(a => a.proxy && a.id !== currentId).slice(0, 3);
-  return proxyServices.filter(a => a.id !== currentId).slice(0, 3);
+  if (type === 'no-proxy') return visibleAPIList.filter(a => !a.proxy && a.id !== currentId).slice(0, 3);
+  if (type === 'need-proxy') return visibleAPIList.filter(a => a.proxy && a.id !== currentId).slice(0, 3);
+  return visibleProxyServices.filter(a => a.id !== currentId).slice(0, 3);
 }
 
 function badgeClass(type: string) {
@@ -85,7 +93,7 @@ function apiTypeText(apiType: 'no-proxy' | 'need-proxy' | 'proxy') {
 
 export default async function APIDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const api = getAPIById(id);
+  const api = getVisibleAPIById(id);
   if (!api) notFound();
 
   const apiType = getAPIType(api);
@@ -102,12 +110,7 @@ export default async function APIDetailPage({ params }: { params: Promise<{ id: 
         ]}
       />
       <div className="mx-auto max-w-6xl p-6 lg:p-8">
-        <Link
-          href="/cloud-api"
-          className="mb-6 inline-block text-sm text-muted-foreground transition-colors hover:text-foreground"
-        >
-          &#8592; 返回 API 列表
-        </Link>
+        <DetailBackNav listHref="/cloud-api" listLabel="API 列表" />
 
         <div className="mb-8 flex flex-col justify-between gap-5 border-b border-border pb-8 lg:flex-row lg:items-start">
           <div>
@@ -174,68 +177,6 @@ export default async function APIDetailPage({ params }: { params: Promise<{ id: 
                   {feature}
                 </Badge>
               ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* 快速接入示例 */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>快速接入示例</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {/* Python 示例 */}
-              <div>
-                <p className="text-sm font-medium mb-2">Python</p>
-                <pre className="p-4 rounded-lg bg-muted overflow-x-auto text-sm">
-                  <code>{`from openai import OpenAI
-
-client = OpenAI(
-    api_key="YOUR_API_KEY",
-    base_url="${api.url.includes('openai') ? 'https://api.openai.com/v1' : api.url + '/v1'}"
-)
-
-response = client.chat.completions.create(
-    model="${api.id === 'deepseek' ? 'deepseek-chat' : api.id === 'aliyun' ? 'qwen-turbo' : 'gpt-4'}",
-    messages=[{"role": "user", "content": "你好"}]
-)
-print(response.choices[0].message.content)`}</code>
-                </pre>
-              </div>
-
-              {/* curl 示例 */}
-              <div>
-                <p className="text-sm font-medium mb-2">curl</p>
-                <pre className="p-4 rounded-lg bg-muted overflow-x-auto text-sm">
-                  <code>{`curl ${api.url.includes('openai') ? 'https://api.openai.com/v1/chat/completions' : api.url + '/v1/chat/completions'} \\
-  -H "Content-Type: application/json" \\
-  -H "Authorization: Bearer YOUR_API_KEY" \\
-  -d '{
-    "model": "${api.id === 'deepseek' ? 'deepseek-chat' : api.id === 'aliyun' ? 'qwen-turbo' : 'gpt-4'}",
-    "messages": [{"role": "user", "content": "你好"}]
-  }'`}</code>
-                </pre>
-              </div>
-
-              {/* Node.js 示例 */}
-              <div>
-                <p className="text-sm font-medium mb-2">Node.js</p>
-                <pre className="p-4 rounded-lg bg-muted overflow-x-auto text-sm">
-                  <code>{`const OpenAI = require('openai');
-
-const client = new OpenAI({
-  apiKey: 'YOUR_API_KEY',
-  baseURL: '${api.url.includes('openai') ? 'https://api.openai.com/v1' : api.url + '/v1'}'
-});
-
-const response = await client.chat.completions.create({
-  model: '${api.id === 'deepseek' ? 'deepseek-chat' : api.id === 'aliyun' ? 'qwen-turbo' : 'gpt-4'}',
-  messages: [{role: 'user', content: '你好'}]
-});
-console.log(response.choices[0].message.content);`}</code>
-                </pre>
-              </div>
             </div>
           </CardContent>
         </Card>

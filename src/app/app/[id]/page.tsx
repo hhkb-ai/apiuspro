@@ -4,8 +4,10 @@ import { use, useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import { BeianLinks } from '@/components/layout/BeianLinks';
 import { appTutorials } from '@/lib/api-config';
 import { BreadcrumbSchema, ArticleSchema } from '@/components/seo/structured-data';
+import { DetailBackNav } from '@/components/navigation/ReturnNavigation';
 
 /* ─── RichText: 解析 `code` 【重点】 标记 ─── */
 function RichText({ text, className = '' }: { text: string; className?: string }) {
@@ -224,10 +226,8 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
       />
       {/* ── 顶部导航栏 ── */}
       <header className="sticky top-0 z-50 border-b border-border bg-card">
-        <div className="max-w-[1200px] mx-auto px-6 h-14 flex items-center">
-          <Link href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-            &#8592; 返回首页
-          </Link>
+        <div className="max-w-[1200px] mx-auto px-6 py-3 flex flex-wrap items-center gap-y-2">
+          <DetailBackNav listHref="/app" listLabel="应用教程列表" className="mb-0" />
           <span className="mx-3 text-border">|</span>
           <span className="truncate text-sm font-semibold text-foreground">{tutorial.name}</span>
           <div className="ml-auto">
@@ -461,28 +461,8 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
 
       <footer className="border-t border-border px-4 py-8 text-center text-sm text-muted-foreground">
         <p>API知识站 - 适合初学者的 AI API 学习平台</p>
-        <div className="mt-3 flex flex-col items-center justify-center gap-2">
-          <a
-            href="https://beian.miit.gov.cn/"
-            rel="noreferrer"
-            target="_blank"
-            className="transition-colors hover:text-foreground"
-          >
-            粤ICP备2026048178号
-          </a>
-          <a
-            href="https://beian.mps.gov.cn/#/query/webSearch?code=44162102000181"
-            rel="noreferrer"
-            target="_blank"
-            className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
-          >
-            <img
-              src="/images/beian.png"
-              alt="公安备案图标"
-              className="h-4 w-4"
-            />
-            粤公网安备44162102000181号
-          </a>
+        <div className="mt-3">
+          <BeianLinks />
         </div>
       </footer>
     </div>
