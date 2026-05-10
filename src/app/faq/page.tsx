@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { BeianLinks } from '@/components/layout/BeianLinks';
 import { faqCategories } from '@/lib/api-config';
 import { FAQSchema, BreadcrumbSchema } from '@/components/seo/structured-data';
+import { apiPurchaseKeywords, apiTroubleshootingKeywords, coreLongTailKeywords, scenarioDecisionKeywords, uniqueKeywords } from '@/lib/seo-keywords';
 
 // 将文本中的 URL 转换为可点击链接
 function LinkText({ text }: { text: string }) {
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
   title: '常见问题 FAQ',
   description:
     'AI API 接入全流程 FAQ：涵盖注册验证、支付方式、API Key 安全、调用限制、代理选择等高频问题，帮助新手快速解决 API 使用中的常见障碍。',
-  keywords: [
+  keywords: uniqueKeywords([
     'API常见问题',
     'API Key安全',
     'API调用限制',
@@ -45,7 +46,7 @@ export const metadata: Metadata = {
     'API接入问题',
     'AI API FAQ',
     'API使用教程',
-  ],
+  ], coreLongTailKeywords, apiPurchaseKeywords, apiTroubleshootingKeywords, scenarioDecisionKeywords),
   alternates: { canonical: 'https://apiuspro.cn/faq' },
   openGraph: {
     title: '常见问题 FAQ | API知识站',

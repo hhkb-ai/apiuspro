@@ -8,6 +8,7 @@ import { getUseCaseById, getAllUseCaseIds } from '@/lib/use-case-config';
 import { apiList } from '@/lib/api-config';
 import { reviewSlugByApiId } from '@/lib/review-config';
 import { BreadcrumbSchema } from '@/components/seo/structured-data';
+import { coreLongTailKeywords, scenarioDecisionKeywords, uniqueKeywords, userIntentKeywords } from '@/lib/seo-keywords';
 
 const BASE_URL = 'https://apiuspro.cn';
 
@@ -26,7 +27,7 @@ export function generateMetadata({ params }: { params: Promise<{ id: string }> }
     return {
       title: `${uc.name} — AI API 场景推荐`,
       description: `${uc.description} 推荐 ${apiNames.join('、')} 等 ${apiNames.length} 个 API，含评分、优缺点对比与购买教程。`,
-      keywords: uc.keywords,
+      keywords: uniqueKeywords(uc.keywords, coreLongTailKeywords, userIntentKeywords, scenarioDecisionKeywords),
       alternates: { canonical: `${BASE_URL}/use-case/${id}` },
       openGraph: {
         title: `${uc.name} | API知识站`,
@@ -46,6 +47,13 @@ function StarRating({ score }: { score: number }) {
     </span>
   );
 }
+
+const validationChecklist = [
+  '准备 3-5 个真实样本，不要只用一句测试 prompt 判断模型好坏',
+  '记录每次调用的输入输出 Token、响应时间、失败率和人工修改成本',
+  '同一任务至少对比一个国内直连模型和一个能力更强的旗舰模型',
+  '上线前配置预算告警、限流、重试、日志脱敏和 API Key 轮换策略',
+];
 
 export default async function UseCaseDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -88,6 +96,21 @@ export default async function UseCaseDetailPage({ params }: { params: Promise<{ 
               <div key={c.title} className="rounded-lg border bg-card p-5">
                 <h3 className="font-semibold">{c.title}</h3>
                 <p className="mt-1 text-sm leading-6 text-muted-foreground">{c.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mb-8 rounded-lg border bg-card p-5">
+          <h2 className="text-xl font-semibold tracking-tight">落地验证清单</h2>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+            选型不要只看榜单或参数。把模型放进真实业务流程里测试，才能判断它是否真正适合 {uc.name}。
+          </p>
+          <div className="mt-4 grid gap-3 text-sm leading-6 text-muted-foreground sm:grid-cols-2">
+            {validationChecklist.map((item) => (
+              <div key={item} className="flex gap-2">
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-muted-foreground/50" />
+                <span>{item}</span>
               </div>
             ))}
           </div>

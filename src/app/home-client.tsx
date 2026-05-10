@@ -9,6 +9,7 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { BeianLinks } from '@/components/layout/BeianLinks';
 import { RememberListLink } from '@/components/navigation/ReturnNavigation';
 import { apiList, appTutorials } from '@/lib/api-config';
+import { fuzzyScore, sortByFuzzyScore } from '@/lib/fuzzy-search';
 
 const pages = [
   { id: 'cloud-api', name: 'API 列表', desc: '先看官网入口、代理要求和免费额度', url: '/cloud-api', tag: '优先查看' },
@@ -88,16 +89,6 @@ function accessText(proxy?: boolean) {
   return proxy ? '需要代理' : '无需代理';
 }
 
-// 自定义防抖 Hook
-function useDebounce<T>(value: T, delay = 300): T {
-  const [debounced, setDebounced] = useState(value);
-  useEffect(() => {
-    const timer = setTimeout(() => setDebounced(value), delay);
-    return () => clearTimeout(timer);
-  }, [value, delay]);
-  return debounced;
-}
-
 // 键盘导航 Hook
 interface FlatItem {
   id: string;
@@ -126,7 +117,15 @@ function useSearchKeyboard({
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (!isOpen || items.length === 0) return;
+      if (!isOpen) return;
+
+      if (e.key === 'Escape') {
+        onClose();
+        inputRef.current?.focus();
+        return;
+      }
+
+      if (items.length === 0) return;
 
       if (e.key === 'ArrowDown') {
         e.preventDefault();
@@ -143,9 +142,6 @@ function useSearchKeyboard({
           activeIndexRef.current = prev;
           itemRefs.current[prev]?.focus();
         }
-      } else if (e.key === 'Escape') {
-        onClose();
-        inputRef.current?.focus();
       }
     },
     [isOpen, items.length, onClose, inputRef],
@@ -236,14 +232,12 @@ export default function HomeClient() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const isComposingRef = useRef(false);
 
-  // 防抖处理，避免每次按键都触发搜索计算
-  const debouncedQuery = useDebounce(searchQuery, 200);
-
-  // 统一规范化，避免重复调用 toLowerCase/trim
+  // 统一规范化，避免搜索按钮和回车被防抖状态延迟影响
   const normalizedQuery = useMemo(
-    () => debouncedQuery.toLowerCase().trim(),
-    [debouncedQuery]
+    () => searchQuery.toLowerCase().trim(),
+    [searchQuery]
   );
 
   // 搜索结果和精确匹配合并到一个 useMemo，共用同一个 normalizedQuery
@@ -257,22 +251,32 @@ export default function HomeClient() {
       };
     }
 
-    const matchesQuery = (text: string) => text.toLowerCase().includes(normalizedQuery);
-
-    const apis = apiList
-      .filter(api => matchesQuery(api.name) || matchesQuery(api.desc))
+    const apis = sortByFuzzyScore(
+      apiList,
+      normalizedQuery,
+      api => [api.id, api.name, api.desc, api.free, ...api.features],
+    )
       .slice(0, 4)
       .map(a => ({ ...a, href: `/api/${a.id}` }));
-    const tutorials = apiList
-      .filter(api => api.tutorial && (matchesQuery(api.name) || matchesQuery(api.desc)))
+    const tutorials = sortByFuzzyScore(
+      apiList.filter(api => api.tutorial),
+      normalizedQuery,
+      api => [api.id, api.name, api.desc, api.tutorial?.title, api.tutorial?.subtitle, ...api.features],
+    )
       .slice(0, 3)
       .map(a => ({ ...a, name: a.tutorial?.title || `${a.name}教程`, href: `/tutorial/${a.id}` }));
-    const apps = appTutorials
-      .filter(app => matchesQuery(app.name) || matchesQuery(app.desc))
+    const apps = sortByFuzzyScore(
+      appTutorials,
+      normalizedQuery,
+      app => [app.id, app.name, app.desc, app.badge.text],
+    )
       .slice(0, 3)
       .map(a => ({ ...a, href: `/app/${a.id}` }));
-    const pageItems = pages
-      .filter(page => matchesQuery(page.name) || matchesQuery(page.desc))
+    const pageItems = sortByFuzzyScore(
+      pages,
+      normalizedQuery,
+      page => [page.id, page.name, page.desc, page.tag],
+    )
       .map(p => ({ ...p, href: p.url }));
 
     const flat = [...apis, ...tutorials, ...apps, ...pageItems];
@@ -281,8 +285,7 @@ export default function HomeClient() {
       searchResults: { apis, tutorials, apps, pages: pageItems },
       exactMatch: apiList.find(
         api =>
-          api.name.toLowerCase() === normalizedQuery ||
-          api.id.toLowerCase() === normalizedQuery
+          fuzzyScore(normalizedQuery, [api.id, api.name]) >= 85
       ) ?? null,
       hasResults: flat.length > 0,
       flatItems: flat,
@@ -309,11 +312,16 @@ export default function HomeClient() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [closeSuggestions]);
 
-  const handleSearch = useCallback(() => {
-    if (!normalizedQuery || !exactMatch) return;
-    router.push(`/api/${exactMatch.id}`);
+  const handleSearch = useCallback((event?: React.FormEvent<HTMLFormElement>) => {
+    event?.preventDefault();
+    if (!normalizedQuery) return;
+
+    const targetHref = exactMatch ? `/api/${exactMatch.id}` : flatItems[0]?.href;
+    if (!targetHref) return;
+
+    router.push(targetHref);
     closeSuggestions();
-  }, [exactMatch, normalizedQuery, router, closeSuggestions]);
+  }, [exactMatch, flatItems, normalizedQuery, router, closeSuggestions]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -358,7 +366,11 @@ export default function HomeClient() {
 
             <div ref={containerRef} className="relative mx-auto mt-6 px-1 sm:mt-9 sm:max-w-4xl sm:px-0">
               <p className="mb-3 text-center text-sm font-medium text-foreground">搜索 API 或工具名称</p>
-              <div className="flex gap-2 rounded-lg border bg-card p-1.5 shadow-sm sm:gap-3 sm:p-2">
+              <form
+                className="flex gap-2 rounded-lg border bg-card p-1.5 shadow-sm sm:gap-3 sm:p-2"
+                onSubmit={handleSearch}
+                role="search"
+              >
                 <input
                   ref={inputRef}
                   type="search"
@@ -371,22 +383,40 @@ export default function HomeClient() {
                   onFocus={() => setShowSuggestions(true)}
                   onKeyDown={(e) => {
                     handleKeyDown(e);
-                    if (e.key === 'Enter') handleSearch();
+                    if (e.key === 'Enter' && isComposingRef.current) {
+                      e.preventDefault();
+                    }
                   }}
+                  onCompositionStart={() => { isComposingRef.current = true; }}
+                  onCompositionEnd={() => { isComposingRef.current = false; }}
                   aria-label="搜索 API 或工具"
                   aria-autocomplete="list"
                   aria-controls="search-suggestions"
                   className="h-10 flex-1 border-0 bg-transparent px-3 text-base shadow-none focus-visible:ring-0 sm:h-12 sm:px-4"
                 />
+                {searchQuery && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="h-10 px-3 text-sm sm:h-12"
+                    onClick={() => {
+                      setSearchQuery('');
+                      closeSuggestions();
+                      inputRef.current?.focus();
+                    }}
+                  >
+                    清除
+                  </Button>
+                )}
                 <Button
+                  type="submit"
                   className="h-10 px-4 text-sm sm:h-12 sm:px-7 sm:text-base"
-                  onClick={handleSearch}
-                  disabled={!normalizedQuery}
+                  disabled={!normalizedQuery || (!exactMatch && flatItems.length === 0)}
                   aria-label="执行搜索"
                 >
                   搜索
                 </Button>
-              </div>
+              </form>
 
               {/* 计算各分组在 flatItems 中的起始索引 */}
               {(() => {

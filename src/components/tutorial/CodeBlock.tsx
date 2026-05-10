@@ -11,11 +11,19 @@ interface CodeBlockProps {
 
 export function CodeBlock({ code, language, explanation }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
+  const [copyFailed, setCopyFailed] = useState(false);
 
   const handleCopy = useCallback(async () => {
-    await navigator.clipboard.writeText(code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopied(true);
+      setCopyFailed(false);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+      setCopyFailed(true);
+      setTimeout(() => setCopyFailed(false), 2000);
+    }
   }, [code]);
 
   return (
@@ -25,7 +33,7 @@ export function CodeBlock({ code, language, explanation }: CodeBlockProps) {
           {language || 'code'}
         </span>
         <Button variant="ghost" size="sm" onClick={handleCopy} className="h-6 px-2 text-[11px]">
-          {copied ? '已复制' : '复制'}
+          {copyFailed ? '复制失败' : copied ? '已复制' : '复制'}
         </Button>
       </div>
       <pre className="overflow-x-auto p-4 text-xs leading-6 text-foreground">

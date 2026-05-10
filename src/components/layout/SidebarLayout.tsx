@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { BeianLinks } from '@/components/layout/BeianLinks';
 
@@ -20,6 +20,23 @@ const navigation = [
 export function SidebarLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [mobileMenuOpen]);
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -68,6 +85,9 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
         <Button
           variant="outline"
           size="sm"
+          type="button"
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-navigation"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           {mobileMenuOpen ? '关闭' : '菜单'}
@@ -75,7 +95,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
       </div>
 
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 top-16 bg-background z-40">
+        <div id="mobile-navigation" className="lg:hidden fixed inset-0 top-16 bg-background z-40">
           <nav className="p-4 space-y-1.5">
             {navigation.map((item) => {
               const isActive = pathname === item.href;

@@ -41,7 +41,58 @@ export const apiPurchaseKeywords = [
   'Claude Code 配置 API',
 ];
 
+export const apiTroubleshootingKeywords = [
+  'API Key 泄露怎么办',
+  'API 429 错误解决',
+  'API 调用超时怎么办',
+  'API 余额扣费异常',
+  'API 返回格式错误',
+  'API Token 超限解决',
+  'API Key 环境变量配置',
+  'OpenAI 兼容接口报错',
+  'AI API 成本控制',
+  'AI API 上线前检查',
+];
+
+export const toolWorkflowKeywords = [
+  'Claude Code 接入 DeepSeek',
+  'Claude Code 接入通义千问',
+  'Codex 配置 API',
+  'Gemini CLI 配置 API',
+  'OpenCode 配置 API',
+  'OpenClaw 使用教程',
+  'CC Switch 切换模型',
+  'AI 编程工具 API 配置',
+  'MCP 配置教程',
+  'AI 工具工作流搭建',
+];
+
+export const localDeployKeywords = [
+  'Ollama 本地 API',
+  'Ollama OpenAI 兼容接口',
+  '本地大模型接入 Claude Code',
+  '本地大模型接入 Codex',
+  '笔记本本地部署 AI',
+  '低配置电脑跑大模型',
+  '本地模型和云端 API 对比',
+  '离线 AI 助手搭建',
+  '私有化 AI 部署教程',
+  '本地模型硬件配置推荐',
+];
+
+export const scenarioDecisionKeywords = [
+  'AI API 选型清单',
+  'AI API 生产环境选择',
+  'AI API 真实项目接入',
+  'AI API 新手避坑',
+  'AI API 价格和效果对比',
+  '国内 AI API 选型',
+  '企业 AI API 接入方案',
+  '个人开发者 AI API 推荐',
+  'AI API 免费额度怎么用',
+  'AI API 从测试到上线',
+];
+
 export function uniqueKeywords(...groups: string[][]) {
   return Array.from(new Set(groups.flat()));
 }
-

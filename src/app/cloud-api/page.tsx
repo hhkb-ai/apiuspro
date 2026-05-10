@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { apiList, APIConfig } from '@/lib/api-config';
 import { BreadcrumbSchema } from '@/components/seo/structured-data';
 import { RememberListLink } from '@/components/navigation/ReturnNavigation';
+import { fuzzyScore, sortByFuzzyScore } from '@/lib/fuzzy-search';
 
 const decisionGuides = [
   {
@@ -112,38 +113,69 @@ export default function CloudAPIPage() {
 
   const matchedAPI = useMemo(() => {
     if (!searchQuery.trim()) return null;
-    const query = searchQuery.toLowerCase().trim();
-    return allAPIs.find(api => api.name.toLowerCase() === query || api.id.toLowerCase() === query);
+    return allAPIs.find(api => fuzzyScore(searchQuery, [api.id, api.name]) >= 85) ?? null;
   }, [searchQuery, allAPIs]);
 
   const searchSuggestions = useMemo(() => {
     if (!searchQuery.trim() || matchedAPI) return [];
-    const query = searchQuery.toLowerCase().trim();
-    return allAPIs
-      .filter(api => api.name.toLowerCase().includes(query) || api.desc.toLowerCase().includes(query))
+    return sortByFuzzyScore(
+      allAPIs,
+      searchQuery,
+      api => [api.id, api.name, api.desc, api.free, ...api.features],
+    )
       .slice(0, 5);
   }, [searchQuery, matchedAPI, allAPIs]);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (matchedAPI) {
+      router.push(`/api/${matchedAPI.id}`);
+      return;
+    }
+
+    const firstSuggestion = searchSuggestions[0];
+    if (firstSuggestion) {
+      router.push(`/api/${firstSuggestion.id}`);
+    }
+  };
+
+  const handleSearchShortcut = (query: string) => {
+    setSearchQuery(query);
+    setActiveFilter('all');
+  };
+
+  const clearSearch = () => {
+    setSearchQuery('');
+  };
 
   const noProxyAPIs = apiList.filter(a => !a.proxy);
   const needProxyAPIs = apiList.filter(a => a.proxy);
 
   const getFilteredAPIs = () => {
-    const query = searchQuery.toLowerCase();
+    const filterAPIs = (items: APIConfig[]) => {
+      if (!searchQuery.trim()) return items;
+      return sortByFuzzyScore(
+        items,
+        searchQuery,
+        api => [api.id, api.name, api.desc, api.free, ...api.features],
+      );
+    };
+
     if (activeFilter === 'no-proxy') {
       return {
-        noProxy: noProxyAPIs.filter(api => api.name.toLowerCase().includes(query) || api.desc.toLowerCase().includes(query)),
+        noProxy: filterAPIs(noProxyAPIs),
         needProxy: [],
       };
     }
     if (activeFilter === 'need-proxy') {
       return {
         noProxy: [],
-        needProxy: needProxyAPIs.filter(api => api.name.toLowerCase().includes(query) || api.desc.toLowerCase().includes(query)),
+        needProxy: filterAPIs(needProxyAPIs),
       };
     }
     return {
-      noProxy: noProxyAPIs.filter(api => api.name.toLowerCase().includes(query) || api.desc.toLowerCase().includes(query)),
-      needProxy: needProxyAPIs.filter(api => api.name.toLowerCase().includes(query) || api.desc.toLowerCase().includes(query)),
+      noProxy: filterAPIs(noProxyAPIs),
+      needProxy: filterAPIs(needProxyAPIs),
     };
   };
 
@@ -199,9 +231,10 @@ export default function CloudAPIPage() {
               ].map((item) => (
                 <Button
                   key={item.label}
+                  type="button"
                   variant="outline"
                   size="sm"
-                  onClick={() => setSearchQuery(item.query)}
+                  onClick={() => handleSearchShortcut(item.query)}
                 >
                   {item.label}
                 </Button>
@@ -209,14 +242,23 @@ export default function CloudAPIPage() {
             </div>
           </div>
 
-          <div className="relative max-w-xl">
+          <form className="relative max-w-xl" onSubmit={handleSubmit} role="search">
             <Input
               type="text"
               placeholder="搜索 API 名称，如 OpenAI、通义千问..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-11 px-4"
+              className="h-11 pr-24"
             />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={clearSearch}
+                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              >
+                清除
+              </button>
+            )}
             {searchSuggestions.length > 0 && (
               <div className="absolute left-0 right-0 top-full z-10 mt-2 overflow-hidden rounded-lg border bg-card shadow-sm">
                 {searchSuggestions.map((api) => (
@@ -232,12 +274,12 @@ export default function CloudAPIPage() {
                 ))}
               </div>
             )}
-          </div>
+          </form>
 
           {matchedAPI && (
             <div className="flex items-center gap-2 text-sm">
               <span className="text-muted-foreground">找到「{matchedAPI.name}」</span>
-              <Button size="sm" onClick={() => router.push(`/api/${matchedAPI.id}`)}>直接跳转</Button>
+              <Button type="button" size="sm" onClick={() => router.push(`/api/${matchedAPI.id}`)}>直接跳转</Button>
             </div>
           )}
 
@@ -245,6 +287,7 @@ export default function CloudAPIPage() {
             {filters.map(filter => (
               <Button
                 key={filter.id}
+                type="button"
                 variant={activeFilter === filter.id ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => setActiveFilter(filter.id)}

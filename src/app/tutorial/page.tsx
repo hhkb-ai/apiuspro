@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { apiList, APIConfig } from '@/lib/api-config';
 import { BreadcrumbSchema } from '@/components/seo/structured-data';
 import { RememberListLink } from '@/components/navigation/ReturnNavigation';
+import { sortByFuzzyScore } from '@/lib/fuzzy-search';
 
 const purchaseChecklist = [
   '确认官网域名和控制台入口，避免进入仿冒页面',
@@ -73,15 +74,22 @@ export default function TutorialPage() {
   const noProxyWithTutorial = apiList.filter(api => !api.proxy && api.tutorial);
   const needProxyWithTutorial = apiList.filter(api => api.proxy && api.tutorial);
 
-  const filteredNoProxy = noProxyWithTutorial.filter(api =>
-    api.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    api.desc.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
-
-  const filteredNeedProxy = needProxyWithTutorial.filter(api =>
-    api.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    api.desc.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+  const hasSearch = searchQuery.trim().length > 0;
+  const getSearchFields = (api: APIConfig) => [
+    api.id,
+    api.name,
+    api.desc,
+    api.free,
+    api.tutorial?.title,
+    api.tutorial?.subtitle,
+    ...api.features,
+  ];
+  const filteredNoProxy = hasSearch
+    ? sortByFuzzyScore(noProxyWithTutorial, searchQuery, getSearchFields)
+    : noProxyWithTutorial;
+  const filteredNeedProxy = hasSearch
+    ? sortByFuzzyScore(needProxyWithTutorial, searchQuery, getSearchFields)
+    : needProxyWithTutorial;
 
   return (
     <SidebarLayout>
@@ -100,15 +108,31 @@ export default function TutorialPage() {
           </p>
         </div>
 
-        <div className="mb-8 max-w-xl">
+        <form className="mb-8 max-w-xl" role="search" onSubmit={(event) => event.preventDefault()}>
+          <div className="relative">
           <Input
             type="text"
             placeholder="搜索 API 名称..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="h-11 px-4"
+            className="h-11 pr-20"
           />
-        </div>
+            {hasSearch && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              >
+                清除
+              </button>
+            )}
+          </div>
+          {hasSearch && (
+            <p className="mt-2 text-xs text-muted-foreground">
+              搜索结果：{filteredNoProxy.length + filteredNeedProxy.length} 个教程
+            </p>
+          )}
+        </form>
 
         <div className="mb-8 rounded-lg border bg-card p-5">
           <h2 className="font-semibold">购买 API 前检查清单</h2>

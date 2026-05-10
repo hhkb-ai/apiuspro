@@ -177,6 +177,20 @@ function OnThisPage({ sections, activeIdx }: { sections: { title: string }[]; ac
   );
 }
 
+const setupChecklist = [
+  '确认工具读取的是哪个配置文件，避免改错项目目录或用户目录',
+  '准备 API Key、Base URL、模型名称和计费平台登录方式',
+  '先用测试模型跑通一次简单对话，再切换到更贵或更强的模型',
+  '把 API Key 放在环境变量或工具密钥管理里，不要写进公开仓库',
+];
+
+const troubleshootingTips = [
+  '401/403：优先检查 API Key 是否复制完整、是否过期、是否有调用权限',
+  '404/模型不存在：检查模型名、Base URL、供应商兼容接口路径是否匹配',
+  '429：降低并发，开启重试退避，或升级额度与限速套餐',
+  '超时：先切换更快模型或国内直连 API，再缩短输入上下文测试',
+];
+
 /* ─── 主页面 ─── */
 export default function AppTutorialPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -280,6 +294,31 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
             </div>
             <p className="text-sm text-muted-foreground">{tutorial.desc}</p>
           </div>
+
+          <section className="mx-5 mt-6 grid gap-4 sm:mx-8 lg:grid-cols-2">
+            <div className="rounded-lg border border-border bg-muted/40 p-5">
+              <h2 className="text-sm font-semibold text-foreground">配置前检查</h2>
+              <ul className="mt-3 space-y-2">
+                {setupChecklist.map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-sm leading-6 text-muted-foreground">
+                    <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-muted-foreground/50" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="rounded-lg border border-border bg-muted/40 p-5">
+              <h2 className="text-sm font-semibold text-foreground">常见排错</h2>
+              <ul className="mt-3 space-y-2">
+                {troubleshootingTips.map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-sm leading-6 text-muted-foreground">
+                    <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-muted-foreground/50" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
 
           {/* 移动端目录 - 折叠式 */}
           <div className="mx-8 mt-6 overflow-hidden rounded-lg border border-border xl:hidden">

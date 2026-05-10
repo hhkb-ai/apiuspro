@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { BreadcrumbSchema, HowToSchema, ArticleSchema } from '@/components/seo/structured-data';
+import { coreLongTailKeywords, localDeployKeywords, scenarioDecisionKeywords, toolWorkflowKeywords, uniqueKeywords } from '@/lib/seo-keywords';
 
 // 将文本中的 URL 转换为可点击链接
 function LinkText({ text }: { text: string }) {
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
   title: 'AI大模型本地部署教程 2026 | Ollama、Gemma 4、Qwen笔记本部署指南',
   description:
     '面向初学者的AI大模型本地部署教程：使用Ollama在笔记本电脑上部署Gemma 4、Qwen等开源模型。包含详细的安装配置、硬件要求和常见问题解答。',
-  keywords: [
+  keywords: uniqueKeywords([
     'AI大模型本地部署',
     'Ollama安装教程',
     '本地运行大模型',
@@ -41,7 +42,7 @@ export const metadata: Metadata = {
     '大模型硬件要求',
     'Gemma4 Ollama',
     '笔记本AI模型',
-  ],
+  ], coreLongTailKeywords, localDeployKeywords, toolWorkflowKeywords, scenarioDecisionKeywords),
   alternates: { canonical: 'https://apiuspro.cn/local-deploy' },
   openGraph: {
     title: 'AI大模型本地部署教程 2026 | API知识站',
@@ -233,6 +234,33 @@ const models = [
   },
 ];
 
+const localCloudDecision = [
+  {
+    title: '优先用本地模型',
+    items: [
+      '处理隐私资料、内部文档或离线环境任务',
+      '只是学习 Prompt、试验工作流或轻量问答',
+      '希望零调用成本，能接受模型能力弱一些',
+    ],
+  },
+  {
+    title: '优先用云端 API',
+    items: [
+      '需要稳定代码生成、复杂推理或生产环境 SLA',
+      '任务需要多模态、长上下文、函数调用或高并发',
+      '不想占用本机资源，希望直接接入应用或工具',
+    ],
+  },
+  {
+    title: '推荐混合使用',
+    items: [
+      '本地模型做草稿、分类、轻量摘要，云端 API 做最终高质量结果',
+      '通过 CC Switch 管理本地 Ollama 和 DeepSeek、OpenAI 等云端模型',
+      '上线前用真实样本测试质量、延迟、成本和失败率',
+    ],
+  },
+];
+
 // 常见问题
 const faqs = [
   {
@@ -350,6 +378,22 @@ export default function LocalDeployPage() {
               </a>
             </div>
           </div>
+
+          <section className="mb-10 grid grid-cols-1 gap-4 md:grid-cols-3">
+            {localCloudDecision.map((decision) => (
+              <div key={decision.title} className="rounded-lg border border-border bg-card p-5">
+                <h2 className="text-base font-semibold">{decision.title}</h2>
+                <ul className="mt-3 space-y-2">
+                  {decision.items.map((item) => (
+                    <li key={item} className="flex items-start gap-2 text-sm leading-6 text-muted-foreground">
+                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-muted-foreground/50" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </section>
 
           {/* 步骤导航 - 固定在顶部 */}
           <div className="sticky top-14 z-40 mb-8 p-4 rounded-lg border border-border bg-card shadow-sm">

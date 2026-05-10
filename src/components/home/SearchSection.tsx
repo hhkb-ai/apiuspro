@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { apiList, appTutorials } from '@/lib/api-config';
+import { fuzzyScore, sortByFuzzyScore } from '@/lib/fuzzy-search';
 
 const pages = [
   { id: 'cloud-api', name: 'API 列表', desc: '先看官网入口、代理要求和免费额度', url: '/cloud-api' },
@@ -22,25 +23,32 @@ export default function SearchSection() {
 
   const searchResults = useMemo(() => {
     if (!searchQuery.trim()) return { apis: [], tutorials: [], pages: [], apps: [] };
-    const q = searchQuery.toLowerCase().trim();
     return {
-      apis: apiList
-        .filter(api => api.name.toLowerCase().includes(q) || api.desc.toLowerCase().includes(q))
+      apis: sortByFuzzyScore(
+        apiList,
+        searchQuery,
+        api => [api.id, api.name, api.desc, api.free, ...api.features],
+      )
         .slice(0, 4),
-      tutorials: apiList
-        .filter(api => api.tutorial && api.name.toLowerCase().includes(q))
+      tutorials: sortByFuzzyScore(
+        apiList.filter(api => api.tutorial),
+        searchQuery,
+        api => [api.id, api.name, api.desc, api.tutorial?.title, api.tutorial?.subtitle, ...api.features],
+      )
         .slice(0, 3),
-      pages: pages.filter(page => page.name.toLowerCase().includes(q) || page.desc.toLowerCase().includes(q)),
-      apps: appTutorials
-        .filter(app => app.name.toLowerCase().includes(q) || app.desc.toLowerCase().includes(q))
+      pages: sortByFuzzyScore(pages, searchQuery, page => [page.id, page.name, page.desc]),
+      apps: sortByFuzzyScore(
+        appTutorials,
+        searchQuery,
+        app => [app.id, app.name, app.desc, app.badge.text],
+      )
         .slice(0, 3),
     };
   }, [searchQuery]);
 
   const exactMatch = searchQuery.trim()
     ? apiList.find(api =>
-        api.name.toLowerCase() === searchQuery.toLowerCase().trim() ||
-        api.id.toLowerCase() === searchQuery.toLowerCase().trim(),
+        fuzzyScore(searchQuery, [api.id, api.name]) >= 85,
       )
     : null;
 
