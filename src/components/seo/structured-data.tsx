@@ -283,3 +283,27 @@ export function HowToSchema({
     />
   );
 }
+
+// ==================== Site FAQ Schema（用于全站高频搜索意图） ====================
+export function SiteIntentFAQSchema() {
+  const items = [
+    {
+      question: 'AI API 新手应该怎么选？',
+      answer: '新手优先选择国内直连、有免费额度、兼容 OpenAI 接口格式、购买教程完整的 API。先用小额或免费额度跑通真实任务，再决定是否长期使用。',
+    },
+    {
+      question: '国内用户可以直接使用哪些 AI API？',
+      answer: '国内用户可以优先查看 DeepSeek、通义千问、智谱 GLM、Kimi、腾讯混元、豆包等无需代理或接入门槛较低的 API，并根据官网说明确认最新注册和支付要求。',
+    },
+    {
+      question: '购买 API 前需要确认什么？',
+      answer: '购买前应确认官网入口、注册验证方式、支付方式、免费额度、限速规则、API Key 保存方式、Base URL 和模型名称。',
+    },
+    {
+      question: 'API Key 拿到后怎么接入工具？',
+      answer: '一般需要在工具中填写 API Key、Base URL 和模型名称。若工具支持 OpenAI 兼容接口，可以优先使用兼容格式；多工具切换可使用 CC Switch 管理配置。',
+    },
+  ];
+
+  return <FAQSchema items={items} />;
+}

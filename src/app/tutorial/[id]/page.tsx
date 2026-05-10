@@ -8,6 +8,7 @@ import { apiList, getAPIById, SHOW_PROXY_CONTENT, type APIConfig } from '@/lib/a
 import { BreadcrumbSchema, HowToSchema, TechArticleSchema } from '@/components/seo/structured-data';
 import { CodeBlock } from '@/components/tutorial/CodeBlock';
 import { DetailBackNav } from '@/components/navigation/ReturnNavigation';
+import { apiPurchaseKeywords, coreLongTailKeywords, uniqueKeywords } from '@/lib/seo-keywords';
 
 // 将文本中的 URL 转换为可点击链接
 function LinkText({ text }: { text: string }) {
@@ -48,14 +49,14 @@ export function generateMetadata({ params }: { params: Promise<{ id: string }> }
     return {
       title: `${api.name} 购买教程`,
       description: `${api.tutorial.title}：${api.tutorial.subtitle || api.desc}。${needsProxy}，分${api.tutorial.steps.length}步完成注册、支付与API Key接入。`,
-      keywords: [
+      keywords: uniqueKeywords([
         `${api.name}购买教程`,
         `${api.name}怎么买`,
         `${api.name}订阅`,
         `${api.name}注册`,
         `${api.name} API Key`,
         `API购买教程`,
-      ],
+      ], coreLongTailKeywords, apiPurchaseKeywords),
       alternates: { canonical: canonicalUrl },
       openGraph: {
         title: `${api.name} 购买教程 | API知识站`,

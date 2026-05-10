@@ -2,12 +2,13 @@ import type { Metadata } from 'next';
 import HomeClient from './home-client';
 import { ItemListSchema } from '@/components/seo/structured-data';
 import { apiList, appTutorials } from '@/lib/api-config';
+import { apiPurchaseKeywords, coreLongTailKeywords, uniqueKeywords, userIntentKeywords } from '@/lib/seo-keywords';
 
 export const metadata: Metadata = {
   title: 'API知识站 - AI API 选型、购买、接入一站式指南',
   description:
     '覆盖 DeepSeek、OpenAI、Claude、通义千问、Gemini 等 10+ AI API 的官网入口、价格对比、免费额度、购买教程与本地部署指南。适合初学者的 AI API 学习平台。',
-  keywords: [
+  keywords: uniqueKeywords([
     'API知识站',
     'AI API',
     'API购买教程',
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
     'API代充',
     'API订阅',
     '国内AI API',
-  ],
+  ], coreLongTailKeywords, userIntentKeywords, apiPurchaseKeywords),
   alternates: {
     canonical: 'https://apiuspro.cn',
   },

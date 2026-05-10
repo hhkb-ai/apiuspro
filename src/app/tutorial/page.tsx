@@ -9,6 +9,15 @@ import { apiList, APIConfig } from '@/lib/api-config';
 import { BreadcrumbSchema } from '@/components/seo/structured-data';
 import { RememberListLink } from '@/components/navigation/ReturnNavigation';
 
+const purchaseChecklist = [
+  '确认官网域名和控制台入口，避免进入仿冒页面',
+  '先看是否支持国内手机号、邮箱和实名验证',
+  '创建 API Key 后立即保存，不要提交到 Git 仓库',
+  '先用小额充值或免费额度测试真实任务',
+  '记录 Base URL、模型名称、限速和账单提醒',
+  '接入工具前先用 curl 或 SDK 跑通一次调用',
+];
+
 function badgeClass(type: string) {
   if (type === 'success') {
     return 'border-emerald-200 bg-emerald-50 text-emerald-700';
@@ -102,12 +111,14 @@ export default function TutorialPage() {
         </div>
 
         <div className="mb-8 rounded-lg border bg-card p-5">
-          <h3 className="font-semibold">需要代理的 API 购买前建议确认</h3>
-          <div className="mt-3 grid gap-3 text-sm text-muted-foreground md:grid-cols-4">
-            <div>稳定网络环境</div>
-            <div>国际支付方式</div>
-            <div>账号风控风险</div>
-            <div>小额充值试用</div>
+          <h2 className="font-semibold">购买 API 前检查清单</h2>
+          <div className="mt-3 grid gap-3 text-sm leading-6 text-muted-foreground md:grid-cols-2">
+            {purchaseChecklist.map((item) => (
+              <div key={item} className="flex gap-2">
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-muted-foreground/50" />
+                <span>{item}</span>
+              </div>
+            ))}
           </div>
         </div>
 

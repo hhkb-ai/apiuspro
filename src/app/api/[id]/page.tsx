@@ -10,6 +10,7 @@ import { APIConfig, visibleAPIList, visibleProxyServices } from '@/lib/api-confi
 import { getReviewSlugByAPIId } from '@/lib/review-config';
 import { BreadcrumbSchema } from '@/components/seo/structured-data';
 import { DetailBackNav } from '@/components/navigation/ReturnNavigation';
+import { apiPurchaseKeywords, coreLongTailKeywords, uniqueKeywords, userIntentKeywords } from '@/lib/seo-keywords';
 
 function getVisibleAPIs() {
   return [...visibleAPIList, ...visibleProxyServices];
@@ -34,14 +35,14 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   return {
     title,
     description: desc,
-    keywords: [
+    keywords: uniqueKeywords([
       `${api.name} API`,
       `${api.name}怎么买`,
       `${api.name}购买教程`,
       `${api.name}免费额度`,
       `${api.name}价格`,
       `AI API`,
-    ],
+    ], coreLongTailKeywords, userIntentKeywords, apiPurchaseKeywords),
     alternates: {
       canonical: `https://apiuspro.cn/api/${api.id}`,
     },
@@ -89,6 +90,14 @@ function apiTypeText(apiType: 'no-proxy' | 'need-proxy' | 'proxy') {
   if (apiType === 'no-proxy') return '无需代理 - 国内直连';
   if (apiType === 'need-proxy') return '需要代理 - 合适的网络环境';
   return '代理服务 - 中转访问';
+}
+
+function getAudienceText(api: APIConfig) {
+  if (!api.proxy) {
+    return '适合初学者、个人开发者、国内项目快速接入和低门槛试用。';
+  }
+
+  return '适合对模型能力、长上下文或多模态能力要求较高，并且能处理网络和支付条件的团队。';
 }
 
 export default async function APIDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -180,6 +189,33 @@ export default async function APIDetailPage({ params }: { params: Promise<{ id: 
             </div>
           </CardContent>
         </Card>
+
+        <section className="mb-8 grid grid-cols-1 gap-4 lg:grid-cols-3">
+          <Card className="lg:col-span-2">
+            <CardHeader>
+              <CardTitle>是否适合你使用</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 text-sm leading-6 text-muted-foreground">
+              <p>{getAudienceText(api)}</p>
+              <p>
+                如果你正在比较 {api.name} API 怎么买、价格是否合适、能不能国内访问，建议先查看购买教程，再用免费额度或小额充值跑通一个真实任务。
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>接入前确认</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2 text-sm leading-6 text-muted-foreground">
+                <li>官网入口和控制台地址</li>
+                <li>API Key 创建与保存方式</li>
+                <li>Base URL、模型名和 SDK 兼容性</li>
+                <li>免费额度、限速和计费单位</li>
+              </ul>
+            </CardContent>
+          </Card>
+        </section>
 
         {api.tutorial && (
           <div className="mb-8">

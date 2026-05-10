@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
+import { coreLongTailKeywords, uniqueKeywords, userIntentKeywords } from '@/lib/seo-keywords';
 
 export const metadata: Metadata = {
   title: '场景推荐 — 按用途选择最适合的 AI API',
   description:
     '不知道该用哪个 AI API？按编程开发、个人知识库、数据分析等实际场景，为你推荐最合适的模型与服务。涵盖 Claude、GPT-5.5、DeepSeek、Gemini、通义千问等主流 API 对比。',
-  keywords: [
+  keywords: uniqueKeywords([
     'AI API场景推荐',
     '写代码用哪个AI',
     'AI编程助手推荐',
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
     'DeepSeek适合什么场景',
     'AI API对比推荐',
     '国产AI API推荐',
-  ],
+  ], coreLongTailKeywords, userIntentKeywords),
   alternates: {
     canonical: 'https://apiuspro.cn/use-case',
   },

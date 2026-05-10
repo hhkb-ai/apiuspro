@@ -11,6 +11,27 @@ import { apiList, APIConfig } from '@/lib/api-config';
 import { BreadcrumbSchema } from '@/components/seo/structured-data';
 import { RememberListLink } from '@/components/navigation/ReturnNavigation';
 
+const decisionGuides = [
+  {
+    title: '第一次接 API',
+    desc: '优先选择国内直连、有免费额度、兼容 OpenAI 格式的服务，注册和调试成本最低。',
+    href: '/tutorial',
+    action: '看购买教程',
+  },
+  {
+    title: '写代码和调试项目',
+    desc: '重点看代码生成、长上下文、工具调用和价格，先用小任务测试稳定性。',
+    href: '/use-case/coding',
+    action: '看编程推荐',
+  },
+  {
+    title: '做知识库或文档处理',
+    desc: '优先选择长文本、多模态和文件解析能力强的 API，注意上下文长度和限速。',
+    href: '/use-case/knowledge',
+    action: '看知识库推荐',
+  },
+];
+
 function badgeClass(type: string) {
   if (type === 'success') {
     return 'border-emerald-200 bg-emerald-50 text-emerald-700';
@@ -151,6 +172,20 @@ export default function CloudAPIPage() {
         </div>
 
         <div className="mb-8 space-y-4">
+          <section className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            {decisionGuides.map((guide) => (
+              <Link
+                key={guide.title}
+                href={guide.href}
+                className="rounded-lg border bg-card p-5 transition-colors hover:border-foreground/30"
+              >
+                <h2 className="text-base font-semibold">{guide.title}</h2>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">{guide.desc}</p>
+                <p className="mt-4 text-sm font-medium text-foreground">{guide.action} →</p>
+              </Link>
+            ))}
+          </section>
+
           {/* 快速决策条 */}
           <div className="rounded-lg border bg-card p-4">
             <p className="text-sm font-medium mb-3">我想做：</p>
@@ -237,13 +272,19 @@ export default function CloudAPIPage() {
         )}
 
         <div className="mt-10 rounded-lg border bg-card p-6">
-          <h3 className="font-semibold">使用提示</h3>
-          <ul className="mt-3 space-y-2 text-sm leading-6 text-muted-foreground">
-            <li>点击官网入口可直接访问服务商控制台或官网。</li>
-            <li>无需代理类 API 更适合初学者快速试用，部分服务提供免费额度。</li>
-            <li>需要代理类 API 功能强，但通常需要稳定网络和国际支付方式。</li>
-            <li>不知道选哪个？试试 <Link href="/use-case" className="text-foreground hover:underline">按场景推荐</Link>，根据实际用途找到最合适的 API。</li>
-          </ul>
+          <h2 className="font-semibold">AI API 选择检查清单</h2>
+          <div className="mt-3 grid gap-4 text-sm leading-6 text-muted-foreground md:grid-cols-2">
+            <ul className="space-y-2">
+              <li>先确认是否能国内直连，避免注册后无法稳定调用。</li>
+              <li>查看免费额度和最低充值门槛，先小额验证真实任务。</li>
+              <li>确认是否兼容 OpenAI SDK、Base URL 和常见工具配置。</li>
+            </ul>
+            <ul className="space-y-2">
+              <li>做编程任务看代码能力和长上下文，做文档任务看文件处理能力。</li>
+              <li>正式接入前记录 API Key、限速、计费单位和账单提醒。</li>
+              <li>不知道选哪个？查看 <Link href="/use-case" className="text-foreground hover:underline">按场景推荐</Link>。</li>
+            </ul>
+          </div>
         </div>
       </div>
     </SidebarLayout>

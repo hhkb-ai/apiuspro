@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { getReviewDetail, getAllReviewSlugs } from '@/lib/review-config';
 import { BreadcrumbSchema, ArticleSchema } from '@/components/seo/structured-data';
 import { DetailBackNav } from '@/components/navigation/ReturnNavigation';
+import { coreLongTailKeywords, uniqueKeywords, userIntentKeywords } from '@/lib/seo-keywords';
 
 export function generateStaticParams() {
   return getAllReviewSlugs().map((slug) => ({ slug }));
@@ -24,14 +25,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title,
     description: desc,
-    keywords: [
+    keywords: uniqueKeywords([
       `${review.name}测评`,
       `${review.name}怎么样`,
       `${review.name}价格`,
       `${review.name}和GPT对比`,
       `AI模型测评`,
       `API性能对比`,
-    ],
+    ], coreLongTailKeywords, userIntentKeywords),
     alternates: {
       canonical: `https://apiuspro.cn/api-review/${slug}`,
     },

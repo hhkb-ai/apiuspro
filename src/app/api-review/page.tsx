@@ -38,6 +38,12 @@ export const metadata: Metadata = {
 
 const reviews = Object.values(reviewDetails);
 
+const comparisonIntents = [
+  { title: '编程开发怎么选', href: '/use-case/coding', desc: '重点看代码生成、上下文长度、工具调用和稳定性。' },
+  { title: '知识库怎么选', href: '/use-case/knowledge', desc: '重点看长文档理解、检索增强和文件处理能力。' },
+  { title: '内容创作怎么选', href: '/use-case/content-creation', desc: '重点看中文表达、风格控制和长文本生成成本。' },
+];
+
 function badgeClass(variant?: 'destructive' | 'success') {
   if (variant === 'success') {
     return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
@@ -211,6 +217,20 @@ export default function APIReviewPage() {
               </CardContent>
             </Card>
           </div>
+        </section>
+
+        <section className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-3">
+          {comparisonIntents.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="rounded-lg border bg-card p-5 transition-colors hover:border-foreground/30"
+            >
+              <h2 className="text-base font-semibold">{item.title}</h2>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">{item.desc}</p>
+              <p className="mt-4 text-sm font-medium text-foreground">查看场景推荐 →</p>
+            </Link>
+          ))}
         </section>
 
         <section className="space-y-7">

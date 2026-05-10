@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { getAppTutorialById } from '@/lib/api-config';
+import { apiPurchaseKeywords, coreLongTailKeywords, uniqueKeywords } from '@/lib/seo-keywords';
 
 export function generateStaticParams() {
   // 此处的静态参数生成由 page.tsx 负责，layout 中仅处理 metadata
@@ -18,13 +19,13 @@ export async function generateMetadata({
   return {
     title: `${app.name} 使用教程`,
     description: `${app.name}：${app.desc}`,
-    keywords: [
+    keywords: uniqueKeywords([
       `${app.name}教程`,
       `${app.name}安装`,
       `${app.name}配置`,
       `${app.name}使用方法`,
       `AI工具教程`,
-    ],
+    ], coreLongTailKeywords, apiPurchaseKeywords),
     alternates: { canonical: canonicalUrl },
     openGraph: {
       title: `${app.name} 使用教程 | API知识站`,

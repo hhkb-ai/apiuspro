@@ -44,10 +44,28 @@ const featuredAPIs = [
 ];
 
 const highIntentLinks = [
-  { name: '新手先选 API', href: '/cloud-api', desc: '按访问条件和能力快速筛选' },
-  { name: '照教程拿 Key', href: '/tutorial', desc: '注册、支付、创建密钥一步步完成' },
-  { name: '接入 AI 工具', href: '/app', desc: 'Claude Code、CC Switch 等工具配置' },
-  { name: '按场景推荐', href: '/use-case', desc: '写代码、知识库、内容创作怎么选' },
+  { name: 'AI API 怎么选', href: '/cloud-api', desc: '按国内直连、免费额度、模型能力快速筛选' },
+  { name: 'API Key 怎么拿', href: '/tutorial', desc: '注册、认证、充值、创建密钥一步步完成' },
+  { name: 'AI 工具怎么接入', href: '/app', desc: 'Claude Code、CC Switch、OpenClaw 等工具配置' },
+  { name: '写代码用哪个 AI', href: '/use-case/coding', desc: '按编程、知识库、内容创作等真实场景选择' },
+];
+
+const practicalGuides = [
+  {
+    title: '国内用户优先看无需代理 API',
+    desc: 'DeepSeek、通义千问、智谱 GLM、Kimi、腾讯混元、豆包等更适合新手快速注册、拿 Key 和跑通 SDK。',
+    href: '/cloud-api',
+  },
+  {
+    title: '购买前先确认免费额度和限速',
+    desc: '不要只看模型名。先确认充值门槛、免费额度、RPM/TPM 限制、账单提醒和 API Key 安全策略。',
+    href: '/tutorial',
+  },
+  {
+    title: '真实任务先小规模测试',
+    desc: '用你的代码、文档、客服话术或翻译样本测试，再决定是否迁移到正式项目。',
+    href: '/api-review',
+  },
 ];
 
 const stats = [
@@ -553,6 +571,31 @@ export default function HomeClient() {
                   className="rounded-full border bg-card px-4 py-2 text-sm text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
                 >
                   {link.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="border-t border-border px-4 py-10 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-6xl">
+            <div className="mb-6">
+              <p className="text-sm font-medium text-muted-foreground">新手决策指南</p>
+              <h2 className="mt-1 text-2xl font-semibold">从搜索问题到可执行步骤</h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
+                面向“AI API 怎么选、API Key 怎么拿、国内能不能用、写代码用哪个 AI”等高频问题，直接给出下一步入口。
+              </p>
+            </div>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+              {practicalGuides.map((guide) => (
+                <Link
+                  key={guide.title}
+                  href={guide.href}
+                  className="rounded-lg border bg-card p-5 transition-colors hover:border-foreground/30"
+                >
+                  <h3 className="font-semibold">{guide.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-muted-foreground">{guide.desc}</p>
+                  <p className="mt-4 text-sm font-medium text-foreground">继续查看 →</p>
                 </Link>
               ))}
             </div>

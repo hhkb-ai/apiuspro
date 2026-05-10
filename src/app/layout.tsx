@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
-import { WebSiteSchema, OrganizationSchema } from '@/components/seo/structured-data';
+import { OrganizationSchema, SiteIntentFAQSchema, WebSiteSchema } from '@/components/seo/structured-data';
 import { ThemeProvider } from '@/components/theme-provider';
 import { ReturnPositionRestorer } from '@/components/navigation/ReturnNavigation';
 import './globals.css';
@@ -95,6 +95,7 @@ export default function RootLayout({
           <ReturnPositionRestorer />
           <WebSiteSchema />
           <OrganizationSchema />
+          <SiteIntentFAQSchema />
           {children}
         </ThemeProvider>
       </body>

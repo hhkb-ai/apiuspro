@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
+import { coreLongTailKeywords, uniqueKeywords, userIntentKeywords } from '@/lib/seo-keywords';
 
 export const metadata: Metadata = {
   title: 'AI API 官网大全 — 国内外主流大模型 API 官方入口汇总',
   description:
     '覆盖 DeepSeek、OpenAI、Claude、通义千问、Gemini 等 11 个国内外主流 AI API 官网入口，按无需代理/需要代理分类，含免费额度、功能特性及详细说明。',
-  keywords: [
+  keywords: uniqueKeywords([
     'AI API官网',
     'API官网入口',
     'OpenAI官网',
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
     'API免费额度',
     '大模型API入口',
     'AI API列表',
-  ],
+  ], coreLongTailKeywords, userIntentKeywords),
   alternates: {
     canonical: 'https://apiuspro.cn/cloud-api',
   },
