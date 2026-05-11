@@ -91,6 +91,10 @@ export default function RootLayout({
             })();
           `}
         </Script>
+        <Script charSet="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js" strategy="afterInteractive" />
+        <Script id="la-collect-init" strategy="afterInteractive">
+          {`LA.init({id:"3Ptg8CrG0LkgsgHo",ck:"3Ptg8CrG0LkgsgHo"})`}
+        </Script>
         <ThemeProvider>
           <ReturnPositionRestorer />
           <WebSiteSchema />
