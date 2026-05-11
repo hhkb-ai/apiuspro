@@ -10,6 +10,9 @@ import { BreadcrumbSchema, ArticleSchema } from '@/components/seo/structured-dat
 import { DetailBackNav } from '@/components/navigation/ReturnNavigation';
 import { coreLongTailKeywords, uniqueKeywords, userIntentKeywords } from '@/lib/seo-keywords';
 
+const ARTICLE_DATE_PUBLISHED = '2026-05-11';
+const ARTICLE_DATE_MODIFIED = '2026-05-11';
+
 export function generateStaticParams() {
   return getAllReviewSlugs().map((slug) => ({ slug }));
 }
@@ -94,6 +97,8 @@ export default async function ReviewDetailPage({ params }: { params: Promise<{ s
         title={`${review.name} 完整测评`}
         description={review.tlDr}
         url={`https://apiuspro.cn/api-review/${review.slug}`}
+        datePublished={ARTICLE_DATE_PUBLISHED}
+        dateModified={ARTICLE_DATE_MODIFIED}
       />
       <div className="mx-auto max-w-5xl p-6 lg:p-8">
         <DetailBackNav listHref="/api-review" listLabel="测评列表" />
@@ -128,7 +133,7 @@ export default async function ReviewDetailPage({ params }: { params: Promise<{ s
         {/* 省流版 */}
         <Card className="mb-10 overflow-hidden border-border/80 shadow-sm">
           <CardContent className="border-l-4 border-foreground/70 bg-muted/25 p-5">
-            <p className="mb-2 text-lg font-semibold">省流版总结</p>
+            <p className="mb-2 text-lg font-semibold">BLUF 摘要</p>
             <p className="max-w-3xl text-[15px] leading-7 text-muted-foreground">{review.tlDr}</p>
           </CardContent>
         </Card>

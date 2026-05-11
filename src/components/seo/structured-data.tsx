@@ -154,6 +154,7 @@ export function TechArticleSchema({
   url,
   imageUrl,
   datePublished,
+  dateModified,
   proficiencyLevel = 'Beginner',
 }: {
   title: string;
@@ -161,6 +162,7 @@ export function TechArticleSchema({
   url: string;
   imageUrl?: string;
   datePublished?: string;
+  dateModified?: string;
   proficiencyLevel?: 'Beginner' | 'Intermediate' | 'Expert';
 }) {
   const jsonLd = {
@@ -179,6 +181,7 @@ export function TechArticleSchema({
       name: 'API知识站',
     },
     ...(datePublished && { datePublished }),
+    ...(dateModified && { dateModified }),
     inLanguage: 'zh-CN',
     proficiencyLevel,
   };

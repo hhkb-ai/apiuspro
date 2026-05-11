@@ -10,6 +10,9 @@ import { CodeBlock } from '@/components/tutorial/CodeBlock';
 import { DetailBackNav } from '@/components/navigation/ReturnNavigation';
 import { apiPurchaseKeywords, coreLongTailKeywords, uniqueKeywords } from '@/lib/seo-keywords';
 
+const ARTICLE_DATE_PUBLISHED = '2026-05-11';
+const ARTICLE_DATE_MODIFIED = '2026-05-11';
+
 // 将文本中的 URL 转换为可点击链接
 function LinkText({ text }: { text: string }) {
   const parts = text.split(/(https?:\/\/[^\s]+)/g);
@@ -117,6 +120,8 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
             ? `https://apiuspro.cn${tutorial.steps[0].image}`
             : undefined
         }
+        datePublished={ARTICLE_DATE_PUBLISHED}
+        dateModified={ARTICLE_DATE_MODIFIED}
         proficiencyLevel="Beginner"
       />
       <HowToSchema
@@ -214,6 +219,14 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
               </span>
             </div>
             {tutorial.subtitle && <p className="mt-1 text-sm text-muted-foreground">{tutorial.subtitle}</p>}
+
+            <section className="mt-5 rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 text-sm leading-6 text-sky-900">
+              <p className="font-semibold">BLUF 摘要</p>
+              <p className="mt-1">
+                这篇教程用 {tutorial.steps.length} 个步骤说明 {api.name} API 如何注册、开通、获取 API Key 并完成首次接入；先确认
+                {needProxy ? '代理访问、支付方式、额度限制' : '国内直连、免费额度、计费单位'}，再把 Key 安全保存到环境变量或工具配置中。
+              </p>
+            </section>
 
             {/* 优势标签 */}
             {tutorial.advantages && tutorial.advantages.length > 0 && (

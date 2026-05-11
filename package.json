@@ -6,6 +6,7 @@
     "build": "corepack pnpm install --prefer-frozen-lockfile --prod=false && next build && tsup src/server.ts --format cjs --platform node --target node20 --outDir dist --no-splitting --no-minify",
     "dev": "tsx watch src/server.ts",
     "preinstall": "npx only-allow pnpm",
+    "analyze:crawlers": "node scripts/analyze-crawler-logs.mjs",
     "lint": "eslint",
     "start": "node dist/server.js",
     "submit:indexnow": "node scripts/submit-indexnow.mjs",

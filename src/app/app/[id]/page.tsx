@@ -9,6 +9,9 @@ import { appTutorials } from '@/lib/api-config';
 import { ArticleSchema, BreadcrumbSchema, HowToSchema } from '@/components/seo/structured-data';
 import { DetailBackNav } from '@/components/navigation/ReturnNavigation';
 
+const ARTICLE_DATE_PUBLISHED = '2026-05-11';
+const ARTICLE_DATE_MODIFIED = '2026-05-11';
+
 /* ─── RichText: 解析 `code` 【重点】 标记 ─── */
 function RichText({ text, className = '' }: { text: string; className?: string }) {
   if (!text) return null;
@@ -237,6 +240,8 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
         title={`${tutorial.name} 使用教程`}
         description={tutorial.desc}
         url={`https://apiuspro.cn/app/${tutorial.id}`}
+        datePublished={ARTICLE_DATE_PUBLISHED}
+        dateModified={ARTICLE_DATE_MODIFIED}
       />
       <HowToSchema
         name={`${tutorial.name} 使用教程`}
@@ -293,6 +298,12 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
               </span>
             </div>
             <p className="text-sm text-muted-foreground">{tutorial.desc}</p>
+            <section className="mt-5 rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 text-sm leading-6 text-sky-900">
+              <p className="font-semibold">BLUF 摘要</p>
+              <p className="mt-1">
+                这篇教程说明如何配置 {tutorial.name}，重点是先准备 API Key、Base URL 和模型名称，再按章节完成安装、配置、验证与排错。
+              </p>
+            </section>
           </div>
 
           <section className="mx-5 mt-6 grid gap-4 sm:mx-8 lg:grid-cols-2">
