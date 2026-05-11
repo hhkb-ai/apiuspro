@@ -8,6 +8,7 @@
     "preinstall": "npx only-allow pnpm",
     "lint": "eslint",
     "start": "node dist/server.js",
+    "submit:indexnow": "node scripts/submit-indexnow.mjs",
     "ts-check": "tsc -p tsconfig.json"
   },
   "dependencies": {
