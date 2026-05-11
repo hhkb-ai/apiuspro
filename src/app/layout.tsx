@@ -93,7 +93,22 @@ export default function RootLayout({
         </Script>
         <Script charSet="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js" strategy="afterInteractive" />
         <Script id="la-collect-init" strategy="afterInteractive">
-          {`LA.init({id:"3Ptg8CrG0LkgsgHo",ck:"3Ptg8CrG0LkgsgHo"})`}
+          {`
+            (function(){
+              var retries = 0;
+              function initLA(){
+                if (window.LA && window.LA.init) {
+                  window.LA.init({id:"3Ptg8CrG0LkgsgHo",ck:"3Ptg8CrG0LkgsgHo"});
+                  return;
+                }
+                if (retries < 20) {
+                  retries += 1;
+                  window.setTimeout(initLA, 200);
+                }
+              }
+              initLA();
+            })();
+          `}
         </Script>
         <ThemeProvider>
           <ReturnPositionRestorer />
