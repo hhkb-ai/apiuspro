@@ -71,8 +71,8 @@ await writeCsv(paths.optimizedCsv, optimizedRows, [
 if (!env.cmsApi || !env.cmsToken) {
   alerts.push({
     keyword: '-',
-    issue: 'CMS_API 或 CMS_TOKEN 未配置，已跳过自动部署。',
-    suggested_action: '在 CI Secrets 或安全环境变量中配置 CMS_API、CMS_TOKEN 后重跑；当前只生成优化 CSV 和告警。',
+    issue: 'CMS 安全变量未配置，已跳过自动部署。',
+    suggested_action: '在 CI Secrets 或安全环境变量中配置 CMS 访问地址与令牌后重跑；当前只生成优化 CSV 和告警。',
   });
 } else {
   for (const row of optimizedRows) {
@@ -222,7 +222,7 @@ async function loadTabs(file, alerts) {
     alerts.push({
       keyword: '-',
       issue: `${file} 不存在，无法读取 edge_all_open_tabs/tabs.json。`,
-      suggested_action: '上传 inputs/tabs.json 后重跑。',
+      suggested_action: '上传输入目录中的标签页 JSON 后重跑。',
     });
     return [];
   }
@@ -231,13 +231,17 @@ async function loadTabs(file, alerts) {
   const parsed = JSON.parse(raw);
   const inputTabs = Array.isArray(parsed) ? parsed : parsed.tabs || [];
 
-  return inputTabs.map(tab => ({
-    tabId: tab.tabId,
-    pageUrl: tab.pageUrl,
-    pageTitle: sanitize(tab.pageTitle || ''),
-    isCurrent: Boolean(tab.isCurrent),
-    restricted: isRestrictedUrl(tab.pageUrl),
-  }));
+  return inputTabs.map(tab => {
+    const restricted = isRestrictedUrl(tab.pageUrl);
+    return {
+      tabId: tab.tabId,
+      pageUrl: restricted ? '本地/受限' : sanitize(tab.pageUrl),
+      originalPageUrl: tab.pageUrl,
+      pageTitle: sanitize(tab.pageTitle || ''),
+      isCurrent: Boolean(tab.isCurrent),
+      restricted,
+    };
+  });
 }
 
 async function fetchTabsContent(tabs, alerts) {
@@ -257,7 +261,7 @@ async function fetchTabsContent(tabs, alerts) {
 
     await delay(500);
     try {
-      const summary = await fetchPageSummary(tab.pageUrl);
+      const summary = await fetchPageSummary(tab.originalPageUrl);
       results.push({ pageUrl: tab.pageUrl, ...summary, fetch_status: 'ok' });
     } catch (error) {
       const issue = sanitize(String(error?.message || error));
@@ -495,6 +499,8 @@ function stripHtml(value) {
 
 function sanitize(value) {
   return String(value)
+    .replace(/file:\/\/[^\s"'<>]+/gi, '[redacted-local-url]')
+    .replace(/https?:\/\/(?:localhost|127\.0\.0\.1|0\.0\.0\.0|8\.147\.64\.143)[^\s"'<>]*/gi, '[redacted-restricted-url]')
     .replace(/[A-Za-z]:\\[^\s"'<>]+/g, '[redacted-path]')
     .replace(/(?:Bearer\s+)?[A-Za-z0-9_-]{24,}\.[A-Za-z0-9_-]{6,}\.?[A-Za-z0-9_-]*/g, '[redacted-token]')
     .replace(/\b(?:sk|pk|api)[-_][A-Za-z0-9]{12,}\b/g, '[redacted-token]')
