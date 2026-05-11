@@ -101,3 +101,12 @@ Desktop.ini
 
 .coze-logs
 .codex/
+
+# Local drafts and generated planning artifacts
+/API知识站_项目设计文档.docx
+/API知识站策划书.md
+/generate_docx.py
+/网站内容结构树.md
+
+# Local preview draft; do not deploy as a route
+/src/app/preview-home/page.tsx

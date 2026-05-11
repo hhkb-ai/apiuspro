@@ -8,8 +8,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TutorialCard } from '@/components/tutorial/TutorialCard';
 import { APIConfig, visibleAPIList, visibleProxyServices } from '@/lib/api-config';
 import { getReviewSlugByAPIId } from '@/lib/review-config';
-import { BreadcrumbSchema } from '@/components/seo/structured-data';
+import { ArticleSchema, BreadcrumbSchema, FAQSchema } from '@/components/seo/structured-data';
 import { DetailBackNav } from '@/components/navigation/ReturnNavigation';
+import { SITE_PUBLISHED_AT, getApiUpdatedAt } from '@/lib/content-updates';
 import { apiPurchaseKeywords, coreLongTailKeywords, uniqueKeywords, userIntentKeywords } from '@/lib/seo-keywords';
 
 function getVisibleAPIs() {
@@ -100,6 +101,42 @@ function getAudienceText(api: APIConfig) {
   return '适合对模型能力、长上下文或多模态能力要求较高，并且能处理网络和支付条件的团队。';
 }
 
+function getQuickConclusion(api: APIConfig) {
+  const accessText = api.proxy
+    ? '需要准备稳定网络环境，正式购买前先确认账号地区、支付方式和控制台是否可访问。'
+    : '国内用户可以优先评估，通常不需要额外代理环境，适合先用免费额度或小额充值跑通测试。';
+  const tutorialText = api.tutorial
+    ? `本站已整理 ${api.name} 的购买教程，建议按教程完成注册、额度确认、API Key 创建和首次调用。`
+    : `建议先进入 ${api.name} 官网确认注册、额度、模型名和 API Key 创建入口，再进行小规模测试。`;
+
+  return `${api.name} API 的关键判断是：${accessText}${tutorialText}`;
+}
+
+function getApiFaqItems(api: APIConfig) {
+  return [
+    {
+      question: `${api.name} API 国内可以访问吗？`,
+      answer: api.proxy
+        ? `${api.name} API 通常需要合适的网络环境或账号条件。购买前应先确认官网、控制台、支付方式和调用接口是否能稳定访问。`
+        : `${api.name} API 更适合国内用户优先尝试，通常可以直接访问。正式接入前仍建议用免费额度或小额充值跑通真实任务。`,
+    },
+    {
+      question: `${api.name} API Key 在哪里创建？`,
+      answer: api.tutorial
+        ? `进入 ${api.name} 控制台后，在 API Key、密钥管理或开发者设置页面创建密钥。可以继续查看本站的 ${api.name} 购买教程，按步骤完成创建与保存。`
+        : `进入 ${api.name} 官网或开发者控制台后，查找 API Key、密钥管理或开发者设置页面。创建后应立即保存到环境变量或密钥管理工具。`,
+    },
+    {
+      question: `${api.name} API 适合什么场景？`,
+      answer: `${api.name} 适合的方向包括：${api.features.join('、')}。如果你还不确定具体选择，可以先查看场景推荐页，再回到该 API 详情页确认接入条件。`,
+    },
+    {
+      question: `接入 ${api.name} API 前要确认什么？`,
+      answer: `至少确认官网入口、免费额度或计费规则、Base URL、模型名、API Key 保存方式和限速规则。不要把 API Key 写入前端代码、公开仓库或截图。`,
+    },
+  ];
+}
+
 export default async function APIDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const api = getVisibleAPIById(id);
@@ -108,6 +145,8 @@ export default async function APIDetailPage({ params }: { params: Promise<{ id: 
   const apiType = getAPIType(api);
   const relatedAPIs = getRelatedAPIs(id, apiType);
   const reviewSlug = getReviewSlugByAPIId(api.id);
+  const faqItems = getApiFaqItems(api);
+  const quickConclusion = getQuickConclusion(api);
 
   return (
     <SidebarLayout>
@@ -118,6 +157,14 @@ export default async function APIDetailPage({ params }: { params: Promise<{ id: 
           { name: api.name, url: `https://apiuspro.cn/api/${api.id}` },
         ]}
       />
+      <ArticleSchema
+        title={`${api.name} API 官网入口、购买教程与接入指南`}
+        description={api.desc}
+        url={`https://apiuspro.cn/api/${api.id}`}
+        datePublished={SITE_PUBLISHED_AT}
+        dateModified={getApiUpdatedAt(api.id)}
+      />
+      <FAQSchema items={faqItems} />
       <div className="mx-auto max-w-6xl p-6 lg:p-8">
         <DetailBackNav listHref="/cloud-api" listLabel="API 列表" />
 
@@ -145,6 +192,18 @@ export default async function APIDetailPage({ params }: { params: Promise<{ id: 
             </a>
           </div>
         </div>
+
+        <Card className="mb-8 border-sky-200 bg-sky-50/70">
+          <CardHeader>
+            <CardTitle>快速结论</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3 text-sm leading-6 text-sky-950">
+            <p>{quickConclusion}</p>
+            <p>
+              接入前优先确认官网入口、API Key、Base URL、模型名、额度/计费和限速规则；密钥只保存到环境变量或密钥管理工具，不要写进前端代码或公开仓库。
+            </p>
+          </CardContent>
+        </Card>
 
         <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           <a href={api.url} target="_blank" rel="noopener noreferrer" className="block lg:col-span-2">
@@ -271,6 +330,22 @@ export default async function APIDetailPage({ params }: { params: Promise<{ id: 
                 <Button variant="outline" size="sm">教育辅导</Button>
               </Link>
             </div>
+          </div>
+        </section>
+
+        <section className="mb-8">
+          <h2 className="mb-4 text-xl font-semibold tracking-tight">常见问题</h2>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {faqItems.map((item) => (
+              <Card key={item.question}>
+                <CardHeader>
+                  <CardTitle className="text-base">{item.question}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm leading-6 text-muted-foreground">{item.answer}</p>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </section>
       </div>

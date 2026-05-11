@@ -33,26 +33,25 @@ if (urls.some(url => !url.startsWith(`https://${host}/`) && url !== `https://${h
 if (dryRun) {
   console.log(`Dry run: ${urls.length} URLs ready for IndexNow.`);
   console.log(urls.join('\n'));
-  process.exit(0);
+} else {
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+    },
+    body: JSON.stringify({
+      host,
+      key,
+      keyLocation,
+      urlList: urls,
+    }),
+  });
+
+  const body = await response.text();
+
+  if (!response.ok) {
+    throw new Error(`IndexNow submission failed: ${response.status} ${response.statusText}${body ? ` - ${body}` : ''}`);
+  }
+
+  console.log(`Submitted ${urls.length} URLs to IndexNow.`);
 }
-
-const response = await fetch(endpoint, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json; charset=utf-8',
-  },
-  body: JSON.stringify({
-    host,
-    key,
-    keyLocation,
-    urlList: urls,
-  }),
-});
-
-const body = await response.text();
-
-if (!response.ok) {
-  throw new Error(`IndexNow submission failed: ${response.status} ${response.statusText}${body ? ` - ${body}` : ''}`);
-}
-
-console.log(`Submitted ${urls.length} URLs to IndexNow.`);
