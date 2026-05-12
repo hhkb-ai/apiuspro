@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { BreadcrumbSchema, HowToSchema, ArticleSchema } from '@/components/seo/structured-data';
-import { coreLongTailKeywords, localDeployKeywords, scenarioDecisionKeywords, toolWorkflowKeywords, uniqueKeywords } from '@/lib/seo-keywords';
+import { generateMetadata as generateTdkMetadata } from '@/lib/tdk';
 
 // 将文本中的 URL 转换为可点击链接
 function LinkText({ text }: { text: string }) {
@@ -25,32 +25,7 @@ function LinkText({ text }: { text: string }) {
   );
 }
 
-export const metadata: Metadata = {
-  title: 'AI大模型本地部署教程 2026 | Ollama、Gemma 4、Qwen笔记本部署指南',
-  description:
-    '面向初学者的AI大模型本地部署教程：使用Ollama在笔记本电脑上部署Gemma 4、Qwen等开源模型。包含详细的安装配置、硬件要求和常见问题解答。',
-  keywords: uniqueKeywords([
-    'AI大模型本地部署',
-    'Ollama安装教程',
-    '本地运行大模型',
-    '笔记本跑大模型',
-    'Gemma4部署教程',
-    'Qwen本地部署',
-    'AI模型本地部署',
-    '私有化部署AI',
-    '离线AI模型',
-    '大模型硬件要求',
-    'Gemma4 Ollama',
-    '笔记本AI模型',
-  ], coreLongTailKeywords, localDeployKeywords, toolWorkflowKeywords, scenarioDecisionKeywords),
-  alternates: { canonical: 'https://apiuspro.cn/local-deploy' },
-  openGraph: {
-    title: 'AI大模型本地部署教程 2026 | API知识站',
-    description: '面向初学者的AI大模型本地部署教程，Ollama一键部署Gemma 4。',
-    url: 'https://apiuspro.cn/local-deploy',
-    type: 'website',
-  },
-};
+export const metadata: Metadata = generateTdkMetadata('/local-deploy');
 
 // 教程步骤数据
 const deploySteps = [

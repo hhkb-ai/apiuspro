@@ -11,7 +11,7 @@ import { getReviewSlugByAPIId } from '@/lib/review-config';
 import { ArticleSchema, BreadcrumbSchema, FAQSchema } from '@/components/seo/structured-data';
 import { DetailBackNav } from '@/components/navigation/ReturnNavigation';
 import { SITE_PUBLISHED_AT, getApiUpdatedAt } from '@/lib/content-updates';
-import { apiPurchaseKeywords, coreLongTailKeywords, uniqueKeywords, userIntentKeywords } from '@/lib/seo-keywords';
+import { generateMetadata as generateTdkMetadata } from '@/lib/tdk';
 
 function getVisibleAPIs() {
   return [...visibleAPIList, ...visibleProxyServices];
@@ -30,39 +30,13 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const api = getVisibleAPIById(id);
   if (!api) return { title: 'API未找到' };
 
-  const title = `${api.name} API | 官网入口、购买教程与接入指南`;
-  const desc = `${api.name}：${api.desc}${api.free ? `。免费额度：${api.free}` : ''}。${api.proxy ? '需要代理访问' : '国内直连，无需代理'}。含详细购买教程与 API Key 获取步骤。`;
-
-  return {
-    title,
-    description: desc,
-    keywords: uniqueKeywords([
-      `${api.name} API`,
-      `${api.name}怎么买`,
-      `${api.name}购买教程`,
-      `${api.name}免费额度`,
-      `${api.name}价格`,
-      `AI API`,
-    ], coreLongTailKeywords, userIntentKeywords, apiPurchaseKeywords),
-    alternates: {
-      canonical: `https://apiuspro.cn/api/${api.id}`,
-    },
-    openGraph: {
-      title,
-      description: desc,
-      url: `https://apiuspro.cn/api/${api.id}`,
-      siteName: 'API知识站',
-      locale: 'zh_CN',
-      type: 'article',
-      images: [{ url: 'https://apiuspro.cn/opengraph-image', width: 1200, height: 630, alt: api.name }],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description: desc,
-      images: ['https://apiuspro.cn/opengraph-image'],
-    },
-  };
+  return generateTdkMetadata('/api/:id', {
+    id,
+    name: api.name,
+    desc: api.desc,
+    free: api.free ? `免费额度：${api.free}` : '',
+    proxy: api.proxy ? '需要代理访问' : '国内直连，无需代理',
+  });
 }
 
 function getAPIType(api: APIConfig): 'no-proxy' | 'need-proxy' | 'proxy' {

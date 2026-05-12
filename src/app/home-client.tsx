@@ -1,28 +1,35 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { BeianLinks } from '@/components/layout/BeianLinks';
-import { RememberListLink } from '@/components/navigation/ReturnNavigation';
 import { apiList, appTutorials } from '@/lib/api-config';
 import { fuzzyScore, sortByFuzzyScore } from '@/lib/fuzzy-search';
+import {
+  BookOpen,
+  ChevronRight,
+  Compass,
+  Code2,
+  Database,
+  ExternalLink,
+  GraduationCap,
+  KeyRound,
+  Languages,
+  MessageCircle,
+  PenLine,
+  Search,
+  Server,
+  Sparkles,
+  Wrench,
+} from 'lucide-react';
 
 const pages = [
   { id: 'cloud-api', name: 'API 列表', desc: '先看官网入口、代理要求和免费额度', url: '/cloud-api', tag: '优先查看' },
   { id: 'tutorial', name: '购买教程', desc: '按步骤完成注册、支付与 API Key 创建', url: '/tutorial', tag: '新手推荐' },
   { id: 'local-deploy', name: '本地部署', desc: '笔记本也能跑！Ollama 一键部署 Gemma 4、Qwen3.6 最新模型', url: '/local-deploy', tag: '进阶路线' },
-];
-
-const navLinks = [
-  { name: 'API官网', href: '/cloud-api' },
-  { name: 'API测评', href: '/api-review' },
-  { name: '购买教程', href: '/tutorial' },
-  { name: 'API应用', href: '/app' },
-  { name: '本地部署', href: '/local-deploy' },
 ];
 
 const quickLinks = [
@@ -35,44 +42,149 @@ const quickLinks = [
   { name: 'Kimi', id: 'kimi' },
 ];
 
-const featuredAPIs = [
-  apiList.find(a => a.id === 'deepseek')!,
-  apiList.find(a => a.id === 'aliyun')!,
-  apiList.find(a => a.id === 'zhipu')!,
-  apiList.find(a => a.id === 'openai')!,
-  apiList.find(a => a.id === 'claude')!,
-  apiList.find(a => a.id === 'gemini')!,
-];
-
-const highIntentLinks = [
-  { name: 'AI API 怎么选', href: '/cloud-api', desc: '按国内直连、免费额度、模型能力快速筛选' },
-  { name: 'API Key 怎么拿', href: '/tutorial', desc: '注册、认证、充值、创建密钥一步步完成' },
-  { name: 'AI 工具怎么接入', href: '/app', desc: 'Claude Code、CC Switch、OpenClaw 等工具配置' },
-  { name: '写代码用哪个 AI', href: '/use-case/coding', desc: '按编程、知识库、内容创作等真实场景选择' },
-];
-
-const practicalGuides = [
+const mobileTaskShortcuts = [
   {
-    title: '国内用户优先看无需代理 API',
-    desc: 'DeepSeek、通义千问、智谱 GLM、Kimi、腾讯混元、豆包等更适合新手快速注册、拿 Key 和跑通 SDK。',
+    title: '选 API',
+    desc: '先看国内直连和免费额度',
     href: '/cloud-api',
+    icon: Compass,
+    className: 'border-emerald-200 bg-emerald-50 text-emerald-900',
   },
   {
-    title: '购买前先确认免费额度和限速',
-    desc: '不要只看模型名。先确认充值门槛、免费额度、RPM/TPM 限制、账单提醒和 API Key 安全策略。',
+    title: '拿 Key',
+    desc: '注册、充值、创建密钥',
     href: '/tutorial',
+    icon: KeyRound,
+    className: 'border-sky-200 bg-sky-50 text-sky-900',
   },
   {
-    title: '真实任务先小规模测试',
-    desc: '用你的代码、文档、客服话术或翻译样本测试，再决定是否迁移到正式项目。',
-    href: '/api-review',
+    title: '接工具',
+    desc: 'Claude Code、CC Switch',
+    href: '/app',
+    icon: Wrench,
+    className: 'border-violet-200 bg-violet-50 text-violet-900',
+  },
+  {
+    title: '本地跑',
+    desc: 'Ollama 和开源模型',
+    href: '/local-deploy',
+    icon: Server,
+    className: 'border-amber-200 bg-amber-50 text-amber-900',
   },
 ];
 
-const stats = [
-  { value: `${apiList.length}+`, label: 'API 官网入口' },
-  { value: `${apiList.filter(api => api.tutorial).length}`, label: '购买教程' },
-  { value: `${appTutorials.length}`, label: '应用教程' },
+const mobileFeaturedAPIs = apiList.filter(api =>
+  ['deepseek', 'aliyun', 'zhipu', 'kimi'].includes(api.id)
+);
+
+const desktopDecisionRows = [
+  {
+    name: 'DeepSeek',
+    href: '/api/deepseek',
+    access: '国内直连',
+    accessClass: 'border-emerald-200 bg-emerald-50 text-emerald-700',
+    free: '有免费额度',
+    scene: '代码、通用问答',
+    tutorial: '教程完整',
+    tutorialHref: '/tutorial/deepseek',
+  },
+  {
+    name: '通义千问',
+    href: '/api/aliyun',
+    access: '国内直连',
+    accessClass: 'border-emerald-200 bg-emerald-50 text-emerald-700',
+    free: '新用户额度',
+    scene: '企业、知识库',
+    tutorial: '教程完整',
+    tutorialHref: '/tutorial/aliyun',
+  },
+  {
+    name: 'Kimi',
+    href: '/api/kimi',
+    access: '国内直连',
+    accessClass: 'border-emerald-200 bg-emerald-50 text-emerald-700',
+    free: '按平台规则',
+    scene: '长文本、文档',
+    tutorial: '教程完整',
+    tutorialHref: '/tutorial/kimi',
+  },
+  {
+    name: 'OpenAI',
+    href: '/api/openai',
+    access: '需要代理',
+    accessClass: 'border-amber-200 bg-amber-50 text-amber-700',
+    free: '需确认账户',
+    scene: '旗舰模型、Agent',
+    tutorial: '测评优先',
+    tutorialHref: '/api-review/gpt-5.5',
+  },
+  {
+    name: 'Claude',
+    href: '/api/claude',
+    access: '需要代理',
+    accessClass: 'border-amber-200 bg-amber-50 text-amber-700',
+    free: '需确认账户',
+    scene: '长文档、编程',
+    tutorial: '测评优先',
+    tutorialHref: '/api-review/claude',
+  },
+];
+
+const desktopScenarioCards = [
+  {
+    title: '编程开发',
+    desc: '代码生成、调试、仓库理解和自动化脚本。',
+    href: '/use-case/coding',
+    icon: Code2,
+    className: 'border-rose-200 bg-rose-50 text-rose-950',
+    iconClassName: 'bg-rose-100 text-rose-700',
+  },
+  {
+    title: '知识库',
+    desc: '长文档解析、资料检索和个人知识沉淀。',
+    href: '/use-case/knowledge',
+    icon: Database,
+    className: 'border-emerald-200 bg-emerald-50 text-emerald-950',
+    iconClassName: 'bg-emerald-100 text-emerald-700',
+  },
+  {
+    title: '内容创作',
+    desc: '选题、改写、脚本、营销文案和图文草稿。',
+    href: '/use-case/content-creation',
+    icon: PenLine,
+    className: 'border-violet-200 bg-violet-50 text-violet-950',
+    iconClassName: 'bg-violet-100 text-violet-700',
+  },
+  {
+    title: '翻译',
+    desc: '多语种翻译、术语一致性和风格改写。',
+    href: '/use-case/translation',
+    icon: Languages,
+    className: 'border-sky-200 bg-sky-50 text-sky-950',
+    iconClassName: 'bg-sky-100 text-sky-700',
+  },
+  {
+    title: '智能客服',
+    desc: '问答机器人、意图识别和工单摘要。',
+    href: '/use-case/chatbot',
+    icon: MessageCircle,
+    className: 'border-amber-200 bg-amber-50 text-amber-950',
+    iconClassName: 'bg-amber-100 text-amber-700',
+  },
+  {
+    title: '教育辅导',
+    desc: '分步讲解、练习反馈和学习路径规划。',
+    href: '/use-case/education',
+    icon: GraduationCap,
+    className: 'border-orange-200 bg-orange-50 text-orange-950',
+    iconClassName: 'bg-orange-100 text-orange-700',
+  },
+];
+
+const desktopWorkflowCards = [
+  { title: '先选 API', desc: '按国内直连、免费额度、模型能力筛掉不合适的选项。', href: '/cloud-api' },
+  { title: '拿到 API Key', desc: '跟着教程完成注册、支付、额度确认和密钥创建。', href: '/tutorial' },
+  { title: '接入工具', desc: '把 Key、Base URL 和模型名配置进常用 AI 工具。', href: '/app' },
 ];
 
 function badgeClass(type: string) {
@@ -89,516 +201,298 @@ function accessText(proxy?: boolean) {
   return proxy ? '需要代理' : '无需代理';
 }
 
-// 键盘导航 Hook
-interface FlatItem {
-  id: string;
-  name: string;
-  href: string;
-}
-
-function useSearchKeyboard({
-  items,
-  isOpen,
-  onClose,
-  inputRef,
-}: {
-  items: FlatItem[];
-  isOpen: boolean;
-  onClose: () => void;
-  inputRef: React.RefObject<HTMLInputElement | null>;
-}) {
-  const activeIndexRef = useRef(-1);
-  const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
-
-  useEffect(() => {
-    activeIndexRef.current = -1;
-    itemRefs.current = itemRefs.current.slice(0, items.length);
-  }, [items]);
-
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (!isOpen) return;
-
-      if (e.key === 'Escape') {
-        onClose();
-        inputRef.current?.focus();
-        return;
-      }
-
-      if (items.length === 0) return;
-
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        const next = Math.min(activeIndexRef.current + 1, items.length - 1);
-        activeIndexRef.current = next;
-        itemRefs.current[next]?.focus();
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        const prev = activeIndexRef.current - 1;
-        if (prev < 0) {
-          activeIndexRef.current = -1;
-          inputRef.current?.focus();
-        } else {
-          activeIndexRef.current = prev;
-          itemRefs.current[prev]?.focus();
-        }
-      }
-    },
-    [isOpen, items.length, onClose, inputRef],
-  );
-
-  const handleItemKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLAnchorElement>, index: number) => {
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        const next = Math.min(index + 1, items.length - 1);
-        activeIndexRef.current = next;
-        itemRefs.current[next]?.focus();
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        if (index === 0) {
-          activeIndexRef.current = -1;
-          inputRef.current?.focus();
-        } else {
-          activeIndexRef.current = index - 1;
-          itemRefs.current[index - 1]?.focus();
-        }
-      } else if (e.key === 'Escape') {
-        onClose();
-        inputRef.current?.focus();
-      }
-    },
-    [items.length, onClose, inputRef],
-  );
-
-  const setItemRef = useCallback(
-    (el: HTMLAnchorElement | null, index: number) => {
-      itemRefs.current[index] = el;
-    },
-    [],
-  );
-
-  return { handleKeyDown, handleItemKeyDown, setItemRef };
-}
-
-// 建议分组组件
-function SuggestionGroup({
-  label,
-  items,
-  startIndex,
-  onSelect,
-  setItemRef,
-  handleItemKeyDown,
-}: {
-  label: string;
-  items: { id: string; name: string; desc: string; href: string }[];
-  startIndex: number;
-  onSelect: () => void;
-  setItemRef: (el: HTMLAnchorElement | null, index: number) => void;
-  handleItemKeyDown: (e: React.KeyboardEvent<HTMLAnchorElement>, index: number) => void;
-}) {
-  if (items.length === 0) return null;
-
-  return (
-    <div role="group" aria-label={label}>
-      <div className="border-b bg-muted/60 px-4 py-2 text-xs font-medium text-muted-foreground">
-        {label}
-      </div>
-      {items.map((item, i) => {
-        const flatIndex = startIndex + i;
-        return (
-          <Link
-            key={item.id}
-            href={item.href}
-            ref={(el) => setItemRef(el, flatIndex)}
-            role="option"
-            aria-selected={false}
-            onClick={onSelect}
-            onKeyDown={(e) => handleItemKeyDown(e, flatIndex)}
-            className="flex flex-col gap-0.5 px-3 py-2.5 transition-colors hover:bg-muted/70 focus:bg-muted/70 focus:outline-none active:bg-muted/90 sm:px-4 sm:py-3"
-          >
-            <p className="truncate text-sm font-medium sm:text-base">{item.name}</p>
-            <p className="truncate text-xs text-muted-foreground sm:text-sm">{item.desc}</p>
-          </Link>
-        );
-      })}
-    </div>
-  );
-}
-
-export default function HomeClient() {
+function MobileHome() {
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState('');
+  const [query, setQuery] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const isComposingRef = useRef(false);
+  const normalizedQuery = useMemo(() => query.toLowerCase().trim(), [query]);
 
-  // 统一规范化，避免搜索按钮和回车被防抖状态延迟影响
-  const normalizedQuery = useMemo(
-    () => searchQuery.toLowerCase().trim(),
-    [searchQuery]
-  );
-
-  // 搜索结果和精确匹配合并到一个 useMemo，共用同一个 normalizedQuery
-  const { searchResults, exactMatch, hasResults, flatItems } = useMemo(() => {
+  const { suggestions, exactMatch } = useMemo(() => {
     if (!normalizedQuery) {
-      return {
-        searchResults: { apis: [], tutorials: [], pages: [], apps: [] },
-        exactMatch: null,
-        hasResults: false,
-        flatItems: [],
-      };
+      return { suggestions: [], exactMatch: null };
     }
 
-    const apis = sortByFuzzyScore(
+    const apiMatches = sortByFuzzyScore(
       apiList,
       normalizedQuery,
       api => [api.id, api.name, api.desc, api.free, ...api.features],
     )
-      .slice(0, 4)
-      .map(a => ({ ...a, href: `/api/${a.id}` }));
-    const tutorials = sortByFuzzyScore(
+      .slice(0, 3)
+      .map(api => ({
+        id: `api-${api.id}`,
+        name: api.name,
+        desc: `${accessText(api.proxy)} · ${api.features.slice(0, 2).join('、')}`,
+        href: `/api/${api.id}`,
+        type: 'API',
+      }));
+
+    const tutorialMatches = sortByFuzzyScore(
       apiList.filter(api => api.tutorial),
       normalizedQuery,
-      api => [api.id, api.name, api.desc, api.tutorial?.title, api.tutorial?.subtitle, ...api.features],
+      api => [api.id, api.name, api.tutorial?.title, api.tutorial?.subtitle, ...api.features],
     )
-      .slice(0, 3)
-      .map(a => ({ ...a, name: a.tutorial?.title || `${a.name}教程`, href: `/tutorial/${a.id}` }));
-    const apps = sortByFuzzyScore(
+      .slice(0, 2)
+      .map(api => ({
+        id: `tutorial-${api.id}`,
+        name: api.tutorial?.title || `${api.name} 购买教程`,
+        desc: '注册、支付、API Key 创建',
+        href: `/tutorial/${api.id}`,
+        type: '教程',
+      }));
+
+    const appMatches = sortByFuzzyScore(
       appTutorials,
       normalizedQuery,
       app => [app.id, app.name, app.desc, app.badge.text],
     )
-      .slice(0, 3)
-      .map(a => ({ ...a, href: `/app/${a.id}` }));
-    const pageItems = sortByFuzzyScore(
+      .slice(0, 2)
+      .map(app => ({
+        id: `app-${app.id}`,
+        name: app.name,
+        desc: app.desc,
+        href: `/app/${app.id}`,
+        type: '应用',
+      }));
+
+    const pageMatches = sortByFuzzyScore(
       pages,
       normalizedQuery,
       page => [page.id, page.name, page.desc, page.tag],
     )
-      .map(p => ({ ...p, href: p.url }));
-
-    const flat = [...apis, ...tutorials, ...apps, ...pageItems];
+      .slice(0, 2)
+      .map(page => ({
+        id: `page-${page.id}`,
+        name: page.name,
+        desc: page.desc,
+        href: page.url,
+        type: '页面',
+      }));
 
     return {
-      searchResults: { apis, tutorials, apps, pages: pageItems },
-      exactMatch: apiList.find(
-        api =>
-          fuzzyScore(normalizedQuery, [api.id, api.name]) >= 85
-      ) ?? null,
-      hasResults: flat.length > 0,
-      flatItems: flat,
+      suggestions: [...apiMatches, ...tutorialMatches, ...appMatches, ...pageMatches].slice(0, 6),
+      exactMatch: apiList.find(api => fuzzyScore(normalizedQuery, [api.id, api.name]) >= 85) ?? null,
     };
   }, [normalizedQuery]);
 
-  const closeSuggestions = useCallback(() => setShowSuggestions(false), []);
-
-  const { handleKeyDown, handleItemKeyDown, setItemRef } = useSearchKeyboard({
-    items: flatItems,
-    isOpen: showSuggestions,
-    onClose: closeSuggestions,
-    inputRef,
-  });
-
-  // 点击建议框外部时关闭
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        closeSuggestions();
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [closeSuggestions]);
-
-  const handleSearch = useCallback((event?: React.FormEvent<HTMLFormElement>) => {
-    event?.preventDefault();
-    if (!normalizedQuery) return;
-
-    const targetHref = exactMatch ? `/api/${exactMatch.id}` : flatItems[0]?.href;
+  const submitSearch = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const targetHref = exactMatch ? `/api/${exactMatch.id}` : suggestions[0]?.href;
     if (!targetHref) return;
-
     router.push(targetHref);
-    closeSuggestions();
-  }, [exactMatch, flatItems, normalizedQuery, router, closeSuggestions]);
+    setShowSuggestions(false);
+  };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="shrink-0">
-            <span className="block text-base font-semibold">API知识站</span>
-            <span className="hidden text-xs text-muted-foreground sm:block">API 学习与选型指南</span>
+        <div className="flex h-14 items-center justify-between px-4">
+          <Link href="/" className="min-w-0">
+            <span className="block truncate text-base font-semibold">API知识站</span>
+            <span className="block truncate text-[11px] text-muted-foreground">手机快速选型</span>
           </Link>
-          <nav className="flex min-w-0 items-center gap-1 overflow-x-auto text-sm">
-            {navLinks.map(link => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className="shrink-0 rounded-md px-2 py-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground sm:px-3 sm:py-2"
-              >
-                {link.name}
-              </Link>
-            ))}
-          </nav>
+          <ThemeToggle />
         </div>
       </header>
 
-      <main>
-        <section className="px-4 py-7 sm:px-6 sm:py-10 lg:px-8">
-          <div className="mx-auto max-w-6xl">
-            <div className="mx-auto max-w-4xl text-center">
-              <div className="mb-5 inline-flex items-center gap-2">
-                <span className="inline-flex rounded-full border bg-card px-4 py-1.5 text-sm text-muted-foreground">
-                  AI API 选型、购买、接入一站整理
-                </span>
-                <ThemeToggle />
-              </div>
-              <h1 className="mx-auto max-w-4xl text-3xl font-semibold leading-[1.18] sm:text-4xl lg:text-5xl">
-                <span className="block">更快找到可用的 AI API</span>
-                <span className="mt-1 block">少走接入弯路</span>
-              </h1>
-              <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
-                从官网入口、代理要求、免费额度到购买教程和本地部署，按真实使用路径整理。
-              </p>
+      <main className="pb-10">
+        <section className="px-4 pb-5 pt-4">
+          <div className="rounded-lg border bg-card p-4 shadow-sm">
+            <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+              <Sparkles className="size-4 text-emerald-600" />
+              <span>先找能用的 API，再看接入步骤</span>
             </div>
+            <h1 className="mt-3 text-2xl font-semibold leading-tight tracking-tight">
+              手机上快速完成 AI API 选型
+            </h1>
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">
+              搜索模型、供应商或工具名，直接进入官网入口、购买教程和接入指南。
+            </p>
 
-            <div ref={containerRef} className="relative mx-auto mt-6 px-1 sm:mt-9 sm:max-w-4xl sm:px-0">
-              <p className="mb-3 text-center text-sm font-medium text-foreground">搜索 API 或工具名称</p>
-              <form
-                className="flex gap-2 rounded-lg border bg-card p-1.5 shadow-sm sm:gap-3 sm:p-2"
-                onSubmit={handleSearch}
-                role="search"
-              >
-                <input
-                  ref={inputRef}
-                  type="search"
-                  placeholder="搜索 API，如 OpenAI、通义千问..."
-                  value={searchQuery}
-                  onChange={(e) => {
-                    setSearchQuery(e.target.value);
-                    setShowSuggestions(true);
-                  }}
-                  onFocus={() => setShowSuggestions(true)}
-                  onKeyDown={(e) => {
-                    handleKeyDown(e);
-                    if (e.key === 'Enter' && isComposingRef.current) {
-                      e.preventDefault();
-                    }
-                  }}
-                  onCompositionStart={() => { isComposingRef.current = true; }}
-                  onCompositionEnd={() => { isComposingRef.current = false; }}
-                  aria-label="搜索 API 或工具"
-                  aria-autocomplete="list"
-                  aria-controls="search-suggestions"
-                  className="h-10 flex-1 border-0 bg-transparent px-3 text-base shadow-none focus-visible:ring-0 sm:h-12 sm:px-4"
-                />
-                {searchQuery && (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    className="h-10 px-3 text-sm sm:h-12"
-                    onClick={() => {
-                      setSearchQuery('');
-                      closeSuggestions();
-                      inputRef.current?.focus();
+            <div className="relative mt-4">
+              <form className="grid gap-2 rounded-lg border bg-background p-1.5" onSubmit={submitSearch}>
+                <div className="relative">
+                  <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                  <input
+                    type="search"
+                    value={query}
+                    onChange={(event) => {
+                      setQuery(event.target.value);
+                      setShowSuggestions(true);
                     }}
-                  >
-                    清除
-                  </Button>
-                )}
-                <Button
+                    onFocus={() => setShowSuggestions(true)}
+                    placeholder="搜 DeepSeek、OpenAI、Claude..."
+                    aria-label="搜索 API、教程或工具"
+                    className="h-11 w-full rounded-md border-0 bg-transparent pl-9 pr-3 text-base outline-none placeholder:text-muted-foreground"
+                  />
+                </div>
+                <button
                   type="submit"
-                  className="h-10 px-4 text-sm sm:h-12 sm:px-7 sm:text-base"
-                  disabled={!normalizedQuery || (!exactMatch && flatItems.length === 0)}
-                  aria-label="执行搜索"
+                  className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-foreground px-4 text-sm font-medium text-background transition-colors hover:bg-foreground/90 disabled:bg-muted disabled:text-muted-foreground"
+                  disabled={!normalizedQuery || (!exactMatch && suggestions.length === 0)}
                 >
+                  <Search className="size-4" />
                   搜索
-                </Button>
+                </button>
               </form>
 
-              {/* 计算各分组在 flatItems 中的起始索引 */}
-              {(() => {
-                const tutorialsStart = searchResults.apis.length;
-                const appsStart = tutorialsStart + searchResults.tutorials.length;
-                const pagesStart = appsStart + searchResults.apps.length;
+              {showSuggestions && normalizedQuery && (
+                <div className="absolute left-0 right-0 top-full z-20 mt-2 max-h-[58vh] overflow-y-auto overscroll-contain rounded-lg border bg-card shadow-lg">
+                  {suggestions.length > 0 ? (
+                    suggestions.map(item => (
+                      <Link
+                        key={item.id}
+                        href={item.href}
+                        onClick={() => setShowSuggestions(false)}
+                        className="flex items-center gap-3 border-b px-3 py-3 last:border-b-0 active:bg-muted"
+                      >
+                        <span className="rounded-md bg-muted px-2 py-1 text-[11px] font-medium text-muted-foreground">
+                          {item.type}
+                        </span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-sm font-medium">{item.name}</span>
+                          <span className="mt-0.5 block truncate text-xs text-muted-foreground">{item.desc}</span>
+                        </span>
+                        <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
+                      </Link>
+                    ))
+                  ) : (
+                    <div className="px-4 py-5 text-center text-sm text-muted-foreground">
+                      没找到结果，试试通义千问、Kimi、Gemini。
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
 
-                return showSuggestions && normalizedQuery && (
-                  <div
-                    id="search-suggestions"
-                    role="listbox"
-                    aria-label="搜索建议"
-                    onMouseDown={(e) => e.preventDefault()}
-                    className="absolute left-0 right-0 top-full z-10 mt-2 max-h-[50vh] overflow-y-auto overscroll-contain rounded-lg border bg-card shadow-lg sm:max-h-[480px]"
+            <div className="mt-4 grid grid-cols-2 gap-2">
+              {mobileTaskShortcuts.map(item => {
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`rounded-lg border p-3 transition-colors active:scale-[0.99] ${item.className}`}
                   >
-                    {hasResults ? (
-                      <>
-                        <SuggestionGroup label="API" items={searchResults.apis} startIndex={0}
-                          onSelect={closeSuggestions} setItemRef={setItemRef} handleItemKeyDown={handleItemKeyDown} />
-                        <SuggestionGroup label="购买教程" items={searchResults.tutorials} startIndex={tutorialsStart}
-                          onSelect={closeSuggestions} setItemRef={setItemRef} handleItemKeyDown={handleItemKeyDown} />
-                        <SuggestionGroup label="API 应用" items={searchResults.apps} startIndex={appsStart}
-                          onSelect={closeSuggestions} setItemRef={setItemRef} handleItemKeyDown={handleItemKeyDown} />
-                        <SuggestionGroup label="页面" items={searchResults.pages} startIndex={pagesStart}
-                          onSelect={closeSuggestions} setItemRef={setItemRef} handleItemKeyDown={handleItemKeyDown} />
-
-                        {exactMatch && (
-                          <div className="flex flex-wrap items-center gap-2 border-t bg-muted/40 px-4 py-3 text-sm">
-                            <span className="text-muted-foreground">找到「{exactMatch.name}」</span>
-                            <Button size="sm" onClick={() => { router.push(`/api/${exactMatch.id}`); closeSuggestions(); }}>
-                              直接跳转
-                            </Button>
-                            {exactMatch.tutorial && (
-                              <Button size="sm" variant="outline"
-                                onClick={() => { router.push(`/tutorial/${exactMatch.id}`); closeSuggestions(); }}>
-                                购买教程
-                              </Button>
-                            )}
-                          </div>
-                        )}
-                      </>
-                    ) : (
-                      <div className="px-4 py-6 text-center text-sm text-muted-foreground">
-                        未找到相关内容，试试 OpenAI、通义千问、Claude。
-                      </div>
-                    )}
-                  </div>
+                    <div className="mb-2 flex items-center gap-2">
+                      <Icon className="size-4" />
+                      <span className="text-sm font-semibold">{item.title}</span>
+                    </div>
+                    <p className="text-xs leading-5 opacity-80">{item.desc}</p>
+                  </Link>
                 );
-              })()}
-            </div>
-
-            <div className="mx-auto mt-4 grid max-w-md grid-cols-3 gap-3 rounded-lg border bg-card p-4">
-              {stats.map(item => (
-                <div key={item.label} className="min-w-0 text-center">
-                  <p className="text-xl font-semibold">{item.value}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">{item.label}</p>
-                </div>
-              ))}
-            </div>
-
-            {exactMatch && searchQuery.trim() && (
-              <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
-                <span className="text-muted-foreground">找到「{exactMatch.name}」</span>
-                <Button size="sm" onClick={() => router.push(`/api/${exactMatch.id}`)}>直接跳转</Button>
-                {exactMatch.tutorial && (
-                  <Button size="sm" variant="outline" onClick={() => router.push(`/tutorial/${exactMatch.id}`)}>
-                    购买教程
-                  </Button>
-                )}
-              </div>
-            )}
-
-            <div className="mx-auto mt-6 grid max-w-5xl grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {highIntentLinks.map(item => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="rounded-lg border bg-card p-4 transition-colors hover:border-foreground/30"
-                >
-                  <p className="text-sm font-semibold">{item.name}</p>
-                  <p className="mt-1 text-xs leading-5 text-muted-foreground">{item.desc}</p>
-                </Link>
-              ))}
+              })}
             </div>
           </div>
         </section>
 
-        {/* 快速入门 */}
-        <section className="border-t border-border px-4 py-10 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-6xl">
-            <div className="mb-8 text-center">
-              <p className="text-sm font-medium text-muted-foreground">新手必看</p>
-              <h2 className="mt-2 text-2xl font-semibold">3 分钟快速入门</h2>
-              <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
-                不知道从哪里开始？按照以下步骤，快速上手 AI API
-              </p>
+        <section className="px-4 py-4">
+          <div className="flex items-end justify-between gap-3">
+            <div>
+              <p className="text-xs font-medium text-muted-foreground">推荐路径</p>
+              <h2 className="mt-1 text-lg font-semibold">新手先走这 3 步</h2>
             </div>
-
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-              <div className="rounded-lg border bg-card p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-foreground text-sm font-bold text-background">1</span>
-                  <h3 className="font-semibold">选择 API</h3>
-                </div>
-                <p className="text-sm text-muted-foreground mb-4">
-                  根据需求选择合适的 API 服务。国内用户推荐 DeepSeek、通义千问，无需代理即可访问。
-                </p>
-                <Link href="/cloud-api">
-                  <span className="text-sm font-medium text-foreground hover:underline">查看 API 列表 →</span>
-                </Link>
-              </div>
-
-              <div className="rounded-lg border bg-card p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-foreground text-sm font-bold text-background">2</span>
-                  <h3 className="font-semibold">注册购买</h3>
-                </div>
-                <p className="text-sm text-muted-foreground mb-4">
-                  按照教程完成注册、认证和充值。大部分国产 API 支持支付宝/微信支付。
-                </p>
-                <Link href="/tutorial">
-                  <span className="text-sm font-medium text-foreground hover:underline">查看购买教程 →</span>
-                </Link>
-              </div>
-
-              <div className="rounded-lg border bg-card p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-foreground text-sm font-bold text-background">3</span>
-                  <h3 className="font-semibold">接入使用</h3>
-                </div>
-                <p className="text-sm text-muted-foreground mb-4">
-                  获取 API Key 后，即可在代码或工具中使用。国产 API 兼容 OpenAI 接口格式。
-                </p>
-                <Link href="/faq">
-                  <span className="text-sm font-medium text-foreground hover:underline">查看常见问题 →</span>
-                </Link>
-              </div>
-            </div>
+            <Link href="/tutorial" className="text-sm font-medium text-foreground">
+              教程
+            </Link>
+          </div>
+          <div className="mt-3 space-y-2">
+            {[
+              { title: '先选国内直连 API', desc: '降低注册、网络和支付门槛', href: '/cloud-api' },
+              { title: '按教程创建 API Key', desc: '确认额度、限速和 Base URL', href: '/tutorial' },
+              { title: '接入常用 AI 工具', desc: '统一配置 Key、模型名和端点', href: '/app' },
+            ].map((step, index) => (
+              <Link key={step.href} href={step.href} className="flex items-center gap-3 rounded-lg border bg-card p-3 active:bg-muted">
+                <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-foreground text-sm font-semibold text-background">
+                  {index + 1}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-sm font-semibold">{step.title}</span>
+                  <span className="mt-0.5 block text-xs text-muted-foreground">{step.desc}</span>
+                </span>
+                <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
+              </Link>
+            ))}
           </div>
         </section>
 
-        <section className="border-t border-border px-4 py-10 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-6xl">
-            <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">内容入口</p>
-                <h2 className="mt-1 text-xl font-semibold">按需求继续浏览</h2>
-              </div>
-              <p className="max-w-xl text-sm leading-6 text-muted-foreground">
-                购买前看 API 列表，准备接入看购买教程，需要离线或低成本方案再看本地部署。
-              </p>
+        <section className="px-4 py-4">
+          <div className="flex items-end justify-between gap-3">
+            <div>
+              <p className="text-xs font-medium text-muted-foreground">优先尝试</p>
+              <h2 className="mt-1 text-lg font-semibold">国内直连 API</h2>
             </div>
-
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              {pages.map(page => (
-                <Link
-                  key={page.id}
-                  href={page.url}
-                  className="group rounded-lg border bg-card p-5 transition-colors hover:border-foreground/30"
-                >
-                  <div className="mb-3 flex items-center justify-between gap-3">
-                    <p className="font-semibold">{page.name}</p>
-                    <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground group-hover:text-foreground">
-                      {page.tag}
-                    </span>
+            <Link href="/cloud-api" className="text-sm font-medium text-foreground">
+              全部
+            </Link>
+          </div>
+          <div className="-mx-4 mt-3 flex snap-x gap-3 overflow-x-auto px-4 pb-2">
+            {mobileFeaturedAPIs.map(api => (
+              <article key={api.id} className="min-w-[78%] snap-start rounded-lg border bg-card p-4">
+                <div className="mb-3 flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <h3 className="truncate font-semibold">{api.name}</h3>
+                    <p className="mt-1 text-xs text-muted-foreground">{accessText(api.proxy)}</p>
                   </div>
-                  <p className="text-sm leading-6 text-muted-foreground">{page.desc}</p>
-                </Link>
-              ))}
-            </div>
+                  <Badge variant="outline" className={badgeClass(api.badge.type)}>{api.badge.text}</Badge>
+                </div>
+                <p className="line-clamp-3 text-sm leading-6 text-muted-foreground">{api.desc}</p>
+                <div className="mt-4 flex gap-2">
+                  <Link
+                    href={`/api/${api.id}`}
+                    className="flex flex-1 items-center justify-center rounded-md border px-3 py-2 text-sm font-medium active:bg-muted"
+                  >
+                    详情
+                  </Link>
+                  <a
+                    href={api.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex flex-1 items-center justify-center gap-1 rounded-md bg-foreground px-3 py-2 text-sm font-medium text-background"
+                  >
+                    官网
+                    <ExternalLink className="size-3.5" />
+                  </a>
+                </div>
+              </article>
+            ))}
           </div>
         </section>
 
-        <section className="border-t border-border px-4 py-8 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-6xl">
-            <p className="mb-5 text-center text-sm font-medium text-muted-foreground">常用 API</p>
-            <div className="flex flex-wrap items-center justify-center gap-2">
-              {quickLinks.map((link) => (
+        <section className="px-4 py-4">
+          <div className="flex items-end justify-between gap-3">
+            <div>
+              <p className="text-xs font-medium text-muted-foreground">工具接入</p>
+              <h2 className="mt-1 text-lg font-semibold">常用应用教程</h2>
+            </div>
+            <Link href="/app" className="text-sm font-medium text-foreground">
+              更多
+            </Link>
+          </div>
+          <div className="mt-3 space-y-2">
+            {appTutorials.slice(0, 4).map(tutorial => (
+              <Link key={tutorial.id} href={`/app/${tutorial.id}`} className="flex items-center gap-3 rounded-lg border bg-card p-3 active:bg-muted">
+                <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
+                  <BookOpen className="size-4" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-sm font-semibold">{tutorial.name}</span>
+                  <span className="mt-0.5 block truncate text-xs text-muted-foreground">{tutorial.sections.length} 个章节 · {tutorial.badge.text}</span>
+                </span>
+                <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <section className="px-4 py-4">
+          <div className="rounded-lg border bg-card p-4">
+            <p className="text-sm font-semibold">常用 API</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {quickLinks.map(link => (
                 <Link
                   key={link.id}
                   href={`/api/${link.id}`}
-                  className="rounded-full border bg-card px-4 py-2 text-sm text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
+                  className="rounded-full border bg-background px-3 py-1.5 text-sm text-muted-foreground active:bg-muted"
                 >
                   {link.name}
                 </Link>
@@ -606,209 +500,319 @@ export default function HomeClient() {
             </div>
           </div>
         </section>
+      </main>
 
-        <section className="border-t border-border px-4 py-10 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-6xl">
-            <div className="mb-6">
-              <p className="text-sm font-medium text-muted-foreground">新手决策指南</p>
-              <h2 className="mt-1 text-2xl font-semibold">从搜索问题到可执行步骤</h2>
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-                面向“AI API 怎么选、API Key 怎么拿、国内能不能用、写代码用哪个 AI”等高频问题，直接给出下一步入口。
-              </p>
-            </div>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-              {practicalGuides.map((guide) => (
-                <Link
-                  key={guide.title}
-                  href={guide.href}
-                  className="rounded-lg border bg-card p-5 transition-colors hover:border-foreground/30"
-                >
-                  <h3 className="font-semibold">{guide.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-muted-foreground">{guide.desc}</p>
-                  <p className="mt-4 text-sm font-medium text-foreground">继续查看 →</p>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
+      <footer className="border-t border-border px-4 py-6 text-center text-xs text-muted-foreground">
+        <p>API知识站 - 移动端快速选型入口</p>
+        <div className="mt-3">
+          <BeianLinks />
+        </div>
+      </footer>
+    </div>
+  );
+}
 
-        <section className="border-t border-border bg-card/40 px-4 py-10 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-6xl">
-            <div className="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">先从这里选</p>
-                <h2 className="mt-1 text-2xl font-semibold">精选 API</h2>
-                <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-                  优先展示常用服务，卡片里直接标出访问条件和核心能力，方便快速比较。
-                </p>
+function DesktopHome() {
+  const router = useRouter();
+  const [query, setQuery] = useState('');
+  const normalizedQuery = useMemo(() => query.toLowerCase().trim(), [query]);
+
+  const { suggestions, exactMatch } = useMemo(() => {
+    if (!normalizedQuery) {
+      return { suggestions: [], exactMatch: null };
+    }
+
+    const apiMatches = sortByFuzzyScore(
+      apiList,
+      normalizedQuery,
+      api => [api.id, api.name, api.desc, api.free, ...api.features],
+    )
+      .slice(0, 4)
+      .map(api => ({
+        id: `desktop-api-${api.id}`,
+        name: api.name,
+        desc: `${accessText(api.proxy)} · ${api.features.slice(0, 2).join('、')}`,
+        href: `/api/${api.id}`,
+        type: 'API',
+      }));
+
+    const tutorialMatches = sortByFuzzyScore(
+      apiList.filter(api => api.tutorial),
+      normalizedQuery,
+      api => [api.id, api.name, api.tutorial?.title, api.tutorial?.subtitle, ...api.features],
+    )
+      .slice(0, 3)
+      .map(api => ({
+        id: `desktop-tutorial-${api.id}`,
+        name: api.tutorial?.title || `${api.name} 购买教程`,
+        desc: '注册、支付、API Key 创建',
+        href: `/tutorial/${api.id}`,
+        type: '教程',
+      }));
+
+    const pageMatches = sortByFuzzyScore(
+      pages,
+      normalizedQuery,
+      page => [page.id, page.name, page.desc, page.tag],
+    )
+      .slice(0, 3)
+      .map(page => ({
+        id: `desktop-page-${page.id}`,
+        name: page.name,
+        desc: page.desc,
+        href: page.url,
+        type: '页面',
+      }));
+
+    return {
+      suggestions: [...apiMatches, ...tutorialMatches, ...pageMatches].slice(0, 8),
+      exactMatch: apiList.find(api => fuzzyScore(normalizedQuery, [api.id, api.name]) >= 85) ?? null,
+    };
+  }, [normalizedQuery]);
+
+  const submitSearch = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const targetHref = exactMatch ? `/api/${exactMatch.id}` : suggestions[0]?.href;
+    if (targetHref) {
+      router.push(targetHref);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-[#faf8f4] text-[#24211d]">
+      <header className="sticky top-0 z-50 border-b border-[#e8dfd2] bg-[#faf8f4]/95 backdrop-blur">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-8 px-8">
+          <Link href="/" className="shrink-0">
+            <span className="block text-base font-semibold tracking-tight">API知识站</span>
+            <span className="block text-xs text-[#776f65]">AI API 决策工具</span>
+          </Link>
+          <nav className="flex items-center gap-1 text-sm">
+            {[
+              { name: 'API官网', href: '/cloud-api' },
+              { name: 'API测评', href: '/api-review' },
+              { name: '购买教程', href: '/tutorial' },
+              { name: 'API应用', href: '/app' },
+              { name: '本地部署', href: '/local-deploy' },
+            ].map(link => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="rounded-md px-3 py-2 text-[#625b52] transition-colors hover:bg-[#f0ebe3] hover:text-[#24211d]"
+              >
+                {link.name}
+              </Link>
+            ))}
+          </nav>
+          <ThemeToggle />
+        </div>
+      </header>
+
+      <main>
+        <section className="px-8 pb-10 pt-12">
+          <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
+            <div className="pt-4">
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#e3d8c9] bg-[#fffdf8] px-3 py-1 text-sm text-[#776f65]">
+                <Sparkles className="size-4 text-[#9a5a35]" />
+                AI API 决策工具
               </div>
-              <Link href="/cloud-api">
-                <Button variant="outline">查看全部</Button>
-              </Link>
-            </div>
+              <h1 className="mt-5 max-w-2xl text-5xl font-semibold leading-tight tracking-tight text-[#201d19]">
+                按访问条件和接入难度选择 AI API
+              </h1>
+              <p className="mt-5 max-w-xl text-base leading-8 text-[#625b52]">
+                对比国内直连、免费额度、购买教程、Base URL 和适用场景，把搜索结果变成可执行的下一步。
+              </p>
 
-            <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Link href="/cloud-api" className="rounded-lg border bg-card p-5 transition-colors hover:border-foreground/30">
-                <p className="font-semibold">无需代理</p>
-                <p className="mt-1 text-sm text-muted-foreground">国内直连，适合快速开箱和学习接入。</p>
-              </Link>
-              <Link href="/cloud-api" className="rounded-lg border bg-card p-5 transition-colors hover:border-foreground/30">
-                <p className="font-semibold">需要代理</p>
-                <p className="mt-1 text-sm text-muted-foreground">OpenAI、Claude、Gemini 等国际服务。</p>
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {featuredAPIs.map((api) => (
-                <article key={api.id} className="flex min-h-56 flex-col rounded-lg border bg-card p-5 transition-colors hover:border-foreground/30">
-                  <div className="mb-3 flex items-start justify-between gap-3">
-                    <div>
-                      <h3 className="font-semibold">{api.name}</h3>
-                      <p className="mt-1 text-xs text-muted-foreground">{accessText(api.proxy)}</p>
-                    </div>
-                    <Badge variant="outline" className={badgeClass(api.badge.type)}>{api.badge.text}</Badge>
+              <div className="relative mt-8 max-w-2xl">
+                <form
+                  className="flex items-center gap-3 rounded-lg border border-[#ded4c6] bg-[#fffdf8] p-2 shadow-sm"
+                  onSubmit={submitSearch}
+                  role="search"
+                >
+                  <div className="relative min-w-0 flex-1">
+                    <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-[#8a8177]" />
+                    <input
+                      type="search"
+                      value={query}
+                      onChange={(event) => setQuery(event.target.value)}
+                      placeholder="搜索 DeepSeek、OpenAI、Claude..."
+                      aria-label="搜索 API、教程或工具"
+                      className="h-12 w-full bg-transparent pl-11 pr-4 text-base outline-none placeholder:text-[#9b9286]"
+                    />
                   </div>
-                  <p className="flex-1 text-sm leading-6 text-muted-foreground">{api.desc}</p>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {api.features.slice(0, 3).map(feature => (
-                      <span key={feature} className="rounded-full bg-muted px-2 py-1 text-xs text-muted-foreground">
-                        {feature}
-                      </span>
+                  <button
+                    type="submit"
+                    className="inline-flex h-12 items-center justify-center rounded-md bg-[#2b2621] px-6 text-sm font-medium text-white transition-colors hover:bg-[#3a332c] disabled:bg-[#ded4c6] disabled:text-[#746b60]"
+                    disabled={!normalizedQuery || (!exactMatch && suggestions.length === 0)}
+                  >
+                    搜索
+                  </button>
+                </form>
+
+                {normalizedQuery && suggestions.length > 0 && (
+                  <div className="absolute left-0 right-0 top-full z-20 mt-2 overflow-hidden rounded-lg border border-[#ded4c6] bg-[#fffdf8] shadow-lg">
+                    {suggestions.map(item => (
+                      <Link
+                        key={item.id}
+                        href={item.href}
+                        className="flex items-center gap-3 border-b border-[#eee6da] px-4 py-3 last:border-b-0 hover:bg-[#f7f1e8]"
+                      >
+                        <span className="rounded-md bg-[#f0ebe3] px-2 py-1 text-xs font-medium text-[#776f65]">
+                          {item.type}
+                        </span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-sm font-medium text-[#24211d]">{item.name}</span>
+                          <span className="mt-0.5 block truncate text-xs text-[#776f65]">{item.desc}</span>
+                        </span>
+                        <ChevronRight className="size-4 text-[#8a8177]" />
+                      </Link>
                     ))}
                   </div>
-                  <div className="mt-5 flex gap-2">
-                    <a href={api.url} target="_blank" rel="noopener noreferrer" className="flex-1">
-                      <Button className="w-full" size="sm">官网入口</Button>
-                    </a>
-                    <RememberListLink href={`/api/${api.id}`} listLabel="首页 API 精选" className="flex-1">
-                      <Button variant="outline" className="w-full" size="sm">详细说明</Button>
-                    </RememberListLink>
-                  </div>
-                </article>
-              ))}
+                )}
+              </div>
+
+              <div className="mt-5 flex flex-wrap gap-2">
+                {[
+                  { label: '国内直连', href: '/cloud-api' },
+                  { label: '免费额度', href: '/tutorial' },
+                  { label: '写代码', href: '/use-case/coding' },
+                  { label: '知识库', href: '/use-case/knowledge' },
+                ].map(chip => (
+                  <Link
+                    key={chip.label}
+                    href={chip.href}
+                    className="rounded-full border border-[#ded4c6] bg-[#fffdf8] px-3 py-1.5 text-sm text-[#625b52] transition-colors hover:border-[#b8aa98] hover:text-[#24211d]"
+                  >
+                    {chip.label}
+                  </Link>
+                ))}
+              </div>
             </div>
+
+            <section className="rounded-lg border border-[#ded4c6] bg-[#fffdf8] p-5 shadow-sm">
+              <div className="mb-4 flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-[#776f65]">今日推荐</p>
+                  <h2 className="mt-1 text-xl font-semibold tracking-tight">先从这几类 API 判断</h2>
+                </div>
+                <Link href="/cloud-api" className="text-sm font-medium text-[#2b2621] hover:underline">
+                  查看全部
+                </Link>
+              </div>
+              <div className="overflow-hidden rounded-md border border-[#e8dfd2]">
+                <table className="w-full text-sm">
+                  <thead className="bg-[#f5efe6] text-left text-xs font-medium text-[#776f65]">
+                    <tr>
+                      <th className="px-4 py-3">API</th>
+                      <th className="px-4 py-3">访问</th>
+                      <th className="px-4 py-3">免费额度</th>
+                      <th className="px-4 py-3">适合场景</th>
+                      <th className="px-4 py-3">教程</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#eee6da]">
+                    {desktopDecisionRows.map(row => (
+                      <tr key={row.name} className="transition-colors hover:bg-[#faf6ef]">
+                        <td className="px-4 py-4">
+                          <Link href={row.href} className="font-semibold text-[#24211d] hover:underline">
+                            {row.name}
+                          </Link>
+                        </td>
+                        <td className="px-4 py-4">
+                          <span className={`rounded-full border px-2 py-1 text-xs font-medium ${row.accessClass}`}>
+                            {row.access}
+                          </span>
+                        </td>
+                        <td className="px-4 py-4 text-[#625b52]">{row.free}</td>
+                        <td className="px-4 py-4 text-[#625b52]">{row.scene}</td>
+                        <td className="px-4 py-4">
+                          <Link href={row.tutorialHref} className="rounded-full border border-sky-200 bg-sky-50 px-2 py-1 text-xs font-medium text-sky-700 hover:border-sky-300">
+                            {row.tutorial}
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
           </div>
         </section>
 
-        <section id="app-section" className="border-t border-border px-4 py-10 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-6xl">
-            <div className="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+        <section className="border-y border-[#e8dfd2] bg-[#fffaf2] px-8 py-8">
+          <div className="mx-auto grid max-w-7xl gap-4 md:grid-cols-3">
+            {desktopWorkflowCards.map((card, index) => (
+              <Link
+                key={card.href}
+                href={card.href}
+                className="rounded-lg border border-[#ded4c6] bg-[#fffdf8] p-5 transition-colors hover:border-[#b8aa98]"
+              >
+                <div className="mb-3 flex items-center gap-3">
+                  <span className="flex size-8 items-center justify-center rounded-full bg-[#2b2621] text-sm font-semibold text-white">
+                    {index + 1}
+                  </span>
+                  <h3 className="font-semibold">{card.title}</h3>
+                </div>
+                <p className="text-sm leading-6 text-[#625b52]">{card.desc}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <section className="px-8 py-12">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-6 flex items-end justify-between gap-4">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">接入之后做什么</p>
-                <h2 className="mt-1 text-2xl font-semibold">API 应用教程</h2>
-                <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-                  围绕常见工具和工作流整理教程，从安装到使用路径更清晰。
-                </p>
+                <p className="text-sm font-medium text-[#776f65]">按场景推荐</p>
+                <h2 className="mt-1 text-2xl font-semibold tracking-tight">用更具体的任务来选模型</h2>
               </div>
+              <Link href="/use-case" className="text-sm font-medium text-[#2b2621] hover:underline">
+                查看全部场景
+              </Link>
             </div>
-
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {appTutorials.map((tutorial) => (
-                <article key={tutorial.id} className="flex min-h-48 flex-col rounded-lg border bg-card p-5 transition-colors hover:border-foreground/30">
-                  <div className="mb-3 flex items-start justify-between gap-3">
-                    <h3 className="font-semibold">{tutorial.name}</h3>
-                    <Badge variant="outline" className={badgeClass(tutorial.badge.type)}>{tutorial.badge.text}</Badge>
-                  </div>
-                  <p className="text-sm leading-6 text-muted-foreground">{tutorial.desc}</p>
-                  <p className="mt-2 text-xs text-muted-foreground">{tutorial.sections.length} 个章节</p>
-                  <div className="mt-auto pt-5">
-                    <RememberListLink href={`/app/${tutorial.id}`} listLabel="首页应用教程">
-                      <Button variant="outline" className="w-full" size="sm">详细教程</Button>
-                    </RememberListLink>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 更新日志 */}
-        <section className="border-t border-border px-4 py-8 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-6xl">
-            <div className="rounded-lg border bg-card p-6">
-              <h3 className="font-semibold mb-4">更新日志</h3>
-              <div className="space-y-4 text-sm">
-                {/* 2026-05-07 */}
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="font-mono text-xs bg-muted px-2 py-0.5 rounded">2026-05-07</span>
-                  </div>
-                  <ul className="ml-2 space-y-1 text-muted-foreground">
-                    <li className="flex items-start gap-2">
-                      <span className="text-amber-500 mt-0.5">★</span>
-                      <span>新增小米 MiMo API 购买教程</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-amber-500 mt-0.5">★</span>
-                      <span>更新 Claude 支持 1M 上下文</span>
-                    </li>
-                    <li>优化本地部署教程结构</li>
-                  </ul>
-                </div>
-
-                {/* 2026-05-06 */}
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="font-mono text-xs bg-muted px-2 py-0.5 rounded">2026-05-06</span>
-                  </div>
-                  <ul className="ml-2 space-y-1 text-muted-foreground">
-                    <li className="flex items-start gap-2">
-                      <span className="text-amber-500 mt-0.5">★</span>
-                      <span>新增 Gemma 4、Qwen3.6 本地部署教程</span>
-                    </li>
-                    <li>SEO 优化：补充页面 metadata、修复 Bing 收录问题</li>
-                  </ul>
-                </div>
-
-                {/* 2026-04-28 */}
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="font-mono text-xs bg-muted px-2 py-0.5 rounded">2026-04-28</span>
-                    <span className="text-xs text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">重要更新</span>
-                  </div>
-                  <ul className="ml-2 space-y-1 text-muted-foreground">
-                    <li className="flex items-start gap-2">
-                      <span className="text-amber-500 mt-0.5">★</span>
-                      <span>上线 FAQ 常见问题页面</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-amber-500 mt-0.5">★</span>
-                      <span>新增首页搜索功能、应用教程路由</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-amber-500 mt-0.5">★</span>
-                      <span>DeepSeek V4 系列对比测评上线</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-amber-500 mt-0.5">★</span>
-                      <span>恢复 GPT-5.5 / Claude Opus 4.7 / Gemini 3 购买教程</span>
-                    </li>
-                    <li>SEO 结构化数据、站点地图、OpenGraph 图片</li>
-                    <li>合规审查与敏感词中性化处理</li>
-                  </ul>
-                </div>
-
-                {/* 2026-04-24 */}
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="font-mono text-xs bg-muted px-2 py-0.5 rounded">2026-04-24</span>
-                  </div>
-                  <ul className="ml-2 space-y-1 text-muted-foreground">
-                    <li>网站初始上线</li>
-                  </ul>
-                </div>
-              </div>
+            <div className="grid gap-4 md:grid-cols-3">
+              {desktopScenarioCards.map(card => {
+                const Icon = card.icon;
+                return (
+                  <Link
+                    key={card.href}
+                    href={card.href}
+                    className={`rounded-lg border p-5 transition-transform hover:-translate-y-0.5 ${card.className}`}
+                  >
+                    <div className="mb-4 flex items-center justify-between gap-3">
+                      <span className={`flex size-10 items-center justify-center rounded-md ${card.iconClassName}`}>
+                        <Icon className="size-5" />
+                      </span>
+                      <ChevronRight className="size-4 opacity-60" />
+                    </div>
+                    <h3 className="font-semibold">{card.title}</h3>
+                    <p className="mt-2 text-sm leading-6 opacity-80">{card.desc}</p>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </section>
       </main>
 
-      <footer className="border-t border-border px-4 py-8 text-center text-sm text-muted-foreground">
-        <p>API知识站 - 适合初学者的 API 学习平台</p>
+      <footer className="border-t border-[#e8dfd2] px-8 py-8 text-center text-sm text-[#776f65]">
+        <p>API知识站 - 按访问条件、购买难度和使用场景选择 AI API</p>
         <div className="mt-3">
           <BeianLinks />
         </div>
       </footer>
+    </div>
+  );
+}
+
+export default function HomeClient() {
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="md:hidden">
+        <MobileHome />
+      </div>
+      <div className="hidden md:block">
+        <DesktopHome />
+      </div>
     </div>
   );
 }

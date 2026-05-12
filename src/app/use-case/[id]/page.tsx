@@ -8,7 +8,7 @@ import { getUseCaseById, getAllUseCaseIds } from '@/lib/use-case-config';
 import { apiList } from '@/lib/api-config';
 import { reviewSlugByApiId } from '@/lib/review-config';
 import { BreadcrumbSchema } from '@/components/seo/structured-data';
-import { coreLongTailKeywords, scenarioDecisionKeywords, uniqueKeywords, userIntentKeywords } from '@/lib/seo-keywords';
+import { generateMetadata as generateTdkMetadata } from '@/lib/tdk';
 
 const BASE_URL = 'https://apiuspro.cn';
 
@@ -24,18 +24,15 @@ export function generateMetadata({ params }: { params: Promise<{ id: string }> }
       const api = apiList.find((a) => a.id === r.apiId);
       return api?.name;
     }).filter(Boolean);
-    return {
-      title: `${uc.name} — AI API 场景推荐`,
-      description: `${uc.description} 推荐 ${apiNames.join('、')} 等 ${apiNames.length} 个 API，含评分、优缺点对比与购买教程。`,
-      keywords: uniqueKeywords(uc.keywords, coreLongTailKeywords, userIntentKeywords, scenarioDecisionKeywords),
-      alternates: { canonical: `${BASE_URL}/use-case/${id}` },
-      openGraph: {
-        title: `${uc.name} | API知识站`,
-        description: `${uc.description} 推荐 ${apiNames.join('、')} 等 ${apiNames.length} 个 API。`,
-        url: `${BASE_URL}/use-case/${id}`,
-        type: 'article',
-      },
-    };
+
+    return generateTdkMetadata('/use-case/:id', {
+      id,
+      name: uc.name,
+      description: uc.description,
+      apiNames: apiNames.join('、'),
+      count: apiNames.length,
+      keywords: uc.keywords.join(','),
+    });
   });
 }
 

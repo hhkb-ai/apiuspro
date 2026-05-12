@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { getReviewDetail, getAllReviewSlugs } from '@/lib/review-config';
 import { BreadcrumbSchema, ArticleSchema } from '@/components/seo/structured-data';
 import { DetailBackNav } from '@/components/navigation/ReturnNavigation';
-import { coreLongTailKeywords, uniqueKeywords, userIntentKeywords } from '@/lib/seo-keywords';
+import { generateMetadata as generateTdkMetadata } from '@/lib/tdk';
 
 const ARTICLE_DATE_PUBLISHED = '2026-05-11';
 const ARTICLE_DATE_MODIFIED = '2026-05-11';
@@ -22,39 +22,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const review = getReviewDetail(slug);
   if (!review) return { title: '测评未找到' };
 
-  const title = `${review.name} 完整测评 | 性能对比、价格与购买建议`;
-  const desc = `${review.name} 深度测评：${review.tlDr}。含基准测试、定价对比和选购建议。`;
-
-  return {
-    title,
-    description: desc,
-    keywords: uniqueKeywords([
-      `${review.name}测评`,
-      `${review.name}怎么样`,
-      `${review.name}价格`,
-      `${review.name}和GPT对比`,
-      `AI模型测评`,
-      `API性能对比`,
-    ], coreLongTailKeywords, userIntentKeywords),
-    alternates: {
-      canonical: `https://apiuspro.cn/api-review/${slug}`,
-    },
-    openGraph: {
-      title,
-      description: desc,
-      url: `https://apiuspro.cn/api-review/${slug}`,
-      siteName: 'API知识站',
-      locale: 'zh_CN',
-      type: 'article',
-      images: [{ url: 'https://apiuspro.cn/opengraph-image', width: 1200, height: 630, alt: review.name }],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description: desc,
-      images: ['https://apiuspro.cn/opengraph-image'],
-    },
-  };
+  return generateTdkMetadata('/api-review/:slug', {
+    slug,
+    name: review.name,
+    tlDr: review.tlDr,
+  });
 }
 
 function StarRating({ score }: { score: number }) {

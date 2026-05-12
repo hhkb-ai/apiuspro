@@ -8,33 +8,9 @@ import { reviewDetails } from '@/lib/review-config';
 import type { ReviewDetail } from '@/lib/review-config';
 import { BreadcrumbSchema } from '@/components/seo/structured-data';
 import { RememberListLink } from '@/components/navigation/ReturnNavigation';
+import { generateMetadata as generateTdkMetadata } from '@/lib/tdk';
 
-export const metadata: Metadata = {
-  title: 'AI API 完整测评对比 | 性能、价格与选购建议',
-  description:
-    'DeepSeek、OpenAI、Claude、通义千问、Gemini 等主流 AI API 的深度测评对比，含基准测试、定价分析和选购建议。',
-  keywords: [
-    'AI API测评',
-    'API对比',
-    'Claude和GPT哪个好',
-    'DeepSeek和ChatGPT对比',
-    'AI模型评分',
-    'API性能对比',
-    'AI API价格对比',
-    '大模型基准测试',
-    'API选购建议',
-    'AI API推荐排名',
-    '哪个AI API最好用',
-    'API性价比对比',
-  ],
-  alternates: { canonical: 'https://apiuspro.cn/api-review' },
-  openGraph: {
-    title: 'AI API 完整测评对比 | API知识站',
-    description: '主流 AI API 深度测评对比，含基准测试、定价分析和选购建议。',
-    url: 'https://apiuspro.cn/api-review',
-    type: 'website',
-  },
-};
+export const metadata: Metadata = generateTdkMetadata('/api-review');
 
 const reviews = Object.values(reviewDetails);
 

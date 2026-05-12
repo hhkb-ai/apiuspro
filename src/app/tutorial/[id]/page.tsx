@@ -8,7 +8,7 @@ import { apiList, getAPIById, SHOW_PROXY_CONTENT, type APIConfig } from '@/lib/a
 import { BreadcrumbSchema, HowToSchema, TechArticleSchema } from '@/components/seo/structured-data';
 import { CodeBlock } from '@/components/tutorial/CodeBlock';
 import { DetailBackNav } from '@/components/navigation/ReturnNavigation';
-import { apiPurchaseKeywords, coreLongTailKeywords, uniqueKeywords } from '@/lib/seo-keywords';
+import { generateMetadata as generateTdkMetadata } from '@/lib/tdk';
 
 const ARTICLE_DATE_PUBLISHED = '2026-05-11';
 const ARTICLE_DATE_MODIFIED = '2026-05-11';
@@ -46,29 +46,14 @@ export function generateMetadata({ params }: { params: Promise<{ id: string }> }
   return params.then(({ id }) => {
     const api = getAPIById(id);
     if (!api || !api.tutorial) return { title: '教程未找到' };
-    const needsProxy = api.proxy ? '需代理' : '国内直连';
-    const canonicalUrl = `https://apiuspro.cn/tutorial/${api.id}`;
-    const firstStepImage = api.tutorial.steps[0]?.image;
-    return {
-      title: `${api.name} 购买教程`,
-      description: `${api.tutorial.title}：${api.tutorial.subtitle || api.desc}。${needsProxy}，分${api.tutorial.steps.length}步完成注册、支付与API Key接入。`,
-      keywords: uniqueKeywords([
-        `${api.name}购买教程`,
-        `${api.name}怎么买`,
-        `${api.name}订阅`,
-        `${api.name}注册`,
-        `${api.name} API Key`,
-        `API购买教程`,
-      ], coreLongTailKeywords, apiPurchaseKeywords),
-      alternates: { canonical: canonicalUrl },
-      openGraph: {
-        title: `${api.name} 购买教程 | API知识站`,
-        description: api.tutorial.subtitle || api.desc,
-        url: canonicalUrl,
-        type: 'article',
-        ...(firstStepImage ? { images: [{ url: firstStepImage, alt: api.name }] } : {}),
-      },
-    };
+
+    return generateTdkMetadata('/tutorial/:id', {
+      id,
+      name: api.name,
+      subtitle: api.tutorial.subtitle || api.desc,
+      proxy: api.proxy ? '需代理' : '国内直连',
+      stepCount: api.tutorial.steps.length,
+    });
   });
 }
 

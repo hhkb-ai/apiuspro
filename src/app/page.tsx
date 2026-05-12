@@ -2,60 +2,9 @@ import type { Metadata } from 'next';
 import HomeClient from './home-client';
 import { ItemListSchema } from '@/components/seo/structured-data';
 import { apiList, appTutorials } from '@/lib/api-config';
-import { apiPurchaseKeywords, coreLongTailKeywords, uniqueKeywords, userIntentKeywords } from '@/lib/seo-keywords';
+import { generateMetadata as generateTdkMetadata } from '@/lib/tdk';
 
-export const metadata: Metadata = {
-  title: 'API知识站 - AI API 选型、购买、接入一站式指南',
-  description:
-    '覆盖 DeepSeek、OpenAI、Claude、通义千问、Gemini 等 10+ AI API 的官网入口、价格对比、免费额度、购买教程与本地部署指南。适合初学者的 AI API 学习平台。',
-  keywords: uniqueKeywords([
-    'API知识站',
-    'AI API',
-    'API购买教程',
-    'API测评',
-    '本地部署',
-    'OpenAI',
-    'Claude',
-    'Gemini',
-    'DeepSeek',
-    '通义千问',
-    'API怎么买',
-    'API免费额度',
-    'API注册教程',
-    'AI编程助手',
-    'AI API对比',
-    'API代充',
-    'API订阅',
-    '国内AI API',
-  ], coreLongTailKeywords, userIntentKeywords, apiPurchaseKeywords),
-  alternates: {
-    canonical: 'https://apiuspro.cn',
-  },
-  openGraph: {
-    title: 'API知识站 - AI API 选型、购买、接入一站式指南',
-    description:
-      '覆盖 DeepSeek、OpenAI、Claude 等 10+ AI API 的一站式指南，含官网入口、购买教程和本地部署。',
-    url: 'https://apiuspro.cn',
-    siteName: 'API知识站',
-    locale: 'zh_CN',
-    type: 'website',
-    images: [
-      {
-        url: 'https://apiuspro.cn/opengraph-image',
-        width: 1200,
-        height: 630,
-        alt: 'API知识站 - AI API 选型与购买教程',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'API知识站 - AI API 选型、购买、接入一站式指南',
-    description:
-      '覆盖 DeepSeek、OpenAI、Claude 等 10+ AI API 的一站式指南。',
-    images: ['https://apiuspro.cn/opengraph-image'],
-  },
-};
+export const metadata: Metadata = generateTdkMetadata('/');
 
 export default function Home() {
   return (

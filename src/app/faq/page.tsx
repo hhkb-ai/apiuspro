@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { BeianLinks } from '@/components/layout/BeianLinks';
 import { faqCategories } from '@/lib/api-config';
 import { FAQSchema, BreadcrumbSchema } from '@/components/seo/structured-data';
-import { apiPurchaseKeywords, apiTroubleshootingKeywords, coreLongTailKeywords, scenarioDecisionKeywords, uniqueKeywords } from '@/lib/seo-keywords';
+import { generateMetadata as generateTdkMetadata } from '@/lib/tdk';
 
 // 将文本中的 URL 转换为可点击链接
 function LinkText({ text }: { text: string }) {
@@ -29,33 +29,7 @@ function LinkText({ text }: { text: string }) {
   );
 }
 
-export const metadata: Metadata = {
-  title: '常见问题 FAQ',
-  description:
-    'AI API 接入全流程 FAQ：涵盖注册验证、支付方式、API Key 安全、调用限制、代理选择等高频问题，帮助新手快速解决 API 使用中的常见障碍。',
-  keywords: uniqueKeywords([
-    'API常见问题',
-    'API Key安全',
-    'API调用限制',
-    'API报错怎么办',
-    'API注册验证',
-    'API支付方式',
-    'API代理选择',
-    'API免费额度',
-    '429错误解决',
-    'API接入问题',
-    'AI API FAQ',
-    'API使用教程',
-  ], coreLongTailKeywords, apiPurchaseKeywords, apiTroubleshootingKeywords, scenarioDecisionKeywords),
-  alternates: { canonical: 'https://apiuspro.cn/faq' },
-  openGraph: {
-    title: '常见问题 FAQ | API知识站',
-    description:
-      'AI API 接入全流程 FAQ：注册、支付、密钥安全、调用限制等高频问题解答。',
-    url: 'https://apiuspro.cn/faq',
-    type: 'website',
-  },
-};
+export const metadata: Metadata = generateTdkMetadata('/faq');
 
 export default function FAQPage() {
   const allFAQItems = faqCategories.flatMap(cat => cat.items);

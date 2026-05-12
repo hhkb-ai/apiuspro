@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { appTutorials } from '@/lib/api-config';
 import { BreadcrumbSchema } from '@/components/seo/structured-data';
 import { RememberListLink } from '@/components/navigation/ReturnNavigation';
-import { apiPurchaseKeywords, coreLongTailKeywords, toolWorkflowKeywords, uniqueKeywords } from '@/lib/seo-keywords';
+import { generateMetadata as generateTdkMetadata } from '@/lib/tdk';
 
 const workflowNotes = [
   {
@@ -22,32 +22,7 @@ const workflowNotes = [
   },
 ];
 
-export const metadata: Metadata = {
-  title: 'API 应用教程',
-  description:
-    '围绕 Claude Code、OpenClaw、Obsidian 插件等常见 AI 工具和工作流整理的安装与使用教程。',
-  keywords: [
-    ...uniqueKeywords([
-      'Claude Code教程',
-      'AI工具教程',
-      'Claude Code安装',
-      'OpenClaw使用教程',
-      'Obsidian AI插件',
-      'AI编程工具',
-      'Claude Code配置',
-      'AI工作流教程',
-      'AI助手安装教程',
-      'LLM Wiki教程',
-    ], coreLongTailKeywords, toolWorkflowKeywords, apiPurchaseKeywords),
-  ],
-  alternates: { canonical: 'https://apiuspro.cn/app' },
-  openGraph: {
-    title: 'API 应用教程 | API知识站',
-    description: '围绕常见 AI 工具和工作流整理的教程，从安装到使用路径更清晰。',
-    url: 'https://apiuspro.cn/app',
-    type: 'website',
-  },
-};
+export const metadata: Metadata = generateTdkMetadata('/app');
 
 function badgeClass(type: string) {
   if (type === 'success') return 'border-emerald-200 bg-emerald-50 text-emerald-700';
