@@ -579,12 +579,12 @@ function DesktopHome() {
   };
 
   return (
-    <div className="min-h-screen bg-[#faf8f4] text-[#24211d]">
-      <header className="sticky top-0 z-50 border-b border-[#e8dfd2] bg-[#faf8f4]/95 backdrop-blur">
+    <div className="min-h-screen bg-background text-foreground">
+      <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-8 px-8">
           <Link href="/" className="shrink-0">
             <span className="block text-base font-semibold tracking-tight">API知识站</span>
-            <span className="block text-xs text-[#776f65]">AI API 决策工具</span>
+            <span className="block text-xs text-muted-foreground">AI API 决策工具</span>
           </Link>
           <nav className="flex items-center gap-1 text-sm">
             {[
@@ -597,7 +597,7 @@ function DesktopHome() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="rounded-md px-3 py-2 text-[#625b52] transition-colors hover:bg-[#f0ebe3] hover:text-[#24211d]"
+                className="rounded-md px-3 py-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               >
                 {link.name}
               </Link>
@@ -611,37 +611,37 @@ function DesktopHome() {
         <section className="px-8 pb-10 pt-12">
           <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
             <div className="pt-4">
-              <div className="inline-flex items-center gap-2 rounded-full border border-[#e3d8c9] bg-[#fffdf8] px-3 py-1 text-sm text-[#776f65]">
-                <Sparkles className="size-4 text-[#9a5a35]" />
+              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-sm text-muted-foreground">
+                <Sparkles className="size-4 text-primary/70" />
                 AI API 决策工具
               </div>
-              <h1 className="mt-5 max-w-2xl text-5xl font-semibold leading-tight tracking-tight text-[#201d19]">
+              <h1 className="mt-5 max-w-2xl text-5xl font-semibold leading-tight tracking-tight text-foreground">
                 按访问条件和接入难度选择 AI API
               </h1>
-              <p className="mt-5 max-w-xl text-base leading-8 text-[#625b52]">
+              <p className="mt-5 max-w-xl text-base leading-8 text-muted-foreground">
                 对比国内直连、免费额度、购买教程、Base URL 和适用场景，把搜索结果变成可执行的下一步。
               </p>
 
               <div className="relative mt-8 max-w-2xl">
                 <form
-                  className="flex items-center gap-3 rounded-lg border border-[#ded4c6] bg-[#fffdf8] p-2 shadow-sm"
+                  className="flex items-center gap-3 rounded-lg border border-border bg-card p-2 shadow-sm"
                   onSubmit={submitSearch}
                   role="search"
                 >
                   <div className="relative min-w-0 flex-1">
-                    <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-[#8a8177]" />
+                    <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                     <input
                       type="search"
                       value={query}
                       onChange={(event) => setQuery(event.target.value)}
                       placeholder="搜索 DeepSeek、OpenAI、Claude..."
                       aria-label="搜索 API、教程或工具"
-                      className="h-12 w-full bg-transparent pl-11 pr-4 text-base outline-none placeholder:text-[#9b9286]"
+                      className="h-12 w-full bg-transparent pl-11 pr-4 text-base outline-none placeholder:text-muted-foreground"
                     />
                   </div>
                   <button
                     type="submit"
-                    className="inline-flex h-12 items-center justify-center rounded-md bg-[#2b2621] px-6 text-sm font-medium text-white transition-colors hover:bg-[#3a332c] disabled:bg-[#ded4c6] disabled:text-[#746b60]"
+                    className="inline-flex h-12 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground"
                     disabled={!normalizedQuery || (!exactMatch && suggestions.length === 0)}
                   >
                     搜索
@@ -649,21 +649,21 @@ function DesktopHome() {
                 </form>
 
                 {normalizedQuery && suggestions.length > 0 && (
-                  <div className="absolute left-0 right-0 top-full z-20 mt-2 overflow-hidden rounded-lg border border-[#ded4c6] bg-[#fffdf8] shadow-lg">
+                  <div className="absolute left-0 right-0 top-full z-20 mt-2 overflow-hidden rounded-lg border border-border bg-card shadow-lg">
                     {suggestions.map(item => (
                       <Link
                         key={item.id}
                         href={item.href}
-                        className="flex items-center gap-3 border-b border-[#eee6da] px-4 py-3 last:border-b-0 hover:bg-[#f7f1e8]"
+                        className="flex items-center gap-3 border-b border-border px-4 py-3 last:border-b-0 hover:bg-muted/70"
                       >
-                        <span className="rounded-md bg-[#f0ebe3] px-2 py-1 text-xs font-medium text-[#776f65]">
+                        <span className="rounded-md bg-muted px-2 py-1 text-xs font-medium text-muted-foreground">
                           {item.type}
                         </span>
                         <span className="min-w-0 flex-1">
-                          <span className="block truncate text-sm font-medium text-[#24211d]">{item.name}</span>
-                          <span className="mt-0.5 block truncate text-xs text-[#776f65]">{item.desc}</span>
+                          <span className="block truncate text-sm font-medium text-foreground">{item.name}</span>
+                          <span className="mt-0.5 block truncate text-xs text-muted-foreground">{item.desc}</span>
                         </span>
-                        <ChevronRight className="size-4 text-[#8a8177]" />
+                        <ChevronRight className="size-4 text-muted-foreground" />
                       </Link>
                     ))}
                   </div>
@@ -680,7 +680,7 @@ function DesktopHome() {
                   <Link
                     key={chip.label}
                     href={chip.href}
-                    className="rounded-full border border-[#ded4c6] bg-[#fffdf8] px-3 py-1.5 text-sm text-[#625b52] transition-colors hover:border-[#b8aa98] hover:text-[#24211d]"
+                    className="rounded-full border border-border bg-card px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
                   >
                     {chip.label}
                   </Link>
@@ -688,19 +688,19 @@ function DesktopHome() {
               </div>
             </div>
 
-            <section className="rounded-lg border border-[#ded4c6] bg-[#fffdf8] p-5 shadow-sm">
+            <section className="rounded-lg border border-border bg-card p-5 shadow-sm">
               <div className="mb-4 flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-[#776f65]">今日推荐</p>
+                  <p className="text-sm font-medium text-muted-foreground">今日推荐</p>
                   <h2 className="mt-1 text-xl font-semibold tracking-tight">先从这几类 API 判断</h2>
                 </div>
-                <Link href="/cloud-api" className="text-sm font-medium text-[#2b2621] hover:underline">
+                <Link href="/cloud-api" className="text-sm font-medium text-foreground hover:underline">
                   查看全部
                 </Link>
               </div>
-              <div className="overflow-hidden rounded-md border border-[#e8dfd2]">
+              <div className="overflow-hidden rounded-md border border-border">
                 <table className="w-full text-sm">
-                  <thead className="bg-[#f5efe6] text-left text-xs font-medium text-[#776f65]">
+                  <thead className="bg-muted text-left text-xs font-medium text-muted-foreground">
                     <tr>
                       <th className="px-4 py-3">API</th>
                       <th className="px-4 py-3">访问</th>
@@ -709,11 +709,11 @@ function DesktopHome() {
                       <th className="px-4 py-3">教程</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#eee6da]">
+                  <tbody className="divide-y divide-border">
                     {desktopDecisionRows.map(row => (
-                      <tr key={row.name} className="transition-colors hover:bg-[#faf6ef]">
+                      <tr key={row.name} className="transition-colors hover:bg-muted/40">
                         <td className="px-4 py-4">
-                          <Link href={row.href} className="font-semibold text-[#24211d] hover:underline">
+                          <Link href={row.href} className="font-semibold text-foreground hover:underline">
                             {row.name}
                           </Link>
                         </td>
@@ -722,8 +722,8 @@ function DesktopHome() {
                             {row.access}
                           </span>
                         </td>
-                        <td className="px-4 py-4 text-[#625b52]">{row.free}</td>
-                        <td className="px-4 py-4 text-[#625b52]">{row.scene}</td>
+                        <td className="px-4 py-4 text-muted-foreground">{row.free}</td>
+                        <td className="px-4 py-4 text-muted-foreground">{row.scene}</td>
                         <td className="px-4 py-4">
                           <Link href={row.tutorialHref} className="rounded-full border border-sky-200 bg-sky-50 px-2 py-1 text-xs font-medium text-sky-700 hover:border-sky-300">
                             {row.tutorial}
@@ -738,21 +738,21 @@ function DesktopHome() {
           </div>
         </section>
 
-        <section className="border-y border-[#e8dfd2] bg-[#fffaf2] px-8 py-8">
+        <section className="border-y border-border bg-muted/35 px-8 py-8">
           <div className="mx-auto grid max-w-7xl gap-4 md:grid-cols-3">
             {desktopWorkflowCards.map((card, index) => (
               <Link
                 key={card.href}
                 href={card.href}
-                className="rounded-lg border border-[#ded4c6] bg-[#fffdf8] p-5 transition-colors hover:border-[#b8aa98]"
+                className="rounded-lg border border-border bg-card p-5 transition-colors hover:border-foreground/30"
               >
                 <div className="mb-3 flex items-center gap-3">
-                  <span className="flex size-8 items-center justify-center rounded-full bg-[#2b2621] text-sm font-semibold text-white">
+                  <span className="flex size-8 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
                     {index + 1}
                   </span>
                   <h3 className="font-semibold">{card.title}</h3>
                 </div>
-                <p className="text-sm leading-6 text-[#625b52]">{card.desc}</p>
+                <p className="text-sm leading-6 text-muted-foreground">{card.desc}</p>
               </Link>
             ))}
           </div>
@@ -762,10 +762,10 @@ function DesktopHome() {
           <div className="mx-auto max-w-7xl">
             <div className="mb-6 flex items-end justify-between gap-4">
               <div>
-                <p className="text-sm font-medium text-[#776f65]">按场景推荐</p>
+                <p className="text-sm font-medium text-muted-foreground">按场景推荐</p>
                 <h2 className="mt-1 text-2xl font-semibold tracking-tight">用更具体的任务来选模型</h2>
               </div>
-              <Link href="/use-case" className="text-sm font-medium text-[#2b2621] hover:underline">
+              <Link href="/use-case" className="text-sm font-medium text-foreground hover:underline">
                 查看全部场景
               </Link>
             </div>
@@ -794,7 +794,7 @@ function DesktopHome() {
         </section>
       </main>
 
-      <footer className="border-t border-[#e8dfd2] px-8 py-8 text-center text-sm text-[#776f65]">
+      <footer className="border-t border-border px-8 py-8 text-center text-sm text-muted-foreground">
         <p>API知识站 - 按访问条件、购买难度和使用场景选择 AI API</p>
         <div className="mt-3">
           <BeianLinks />

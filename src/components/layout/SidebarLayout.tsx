@@ -58,7 +58,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
                 className={cn(
                   'flex items-center px-3 py-2.5 rounded-md text-sm font-medium transition-colors',
                   isActive
-                    ? 'bg-muted text-foreground'
+                    ? 'bg-primary text-primary-foreground shadow-sm'
                     : 'text-muted-foreground hover:text-foreground hover:bg-muted/70'
                 )}
               >
@@ -75,8 +75,8 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
         </div>
       </aside>
 
-      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-card border-b border-border z-50 flex items-center justify-between px-4">
-        <div className="flex flex-col">
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-background/95 border-b border-border z-50 flex items-center justify-between px-4 backdrop-blur">
+        <div className="min-w-0 flex flex-col">
           <Link href="/" className="font-semibold tracking-tight">
             API知识站
           </Link>
@@ -95,7 +95,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
       </div>
 
       {mobileMenuOpen && (
-        <div id="mobile-navigation" className="lg:hidden fixed inset-0 top-16 bg-background z-40">
+        <div id="mobile-navigation" className="lg:hidden fixed inset-0 top-16 bg-background/95 z-40 backdrop-blur">
           <nav className="p-4 space-y-1.5">
             {navigation.map((item) => {
               const isActive = pathname === item.href;
@@ -107,7 +107,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
                   className={cn(
                     'flex items-center px-4 py-3 rounded-md text-base font-medium transition-colors',
                     isActive
-                      ? 'bg-muted text-foreground'
+                      ? 'bg-primary text-primary-foreground shadow-sm'
                       : 'text-muted-foreground hover:text-foreground hover:bg-muted/70'
                   )}
                 >
@@ -119,8 +119,8 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
         </div>
       )}
 
-      <main className="flex-1 lg:ml-64 flex flex-col">
-        <div className="flex-1 pt-16 lg:pt-0">
+      <main className="min-w-0 flex-1 lg:ml-64 flex flex-col">
+        <div className="min-w-0 flex-1 pt-16 lg:pt-0">
           {children}
         </div>
         <footer className="border-t border-border px-4 py-6 text-center text-sm text-muted-foreground">
