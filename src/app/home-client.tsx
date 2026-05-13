@@ -711,9 +711,27 @@ function DesktopHome() {
                   </thead>
                   <tbody className="divide-y divide-border">
                     {desktopDecisionRows.map(row => (
-                      <tr key={row.name} className="transition-colors hover:bg-muted/40">
+                      <tr
+                        key={row.name}
+                        role="link"
+                        tabIndex={0}
+                        aria-label={`查看 ${row.name} API 详情`}
+                        onClick={() => router.push(row.href)}
+                        onKeyDown={(event) => {
+                          if (event.currentTarget !== event.target) return;
+                          if (event.key !== 'Enter' && event.key !== ' ') return;
+
+                          event.preventDefault();
+                          router.push(row.href);
+                        }}
+                        className="cursor-pointer transition-colors hover:bg-muted/40 focus-visible:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+                      >
                         <td className="px-4 py-4">
-                          <Link href={row.href} className="font-semibold text-foreground hover:underline">
+                          <Link
+                            href={row.href}
+                            onClick={(event) => event.stopPropagation()}
+                            className="font-semibold text-foreground hover:underline"
+                          >
                             {row.name}
                           </Link>
                         </td>
@@ -725,7 +743,11 @@ function DesktopHome() {
                         <td className="px-4 py-4 text-muted-foreground">{row.free}</td>
                         <td className="px-4 py-4 text-muted-foreground">{row.scene}</td>
                         <td className="px-4 py-4">
-                          <Link href={row.tutorialHref} className="rounded-full border border-sky-200 bg-sky-50 px-2 py-1 text-xs font-medium text-sky-700 hover:border-sky-300">
+                          <Link
+                            href={row.tutorialHref}
+                            onClick={(event) => event.stopPropagation()}
+                            className="rounded-full border border-sky-200 bg-sky-50 px-2 py-1 text-xs font-medium text-sky-700 hover:border-sky-300"
+                          >
                             {row.tutorial}
                           </Link>
                         </td>
