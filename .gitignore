@@ -103,8 +103,16 @@ Desktop.ini
 .codex/
 
 # Local drafts and generated planning artifacts
+/assets/
+/deploy/
+/AGENTS.md
+/API知识站_SEO与体验优化方案.md
+/API知识站_主题拆解.md
+/API知识站_项目描述.md
 /API知识站_项目设计文档.docx
 /API知识站策划书.md
+/SEO索引提交清单.md
+/IMAGE_CATALOG.md
 /generate_docx.py
 /网站内容结构树.md
 
