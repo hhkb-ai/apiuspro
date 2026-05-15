@@ -11,11 +11,26 @@ import { DetailBackNav } from '@/components/navigation/ReturnNavigation';
 
 const ARTICLE_DATE_PUBLISHED = '2026-05-11';
 const ARTICLE_DATE_MODIFIED = '2026-05-11';
+const URL_PATTERN = /(`[^`]+`|【[^】]+】|https?:\/\/[^\s<>"'，。；、？！）)】]+)/g;
+
+function isApiEndpointUrl(value: string) {
+  try {
+    const url = new URL(value);
+    return url.hostname !== 'apiuspro.cn' && (
+      url.hostname.startsWith('api.') ||
+      url.pathname.startsWith('/v1') ||
+      url.pathname.includes('/api/') ||
+      url.pathname.includes('/compatible-mode/')
+    );
+  } catch {
+    return false;
+  }
+}
 
 /* ─── RichText: 解析 `code` 【重点】 标记 ─── */
 function RichText({ text, className = '' }: { text: string; className?: string }) {
   if (!text) return null;
-  const parts = text.split(/(`[^`]+`|【[^】]+】|https?:\/\/[^\s]+)/g).filter(Boolean);
+  const parts = text.split(URL_PATTERN).filter(Boolean);
   return (
     <span className={className}>
       {parts.map((part, i) => {
@@ -35,6 +50,14 @@ function RichText({ text, className = '' }: { text: string; className?: string }
           );
         }
         if (part.startsWith('http://') || part.startsWith('https://')) {
+          if (isApiEndpointUrl(part)) {
+            return (
+              <code key={i} className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[13px] text-foreground">
+                {part}
+              </code>
+            );
+          }
+
           return (
             <a key={i} href={part} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-md bg-foreground/10 px-2.5 py-1 text-sm font-medium text-foreground transition-colors hover:bg-foreground/20">
               <svg className="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

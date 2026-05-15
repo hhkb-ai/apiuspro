@@ -1,0 +1,403 @@
+{
+  "meta": {
+    "project": "API知识站",
+    "generatedAt": "2026-05-15",
+    "scope": "sidecar documentation only",
+    "framework": "Next.js 16 + React 19 + TypeScript + Tailwind CSS 4 + shadcn/ui",
+    "sources": [
+      "src/app/globals.css",
+      "src/components/ui/button.tsx",
+      "src/components/ui/card.tsx",
+      "src/components/ui/badge.tsx",
+      "src/components/ui/input.tsx",
+      "src/app/home-client.tsx",
+      "src/app/**/*.tsx"
+    ],
+    "publishPolicy": "Keep in outputs/. Do not copy to public/ unless noindex and routing policy are reviewed."
+  },
+  "colors": {
+    "light": {
+      "background": {
+        "name": "--background",
+        "value": "#faf8f4",
+        "rgb": "rgb(250, 248, 244)",
+        "description": "页面基础背景，暖米白，承载全站低对比度知识库风格。"
+      },
+      "foreground": {
+        "name": "--foreground",
+        "value": "#24211d",
+        "rgb": "rgb(36, 33, 29)",
+        "description": "主文字颜色，接近暖黑。"
+      },
+      "card": {
+        "name": "--card",
+        "value": "#fffdf8",
+        "rgb": "rgb(255, 253, 248)",
+        "description": "卡片、弹层、表格容器背景。"
+      },
+      "cardForeground": {
+        "name": "--card-foreground",
+        "value": "#24211d",
+        "rgb": "rgb(36, 33, 29)",
+        "description": "卡片容器内的主文字。"
+      },
+      "popover": {
+        "name": "--popover",
+        "value": "#fffdf8",
+        "rgb": "rgb(255, 253, 248)",
+        "description": "Popover、菜单和搜索建议层背景。"
+      },
+      "popoverForeground": {
+        "name": "--popover-foreground",
+        "value": "#24211d",
+        "rgb": "rgb(36, 33, 29)",
+        "description": "弹层内容文字。"
+      },
+      "primary": {
+        "name": "--primary",
+        "value": "#2b2621",
+        "rgb": "rgb(43, 38, 33)",
+        "description": "主按钮、编号圆点和强操作背景。"
+      },
+      "primaryForeground": {
+        "name": "--primary-foreground",
+        "value": "#fffdf8",
+        "rgb": "rgb(255, 253, 248)",
+        "description": "主色背景上的文字。"
+      },
+      "secondary": {
+        "name": "--secondary",
+        "value": "#f0ebe3",
+        "rgb": "rgb(240, 235, 227)",
+        "description": "次级按钮和轻量控件背景。"
+      },
+      "secondaryForeground": {
+        "name": "--secondary-foreground",
+        "value": "#24211d",
+        "rgb": "rgb(36, 33, 29)",
+        "description": "次级背景上的文字。"
+      },
+      "muted": {
+        "name": "--muted",
+        "value": "#f5efe6",
+        "rgb": "rgb(245, 239, 230)",
+        "description": "分区背景、表头、弱提示块。"
+      },
+      "mutedForeground": {
+        "name": "--muted-foreground",
+        "value": "#625b52",
+        "rgb": "rgb(98, 91, 82)",
+        "description": "辅助文字、说明文字。"
+      },
+      "accent": {
+        "name": "--accent",
+        "value": "#f0ebe3",
+        "rgb": "rgb(240, 235, 227)",
+        "description": "Hover 与轻强调背景。"
+      },
+      "accentForeground": {
+        "name": "--accent-foreground",
+        "value": "#24211d",
+        "rgb": "rgb(36, 33, 29)",
+        "description": "Accent 背景上的文字。"
+      },
+      "destructive": {
+        "name": "--destructive",
+        "value": "oklch(0.577 0.245 27.325)",
+        "description": "危险、错误和破坏性操作状态。"
+      },
+      "border": {
+        "name": "--border",
+        "value": "#ded4c6",
+        "rgb": "rgb(222, 212, 198)",
+        "description": "默认边框和分割线。"
+      },
+      "input": {
+        "name": "--input",
+        "value": "#ded4c6",
+        "rgb": "rgb(222, 212, 198)",
+        "description": "输入框边框。"
+      },
+      "ring": {
+        "name": "--ring",
+        "value": "#9a5a35",
+        "rgb": "rgb(154, 90, 53)",
+        "description": "焦点环，偏棕的强调色。"
+      },
+      "sidebar": {
+        "name": "--sidebar",
+        "value": "#fffdf8",
+        "rgb": "rgb(255, 253, 248)",
+        "description": "侧边导航背景。"
+      },
+      "sidebarAccent": {
+        "name": "--sidebar-accent",
+        "value": "#f5efe6",
+        "rgb": "rgb(245, 239, 230)",
+        "description": "侧边导航选中或悬停背景。"
+      },
+      "sidebarBorder": {
+        "name": "--sidebar-border",
+        "value": "#ded4c6",
+        "rgb": "rgb(222, 212, 198)",
+        "description": "侧边导航边框。"
+      }
+    },
+    "dark": {
+      "background": {
+        "name": "--background",
+        "value": "#0f0d0b",
+        "rgb": "rgb(15, 13, 11)",
+        "description": "暗色页面背景。"
+      },
+      "foreground": {
+        "name": "--foreground",
+        "value": "#ede7dd",
+        "rgb": "rgb(237, 231, 221)",
+        "description": "暗色主文字。"
+      },
+      "card": {
+        "name": "--card",
+        "value": "#1a1714",
+        "rgb": "rgb(26, 23, 20)",
+        "description": "暗色卡片背景。"
+      },
+      "primary": {
+        "name": "--primary",
+        "value": "#ede7dd",
+        "rgb": "rgb(237, 231, 221)",
+        "description": "暗色主按钮背景。"
+      },
+      "primaryForeground": {
+        "name": "--primary-foreground",
+        "value": "#1a1714",
+        "rgb": "rgb(26, 23, 20)",
+        "description": "暗色主按钮文字。"
+      },
+      "secondary": {
+        "name": "--secondary",
+        "value": "#242019",
+        "rgb": "rgb(36, 32, 25)",
+        "description": "暗色次级背景。"
+      },
+      "muted": {
+        "name": "--muted",
+        "value": "#242019",
+        "rgb": "rgb(36, 32, 25)",
+        "description": "暗色弱背景。"
+      },
+      "mutedForeground": {
+        "name": "--muted-foreground",
+        "value": "#a89888",
+        "rgb": "rgb(168, 152, 136)",
+        "description": "暗色辅助文字。"
+      },
+      "accent": {
+        "name": "--accent",
+        "value": "#2e2821",
+        "rgb": "rgb(46, 40, 33)",
+        "description": "暗色 hover 与轻强调背景。"
+      },
+      "destructive": {
+        "name": "--destructive",
+        "value": "oklch(0.704 0.191 22.216)",
+        "description": "暗色危险和错误状态。"
+      },
+      "border": {
+        "name": "--border",
+        "value": "#332c24",
+        "rgb": "rgb(51, 44, 36)",
+        "description": "暗色边框。"
+      },
+      "input": {
+        "name": "--input",
+        "value": "#3d352b",
+        "rgb": "rgb(61, 53, 43)",
+        "description": "暗色输入边框或背景。"
+      },
+      "ring": {
+        "name": "--ring",
+        "value": "#c8946c",
+        "rgb": "rgb(200, 148, 108)",
+        "description": "暗色焦点环。"
+      }
+    },
+    "semantic": {
+      "success": {
+        "value": "emerald-50 / emerald-200 / emerald-700",
+        "preview": ["#ecfdf5", "#a7f3d0", "#047857"],
+        "description": "国内直连、无需代理、成功状态。"
+      },
+      "warning": {
+        "value": "amber-50 / amber-200 / amber-700",
+        "preview": ["#fffbeb", "#fde68a", "#b45309"],
+        "description": "需要代理、关键步骤、注意事项。"
+      },
+      "info": {
+        "value": "sky-50 / sky-200 / sky-700",
+        "preview": ["#f0f9ff", "#bae6fd", "#0369a1"],
+        "description": "提示、教程完整、信息块。"
+      },
+      "feature": {
+        "value": "rose / violet / orange families",
+        "preview": ["#fff1f2", "#f5f3ff", "#fff7ed"],
+        "description": "首页场景推荐卡片的辅助区分色。"
+      }
+    },
+    "charts": {
+      "chart1": "oklch(0.646 0.222 41.116)",
+      "chart2": "oklch(0.6 0.118 184.704)",
+      "chart3": "oklch(0.398 0.07 227.392)",
+      "chart4": "oklch(0.828 0.189 84.429)",
+      "chart5": "oklch(0.769 0.188 70.08)"
+    }
+  },
+  "typography": {
+    "fontFamily": {
+      "sans": {
+        "value": "'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+        "description": "全站默认中文优先无衬线字体栈。"
+      },
+      "mono": {
+        "value": "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
+        "description": "代码块、命令、内联代码。"
+      },
+      "serif": {
+        "value": "'Noto Serif SC', 'Songti SC', 'SimSun', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif",
+        "description": "保留的中文衬线字体栈，当前主界面很少使用。"
+      }
+    },
+    "fontSize": {
+      "xs": { "value": "0.75rem / 12px", "usage": "标签、表头、辅助元信息" },
+      "sm": { "value": "0.875rem / 14px", "usage": "默认正文、按钮、导航" },
+      "base": { "value": "1rem / 16px", "usage": "输入框、移动端主正文" },
+      "lg": { "value": "1.125rem / 18px", "usage": "分区标题" },
+      "xl": { "value": "1.25rem / 20px", "usage": "卡片组标题、页面小标题" },
+      "2xl": { "value": "1.5rem / 24px", "usage": "移动端首页标题、详情页标题" },
+      "3xl": { "value": "1.875rem / 30px", "usage": "列表页标题" },
+      "5xl": { "value": "3rem / 48px", "usage": "桌面首页主标题" },
+      "custom10": { "value": "10px", "usage": "微标、小状态文本" },
+      "custom11": { "value": "11px", "usage": "侧栏分组、品牌副标题" },
+      "custom12": { "value": "12px", "usage": "表格表头、目录项" },
+      "custom13": { "value": "13px", "usage": "侧栏与代码文本" },
+      "custom15": { "value": "15px", "usage": "教程正文说明" }
+    },
+    "fontWeight": {
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    },
+    "lineHeight": {
+      "tight": "1.25",
+      "normal": "1.5",
+      "comfortable": "1.6-1.75, commonly leading-6 / leading-7 / leading-8"
+    }
+  },
+  "spacing": {
+    "baseUnit": "Tailwind spacing scale, 1 step = 0.25rem / 4px",
+    "inline": {
+      "chipX": "px-2 to px-3",
+      "buttonX": "px-3 to px-6",
+      "pageXMobile": "px-4",
+      "pageXDesktop": "px-6 to px-8"
+    },
+    "block": {
+      "chipY": "py-0.5 to py-1.5",
+      "buttonY": "py-2",
+      "cardPadding": "p-4 to p-6",
+      "sectionPadding": "py-8 to py-12",
+      "detailContentPadding": "px-5 sm:px-8 py-6"
+    },
+    "gap": {
+      "micro": "gap-1 / gap-1.5",
+      "control": "gap-2 / gap-3",
+      "cardGrid": "gap-4",
+      "layout": "gap-8",
+      "largeGrid": "gap-10"
+    },
+    "containers": {
+      "compact": "max-w-5xl",
+      "standard": "max-w-6xl",
+      "wide": "max-w-7xl or max-w-[1200px]",
+      "articleNarrow": "max-w-3xl / max-w-4xl"
+    }
+  },
+  "radius": {
+    "base": { "value": "0.5rem / 8px", "source": "--radius" },
+    "sm": { "value": "calc(var(--radius) - 4px) / 4px", "usage": "极小控件、菜单项" },
+    "md": { "value": "calc(var(--radius) - 2px) / 6px", "usage": "按钮、输入框、导航项" },
+    "lg": { "value": "var(--radius) / 8px", "usage": "卡片、提示块、搜索框" },
+    "xl": { "value": "calc(var(--radius) + 4px) / 12px", "usage": "少量侧栏或面板" },
+    "full": { "value": "9999px", "usage": "徽标、圆点编号、胶囊标签" }
+  },
+  "border": {
+    "default": {
+      "value": "1px solid var(--border)",
+      "description": "卡片、表格、输入框、导航分割线。"
+    },
+    "subtle": {
+      "value": "border-border/80 or bg-muted/40",
+      "description": "低强度重复列表。"
+    },
+    "status": {
+      "value": "border-emerald-200 / border-amber-200 / border-sky-200",
+      "description": "状态标签与提示块。"
+    },
+    "focus": {
+      "value": "focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+      "description": "shadcn 默认焦点可见规范。"
+    }
+  },
+  "shadow": {
+    "none": { "value": "shadow-none", "css": "none", "usage": "大多数卡片保持扁平" },
+    "xs": { "value": "shadow-xs", "css": "0 1px 2px 0 rgb(0 0 0 / 0.05)", "usage": "outline 按钮、小控件" },
+    "sm": { "value": "shadow-sm", "css": "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)", "usage": "首页搜索框、粘性导航" },
+    "md": { "value": "shadow-md", "css": "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)", "usage": "菜单、Popover" },
+    "lg": { "value": "shadow-lg", "css": "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)", "usage": "搜索建议层、Dialog、Sheet" },
+    "xl": { "value": "shadow-xl", "css": "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)", "usage": "高层级浮层" }
+  },
+  "components": {
+    "button": {
+      "base": "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all",
+      "height": { "default": "h-9", "sm": "h-8", "lg": "h-10", "icon": "size-9" },
+      "variants": {
+        "default": "bg-primary text-primary-foreground hover:bg-primary/90",
+        "outline": "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground",
+        "secondary": "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        "ghost": "hover:bg-accent hover:text-accent-foreground",
+        "link": "text-primary underline-offset-4 hover:underline",
+        "destructive": "bg-destructive text-white hover:bg-destructive/90"
+      }
+    },
+    "card": {
+      "base": "bg-card text-card-foreground flex flex-col gap-6 rounded-lg border py-6 shadow-none",
+      "contentPadding": "px-6",
+      "usage": "重复内容项、详情正文容器、搜索结果面板。"
+    },
+    "badge": {
+      "base": "inline-flex items-center justify-center rounded-full border px-2 py-0.5 text-xs font-medium",
+      "usage": "代理状态、教程完整度、推荐标签。"
+    },
+    "input": {
+      "base": "h-9 w-full min-w-0 rounded-md border border-input bg-card px-3 py-1 text-base md:text-sm shadow-none",
+      "focus": "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
+    },
+    "table": {
+      "base": "rounded-md border; head bg-muted text-muted-foreground; row hover:bg-muted/40",
+      "usage": "首页 API 决策表、详情页对比表。"
+    },
+    "navigation": {
+      "topBar": "sticky top-0 z-50 border-b border-border bg-background/95 or bg-card",
+      "sideNav": "sticky top-20; active border-l-2 border-foreground bg-muted"
+    }
+  },
+  "layout": {
+    "architecture": "首页入口 -> 分类/列表页导航 -> 详情页内容展示。",
+    "responsive": {
+      "mobile": "移动端首页使用独立信息架构，px-4、横向滚动卡片、搜索优先。",
+      "desktop": "桌面首页使用 max-w-7xl 和更宽的信息分栏。",
+      "detail": "详情页在 lg/xl 使用三栏布局，移动端折叠目录。"
+    }
+  }
+}

@@ -7,13 +7,37 @@ import { faqCategories } from '@/lib/api-config';
 import { FAQSchema, BreadcrumbSchema } from '@/components/seo/structured-data';
 import { generateMetadata as generateTdkMetadata } from '@/lib/tdk';
 
+const URL_PATTERN = /(https?:\/\/[^\s<>"'，。；、？！）)】]+)/g;
+
+function isApiEndpointUrl(value: string) {
+  try {
+    const url = new URL(value);
+    return url.hostname !== 'apiuspro.cn' && (
+      url.hostname.startsWith('api.') ||
+      url.pathname.startsWith('/v1') ||
+      url.pathname.includes('/api/') ||
+      url.pathname.includes('/compatible-mode/')
+    );
+  } catch {
+    return false;
+  }
+}
+
 // 将文本中的 URL 转换为可点击链接
 function LinkText({ text }: { text: string }) {
-  const parts = text.split(/(https?:\/\/[^\s]+)/g);
+  const parts = text.split(URL_PATTERN);
   return (
     <>
       {parts.map((part, i) => {
         if (part.startsWith('http://') || part.startsWith('https://')) {
+          if (isApiEndpointUrl(part)) {
+            return (
+              <code key={i} className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[13px] text-foreground">
+                {part}
+              </code>
+            );
+          }
+
           return (
             <a key={i} href={part} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-md bg-foreground/10 px-2.5 py-1 text-sm font-medium text-foreground transition-colors hover:bg-foreground/20">
               <svg className="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

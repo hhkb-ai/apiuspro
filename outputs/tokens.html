@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>API知识站设计令牌</title>
+  <style>
+    :root {
+      --background: #faf8f4;
+      --foreground: #24211d;
+      --card: #fffdf8;
+      --muted: #f5efe6;
+      --muted-foreground: #625b52;
+      --border: #ded4c6;
+      --primary: #2b2621;
+      --ring: #9a5a35;
+      --radius: 8px;
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--foreground);
+      line-height: 1.6;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--border);
+      background: color-mix(in srgb, var(--background) 94%, transparent);
+      backdrop-filter: blur(12px);
+    }
+    .shell {
+      width: min(1180px, calc(100vw - 32px));
+      margin: 0 auto;
+    }
+    .hero {
+      padding: 28px 0 22px;
+      display: grid;
+      gap: 12px;
+    }
+    .eyebrow {
+      margin: 0;
+      color: var(--muted-foreground);
+      font-size: 13px;
+      font-weight: 600;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 48px);
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+    .summary {
+      max-width: 760px;
+      margin: 0;
+      color: var(--muted-foreground);
+      font-size: 15px;
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 12px 0 18px;
+    }
+    .tab, .search {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--card);
+      color: var(--foreground);
+      font: inherit;
+      font-size: 14px;
+    }
+    .tab {
+      padding: 8px 14px;
+      cursor: pointer;
+    }
+    .tab[aria-selected="true"] {
+      background: var(--primary);
+      color: #fffdf8;
+      border-color: var(--primary);
+    }
+    .search {
+      min-width: min(100%, 260px);
+      padding: 8px 14px;
+      margin-left: auto;
+      outline: none;
+    }
+    .search:focus {
+      border-color: var(--ring);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 24%, transparent);
+    }
+    main {
+      padding: 28px 0 56px;
+    }
+    section {
+      display: grid;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+    h2 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.25;
+    }
+    .section-note {
+      margin: -8px 0 0;
+      color: var(--muted-foreground);
+      font-size: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+    }
+    .card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--card);
+      padding: 16px;
+      min-width: 0;
+    }
+    .token-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .token-name {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+    .token-value {
+      margin: 4px 0 0;
+      color: var(--muted-foreground);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+    .token-desc {
+      margin: 10px 0 0;
+      color: var(--muted-foreground);
+      font-size: 13px;
+    }
+    .swatch {
+      width: 44px;
+      height: 44px;
+      flex: 0 0 auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--swatch);
+    }
+    .mini-swatches {
+      display: flex;
+      gap: 6px;
+      margin-top: 12px;
+    }
+    .mini-swatches span {
+      width: 28px;
+      height: 28px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--c);
+    }
+    .type-sample {
+      margin: 10px 0 0;
+      padding: 12px;
+      border-radius: 8px;
+      background: var(--muted);
+    }
+    .shadow-sample {
+      height: 58px;
+      border-radius: 8px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      margin-top: 12px;
+    }
+    .component-preview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-top: 12px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 36px;
+      border-radius: 6px;
+      padding: 0 16px;
+      border: 1px solid var(--primary);
+      background: var(--primary);
+      color: #fffdf8;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .btn.secondary {
+      border-color: var(--border);
+      background: var(--card);
+      color: var(--foreground);
+      box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+    }
+    .badge {
+      border: 1px solid #a7f3d0;
+      background: #ecfdf5;
+      color: #047857;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .input {
+      min-height: 36px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0 12px;
+      background: var(--card);
+      color: var(--muted-foreground);
+      font-size: 14px;
+    }
+    .hidden { display: none !important; }
+    footer {
+      border-top: 1px solid var(--border);
+      color: var(--muted-foreground);
+      font-size: 13px;
+      padding: 22px 0;
+    }
+    @media (max-width: 720px) {
+      .search {
+        width: 100%;
+        margin-left: 0;
+      }
+      .toolbar {
+        overflow-x: auto;
+        padding-bottom: 14px;
+      }
+      .tab {
+        white-space: nowrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="shell">
+      <div class="hero">
+        <p class="eyebrow">Design Tokens · Sidecar Report · 2026-05-15</p>
+        <h1>API知识站设计令牌</h1>
+        <p class="summary">本页面根据当前 Next.js 主站的 Tailwind CSS 4、shadcn/ui 组件和页面视觉规范生成，仅用于内部设计系统审阅。文件位于 outputs/，不会被线上主站自动发布。</p>
+      </div>
+      <div class="toolbar" role="tablist" aria-label="Token categories">
+        <button class="tab" data-filter="all" aria-selected="true">全部</button>
+        <button class="tab" data-filter="color">颜色</button>
+        <button class="tab" data-filter="typography">排版</button>
+        <button class="tab" data-filter="spacing">间距</button>
+        <button class="tab" data-filter="shape">边框/圆角/阴影</button>
+        <button class="tab" data-filter="component">组件</button>
+        <input class="search" id="search" placeholder="搜索令牌，例如 primary、button、shadow">
+      </div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section data-category="color">
+      <h2>颜色系统</h2>
+      <p class="section-note">暖米白背景、暖黑文字和低饱和边框构成主视觉；状态色使用 emerald、amber、sky 等 Tailwind 色族。</p>
+      <div class="grid">
+        <article class="card" data-keywords="background light color">
+          <div class="token-head"><div><p class="token-name">--background</p><p class="token-value">#faf8f4 · rgb(250, 248, 244)</p></div><span class="swatch" style="--swatch:#faf8f4"></span></div>
+          <p class="token-desc">页面基础背景。</p>
+        </article>
+        <article class="card" data-keywords="foreground text color">
+          <div class="token-head"><div><p class="token-name">--foreground</p><p class="token-value">#24211d · rgb(36, 33, 29)</p></div><span class="swatch" style="--swatch:#24211d"></span></div>
+          <p class="token-desc">主文字颜色。</p>
+        </article>
+        <article class="card" data-keywords="card popover color">
+          <div class="token-head"><div><p class="token-name">--card / --popover</p><p class="token-value">#fffdf8 · rgb(255, 253, 248)</p></div><span class="swatch" style="--swatch:#fffdf8"></span></div>
+          <p class="token-desc">卡片、弹层和表格容器背景。</p>
+        </article>
+        <article class="card" data-keywords="primary button color">
+          <div class="token-head"><div><p class="token-name">--primary</p><p class="token-value">#2b2621 · rgb(43, 38, 33)</p></div><span class="swatch" style="--swatch:#2b2621"></span></div>
+          <p class="token-desc">主按钮和强操作背景。</p>
+        </article>
+        <article class="card" data-keywords="muted secondary color">
+          <div class="token-head"><div><p class="token-name">--muted / --secondary</p><p class="token-value">#f5efe6 / #f0ebe3</p></div><span class="swatch" style="--swatch:#f5efe6"></span></div>
+          <p class="token-desc">弱背景、表头和次级控件。</p>
+        </article>
+        <article class="card" data-keywords="border input ring color">
+          <div class="token-head"><div><p class="token-name">--border / --input / --ring</p><p class="token-value">#ded4c6 / #9a5a35</p></div><span class="swatch" style="--swatch:#ded4c6"></span></div>
+          <p class="token-desc">边框、输入框和焦点环。</p>
+        </article>
+        <article class="card" data-keywords="semantic success warning info">
+          <div class="token-head"><div><p class="token-name">业务状态色</p><p class="token-value">emerald / amber / sky</p></div></div>
+          <div class="mini-swatches"><span style="--c:#ecfdf5"></span><span style="--c:#fffbeb"></span><span style="--c:#f0f9ff"></span></div>
+          <p class="token-desc">直连、代理、提示等业务状态。</p>
+        </article>
+        <article class="card" data-keywords="dark theme">
+          <div class="token-head"><div><p class="token-name">Dark theme core</p><p class="token-value">#0f0d0b / #ede7dd / #1a1714</p></div><span class="swatch" style="--swatch:#0f0d0b"></span></div>
+          <p class="token-desc">暗色主题背景、文字与卡片核心值。</p>
+        </article>
+      </div>
+    </section>
+
+    <section data-category="typography">
+      <h2>排版系统</h2>
+      <p class="section-note">中文优先的 sans 字体栈，正文以 14px 为主，详情页说明常用 15px，移动端输入保持 16px 以避免缩放。</p>
+      <div class="grid">
+        <article class="card" data-keywords="font sans typography">
+          <p class="token-name">font-sans</p>
+          <p class="token-value">PingFang SC, Hiragino Sans GB, Microsoft YaHei, system-ui...</p>
+          <div class="type-sample" style="font-size:16px;">适合初学者的 AI API 学习平台</div>
+        </article>
+        <article class="card" data-keywords="font mono code typography">
+          <p class="token-name">font-mono</p>
+          <p class="token-value">ui-monospace, SFMono-Regular, Menlo, Monaco...</p>
+          <div class="type-sample" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;">curl https://apiuspro.cn/sitemap.xml</div>
+        </article>
+        <article class="card" data-keywords="text size typography">
+          <p class="token-name">字号阶梯</p>
+          <p class="token-value">12 / 13 / 14 / 15 / 16 / 20 / 24 / 30 / 48px</p>
+          <div class="type-sample"><span style="font-size:12px">标签</span> · <span style="font-size:14px">正文</span> · <span style="font-size:24px;font-weight:600">标题</span></div>
+        </article>
+        <article class="card" data-keywords="line height weight typography">
+          <p class="token-name">行高与字重</p>
+          <p class="token-value">leading-6 / leading-7 / font-medium / font-semibold</p>
+          <p class="token-desc">正文偏舒适阅读；标题和按钮多使用 500-600 字重。</p>
+        </article>
+      </div>
+    </section>
+
+    <section data-category="spacing">
+      <h2>间距与布局</h2>
+      <p class="section-note">遵循 Tailwind 4px 基准间距。移动端主要使用 px-4，桌面端使用 px-6/px-8 和 max-width 容器。</p>
+      <div class="grid">
+        <article class="card" data-keywords="spacing base">
+          <p class="token-name">基础单位</p>
+          <p class="token-value">1 step = 0.25rem / 4px</p>
+          <p class="token-desc">所有内边距、外边距和 gap 基本围绕 Tailwind spacing scale。</p>
+        </article>
+        <article class="card" data-keywords="spacing padding mobile desktop">
+          <p class="token-name">页面横向内边距</p>
+          <p class="token-value">mobile px-4 · desktop px-6 / px-8</p>
+          <p class="token-desc">移动端保证内容不贴边，桌面端保持文档型密度。</p>
+        </article>
+        <article class="card" data-keywords="spacing card section">
+          <p class="token-name">卡片与区块</p>
+          <p class="token-value">p-4 / p-5 / p-6 · py-8 / py-12</p>
+          <p class="token-desc">列表卡片比营销页更克制，适合高频扫描。</p>
+        </article>
+        <article class="card" data-keywords="layout width container">
+          <p class="token-name">容器宽度</p>
+          <p class="token-value">max-w-5xl / max-w-6xl / max-w-7xl / max-w-[1200px]</p>
+          <p class="token-desc">详情页偏窄，首页和列表页可更宽。</p>
+        </article>
+      </div>
+    </section>
+
+    <section data-category="shape">
+      <h2>边框、圆角与阴影</h2>
+      <p class="section-note">结构主要靠 1px 边框建立层级，阴影使用克制；圆角基准为 8px。</p>
+      <div class="grid">
+        <article class="card" data-keywords="radius rounded">
+          <p class="token-name">--radius</p>
+          <p class="token-value">0.5rem / 8px</p>
+          <p class="token-desc">派生 sm=4px、md=6px、lg=8px、xl=12px。</p>
+        </article>
+        <article class="card" data-keywords="border">
+          <p class="token-name">默认边框</p>
+          <p class="token-value">1px solid var(--border)</p>
+          <p class="token-desc">用于卡片、输入框、表格和导航分割线。</p>
+        </article>
+        <article class="card" data-keywords="shadow sm">
+          <p class="token-name">shadow-sm</p>
+          <p class="token-value">轻微浮层</p>
+          <div class="shadow-sample" style="--shadow:0 1px 3px 0 rgb(0 0 0 / .1),0 1px 2px -1px rgb(0 0 0 / .1)"></div>
+        </article>
+        <article class="card" data-keywords="shadow lg">
+          <p class="token-name">shadow-lg</p>
+          <p class="token-value">搜索建议层、Dialog、Sheet</p>
+          <div class="shadow-sample" style="--shadow:0 10px 15px -3px rgb(0 0 0 / .1),0 4px 6px -4px rgb(0 0 0 / .1)"></div>
+        </article>
+      </div>
+    </section>
+
+    <section data-category="component">
+      <h2>组件规范</h2>
+      <p class="section-note">当前项目默认使用 shadcn/ui，组件样式由 CSS 变量和 Tailwind utility 共同驱动。</p>
+      <div class="grid">
+        <article class="card" data-keywords="button component">
+          <p class="token-name">Button</p>
+          <p class="token-value">h-9 / rounded-md / text-sm / font-medium</p>
+          <div class="component-preview"><span class="btn">主按钮</span><span class="btn secondary">次按钮</span></div>
+        </article>
+        <article class="card" data-keywords="badge component">
+          <p class="token-name">Badge</p>
+          <p class="token-value">rounded-full / px-2 / py-0.5 / text-xs</p>
+          <div class="component-preview"><span class="badge">国内直连</span><span class="badge" style="background:#fffbeb;border-color:#fde68a;color:#b45309">需要代理</span></div>
+        </article>
+        <article class="card" data-keywords="input component">
+          <p class="token-name">Input</p>
+          <p class="token-value">h-9 / rounded-md / border-input / bg-card</p>
+          <div class="component-preview"><span class="input">搜索 API 或教程</span></div>
+        </article>
+        <article class="card" data-keywords="card component">
+          <p class="token-name">Card</p>
+          <p class="token-value">bg-card / rounded-lg / border / py-6 / shadow-none</p>
+          <p class="token-desc">用于重复内容项和详情正文容器，避免嵌套卡片。</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell">Sidecar artifact: outputs/tokens.html. Keep outside public/ unless SEO and routing policy are reviewed.</div>
+  </footer>
+
+  <script>
+    const tabs = document.querySelectorAll(".tab");
+    const sections = document.querySelectorAll("main section");
+    const search = document.getElementById("search");
+    let active = "all";
+
+    function applyFilters() {
+      const query = search.value.trim().toLowerCase();
+      sections.forEach((section) => {
+        const categoryMatch = active === "all" || section.dataset.category === active;
+        let anyVisible = false;
+        section.querySelectorAll(".card").forEach((card) => {
+          const haystack = (card.textContent + " " + (card.dataset.keywords || "")).toLowerCase();
+          const visible = categoryMatch && (!query || haystack.includes(query));
+          card.classList.toggle("hidden", !visible);
+          if (visible) anyVisible = true;
+        });
+        section.classList.toggle("hidden", !categoryMatch || !anyVisible);
+      });
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        active = tab.dataset.filter;
+        tabs.forEach((item) => item.setAttribute("aria-selected", String(item === tab)));
+        applyFilters();
+      });
+    });
+    search.addEventListener("input", applyFilters);
+  </script>
+</body>
+</html>

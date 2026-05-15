@@ -4,6 +4,20 @@ const nextConfig: NextConfig = {
   // outputFileTracingRoot: path.resolve(__dirname, '../../'),  // Uncomment and add 'import path from "path"' if needed
   /* config options here */
   allowedDevOrigins: ['*.dev.coze.site'],
+  async redirects() {
+    return [
+      {
+        source: '/story',
+        destination: '/use-case',
+        statusCode: 301,
+      },
+      {
+        source: '/story/:path*',
+        destination: '/use-case',
+        statusCode: 301,
+      },
+    ];
+  },
   async rewrites() {
     return [
       {

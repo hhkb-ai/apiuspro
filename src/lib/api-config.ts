@@ -828,7 +828,7 @@ print(response.choices[0].message.content)`,
           title: '准备一：注册 OpenAI 账号',
           description: '没有账号就什么都买不了。先搞定这第一步。',
           items: [
-            '浏览器打开 https://chat.openai.com，点击 Sign up 用邮箱注册，按提示验证邮箱',
+            '浏览器打开 https://chatgpt.com，点击 Sign up 用邮箱注册，按提示验证邮箱',
             '国内手机号可能收不到验证短信。两个解决办法：',
             '使用海外手机号验证服务（有新号被封风险，自行承担，请选择合规平台）',
             '买成品号（最省事）：在可靠代充平台购买已注册好的现成账号，请选择合规平台'
@@ -839,7 +839,7 @@ print(response.choices[0].message.content)`,
           title: '准备二：合适的网络环境',
           description: 'ChatGPT 的网站和订阅页面在国内无法直接访问，需要合适的网络。',
           items: [
-            '确保可以顺畅访问 OpenAI 官网：https://chat.openai.com 和 https://platform.openai.com',
+            '确保可以顺畅访问 OpenAI 官网：https://chatgpt.com 和 https://platform.openai.com',
             '建议使用稳定节点，避免频繁切换 IP',
             '不稳定的网络可能导致支付中途断开、账号被风控'
           ],
@@ -860,7 +860,7 @@ print(response.choices[0].message.content)`,
           description: '如果你有 Visa/Mastercard 国际卡，且网络能稳定访问 OpenAI 官网，这是最直接的购买方式。',
           important: true,
           items: [
-            '打开 https://chat.openai.com → 登录 → 左下角头像 → My Plan 或 Upgrade to Plus',
+            '打开 https://chatgpt.com → 登录 → 左下角头像 → My Plan 或 Upgrade to Plus',
             '在套餐页面对比 Go / Plus / Pro / Pro 200，选好后点击 Upgrade',
             '输入卡号、有效期、CVV（卡片背面三位安全码）和账单地址',
             '确认金额无误后提交，几秒钟验证通过，账号即刻升级',
@@ -2048,7 +2048,7 @@ export const appTutorials: AppTutorial[] = [
             title: '安装 Git Bash',
             description: 'Windows 用户需要安装 Git Bash 来运行 OpenClaw',
             items: [
-              '访问 Git 官网下载 Windows 版本：https://git-scm.com/download/windows',
+              '访问 Git 官网下载 Windows 版本：https://git-scm.com/downloads/win',
               '国内用户可使用镜像：https://registry.npmmirror.com',
               '安装完成后验证：git -v'
             ]
