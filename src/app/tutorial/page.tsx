@@ -118,36 +118,16 @@ export default function TutorialPage() {
           </p>
         </section>
 
-        {/* 适合谁 / 不适合谁 */}
-        <section className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
-            <p className="text-sm font-semibold text-emerald-800">适合谁</p>
-            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">
-              <li>• 第一次接触 AI API，需要手把手指导注册和配置</li>
-              <li>• 想快速接入 Claude Code、Codex、OpenCode 等 AI 工具</li>
-              <li>• 需要对比不同 API 的注册门槛、支付方式和免费额度</li>
-              <li>• 想了解如何安全保存 API Key 和配置限流告警</li>
-            </ul>
-          </div>
-          <div className="rounded-lg border border-amber-200 bg-amber-50 p-5">
-            <p className="text-sm font-semibold text-amber-800">不适合谁</p>
-            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700">
-              <li>• 已经熟悉 API 接入流程，只需要查 Base URL 或模型名</li>
-              <li>• 想了解模型能力对比和场景推荐（请看 <Link href="/use-case" className="text-foreground hover:underline">按使用场景选 API</Link>）</li>
-              <li>• 想看详细测评数据和基准测试（请看 <Link href="/api-review" className="text-foreground hover:underline">API 测评对比</Link>）</li>
-            </ul>
-          </div>
-        </section>
-
-        <form className="mb-8 max-w-xl" role="search" onSubmit={(event) => event.preventDefault()}>
+        <div className="flex flex-col">
+        <form className="order-1 mb-8 max-w-xl" role="search" onSubmit={(event) => event.preventDefault()}>
           <div className="relative">
-          <Input
-            type="text"
-            placeholder="搜索 API 名称..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="h-11 pr-20"
-          />
+            <Input
+              type="text"
+              placeholder="搜索 API 名称..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="h-11 pr-20"
+            />
             {hasSearch && (
               <button
                 type="button"
@@ -165,7 +145,7 @@ export default function TutorialPage() {
           )}
         </form>
 
-        <div className="mb-8 rounded-lg border bg-card p-5">
+        <div className="order-3 mb-8 rounded-lg border bg-card p-5 md:order-2">
           <h2 className="font-semibold">购买 API 前检查清单</h2>
           <div className="mt-3 grid gap-3 text-sm leading-6 text-muted-foreground md:grid-cols-2">
             {purchaseChecklist.map((item) => (
@@ -177,7 +157,7 @@ export default function TutorialPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
+        <div className="order-2 grid grid-cols-1 gap-10 md:order-3 lg:grid-cols-2">
           <SectionCard
             title="无需代理"
             desc="国内直连，注册和调用门槛更低。"
@@ -193,7 +173,7 @@ export default function TutorialPage() {
         </div>
 
         {/* 常见问题 */}
-        <section className="mt-10">
+        <section className="order-4 mt-10">
           <h2 className="mb-4 text-xl font-semibold tracking-tight">常见问题</h2>
           <div className="space-y-3">
             {[
@@ -223,7 +203,7 @@ export default function TutorialPage() {
         </section>
 
         {/* 下一步推荐 */}
-        <section className="mt-10 rounded-lg border bg-card p-6">
+        <section className="order-5 mt-10 rounded-lg border bg-card p-6">
           <h2 className="font-semibold">下一步推荐</h2>
           <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
             <Link href="/use-case" className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
@@ -240,6 +220,28 @@ export default function TutorialPage() {
             </Link>
           </div>
         </section>
+
+        {/* 适合谁 / 不适合谁 */}
+        <section className="order-6 mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
+            <p className="text-sm font-semibold text-emerald-800">适合谁</p>
+            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">
+              <li>• 第一次接触 AI API，需要手把手指导注册和配置</li>
+              <li>• 想快速接入 Claude Code、Codex、OpenCode 等 AI 工具</li>
+              <li>• 需要对比不同 API 的注册门槛、支付方式和免费额度</li>
+              <li>• 想了解如何安全保存 API Key 和配置限流告警</li>
+            </ul>
+          </div>
+          <div className="rounded-lg border border-amber-200 bg-amber-50 p-5">
+            <p className="text-sm font-semibold text-amber-800">不适合谁</p>
+            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700">
+              <li>• 已经熟悉 API 接入流程，只需要查 Base URL 或模型名</li>
+              <li>• 想了解模型能力对比和场景推荐（请看 <Link href="/use-case" className="text-foreground hover:underline">按使用场景选 API</Link>）</li>
+              <li>• 想看详细测评数据和基准测试（请看 <Link href="/api-review" className="text-foreground hover:underline">API 测评对比</Link>）</li>
+            </ul>
+          </div>
+        </section>
+        </div>
       </div>
     </SidebarLayout>
   );

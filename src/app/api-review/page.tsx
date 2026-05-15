@@ -14,12 +14,6 @@ export const metadata: Metadata = generateTdkMetadata('/api-review');
 
 const reviews = Object.values(reviewDetails);
 
-const comparisonIntents = [
-  { title: '编程开发怎么选', href: '/use-case/coding', desc: '重点看代码生成、上下文长度、工具调用和稳定性。' },
-  { title: '知识库怎么选', href: '/use-case/knowledge', desc: '重点看长文档理解、检索增强和文件处理能力。' },
-  { title: '内容创作怎么选', href: '/use-case/content-creation', desc: '重点看中文表达、风格控制和长文本生成成本。' },
-];
-
 function badgeClass(variant?: 'destructive' | 'success') {
   if (variant === 'success') {
     return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
@@ -141,8 +135,6 @@ function ReviewCard({ review }: { review: ReviewDetail }) {
 }
 
 export default function APIReviewPage() {
-  const useCaseCount = reviews.reduce((sum, review) => sum + review.useCases.length, 0);
-
   return (
     <SidebarLayout>
       <BreadcrumbSchema
@@ -152,7 +144,7 @@ export default function APIReviewPage() {
         ]}
       />
       <div className="mx-auto max-w-5xl p-6 lg:p-8">
-        <div className="mb-10 border-b pb-8">
+        <div className="mb-6 border-b pb-6">
           <p className="text-sm font-medium text-muted-foreground">Reviews</p>
           <h1 className="mt-1 text-3xl font-semibold tracking-tight">AI API 测评对比</h1>
           <p className="mt-3 max-w-3xl text-[15px] leading-7 text-muted-foreground">
@@ -160,80 +152,20 @@ export default function APIReviewPage() {
           </p>
         </div>
 
-        {/* BLUF 摘要 */}
-        <section className="mb-8 rounded-lg border border-sky-200 bg-sky-50 px-5 py-4">
+        <section className="mb-6 rounded-lg border border-sky-200 bg-sky-50 px-4 py-3">
           <p className="text-sm font-semibold text-sky-800">结论先行</p>
-          <p className="mt-1 text-sm leading-6 text-sky-700">
-            写代码选 DeepSeek 或 Claude，性价比选 DeepSeek，最强能力选 Claude Opus。
-            通用对话和内容创作选通义千问或 Kimi，长文档处理选 Gemini 或通义千问。
-            先用免费额度跑真实任务，再决定长期使用哪个。
-          </p>
-        </section>
-
-        {/* 适合谁 / 不适合谁 */}
-        <section className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
-            <p className="text-sm font-semibold text-emerald-800">适合谁</p>
-            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">
-              <li>• 想对比不同 API 的性能、价格和使用体验</li>
-              <li>• 需要根据具体场景（编程、翻译、创作）选 API</li>
-              <li>• 想了解各 API 的优缺点再做决定</li>
-            </ul>
+          <div className="mt-2 grid gap-1.5 text-sm leading-6 text-sky-700">
+            <p><span className="font-semibold">代码 / 推理：</span>性价比看 DeepSeek V4 Flash；顶级能力看 DeepSeek V4 Pro、Claude Opus。</p>
+            <p><span className="font-semibold">通用对话 / 内容创作：</span>中文场景看通义千问（Qwen）、Kimi。</p>
+            <p><span className="font-semibold">长文档 / 多模态：</span>海外看 Gemini 1.5 Pro；安全长文本看 Claude 3.5 Sonnet / Opus。</p>
+            <p><span className="font-semibold">综合最强：</span>OpenAI GPT-5.5，科研、金融、Agent 能力最强，但价格高。</p>
+            <p><span className="font-semibold">策略：</span>先用各家免费额度跑真实任务，再决定长期使用哪个。</p>
           </div>
-          <div className="rounded-lg border border-amber-200 bg-amber-50 p-5">
-            <p className="text-sm font-semibold text-amber-800">不适合谁</p>
-            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700">
-              <li>• 已经确定 API，需要注册和购买指导（请看 <Link href="/tutorial" className="text-foreground hover:underline">购买教程</Link>）</li>
-              <li>• 只想查官网入口和免费额度（请看 <Link href="/cloud-api" className="text-foreground hover:underline">API 列表</Link>）</li>
-              <li>• 想按编程、翻译等场景直接选 API（请看 <Link href="/use-case" className="text-foreground hover:underline">场景推荐</Link>）</li>
-            </ul>
+          <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs leading-5 text-sky-700/80">
+            <Link href="/tutorial" className="font-medium text-foreground hover:underline">购买教程</Link>
+            <Link href="/cloud-api" className="font-medium text-foreground hover:underline">API 列表</Link>
+            <Link href="/use-case" className="font-medium text-foreground hover:underline">场景推荐</Link>
           </div>
-        </section>
-
-        <section className="mb-8">
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-            <Card className="border-border/80 shadow-sm">
-              <CardContent className="p-5 text-center">
-                <p className="text-3xl font-bold">{reviews.length}</p>
-                <p className="text-sm text-muted-foreground">已测评 API</p>
-              </CardContent>
-            </Card>
-            <Card className="border-border/80 shadow-sm">
-              <CardContent className="p-5 text-center">
-                <p className="text-3xl font-bold">{useCaseCount}+</p>
-                <p className="text-sm text-muted-foreground">适用场景</p>
-              </CardContent>
-            </Card>
-            <Card className="border-border/80 shadow-sm">
-              <CardContent className="p-5 text-center">
-                <p className="text-3xl font-bold">4项</p>
-                <p className="text-sm text-muted-foreground">评分维度</p>
-              </CardContent>
-            </Card>
-            <Card className="border-border/80 shadow-sm">
-              <CardContent className="p-5 text-center">
-                <p className="text-3xl font-bold">持续</p>
-                <p className="text-sm text-muted-foreground">内容更新</p>
-              </CardContent>
-            </Card>
-          </div>
-          <p className="mt-3 text-xs leading-5 text-muted-foreground">
-            综合评分权重：{reviewRatingWeightDescription}。价格会影响分数，但不会压过模型质量和稳定性。
-          </p>
-        </section>
-
-        <section className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-3">
-          {comparisonIntents.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="rounded-lg border bg-card p-5 transition-colors hover:border-foreground/30"
-            >
-              <h2 className="text-base font-semibold">{item.title}</h2>
-              <p className="mt-2 text-sm leading-6 text-muted-foreground">{item.desc}</p>
-              <p className="mt-4 text-sm font-medium text-foreground">{item.title} →</p>
-            </Link>
-          ))}
         </section>
 
         <section className="space-y-7">
@@ -295,6 +227,26 @@ export default function APIReviewPage() {
               <p className="text-sm font-semibold">常见问题</p>
               <p className="mt-1 text-xs text-muted-foreground">注册、支付、Key 配置问题速查</p>
             </Link>
+          </div>
+        </section>
+
+        {/* 适合谁 / 不适合谁 */}
+        <section className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
+            <p className="text-sm font-semibold text-emerald-800">适合谁</p>
+            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">
+              <li>• 想对比不同 API 的性能、价格和使用体验</li>
+              <li>• 需要根据具体场景（编程、翻译、创作）选 API</li>
+              <li>• 想了解各 API 的优缺点再做决定</li>
+            </ul>
+          </div>
+          <div className="rounded-lg border border-amber-200 bg-amber-50 p-5">
+            <p className="text-sm font-semibold text-amber-800">不适合谁</p>
+            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700">
+              <li>• 已经确定 API，需要注册和购买指导（请看 <Link href="/tutorial" className="text-foreground hover:underline">购买教程</Link>）</li>
+              <li>• 只想查官网入口和免费额度（请看 <Link href="/cloud-api" className="text-foreground hover:underline">API 列表</Link>）</li>
+              <li>• 想按编程、翻译等场景直接选 API（请看 <Link href="/use-case" className="text-foreground hover:underline">场景推荐</Link>）</li>
+            </ul>
           </div>
         </section>
 

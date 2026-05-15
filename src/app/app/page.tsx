@@ -59,28 +59,8 @@ export default function AppListPage() {
           </p>
         </section>
 
-        {/* 适合谁 / 不适合谁 */}
-        <section className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
-            <p className="text-sm font-semibold text-emerald-800">适合谁</p>
-            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">
-              <li>• 想用 AI 工具提升开发效率的程序员</li>
-              <li>• 需要管理多个 API Key 和模型配置的用户</li>
-              <li>• 想搭建个人知识库或文档工作流的人</li>
-              <li>• 需要把 AI 接入现有工具链（编辑器、终端、笔记软件）的用户</li>
-            </ul>
-          </div>
-          <div className="rounded-lg border border-amber-200 bg-amber-50 p-5">
-            <p className="text-sm font-semibold text-amber-800">不适合谁</p>
-            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700">
-              <li>• 还没买过 API，需要先看注册和购买流程（请看 <Link href="/tutorial" className="text-foreground hover:underline">购买教程</Link>）</li>
-              <li>• 不确定该用哪个 API（请看 <Link href="/use-case" className="text-foreground hover:underline">场景推荐</Link>）</li>
-              <li>• 想看模型测评和基准数据（请看 <Link href="/api-review" className="text-foreground hover:underline">API 测评</Link>）</li>
-            </ul>
-          </div>
-        </section>
-
-        <section className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="flex flex-col">
+        <section className="order-2 mb-8 grid grid-cols-1 gap-4 md:order-1 md:grid-cols-3">
           {workflowNotes.map((note) => (
             <div key={note.title} className="rounded-lg border bg-card p-5">
               <h2 className="text-base font-semibold">{note.title}</h2>
@@ -89,7 +69,7 @@ export default function AppListPage() {
           ))}
         </section>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="order-1 grid grid-cols-1 gap-4 md:order-2 md:grid-cols-2 lg:grid-cols-3">
           {appTutorials.map((tutorial) => (
             <article key={tutorial.id} className="flex min-h-48 flex-col rounded-lg border bg-card p-5 transition-colors hover:border-foreground/30">
               <div className="mb-3 flex items-start justify-between gap-3">
@@ -108,7 +88,7 @@ export default function AppListPage() {
         </div>
 
         {/* 常见问题 */}
-        <section className="mt-10">
+        <section className="order-3 mt-10">
           <h2 className="mb-4 text-xl font-semibold tracking-tight">常见问题</h2>
           <div className="space-y-3">
             {[
@@ -134,7 +114,7 @@ export default function AppListPage() {
         </section>
 
         {/* 下一步推荐 */}
-        <section className="mt-10 rounded-lg border bg-card p-6">
+        <section className="order-4 mt-10 rounded-lg border bg-card p-6">
           <h2 className="font-semibold">下一步推荐</h2>
           <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
             <Link href="/tutorial" className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
@@ -151,6 +131,28 @@ export default function AppListPage() {
             </Link>
           </div>
         </section>
+
+        {/* 适合谁 / 不适合谁 */}
+        <section className="order-5 mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
+            <p className="text-sm font-semibold text-emerald-800">适合谁</p>
+            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">
+              <li>• 想用 AI 工具提升开发效率的程序员</li>
+              <li>• 需要管理多个 API Key 和模型配置的用户</li>
+              <li>• 想搭建个人知识库或文档工作流的人</li>
+              <li>• 需要把 AI 接入现有工具链（编辑器、终端、笔记软件）的用户</li>
+            </ul>
+          </div>
+          <div className="rounded-lg border border-amber-200 bg-amber-50 p-5">
+            <p className="text-sm font-semibold text-amber-800">不适合谁</p>
+            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700">
+              <li>• 还没买过 API，需要先看注册和购买流程（请看 <Link href="/tutorial" className="text-foreground hover:underline">购买教程</Link>）</li>
+              <li>• 不确定该用哪个 API（请看 <Link href="/use-case" className="text-foreground hover:underline">场景推荐</Link>）</li>
+              <li>• 想看模型测评和基准数据（请看 <Link href="/api-review" className="text-foreground hover:underline">API 测评</Link>）</li>
+            </ul>
+          </div>
+        </section>
+        </div>
       </div>
     </SidebarLayout>
   );

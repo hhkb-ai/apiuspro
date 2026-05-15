@@ -213,28 +213,8 @@ export default function CloudAPIPage() {
           </p>
         </section>
 
-        {/* 适合谁 / 不适合谁 */}
-        <section className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
-            <p className="text-sm font-semibold text-emerald-800">适合谁</p>
-            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">
-              <li>• 已经确定要用哪个 API，需要快速找到官网和控制台</li>
-              <li>• 想按「无需代理 / 需要代理」分类浏览所有可用 API</li>
-              <li>• 需要对比不同 API 的功能特性和免费额度</li>
-            </ul>
-          </div>
-          <div className="rounded-lg border border-amber-200 bg-amber-50 p-5">
-            <p className="text-sm font-semibold text-amber-800">不适合谁</p>
-            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700">
-              <li>• 不确定该用哪个 API（请看 <Link href="/use-case" className="text-foreground hover:underline">场景推荐</Link>）</li>
-              <li>• 第一次买 API，需要注册指导（请看 <Link href="/tutorial" className="text-foreground hover:underline">购买教程</Link>）</li>
-              <li>• 想看详细测评和基准数据（请看 <Link href="/api-review" className="text-foreground hover:underline">API 测评</Link>）</li>
-            </ul>
-          </div>
-        </section>
-
-        <div className="mb-8 space-y-4">
-          <section className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="flex flex-col">
+          <section className="order-3 mb-4 grid grid-cols-1 gap-4 md:order-1 md:grid-cols-3">
             {decisionGuides.map((guide) => (
               <Link
                 key={guide.title}
@@ -249,7 +229,7 @@ export default function CloudAPIPage() {
           </section>
 
           {/* 快速决策条 */}
-          <div className="rounded-lg border bg-card p-4">
+          <div className="order-4 mb-8 rounded-lg border bg-card p-4 md:order-2">
             <p className="text-sm font-medium mb-3">我想做：</p>
             <div className="flex flex-wrap gap-2">
               {[
@@ -272,7 +252,8 @@ export default function CloudAPIPage() {
             </div>
           </div>
 
-          <form className="relative max-w-xl" onSubmit={handleSubmit} role="search">
+          <form className="order-1 mb-4 max-w-xl md:order-3" onSubmit={handleSubmit} role="search">
+            <div className="relative">
             <Input
               type="search"
               placeholder="搜索 API 名称，如 OpenAI、通义千问..."
@@ -304,16 +285,17 @@ export default function CloudAPIPage() {
                 ))}
               </div>
             )}
+            </div>
           </form>
 
           {matchedAPI && (
-            <div className="flex items-center gap-2 text-sm">
+            <div className="order-1 mb-4 flex items-center gap-2 text-sm md:order-4">
               <span className="text-muted-foreground">找到「{matchedAPI.name}」</span>
               <Button type="button" size="sm" onClick={() => router.push(`/api/${matchedAPI.id}`)}>直接跳转</Button>
             </div>
           )}
 
-          <div className="flex flex-wrap gap-2">
+          <div className="order-1 mb-8 flex flex-wrap gap-2 md:order-5">
             {filters.map(filter => (
               <Button
                 key={filter.id}
@@ -326,9 +308,8 @@ export default function CloudAPIPage() {
               </Button>
             ))}
           </div>
-        </div>
 
-        <div className="space-y-10">
+        <div className="order-2 space-y-10 md:order-6">
           {(activeFilter === 'all' || activeFilter === 'no-proxy') && (
             <APISection title="无需代理" desc="国内直连，适合入门、测试和快速集成。" items={noProxy} />
           )}
@@ -339,12 +320,12 @@ export default function CloudAPIPage() {
         </div>
 
         {noProxy.length === 0 && needProxy.length === 0 && (
-          <div className="rounded-lg border bg-card py-12 text-center text-muted-foreground">
+          <div className="order-2 rounded-lg border bg-card py-12 text-center text-muted-foreground md:order-6">
             没有找到匹配的 API
           </div>
         )}
 
-        <div className="mt-10 rounded-lg border bg-card p-6">
+        <div className="order-5 mt-10 rounded-lg border bg-card p-6 md:order-7">
           <h2 className="font-semibold">AI API 选择检查清单</h2>
           <div className="mt-3 grid gap-4 text-sm leading-6 text-muted-foreground md:grid-cols-2">
             <ul className="space-y-2">
@@ -361,7 +342,7 @@ export default function CloudAPIPage() {
         </div>
 
         {/* 常见问题 */}
-        <section className="mt-10">
+        <section className="order-6 mt-10 md:order-8">
           <h2 className="mb-4 text-xl font-semibold tracking-tight">常见问题</h2>
           <div className="space-y-3">
             {[
@@ -385,6 +366,27 @@ export default function CloudAPIPage() {
             ))}
           </div>
         </section>
+
+        {/* 适合谁 / 不适合谁 */}
+        <section className="order-7 mt-10 grid grid-cols-1 gap-4 md:order-9 md:grid-cols-2">
+          <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
+            <p className="text-sm font-semibold text-emerald-800">适合谁</p>
+            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">
+              <li>• 已经确定要用哪个 API，需要快速找到官网和控制台</li>
+              <li>• 想按「无需代理 / 需要代理」分类浏览所有可用 API</li>
+              <li>• 需要对比不同 API 的功能特性和免费额度</li>
+            </ul>
+          </div>
+          <div className="rounded-lg border border-amber-200 bg-amber-50 p-5">
+            <p className="text-sm font-semibold text-amber-800">不适合谁</p>
+            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700">
+              <li>• 不确定该用哪个 API（请看 <Link href="/use-case" className="text-foreground hover:underline">场景推荐</Link>）</li>
+              <li>• 第一次买 API，需要注册指导（请看 <Link href="/tutorial" className="text-foreground hover:underline">购买教程</Link>）</li>
+              <li>• 想看详细测评和基准数据（请看 <Link href="/api-review" className="text-foreground hover:underline">API 测评</Link>）</li>
+            </ul>
+          </div>
+        </section>
+        </div>
       </div>
     </SidebarLayout>
   );

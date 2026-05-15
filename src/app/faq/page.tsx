@@ -99,28 +99,9 @@ export default function FAQPage() {
             </p>
           </section>
 
-          {/* 适合谁 / 不适合谁 */}
-          <section className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2">
-            <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
-              <p className="text-sm font-semibold text-emerald-800">适合谁</p>
-              <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">
-                <li>• 第一次接触 AI API，遇到注册或配置问题</li>
-                <li>• 已有 API Key 但调用报错，需要排查原因</li>
-                <li>• 想了解不同 API 的支付方式和费用结构</li>
-              </ul>
-            </div>
-            <div className="rounded-lg border border-amber-200 bg-amber-50 p-5">
-              <p className="text-sm font-semibold text-amber-800">不适合谁</p>
-              <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700">
-                <li>• 还没选好用哪个 API（请看 <Link href="/use-case" className="text-foreground hover:underline">场景推荐</Link>）</li>
-                <li>• 需要手把手注册和购买指导（请看 <Link href="/tutorial" className="text-foreground hover:underline">购买教程</Link>）</li>
-                <li>• 想对比模型能力和价格（请看 <Link href="/api-review" className="text-foreground hover:underline">API 测评</Link>）</li>
-              </ul>
-            </div>
-          </section>
-
+          <div className="flex flex-col">
           {/* 使用前准备 */}
-          <section className="mb-8 rounded-lg border bg-card p-5">
+          <section className="order-2 mb-8 rounded-lg border bg-card p-5 md:order-1">
             <h2 className="font-semibold">使用前准备</h2>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
               在提问或排查之前，确认以下信息已经准备好，能帮你更快找到答案：
@@ -141,7 +122,7 @@ export default function FAQPage() {
           </section>
 
           {/* FAQ 分类 */}
-          <div className="space-y-10">
+          <div className="order-1 space-y-10 md:order-2">
             {faqCategories.map((category) => (
               <section key={category.title}>
                 <h2 className="mb-4 flex items-center gap-3 text-xl font-semibold">
@@ -166,8 +147,28 @@ export default function FAQPage() {
             ))}
           </div>
 
+          {/* 适合谁 / 不适合谁 */}
+          <section className="order-3 mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
+              <p className="text-sm font-semibold text-emerald-800">适合谁</p>
+              <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">
+                <li>• 第一次接触 AI API，遇到注册或配置问题</li>
+                <li>• 已有 API Key 但调用报错，需要排查原因</li>
+                <li>• 想了解不同 API 的支付方式和费用结构</li>
+              </ul>
+            </div>
+            <div className="rounded-lg border border-amber-200 bg-amber-50 p-5">
+              <p className="text-sm font-semibold text-amber-800">不适合谁</p>
+              <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700">
+                <li>• 还没选好用哪个 API（请看 <Link href="/use-case" className="text-foreground hover:underline">场景推荐</Link>）</li>
+                <li>• 需要手把手注册和购买指导（请看 <Link href="/tutorial" className="text-foreground hover:underline">购买教程</Link>）</li>
+                <li>• 想对比模型能力和价格（请看 <Link href="/api-review" className="text-foreground hover:underline">API 测评</Link>）</li>
+              </ul>
+            </div>
+          </section>
+
           {/* 底部引导 */}
-          <Card className="mt-10 border-border/80">
+          <Card className="order-4 mt-10 border-border/80">
             <CardContent className="p-6 text-center">
               <p className="mb-4 text-sm leading-6 text-muted-foreground">
                 问题没解决？查看具体 API 的购买教程，每个教程都包含了详细的注册、支付和接入步骤。
@@ -185,6 +186,7 @@ export default function FAQPage() {
               </div>
             </CardContent>
           </Card>
+          </div>
         </main>
 
         <footer className="border-t border-border px-4 py-8 text-center text-sm text-muted-foreground">

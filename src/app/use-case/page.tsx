@@ -51,27 +51,8 @@ export default function UseCaseListPage() {
           </p>
         </section>
 
-        {/* 适合谁 / 不适合谁 */}
-        <section className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
-            <p className="text-sm font-semibold text-emerald-800">适合谁</p>
-            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">
-              <li>• 不确定哪个 API 适合自己的业务场景</li>
-              <li>• 想对比不同场景下的首选和备选方案</li>
-              <li>• 需要快速了解各 API 的强项和短板</li>
-            </ul>
-          </div>
-          <div className="rounded-lg border border-amber-200 bg-amber-50 p-5">
-            <p className="text-sm font-semibold text-amber-800">不适合谁</p>
-            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700">
-              <li>• 已经确定要用哪个 API，需要购买教程（请看 <Link href="/tutorial" className="text-foreground hover:underline">购买教程</Link>）</li>
-              <li>• 想看详细的基准测试和评分数据（请看 <Link href="/api-review" className="text-foreground hover:underline">API 测评</Link>）</li>
-              <li>• 只想查官网入口和免费额度（请看 <Link href="/cloud-api" className="text-foreground hover:underline">API 列表</Link>）</li>
-            </ul>
-          </div>
-        </section>
-
-        <section className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="flex flex-col">
+        <section className="order-2 mb-8 grid grid-cols-1 gap-4 md:order-1 md:grid-cols-3">
           {selectionSteps.map((step, index) => (
             <div key={step.title} className="rounded-lg border bg-card p-5">
               <span className="flex h-7 w-7 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">
@@ -83,7 +64,7 @@ export default function UseCaseListPage() {
           ))}
         </section>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="order-1 grid grid-cols-1 gap-4 md:order-2 md:grid-cols-2">
           {useCases.map((uc) => (
             <article
               key={uc.id}
@@ -125,7 +106,7 @@ export default function UseCaseListPage() {
         </div>
 
         {/* 常见问题 */}
-        <section className="mt-10">
+        <section className="order-3 mt-10">
           <h2 className="mb-4 text-xl font-semibold tracking-tight">常见问题</h2>
           <div className="space-y-3">
             {[
@@ -151,7 +132,7 @@ export default function UseCaseListPage() {
         </section>
 
         {/* 下一步推荐 */}
-        <section className="mt-10 rounded-lg border bg-card p-6">
+        <section className="order-4 mt-10 rounded-lg border bg-card p-6">
           <h2 className="font-semibold">下一步推荐</h2>
           <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
             <Link href="/tutorial" className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
@@ -168,6 +149,27 @@ export default function UseCaseListPage() {
             </Link>
           </div>
         </section>
+
+        {/* 适合谁 / 不适合谁 */}
+        <section className="order-5 mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
+            <p className="text-sm font-semibold text-emerald-800">适合谁</p>
+            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">
+              <li>• 不确定哪个 API 适合自己的业务场景</li>
+              <li>• 想对比不同场景下的首选和备选方案</li>
+              <li>• 需要快速了解各 API 的强项和短板</li>
+            </ul>
+          </div>
+          <div className="rounded-lg border border-amber-200 bg-amber-50 p-5">
+            <p className="text-sm font-semibold text-amber-800">不适合谁</p>
+            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700">
+              <li>• 已经确定要用哪个 API，需要购买教程（请看 <Link href="/tutorial" className="text-foreground hover:underline">购买教程</Link>）</li>
+              <li>• 想看详细的基准测试和评分数据（请看 <Link href="/api-review" className="text-foreground hover:underline">API 测评</Link>）</li>
+              <li>• 只想查官网入口和免费额度（请看 <Link href="/cloud-api" className="text-foreground hover:underline">API 列表</Link>）</li>
+            </ul>
+          </div>
+        </section>
+        </div>
       </div>
     </SidebarLayout>
   );
