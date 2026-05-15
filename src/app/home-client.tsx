@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { BeianLinks } from '@/components/layout/BeianLinks';
-import { apiList, appTutorials } from '@/lib/api-config';
+import { apiList, appTutorials, type APIConfig } from '@/lib/api-config';
 import { fuzzyScore, sortByFuzzyScore } from '@/lib/fuzzy-search';
 import {
   BookOpen,
@@ -16,13 +16,13 @@ import {
   Database,
   ExternalLink,
   GraduationCap,
-  KeyRound,
   Languages,
   MessageCircle,
   PenLine,
   Search,
   Server,
-  Sparkles,
+  Star,
+  Target,
   Wrench,
 } from 'lucide-react';
 
@@ -42,95 +42,21 @@ const quickLinks = [
   { name: 'Kimi', id: 'kimi' },
 ];
 
-const mobileTaskShortcuts = [
-  {
-    title: '选 API',
-    desc: '先看国内直连和免费额度',
-    href: '/cloud-api',
-    icon: Compass,
-    className: 'border-emerald-200 bg-emerald-50 text-emerald-900',
-  },
-  {
-    title: '拿 Key',
-    desc: '注册、充值、创建密钥',
-    href: '/tutorial',
-    icon: KeyRound,
-    className: 'border-sky-200 bg-sky-50 text-sky-900',
-  },
-  {
-    title: '接工具',
-    desc: 'Claude Code、CC Switch',
-    href: '/app',
-    icon: Wrench,
-    className: 'border-violet-200 bg-violet-50 text-violet-900',
-  },
-  {
-    title: '本地跑',
-    desc: 'Ollama 和开源模型',
-    href: '/local-deploy',
-    icon: Server,
-    className: 'border-amber-200 bg-amber-50 text-amber-900',
-  },
+const sectionEntries = [
+  { title: 'API 列表', desc: '对比官网入口、代理要求和免费额度', href: '/cloud-api', icon: Compass, className: 'border-emerald-200 bg-emerald-50 text-emerald-900' },
+  { title: '购买教程', desc: '按步骤完成注册、支付与 API Key 创建', href: '/tutorial', icon: BookOpen, className: 'border-sky-200 bg-sky-50 text-sky-900' },
+  { title: 'API 测评', desc: '查看模型能力、价格和使用体验对比', href: '/api-review', icon: Star, className: 'border-amber-200 bg-amber-50 text-amber-900' },
+  { title: '场景推荐', desc: '按编程、知识库、翻译等场景选择', href: '/use-case', icon: Target, className: 'border-violet-200 bg-violet-50 text-violet-900' },
+  { title: 'API 应用', desc: 'Claude Code、CC Switch 等工具接入', href: '/app', icon: Wrench, className: 'border-rose-200 bg-rose-50 text-rose-900' },
+  { title: '本地部署', desc: 'Ollama 一键部署开源模型', href: '/local-deploy', icon: Server, className: 'border-orange-200 bg-orange-50 text-orange-900' },
 ];
 
-const mobileFeaturedAPIs = apiList.filter(api =>
-  ['deepseek', 'aliyun', 'zhipu', 'kimi'].includes(api.id)
-);
+const quickViewApiIds = ['deepseek', 'openai', 'claude', 'gemini', 'zhipu', 'kimi'];
+const quickViewAPIs = quickViewApiIds
+  .map(id => apiList.find(api => api.id === id))
+  .filter((api): api is APIConfig => Boolean(api));
 
-const desktopDecisionRows = [
-  {
-    name: 'DeepSeek',
-    href: '/api/deepseek',
-    access: '国内直连',
-    accessClass: 'border-emerald-200 bg-emerald-50 text-emerald-700',
-    free: '有免费额度',
-    scene: '代码、通用问答',
-    tutorial: '教程完整',
-    tutorialHref: '/tutorial/deepseek',
-  },
-  {
-    name: '通义千问',
-    href: '/api/aliyun',
-    access: '国内直连',
-    accessClass: 'border-emerald-200 bg-emerald-50 text-emerald-700',
-    free: '新用户额度',
-    scene: '企业、知识库',
-    tutorial: '教程完整',
-    tutorialHref: '/tutorial/aliyun',
-  },
-  {
-    name: 'Kimi',
-    href: '/api/kimi',
-    access: '国内直连',
-    accessClass: 'border-emerald-200 bg-emerald-50 text-emerald-700',
-    free: '按平台规则',
-    scene: '长文本、文档',
-    tutorial: '教程完整',
-    tutorialHref: '/tutorial/kimi',
-  },
-  {
-    name: 'OpenAI',
-    href: '/api/openai',
-    access: '需要代理',
-    accessClass: 'border-amber-200 bg-amber-50 text-amber-700',
-    free: '需确认账户',
-    scene: '旗舰模型、Agent',
-    tutorial: '测评优先',
-    tutorialHref: '/api-review/gpt-5.5',
-  },
-  {
-    name: 'Claude',
-    href: '/api/claude',
-    access: '需要代理',
-    accessClass: 'border-amber-200 bg-amber-50 text-amber-700',
-    free: '需确认账户',
-    scene: '长文档、编程',
-    tutorial: '测评优先',
-    tutorialHref: '/api-review/claude',
-  },
-];
-
-const desktopScenarioCards = [
+const scenarioCards = [
   {
     title: '编程开发',
     desc: '代码生成、调试、仓库理解和自动化脚本。',
@@ -181,10 +107,43 @@ const desktopScenarioCards = [
   },
 ];
 
-const desktopWorkflowCards = [
-  { title: '先选 API', desc: '按国内直连、免费额度、模型能力筛掉不合适的选项。', href: '/cloud-api' },
-  { title: '拿到 API Key', desc: '跟着教程完成注册、支付、额度确认和密钥创建。', href: '/tutorial' },
-  { title: '接入工具', desc: '把 Key、Base URL 和模型名配置进常用 AI 工具。', href: '/app' },
+const integrationSteps = [
+  {
+    step: 1,
+    title: '浏览 API',
+    desc: '比较访问方式、免费额度和适用场景',
+    links: [
+      { name: 'API 列表', href: '/cloud-api' },
+      { name: 'API 测评', href: '/api-review' },
+      { name: '场景推荐', href: '/use-case' },
+    ],
+  },
+  {
+    step: 2,
+    title: '查看教程',
+    desc: '完成注册、充值、API Key 创建',
+    links: [
+      { name: '购买教程', href: '/tutorial' },
+      { name: '常见问题', href: '/faq' },
+    ],
+  },
+  {
+    step: 3,
+    title: '接入工具',
+    desc: '填写 Base URL、模型名和 API Key',
+    links: [
+      { name: 'API 应用', href: '/app' },
+      { name: '本地部署', href: '/local-deploy' },
+    ],
+  },
+];
+
+const hotTutorials = apiList.filter(api => api.tutorial).slice(0, 5);
+
+const faqItems = [
+  { q: '国内可以访问哪些 API？', a: 'DeepSeek、通义千问、智谱 GLM、Kimi 等支持国内直连，无需代理。', href: '/faq' },
+  { q: 'API Key 在哪里创建？', a: '进入各平台控制台的 API Key 管理页面创建，详见购买教程。', href: '/faq' },
+  { q: '免费额度用完了怎么办？', a: '可以充值继续使用，或切换到其他有免费额度的 API。', href: '/faq' },
 ];
 
 function badgeClass(type: string) {
@@ -288,24 +247,21 @@ function MobileHome() {
         <div className="flex h-14 items-center justify-between px-4">
           <Link href="/" className="min-w-0">
             <span className="block truncate text-base font-semibold">API知识站</span>
-            <span className="block truncate text-[11px] text-muted-foreground">手机快速选型</span>
+            <span className="block truncate text-[11px] text-muted-foreground">AI API 资料站</span>
           </Link>
           <ThemeToggle />
         </div>
       </header>
 
       <main className="pb-10">
+        {/* 搜索 + 栏目入口 */}
         <section className="px-4 pb-5 pt-4">
           <div className="rounded-lg border bg-card p-4 shadow-sm">
-            <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
-              <Sparkles className="size-4 text-emerald-600" />
-              <span>先找能用的 API，再看接入步骤</span>
-            </div>
-            <h1 className="mt-3 text-2xl font-semibold leading-tight tracking-tight">
-              手机上快速完成 AI API 选型
-            </h1>
+            <p className="text-xl font-semibold leading-tight tracking-tight">
+              浏览主流 AI API 的入口、教程和使用场景
+            </p>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
-              搜索模型、供应商或工具名，直接进入官网入口、购买教程和接入指南。
+              搜索模型、供应商或工具名，或从下方栏目开始浏览。
             </p>
 
             <div className="relative mt-4">
@@ -364,8 +320,8 @@ function MobileHome() {
               )}
             </div>
 
-            <div className="mt-4 grid grid-cols-2 gap-2">
-              {mobileTaskShortcuts.map(item => {
+            <div className="mt-4 grid grid-cols-3 gap-2">
+              {sectionEntries.map(item => {
                 const Icon = item.icon;
                 return (
                   <Link
@@ -373,11 +329,9 @@ function MobileHome() {
                     href={item.href}
                     className={`rounded-lg border p-3 transition-colors active:scale-[0.99] ${item.className}`}
                   >
-                    <div className="mb-2 flex items-center gap-2">
-                      <Icon className="size-4" />
-                      <span className="text-sm font-semibold">{item.title}</span>
-                    </div>
-                    <p className="text-xs leading-5 opacity-80">{item.desc}</p>
+                    <Icon className="mb-1.5 size-4" />
+                    <span className="block text-xs font-semibold">{item.title}</span>
+                    <span className="mt-0.5 block text-[10px] leading-4 opacity-70 line-clamp-2">{item.desc}</span>
                   </Link>
                 );
               })}
@@ -385,63 +339,38 @@ function MobileHome() {
           </div>
         </section>
 
+        {/* 常见 API 速览 */}
         <section className="px-4 py-4">
           <div className="flex items-end justify-between gap-3">
             <div>
-              <p className="text-xs font-medium text-muted-foreground">推荐路径</p>
-              <h2 className="mt-1 text-lg font-semibold">新手先走这 3 步</h2>
-            </div>
-            <Link href="/tutorial" className="text-sm font-medium text-foreground">
-              教程
-            </Link>
-          </div>
-          <div className="mt-3 space-y-2">
-            {[
-              { title: '先选国内直连 API', desc: '降低注册、网络和支付门槛', href: '/cloud-api' },
-              { title: '按教程创建 API Key', desc: '确认额度、限速和 Base URL', href: '/tutorial' },
-              { title: '接入常用 AI 工具', desc: '统一配置 Key、模型名和端点', href: '/app' },
-            ].map((step, index) => (
-              <Link key={step.href} href={step.href} className="flex items-center gap-3 rounded-lg border bg-card p-3 active:bg-muted">
-                <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-foreground text-sm font-semibold text-background">
-                  {index + 1}
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block text-sm font-semibold">{step.title}</span>
-                  <span className="mt-0.5 block text-xs text-muted-foreground">{step.desc}</span>
-                </span>
-                <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
-              </Link>
-            ))}
-          </div>
-        </section>
-
-        <section className="px-4 py-4">
-          <div className="flex items-end justify-between gap-3">
-            <div>
-              <p className="text-xs font-medium text-muted-foreground">优先尝试</p>
-              <h2 className="mt-1 text-lg font-semibold">国内直连 API</h2>
+              <p className="text-xs font-medium text-muted-foreground">快速了解</p>
+              <h2 className="mt-1 text-lg font-semibold">常见 API 速览</h2>
             </div>
             <Link href="/cloud-api" className="text-sm font-medium text-foreground">
-              全部
+              全部 API 官网入口
             </Link>
           </div>
           <div className="-mx-4 mt-3 flex snap-x gap-3 overflow-x-auto px-4 pb-2">
-            {mobileFeaturedAPIs.map(api => (
+            {quickViewAPIs.map(api => (
               <article key={api.id} className="min-w-[78%] snap-start rounded-lg border bg-card p-4">
                 <div className="mb-3 flex items-start justify-between gap-3">
                   <div className="min-w-0">
                     <h3 className="truncate font-semibold">{api.name}</h3>
-                    <p className="mt-1 text-xs text-muted-foreground">{accessText(api.proxy)}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">{accessText(api.proxy)}{api.free ? ` · ${api.free}` : ''}</p>
                   </div>
                   <Badge variant="outline" className={badgeClass(api.badge.type)}>{api.badge.text}</Badge>
                 </div>
-                <p className="line-clamp-3 text-sm leading-6 text-muted-foreground">{api.desc}</p>
-                <div className="mt-4 flex gap-2">
+                <div className="mb-3 flex flex-wrap gap-1.5">
+                  {api.features.slice(0, 3).map(f => (
+                    <span key={f} className="rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">{f}</span>
+                  ))}
+                </div>
+                <div className="flex gap-2">
                   <Link
                     href={`/api/${api.id}`}
                     className="flex flex-1 items-center justify-center rounded-md border px-3 py-2 text-sm font-medium active:bg-muted"
                   >
-                    详情
+                    {api.name} 详情
                   </Link>
                   <a
                     href={api.url}
@@ -458,25 +387,92 @@ function MobileHome() {
           </div>
         </section>
 
+        {/* 按使用场景浏览 */}
         <section className="px-4 py-4">
           <div className="flex items-end justify-between gap-3">
             <div>
-              <p className="text-xs font-medium text-muted-foreground">工具接入</p>
-              <h2 className="mt-1 text-lg font-semibold">常用应用教程</h2>
+              <p className="text-xs font-medium text-muted-foreground">按场景选择</p>
+              <h2 className="mt-1 text-lg font-semibold">按使用场景浏览</h2>
             </div>
-            <Link href="/app" className="text-sm font-medium text-foreground">
-              更多
+            <Link href="/use-case" className="text-sm font-medium text-foreground">
+              全部使用场景推荐
+            </Link>
+          </div>
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            {scenarioCards.map(card => {
+              const Icon = card.icon;
+              return (
+                <Link
+                  key={card.href}
+                  href={card.href}
+                  className={`rounded-lg border p-3 transition-colors active:bg-muted ${card.className}`}
+                >
+                  <Icon className="mb-2 size-5 opacity-70" />
+                  <h3 className="text-sm font-semibold">{card.title}</h3>
+                  <p className="mt-1 text-xs leading-4 opacity-70 line-clamp-2">{card.desc}</p>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* 常见接入路径 */}
+        <section className="px-4 py-4">
+          <div>
+            <p className="text-xs font-medium text-muted-foreground">参考路径</p>
+            <h2 className="mt-1 text-lg font-semibold">常见接入路径</h2>
+            <p className="mt-1 text-xs leading-5 text-muted-foreground">
+              第一次使用 AI API 时，通常会先了解可用平台，再创建 API Key，最后接入到代码或工具里。
+            </p>
+          </div>
+          <div className="mt-3 space-y-2">
+            {integrationSteps.map(step => (
+              <div key={step.step} className="rounded-lg border bg-card p-3">
+                <div className="flex items-center gap-2.5">
+                  <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-foreground text-xs font-semibold text-background">
+                    {step.step}
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold">{step.title}</p>
+                    <p className="text-xs text-muted-foreground">{step.desc}</p>
+                  </div>
+                </div>
+                <div className="mt-2.5 flex flex-wrap gap-1.5" style={{ paddingLeft: '2.375rem' }}>
+                  {step.links.map(link => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="rounded-full border bg-background px-3 py-1.5 text-xs text-muted-foreground active:bg-muted"
+                    >
+                      {link.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* 热门教程 */}
+        <section className="px-4 py-4">
+          <div className="flex items-end justify-between gap-3">
+            <div>
+              <p className="text-xs font-medium text-muted-foreground">学习资源</p>
+              <h2 className="mt-1 text-lg font-semibold">热门教程</h2>
+            </div>
+            <Link href="/tutorial" className="text-sm font-medium text-foreground">
+              全部 API 购买教程
             </Link>
           </div>
           <div className="mt-3 space-y-2">
-            {appTutorials.slice(0, 4).map(tutorial => (
-              <Link key={tutorial.id} href={`/app/${tutorial.id}`} className="flex items-center gap-3 rounded-lg border bg-card p-3 active:bg-muted">
+            {hotTutorials.map(api => (
+              <Link key={api.id} href={`/tutorial/${api.id}`} className="flex items-center gap-3 rounded-lg border bg-card p-3 active:bg-muted">
                 <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
                   <BookOpen className="size-4" />
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate text-sm font-semibold">{tutorial.name}</span>
-                  <span className="mt-0.5 block truncate text-xs text-muted-foreground">{tutorial.sections.length} 个章节 · {tutorial.badge.text}</span>
+                  <span className="block truncate text-sm font-semibold">{api.name} 购买教程</span>
+                  <span className="mt-0.5 block truncate text-xs text-muted-foreground">{api.tutorial?.steps.length} 个步骤 · {api.badge.text}</span>
                 </span>
                 <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
               </Link>
@@ -484,6 +480,28 @@ function MobileHome() {
           </div>
         </section>
 
+        {/* 常见问题 */}
+        <section className="px-4 py-4">
+          <div className="flex items-end justify-between gap-3">
+            <div>
+              <p className="text-xs font-medium text-muted-foreground">帮助中心</p>
+              <h2 className="mt-1 text-lg font-semibold">常见问题</h2>
+            </div>
+            <Link href="/faq" className="text-sm font-medium text-foreground">
+              全部常见问题
+            </Link>
+          </div>
+          <div className="mt-3 space-y-2">
+            {faqItems.map(item => (
+              <Link key={item.q} href={item.href} className="block rounded-lg border bg-card p-3 active:bg-muted">
+                <p className="text-sm font-semibold">{item.q}</p>
+                <p className="mt-1 text-xs leading-5 text-muted-foreground">{item.a}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* 常用 API 快捷入口 */}
         <section className="px-4 py-4">
           <div className="rounded-lg border bg-card p-4">
             <p className="text-sm font-semibold">常用 API</p>
@@ -503,7 +521,7 @@ function MobileHome() {
       </main>
 
       <footer className="border-t border-border px-4 py-6 text-center text-xs text-muted-foreground">
-        <p>API知识站 - 移动端快速选型入口</p>
+        <p>API知识站 - AI API 资料站</p>
         <div className="mt-3">
           <BeianLinks />
         </div>
@@ -584,7 +602,7 @@ function DesktopHome() {
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-8 px-8">
           <Link href="/" className="shrink-0">
             <span className="block text-base font-semibold tracking-tight">API知识站</span>
-            <span className="block text-xs text-muted-foreground">AI API 决策工具</span>
+            <span className="block text-xs text-muted-foreground">AI API 资料站</span>
           </Link>
           <nav className="flex items-center gap-1 text-sm">
             {[
@@ -608,21 +626,18 @@ function DesktopHome() {
       </header>
 
       <main>
+        {/* Hero：搜索 + 栏目入口 + API 速览 */}
         <section className="px-8 pb-10 pt-12">
           <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
             <div className="pt-4">
-              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-sm text-muted-foreground">
-                <Sparkles className="size-4 text-primary/70" />
-                AI API 决策工具
-              </div>
-              <h1 className="mt-5 max-w-2xl text-5xl font-semibold leading-tight tracking-tight text-foreground">
-                按访问条件和接入难度选择 AI API
+              <h1 className="max-w-2xl text-4xl font-semibold leading-tight tracking-tight text-foreground">
+                浏览主流 AI API 的入口、教程和使用场景
               </h1>
-              <p className="mt-5 max-w-xl text-base leading-8 text-muted-foreground">
-                对比国内直连、免费额度、购买教程、Base URL 和适用场景，把搜索结果变成可执行的下一步。
+              <p className="mt-4 max-w-xl text-base leading-8 text-muted-foreground">
+                搜索模型、供应商或工具名，或从下方栏目开始浏览。
               </p>
 
-              <div className="relative mt-8 max-w-2xl">
+              <div className="relative mt-6 max-w-2xl">
                 <form
                   className="flex items-center gap-3 rounded-lg border border-border bg-card p-2 shadow-sm"
                   onSubmit={submitSearch}
@@ -670,86 +685,93 @@ function DesktopHome() {
                 )}
               </div>
 
-              <div className="mt-5 flex flex-wrap gap-2">
-                {[
-                  { label: '国内直连', href: '/cloud-api' },
-                  { label: '免费额度', href: '/tutorial' },
-                  { label: '写代码', href: '/use-case/coding' },
-                  { label: '知识库', href: '/use-case/knowledge' },
-                ].map(chip => (
-                  <Link
-                    key={chip.label}
-                    href={chip.href}
-                    className="rounded-full border border-border bg-card px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
-                  >
-                    {chip.label}
-                  </Link>
-                ))}
+              {/* 栏目入口 */}
+              <div className="mt-6 grid grid-cols-3 gap-2">
+                {sectionEntries.map(item => {
+                  const Icon = item.icon;
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={`rounded-lg border p-3 transition-colors hover:-translate-y-px ${item.className}`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Icon className="size-4" />
+                        <span className="text-sm font-semibold">{item.title}</span>
+                      </div>
+                      <p className="mt-1 text-xs leading-4 opacity-70">{item.desc}</p>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
 
+            {/* 常见 API 速览 */}
             <section className="rounded-lg border border-border bg-card p-5 shadow-sm">
               <div className="mb-4 flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">今日推荐</p>
-                  <h2 className="mt-1 text-xl font-semibold tracking-tight">先从这几类 API 判断</h2>
+                  <p className="text-sm font-medium text-muted-foreground">快速了解</p>
+                  <h2 className="mt-1 text-xl font-semibold tracking-tight">常见 API 速览</h2>
                 </div>
                 <Link href="/cloud-api" className="text-sm font-medium text-foreground hover:underline">
-                  查看全部
+                  全部 API 官网入口
                 </Link>
               </div>
-              <div className="overflow-hidden rounded-md border border-border">
-                <table className="w-full text-sm">
+              <div className="overflow-x-auto rounded-md border border-border">
+                <table className="min-w-[780px] w-full text-sm">
                   <thead className="bg-muted text-left text-xs font-medium text-muted-foreground">
                     <tr>
-                      <th className="px-4 py-3">API</th>
-                      <th className="px-4 py-3">访问</th>
-                      <th className="px-4 py-3">免费额度</th>
-                      <th className="px-4 py-3">适合场景</th>
-                      <th className="px-4 py-3">教程</th>
+                      <th className="w-40 px-4 py-3">API</th>
+                      <th className="w-28 px-4 py-3">访问</th>
+                      <th className="w-48 px-4 py-3">免费额度</th>
+                      <th className="px-4 py-3">主要特点</th>
+                      <th className="w-28 px-4 py-3">教程</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
-                    {desktopDecisionRows.map(row => (
+                    {quickViewAPIs.map(api => (
                       <tr
-                        key={row.name}
+                        key={api.id}
                         role="link"
                         tabIndex={0}
-                        aria-label={`查看 ${row.name} API 详情`}
-                        onClick={() => router.push(row.href)}
+                        aria-label={`查看 ${api.name} API 详情`}
+                        onClick={() => router.push(`/api/${api.id}`)}
                         onKeyDown={(event) => {
                           if (event.currentTarget !== event.target) return;
                           if (event.key !== 'Enter' && event.key !== ' ') return;
-
                           event.preventDefault();
-                          router.push(row.href);
+                          router.push(`/api/${api.id}`);
                         }}
                         className="cursor-pointer transition-colors hover:bg-muted/40 focus-visible:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
                       >
-                        <td className="px-4 py-4">
+                        <td className="px-4 py-3">
                           <Link
-                            href={row.href}
+                            href={`/api/${api.id}`}
                             onClick={(event) => event.stopPropagation()}
                             className="font-semibold text-foreground hover:underline"
                           >
-                            {row.name}
+                            {api.name}
                           </Link>
                         </td>
-                        <td className="px-4 py-4">
-                          <span className={`rounded-full border px-2 py-1 text-xs font-medium ${row.accessClass}`}>
-                            {row.access}
+                        <td className="px-4 py-3">
+                          <span className={`whitespace-nowrap rounded-full border px-2 py-1 text-xs font-medium ${api.proxy ? 'border-amber-200 bg-amber-50 text-amber-700' : 'border-emerald-200 bg-emerald-50 text-emerald-700'}`}>
+                            {accessText(api.proxy)}
                           </span>
                         </td>
-                        <td className="px-4 py-4 text-muted-foreground">{row.free}</td>
-                        <td className="px-4 py-4 text-muted-foreground">{row.scene}</td>
-                        <td className="px-4 py-4">
-                          <Link
-                            href={row.tutorialHref}
-                            onClick={(event) => event.stopPropagation()}
-                            className="rounded-full border border-sky-200 bg-sky-50 px-2 py-1 text-xs font-medium text-sky-700 hover:border-sky-300"
-                          >
-                            {row.tutorial}
-                          </Link>
+                        <td className="px-4 py-3 text-muted-foreground">{api.free || '—'}</td>
+                        <td className="px-4 py-3 text-muted-foreground">{api.features.slice(0, 2).join('、')}</td>
+                        <td className="px-4 py-3">
+                          {api.tutorial ? (
+                            <Link
+                              href={`/tutorial/${api.id}`}
+                              onClick={(event) => event.stopPropagation()}
+                              className="whitespace-nowrap rounded-full border border-sky-200 bg-sky-50 px-2 py-1 text-xs font-medium text-sky-700 hover:border-sky-300"
+                            >
+                              有教程
+                            </Link>
+                          ) : (
+                            <span className="text-xs text-muted-foreground">—</span>
+                          )}
                         </td>
                       </tr>
                     ))}
@@ -760,39 +782,21 @@ function DesktopHome() {
           </div>
         </section>
 
-        <section className="border-y border-border bg-muted/35 px-8 py-8">
-          <div className="mx-auto grid max-w-7xl gap-4 md:grid-cols-3">
-            {desktopWorkflowCards.map((card, index) => (
-              <Link
-                key={card.href}
-                href={card.href}
-                className="rounded-lg border border-border bg-card p-5 transition-colors hover:border-foreground/30"
-              >
-                <div className="mb-3 flex items-center gap-3">
-                  <span className="flex size-8 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
-                    {index + 1}
-                  </span>
-                  <h3 className="font-semibold">{card.title}</h3>
-                </div>
-                <p className="text-sm leading-6 text-muted-foreground">{card.desc}</p>
-              </Link>
-            ))}
-          </div>
-        </section>
-
+        {/* 按使用场景浏览 */}
         <section className="px-8 py-12">
           <div className="mx-auto max-w-7xl">
             <div className="mb-6 flex items-end justify-between gap-4">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">按场景推荐</p>
-                <h2 className="mt-1 text-2xl font-semibold tracking-tight">用更具体的任务来选模型</h2>
+                <p className="text-sm font-medium text-muted-foreground">按场景选择</p>
+                <h2 className="mt-1 text-2xl font-semibold tracking-tight">按使用场景浏览</h2>
+                <p className="mt-2 text-sm text-muted-foreground">根据具体任务找到合适的 API</p>
               </div>
               <Link href="/use-case" className="text-sm font-medium text-foreground hover:underline">
-                查看全部场景
+                全部使用场景推荐
               </Link>
             </div>
             <div className="grid gap-4 md:grid-cols-3">
-              {desktopScenarioCards.map(card => {
+              {scenarioCards.map(card => {
                 const Icon = card.icon;
                 return (
                   <Link
@@ -814,10 +818,113 @@ function DesktopHome() {
             </div>
           </div>
         </section>
+
+        {/* 常见接入路径 */}
+        <section className="border-y border-border bg-muted/35 px-8 py-8">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-6">
+              <p className="text-sm font-medium text-muted-foreground">参考路径</p>
+              <h2 className="mt-1 text-2xl font-semibold tracking-tight">常见接入路径</h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
+                第一次使用 AI API 时，通常会先了解可用平台，再创建 API Key，最后接入到代码或工具里。
+              </p>
+            </div>
+            <div className="grid gap-4 md:grid-cols-3">
+              {integrationSteps.map(step => (
+                <div
+                  key={step.step}
+                  className="rounded-lg border border-border bg-card p-5"
+                >
+                  <div className="mb-3 flex items-center gap-3">
+                    <span className="flex size-8 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
+                      {step.step}
+                    </span>
+                    <h3 className="font-semibold">{step.title}</h3>
+                  </div>
+                  <p className="mb-3 text-sm leading-6 text-muted-foreground">{step.desc}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {step.links.map(link => (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        className="rounded-full border border-border bg-background px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
+                      >
+                        {link.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 热门教程 */}
+        <section className="px-8 py-12">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-6 flex items-end justify-between gap-4">
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">学习资源</p>
+                <h2 className="mt-1 text-2xl font-semibold tracking-tight">热门教程</h2>
+              </div>
+              <Link href="/tutorial" className="text-sm font-medium text-foreground hover:underline">
+                全部 API 购买教程
+              </Link>
+            </div>
+            <div className="grid gap-4 md:grid-cols-3">
+              {hotTutorials.slice(0, 3).map(api => (
+                <Link
+                  key={api.id}
+                  href={`/tutorial/${api.id}`}
+                  className="rounded-lg border border-border bg-card p-5 transition-colors hover:border-foreground/30"
+                >
+                  <div className="mb-3 flex items-center gap-3">
+                    <span className="flex size-10 items-center justify-center rounded-md bg-muted text-muted-foreground">
+                      <BookOpen className="size-5" />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="truncate font-semibold">{api.name}</h3>
+                      <p className="text-xs text-muted-foreground">{api.tutorial?.steps.length} 个步骤</p>
+                    </div>
+                    <Badge variant="outline" className={badgeClass(api.badge.type)}>{api.badge.text}</Badge>
+                  </div>
+                  <p className="line-clamp-2 text-sm leading-6 text-muted-foreground">{api.tutorial?.title}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 常见问题 */}
+        <section className="border-t border-border px-8 py-12">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-6 flex items-end justify-between gap-4">
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">帮助中心</p>
+                <h2 className="mt-1 text-2xl font-semibold tracking-tight">常见问题</h2>
+              </div>
+              <Link href="/faq" className="text-sm font-medium text-foreground hover:underline">
+                全部常见问题
+              </Link>
+            </div>
+            <div className="grid gap-4 md:grid-cols-3">
+              {faqItems.map(item => (
+                <Link
+                  key={item.q}
+                  href={item.href}
+                  className="rounded-lg border border-border bg-card p-5 transition-colors hover:border-foreground/30"
+                >
+                  <h3 className="font-semibold">{item.q}</h3>
+                  <p className="mt-2 text-sm leading-6 text-muted-foreground">{item.a}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
       </main>
 
       <footer className="border-t border-border px-8 py-8 text-center text-sm text-muted-foreground">
-        <p>API知识站 - 按访问条件、购买难度和使用场景选择 AI API</p>
+        <p>API知识站 - AI API 资料站</p>
         <div className="mt-3">
           <BeianLinks />
         </div>

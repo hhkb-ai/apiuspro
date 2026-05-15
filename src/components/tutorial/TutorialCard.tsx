@@ -77,7 +77,12 @@ export function TutorialCard({ id, tutorial }: TutorialCardProps) {
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
                             target.style.display = 'none';
-                            target.parentElement!.innerHTML = `<div class="flex items-center justify-center h-full bg-muted text-muted-foreground"><div class="text-center p-4"><p class="text-sm">图片占位符</p><p class="text-xs mt-1">请添加图片: ${step.image}</p></div></div>`;
+                            const parent = target.parentElement;
+                            if (!parent) return;
+                            const placeholder = document.createElement('div');
+                            placeholder.className = 'flex items-center justify-center h-full bg-muted text-muted-foreground';
+                            placeholder.innerHTML = '<div class="text-center p-4"><p class="text-sm">图片占位符</p><p class="text-xs mt-1">请添加图片</p></div>';
+                            parent.appendChild(placeholder);
                           }}
                         />
                       </div>

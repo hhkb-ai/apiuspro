@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -58,6 +58,12 @@ export default function SearchSection() {
     }
   }
 
+  useEffect(() => {
+    return () => {
+      if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current);
+    };
+  }, []);
+
   function handleBlur() {
     // 用 ref 存储 timeout，避免竞态；保留 200ms 让链接点击能生效
     blurTimeoutRef.current = setTimeout(() => setShowSuggestions(false), 200);
@@ -76,7 +82,7 @@ export default function SearchSection() {
       <p className="mb-3 text-center text-sm font-medium text-foreground">搜索 API 或工具名称</p>
       <div className="flex gap-3 rounded-lg border bg-card p-2 shadow-sm">
         <Input
-          type="text"
+          type="search"
           placeholder="搜索 API 名称，如 OpenAI、通义千问..."
           value={searchQuery}
           onChange={(e) => {

@@ -27,7 +27,7 @@ export function ThemeToggle() {
     <Button
       variant="ghost"
       size="icon"
-      className="h-9 w-9"
+      className="h-11 w-11"
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
       aria-label={isDark ? '切换到亮色模式' : '切换到暗色模式'}
     >

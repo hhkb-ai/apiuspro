@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TutorialCard } from '@/components/tutorial/TutorialCard';
 import { APIConfig, visibleAPIList, visibleProxyServices } from '@/lib/api-config';
+import { QuickConclusionCard } from '@/components/api/QuickConclusionCard';
 import { getReviewSlugByAPIId } from '@/lib/review-config';
 import { ArticleSchema, BreadcrumbSchema, FAQSchema } from '@/components/seo/structured-data';
 import { DetailBackNav } from '@/components/navigation/ReturnNavigation';
@@ -61,12 +62,6 @@ function badgeClass(type: string) {
   return 'border-sky-200 bg-sky-50 text-sky-700';
 }
 
-function apiTypeText(apiType: 'no-proxy' | 'need-proxy' | 'proxy') {
-  if (apiType === 'no-proxy') return '无需代理 - 国内直连';
-  if (apiType === 'need-proxy') return '需要代理 - 合适的网络环境';
-  return '代理服务 - 中转访问';
-}
-
 function getAudienceText(api: APIConfig) {
   if (!api.proxy) {
     return '适合初学者、个人开发者、国内项目快速接入和低门槛试用。';
@@ -75,16 +70,6 @@ function getAudienceText(api: APIConfig) {
   return '适合对模型能力、长上下文或多模态能力要求较高，并且能处理网络和支付条件的团队。';
 }
 
-function getQuickConclusion(api: APIConfig) {
-  const accessText = api.proxy
-    ? '需要准备稳定网络环境，正式购买前先确认账号地区、支付方式和控制台是否可访问。'
-    : '国内用户可以优先评估，通常不需要额外代理环境，适合先用免费额度或小额充值跑通测试。';
-  const tutorialText = api.tutorial
-    ? `本站已整理 ${api.name} 的购买教程，建议按教程完成注册、额度确认、API Key 创建和首次调用。`
-    : `建议先进入 ${api.name} 官网确认注册、额度、模型名和 API Key 创建入口，再进行小规模测试。`;
-
-  return `${api.name} API 的关键判断是：${accessText}${tutorialText}`;
-}
 
 function getApiFaqItems(api: APIConfig) {
   return [
@@ -120,8 +105,6 @@ export default async function APIDetailPage({ params }: { params: Promise<{ id: 
   const relatedAPIs = getRelatedAPIs(id, apiType);
   const reviewSlug = getReviewSlugByAPIId(api.id);
   const faqItems = getApiFaqItems(api);
-  const quickConclusion = getQuickConclusion(api);
-
   return (
     <SidebarLayout>
       <BreadcrumbSchema
@@ -153,12 +136,12 @@ export default async function APIDetailPage({ params }: { params: Promise<{ id: 
           <div className="flex flex-wrap gap-2">
             {api.tutorial && (
               <Link href={`/tutorial/${api.id}`}>
-                <Button variant="outline">查看教程</Button>
+                <Button variant="outline">{api.name} 购买教程</Button>
               </Link>
             )}
             {reviewSlug && (
               <Link href={`/api-review/${reviewSlug}`}>
-                <Button variant="outline">查看测评</Button>
+                <Button variant="outline">{api.name} 完整测评</Button>
               </Link>
             )}
             <a href={api.url} target="_blank" rel="noopener noreferrer">
@@ -167,46 +150,7 @@ export default async function APIDetailPage({ params }: { params: Promise<{ id: 
           </div>
         </div>
 
-        <Card className="mb-8 border-sky-200 bg-sky-50/70">
-          <CardHeader>
-            <CardTitle>快速结论</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3 text-sm leading-6 text-sky-950">
-            <p>{quickConclusion}</p>
-            <p>
-              接入前优先确认官网入口、API Key、Base URL、模型名、额度/计费和限速规则；密钥只保存到环境变量或密钥管理工具，不要写进前端代码或公开仓库。
-            </p>
-          </CardContent>
-        </Card>
-
-        <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <a href={api.url} target="_blank" rel="noopener noreferrer" className="block lg:col-span-2">
-            <Card className="h-full transition-colors hover:border-foreground/30">
-              <CardContent className="p-5">
-                <p className="font-semibold">官网直达</p>
-                <p className="mt-2 truncate text-sm text-muted-foreground">
-                  {api.url.replace('https://', '').replace('http://', '').split('/')[0]}
-                </p>
-              </CardContent>
-            </Card>
-          </a>
-
-          {api.free && (
-            <Card>
-              <CardContent className="p-5">
-                <p className="font-semibold">免费额度</p>
-                <p className="mt-2 text-sm text-muted-foreground">{api.free}</p>
-              </CardContent>
-            </Card>
-          )}
-
-          <Card>
-            <CardContent className="p-5">
-              <p className="font-semibold">API 类型</p>
-              <p className="mt-2 text-sm text-muted-foreground">{apiTypeText(apiType)}</p>
-            </CardContent>
-          </Card>
-        </div>
+        <QuickConclusionCard api={api} reviewSlug={reviewSlug} />
 
         <Card className="mb-8">
           <CardHeader>

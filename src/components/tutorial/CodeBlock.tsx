@@ -32,7 +32,7 @@ export function CodeBlock({ code, language, explanation }: CodeBlockProps) {
         <span className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
           {language || 'code'}
         </span>
-        <Button variant="ghost" size="sm" onClick={handleCopy} className="h-6 px-2 text-[11px]">
+        <Button variant="ghost" size="sm" onClick={handleCopy} className="h-8 px-3 text-xs">
           {copyFailed ? '复制失败' : copied ? '已复制' : '复制'}
         </Button>
       </div>

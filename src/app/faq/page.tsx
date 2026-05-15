@@ -84,11 +84,61 @@ export default function FAQPage() {
           {/* 页面标题 */}
           <div className="mb-10 border-b pb-8">
             <p className="text-sm font-medium text-muted-foreground">FAQ</p>
-            <h1 className="mt-1 text-3xl font-semibold tracking-tight">常见问题</h1>
+            <h1 className="mt-1 text-3xl font-semibold tracking-tight">AI API 接入常见问题</h1>
             <p className="mt-3 max-w-3xl text-[15px] leading-7 text-muted-foreground">
               覆盖 AI API 接入全流程：从注册、支付到日常使用，帮你快速排查常见障碍。如果这里没有你想问的问题，建议查看对应 API 的购买教程或官网文档。
             </p>
           </div>
+
+          {/* BLUF 摘要 */}
+          <section className="mb-8 rounded-lg border border-sky-200 bg-sky-50 px-5 py-4">
+            <p className="text-sm font-semibold text-sky-800">结论先行</p>
+            <p className="mt-1 text-sm leading-6 text-sky-700">
+              大多数 API 接入问题集中在三个环节：注册验证（手机号/邮箱/实名）、支付方式（国内能否直接付款）、API Key 配置（保存位置和调用格式）。
+              先确认这三个环节没有卡住，再排查模型选择和费用问题。
+            </p>
+          </section>
+
+          {/* 适合谁 / 不适合谁 */}
+          <section className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
+              <p className="text-sm font-semibold text-emerald-800">适合谁</p>
+              <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">
+                <li>• 第一次接触 AI API，遇到注册或配置问题</li>
+                <li>• 已有 API Key 但调用报错，需要排查原因</li>
+                <li>• 想了解不同 API 的支付方式和费用结构</li>
+              </ul>
+            </div>
+            <div className="rounded-lg border border-amber-200 bg-amber-50 p-5">
+              <p className="text-sm font-semibold text-amber-800">不适合谁</p>
+              <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700">
+                <li>• 还没选好用哪个 API（请看 <Link href="/use-case" className="text-foreground hover:underline">场景推荐</Link>）</li>
+                <li>• 需要手把手注册和购买指导（请看 <Link href="/tutorial" className="text-foreground hover:underline">购买教程</Link>）</li>
+                <li>• 想对比模型能力和价格（请看 <Link href="/api-review" className="text-foreground hover:underline">API 测评</Link>）</li>
+              </ul>
+            </div>
+          </section>
+
+          {/* 使用前准备 */}
+          <section className="mb-8 rounded-lg border bg-card p-5">
+            <h2 className="font-semibold">使用前准备</h2>
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">
+              在提问或排查之前，确认以下信息已经准备好，能帮你更快找到答案：
+            </p>
+            <div className="mt-3 grid gap-3 text-sm leading-6 text-muted-foreground md:grid-cols-2">
+              {[
+                '确认你要接入的 API 名称和官网地址',
+                '记录报错信息或 HTTP 状态码（如 401、429）',
+                '确认 API Key 的保存位置（环境变量 / .env / 配置文件）',
+                '确认 Base URL 和模型名称是否与官方文档一致',
+              ].map((item) => (
+                <div key={item} className="flex gap-2">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-muted-foreground/50" />
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+          </section>
 
           {/* FAQ 分类 */}
           <div className="space-y-10">
@@ -124,13 +174,13 @@ export default function FAQPage() {
               </p>
               <div className="flex flex-wrap justify-center gap-3">
                 <Link href="/tutorial">
-                  <Button>查看购买教程</Button>
+                  <Button>AI API 购买教程</Button>
                 </Link>
                 <Link href="/cloud-api">
-                  <Button variant="outline">浏览 API 列表</Button>
+                  <Button variant="outline">全部 API 官网入口</Button>
                 </Link>
                 <Link href="/use-case">
-                  <Button variant="outline">按场景推荐</Button>
+                  <Button variant="outline">按使用场景选 API</Button>
                 </Link>
               </div>
             </CardContent>

@@ -176,9 +176,11 @@ export function ReturnPositionRestorer() {
     if (normalizePath(restoreState.href) !== currentPath) return;
 
     window.sessionStorage.removeItem(RESTORE_SCROLL_KEY);
-    window.requestAnimationFrame(() => {
-      window.scrollTo({ top: Math.max(restoreState.scrollY, 0), behavior: 'auto' });
+    const scrollY = restoreState.scrollY;
+    const rafId = window.requestAnimationFrame(() => {
+      window.scrollTo({ top: Math.max(scrollY, 0), behavior: 'auto' });
     });
+    return () => window.cancelAnimationFrame(rafId);
   }, [pathname]);
 
   return null;

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { SidebarLayout } from '@/components/layout/SidebarLayout';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -102,11 +103,41 @@ export default function TutorialPage() {
       <div className="mx-auto max-w-6xl p-6 lg:p-8">
         <div className="mb-8">
           <p className="text-sm font-medium text-muted-foreground">Tutorials</p>
-          <h1 className="mt-1 text-3xl font-semibold tracking-tight">购买教程</h1>
+          <h1 className="mt-1 text-3xl font-semibold tracking-tight">AI API 购买教程</h1>
           <p className="mt-2 max-w-2xl text-muted-foreground">
             按访问条件整理 API 购买流程，快速了解账号、支付、密钥和注意事项。
           </p>
         </div>
+
+        {/* BLUF 摘要 */}
+        <section className="mb-8 rounded-lg border border-sky-200 bg-sky-50 px-5 py-4">
+          <p className="text-sm font-semibold text-sky-800">结论先行</p>
+          <p className="mt-1 text-sm leading-6 text-sky-700">
+            第一次买 API？选国内直连的（DeepSeek、通义千问），注册即用、有免费额度、支持支付宝。
+            需要最强模型能力？选 Claude 或 OpenAI，但要准备代理和国际信用卡。先看下面的教程，按步骤操作不会出错。
+          </p>
+        </section>
+
+        {/* 适合谁 / 不适合谁 */}
+        <section className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
+            <p className="text-sm font-semibold text-emerald-800">适合谁</p>
+            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">
+              <li>• 第一次接触 AI API，需要手把手指导注册和配置</li>
+              <li>• 想快速接入 Claude Code、Codex、OpenCode 等 AI 工具</li>
+              <li>• 需要对比不同 API 的注册门槛、支付方式和免费额度</li>
+              <li>• 想了解如何安全保存 API Key 和配置限流告警</li>
+            </ul>
+          </div>
+          <div className="rounded-lg border border-amber-200 bg-amber-50 p-5">
+            <p className="text-sm font-semibold text-amber-800">不适合谁</p>
+            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700">
+              <li>• 已经熟悉 API 接入流程，只需要查 Base URL 或模型名</li>
+              <li>• 想了解模型能力对比和场景推荐（请看 <Link href="/use-case" className="text-foreground hover:underline">按使用场景选 API</Link>）</li>
+              <li>• 想看详细测评数据和基准测试（请看 <Link href="/api-review" className="text-foreground hover:underline">API 测评对比</Link>）</li>
+            </ul>
+          </div>
+        </section>
 
         <form className="mb-8 max-w-xl" role="search" onSubmit={(event) => event.preventDefault()}>
           <div className="relative">
@@ -160,6 +191,55 @@ export default function TutorialPage() {
             emptyText="没有找到匹配的需代理 API 教程"
           />
         </div>
+
+        {/* 常见问题 */}
+        <section className="mt-10">
+          <h2 className="mb-4 text-xl font-semibold tracking-tight">常见问题</h2>
+          <div className="space-y-3">
+            {[
+              {
+                q: '我是新手，应该先看哪个教程？',
+                a: '如果你在国内，优先看 DeepSeek 或通义千问的教程——注册简单、有免费额度、支持支付宝。先跑通一次调用，再考虑其他 API。',
+              },
+              {
+                q: '买 API 需要准备什么？',
+                a: '国内 API：手机号 + 支付宝/微信即可。国际 API（Claude、OpenAI）：需要能接收验证码的邮箱 + 国际信用卡 + 稳定的代理网络。',
+              },
+              {
+                q: '免费额度用完了怎么办？',
+                a: '先小额充值测试，确认满足需求后再加大投入。也可以同时注册多个 API，用免费额度组合使用。查看场景推荐找到性价比最高的方案。',
+              },
+              {
+                q: 'API Key 泄露了怎么办？',
+                a: '立即到控制台删除泄露的 Key 并重新生成。建议把 Key 存在环境变量或 .env 文件中，不要提交到 Git 仓库。',
+              },
+            ].map((faq) => (
+              <div key={faq.q} className="rounded-lg border bg-card p-5">
+                <h3 className="text-sm font-semibold">{faq.q}</h3>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">{faq.a}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* 下一步推荐 */}
+        <section className="mt-10 rounded-lg border bg-card p-6">
+          <h2 className="font-semibold">下一步推荐</h2>
+          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <Link href="/use-case" className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
+              <p className="text-sm font-semibold">按场景选 API</p>
+              <p className="mt-1 text-xs text-muted-foreground">编程、知识库、客服……按需求找到最合适的模型</p>
+            </Link>
+            <Link href="/cloud-api" className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
+              <p className="text-sm font-semibold">API 官网入口</p>
+              <p className="mt-1 text-xs text-muted-foreground">快速访问各 API 官网和控制台</p>
+            </Link>
+            <Link href="/api-review" className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
+              <p className="text-sm font-semibold">API 测评对比</p>
+              <p className="mt-1 text-xs text-muted-foreground">看基准测试、优缺点和定价方案</p>
+            </Link>
+          </div>
+        </section>
       </div>
     </SidebarLayout>
   );

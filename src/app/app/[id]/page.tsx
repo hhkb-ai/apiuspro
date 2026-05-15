@@ -136,7 +136,7 @@ function CodeBlock({ code, lang = 'bash' }: { code: string; lang?: string }) {
         <span className="font-mono text-[11px] uppercase text-muted-foreground">{lang}</span>
         <button
           onClick={handleCopy}
-          className="flex items-center gap-1 text-[11px] text-muted-foreground transition-colors hover:text-foreground"
+          className="flex h-8 items-center gap-1 px-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
         >
           {copied ? '✓ 已复制' : '复制'}
         </button>

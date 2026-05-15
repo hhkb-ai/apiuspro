@@ -273,12 +273,107 @@ export default async function ReviewDetailPage({ params }: { params: Promise<{ s
           </Card>
         </section>
 
+        {/* 适合谁 / 不适合谁 */}
+        <section className="mb-10 grid grid-cols-1 gap-4 md:grid-cols-2">
+          <Card className="border-green-200 bg-green-50/35 shadow-sm dark:border-green-900 dark:bg-green-950/10">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-green-700 dark:text-green-400 text-base">适合谁</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2 text-sm leading-6 text-muted-foreground">
+                {review.useCases.slice(0, Math.ceil(review.useCases.length / 2)).map((uc, i) => (
+                  <li key={i} className="flex gap-2">
+                    <span className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-green-600 text-[10px] text-white">✓</span>
+                    {uc}
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+          <Card className="border-amber-200 bg-amber-50/35 shadow-sm dark:border-amber-900 dark:bg-amber-950/10">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-amber-700 dark:text-amber-400 text-base">需要谨慎</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2 text-sm leading-6 text-muted-foreground">
+                {review.useCases.slice(Math.ceil(review.useCases.length / 2)).map((uc, i) => (
+                  <li key={i} className="flex gap-2">
+                    <span className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-amber-600 text-[10px] text-white">!</span>
+                    {uc}
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* 使用前准备 */}
+        <section className="mb-10">
+          <h2 className="mb-4 text-xl font-semibold tracking-tight">使用前准备</h2>
+          <Card className="border-border/80 shadow-sm">
+            <CardContent className="p-5">
+              <div className="grid gap-3 text-sm leading-6 text-muted-foreground md:grid-cols-2">
+                <div className="flex gap-2">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-muted-foreground/45" />
+                  <span>确认网络环境：{review.badges.some(b => b.label === '需代理') ? '需要稳定的代理访问' : '国内直连，无需代理'}</span>
+                </div>
+                <div className="flex gap-2">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-muted-foreground/45" />
+                  <span>准备支付方式：{review.badges.some(b => b.label === '需代理') ? '需要国际信用卡' : '支付宝/微信即可'}</span>
+                </div>
+                <div className="flex gap-2">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-muted-foreground/45" />
+                  <span>先用免费额度或小额充值测试真实任务</span>
+                </div>
+                <div className="flex gap-2">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-muted-foreground/45" />
+                  <span>记录 Base URL、模型名、限速和账单提醒</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* 常见问题 */}
+        <section className="mb-10">
+          <h2 className="mb-4 text-xl font-semibold tracking-tight">常见问题</h2>
+          <div className="space-y-3">
+            {[
+              {
+                q: `${review.name} 的性价比怎么样？`,
+                a: review.ratings.find(r => r.label === '性价比')?.detail || '请参考上方评分维度详解中的性价比评分。',
+              },
+              {
+                q: `新手适合用 ${review.name} 吗？`,
+                a: review.useCases[review.useCases.length - 1] || '请参考上方适用场景与建议。',
+              },
+              {
+                q: `${review.name} 和其他 API 怎么选？`,
+                a: '建议先明确你的任务类型，然后查看场景推荐页面。最靠谱的方法是用同一个样本测试 2-3 个 API，对比质量、速度和成本。',
+              },
+            ].map((faq) => (
+              <div key={faq.q} className="rounded-lg border border-border bg-card p-5">
+                <h3 className="text-sm font-semibold text-foreground">{faq.q}</h3>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">{faq.a}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* 底部导航 */}
         <div className="mt-8 flex flex-col justify-between gap-3 border-t pt-6 sm:flex-row sm:items-center">
           <DetailBackNav listHref="/api-review" listLabel="测评列表" className="mb-0" />
-          <Link href="/cloud-api">
-            <Button variant="outline" className="w-full sm:w-auto">查看所有API &#8594;</Button>
-          </Link>
+          <div className="flex flex-wrap gap-2">
+            <Link href="/cloud-api">
+              <Button variant="outline" size="sm">全部 API 官网入口</Button>
+            </Link>
+            <Link href="/use-case">
+              <Button variant="outline" size="sm">按使用场景选 API</Button>
+            </Link>
+            <Link href="/tutorial">
+              <Button variant="outline" size="sm">AI API 购买教程</Button>
+            </Link>
+          </div>
         </div>
       </div>
     </SidebarLayout>

@@ -197,11 +197,41 @@ export default function CloudAPIPage() {
       <div className="mx-auto max-w-6xl p-6 lg:p-8">
         <div className="mb-8">
           <p className="text-sm font-medium text-muted-foreground">Cloud API</p>
-          <h1 className="mt-1 text-3xl font-semibold tracking-tight">API 官网链接</h1>
+          <h1 className="mt-1 text-3xl font-semibold tracking-tight">AI API 官网入口与对比</h1>
           <p className="mt-2 max-w-2xl text-muted-foreground">
             快速访问各大 AI API 官网，按访问条件和服务类型筛选。
           </p>
         </div>
+
+        {/* BLUF 摘要 */}
+        <section className="mb-8 rounded-lg border border-sky-200 bg-sky-50 px-5 py-4">
+          <p className="text-sm font-semibold text-sky-800">结论先行</p>
+          <p className="mt-1 text-sm leading-6 text-sky-700">
+            国内用户首选无需代理的 API（DeepSeek、通义千问、智谱），注册即用、有免费额度。
+            需要最强模型能力选 Claude 或 OpenAI，但要准备代理和国际信用卡。
+            不确定选哪个？先看 <Link href="/use-case" className="text-foreground hover:underline">按场景推荐</Link>。
+          </p>
+        </section>
+
+        {/* 适合谁 / 不适合谁 */}
+        <section className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
+            <p className="text-sm font-semibold text-emerald-800">适合谁</p>
+            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">
+              <li>• 已经确定要用哪个 API，需要快速找到官网和控制台</li>
+              <li>• 想按「无需代理 / 需要代理」分类浏览所有可用 API</li>
+              <li>• 需要对比不同 API 的功能特性和免费额度</li>
+            </ul>
+          </div>
+          <div className="rounded-lg border border-amber-200 bg-amber-50 p-5">
+            <p className="text-sm font-semibold text-amber-800">不适合谁</p>
+            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700">
+              <li>• 不确定该用哪个 API（请看 <Link href="/use-case" className="text-foreground hover:underline">场景推荐</Link>）</li>
+              <li>• 第一次买 API，需要注册指导（请看 <Link href="/tutorial" className="text-foreground hover:underline">购买教程</Link>）</li>
+              <li>• 想看详细测评和基准数据（请看 <Link href="/api-review" className="text-foreground hover:underline">API 测评</Link>）</li>
+            </ul>
+          </div>
+        </section>
 
         <div className="mb-8 space-y-4">
           <section className="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -244,7 +274,7 @@ export default function CloudAPIPage() {
 
           <form className="relative max-w-xl" onSubmit={handleSubmit} role="search">
             <Input
-              type="text"
+              type="search"
               placeholder="搜索 API 名称，如 OpenAI、通义千问..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -254,7 +284,7 @@ export default function CloudAPIPage() {
               <button
                 type="button"
                 onClick={clearSearch}
-                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md px-3 py-2 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               >
                 清除
               </button>
@@ -329,6 +359,32 @@ export default function CloudAPIPage() {
             </ul>
           </div>
         </div>
+
+        {/* 常见问题 */}
+        <section className="mt-10">
+          <h2 className="mb-4 text-xl font-semibold tracking-tight">常见问题</h2>
+          <div className="space-y-3">
+            {[
+              {
+                q: '无需代理和需要代理的 API 有什么区别？',
+                a: '无需代理的 API（如 DeepSeek、通义千问）国内直接访问，注册和调用门槛低。需要代理的 API（如 Claude、OpenAI）模型能力通常更强，但需要稳定的网络环境和国际支付方式。',
+              },
+              {
+                q: '我可以同时使用多个 API 吗？',
+                a: '可以。很多开发者会根据任务类型切换 API：日常用 DeepSeek 省钱，复杂任务用 Claude 或 OpenAI。用 CC Switch 可以方便地在多个 API 之间切换。',
+              },
+              {
+                q: '怎么判断一个 API 是否适合我？',
+                a: '先明确你的任务类型（编程、写作、客服等），然后看场景推荐页面。最靠谱的方法是用真实样本测试——大多数 API 都有免费额度，先试再买。',
+              },
+            ].map((faq) => (
+              <div key={faq.q} className="rounded-lg border bg-card p-5">
+                <h3 className="text-sm font-semibold">{faq.q}</h3>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">{faq.a}</p>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
     </SidebarLayout>
   );

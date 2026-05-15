@@ -3,6 +3,7 @@ export interface UseCaseRecommendation {
   score: number;
   reason: string;
   strengths: string[];
+  risks: string[];
 }
 
 export interface UseCase {
@@ -13,6 +14,10 @@ export interface UseCase {
   keywords: string[];
   selectionCriteria: { title: string; desc: string }[];
   recommendations: UseCaseRecommendation[];
+  primaryPick: string;
+  altPick: string;
+  notRecommended: string;
+  quickPick: string;
 }
 
 export const useCases: UseCase[] = [
@@ -40,6 +45,10 @@ export const useCases: UseCase[] = [
       { title: '多语言支持', desc: 'Python / TypeScript / Go / Rust 等主流语言都要靠谱，不能只会 Python' },
       { title: '响应速度', desc: '编程时频繁调用，延迟直接影响心流体验，首 token 延迟要低' },
     ],
+    primaryPick: 'Claude Opus 4.7',
+    altPick: 'DeepSeek V4 Pro',
+    notRecommended: '轻量 CRUD 或只写 Python 脚本的场景不需要旗舰模型，用 DeepSeek Flash 或通义千问免费额度即可。',
+    quickPick: '国内开发者先用 DeepSeek Flash（免费额度 + 国内直连），复杂项目再切 Claude。海外预算充裕直接选 Claude。',
     recommendations: [
       {
         apiId: 'claude',
@@ -50,6 +59,11 @@ export const useCases: UseCase[] = [
           '代码生成质量高，生成的代码结构清晰、命名规范',
           '擅长 Code Review，能给出有深度的改进建议',
           '对 TypeScript / Python / Go 等语言支持均衡',
+        ],
+        risks: [
+          '需要代理访问，国内直连不稳定',
+          '价格较高，高频调用成本需提前预估',
+          '中文代码注释质量略逊于英文',
         ],
       },
       {
@@ -62,6 +76,11 @@ export const useCases: UseCase[] = [
           'Codex / GitHub Copilot 等工具链生态最完善',
           '函数调用（Function Calling）支持最成熟',
         ],
+        risks: [
+          '需要代理访问',
+          '价格是 DeepSeek 的 10 倍以上',
+          '需国际信用卡支付',
+        ],
       },
       {
         apiId: 'deepseek',
@@ -73,6 +92,11 @@ export const useCases: UseCase[] = [
           '国内直连，无需代理，延迟低',
           '赠送 500 万 Token，上手零成本',
         ],
+        risks: [
+          '高峰期响应可能变慢或排队',
+          '复杂架构设计能力略逊于 Claude / OpenAI',
+          '幻觉率偏高，生成代码需仔细验证',
+        ],
       },
       {
         apiId: 'aliyun',
@@ -83,6 +107,11 @@ export const useCases: UseCase[] = [
           '通义千问代码能力持续提升',
           '阿里云生态集成方便',
           '有免费额度，试错成本低',
+        ],
+        risks: [
+          '复杂代码生成质量与旗舰模型有差距',
+          '超长上下文需付费升级',
+          '英文代码注释质量一般',
         ],
       },
     ],
@@ -111,6 +140,10 @@ export const useCases: UseCase[] = [
       { title: '多模态支持', desc: '能处理图片、图表、截图等非文本内容，数据分析场景常涉及图表' },
       { title: '结构化输出', desc: '能稳定输出 JSON / Markdown 表格等结构化格式，方便后续处理' },
     ],
+    primaryPick: 'Claude Opus 4.7',
+    altPick: 'DeepSeek V4 Pro',
+    notRecommended: '只做简单文档摘要的轻量场景，用 DeepSeek Flash 或通义千问免费额度即可，不必上旗舰模型。',
+    quickPick: '个人知识库用 Claude（长上下文 + 结构化输出），预算敏感选 DeepSeek Pro。需要图片/图表理解选 Gemini。',
     recommendations: [
       {
         apiId: 'claude',
@@ -121,6 +154,11 @@ export const useCases: UseCase[] = [
           '文档理解准确度高，摘要和提取质量好',
           '输出格式规范，Markdown / JSON 结构化能力强',
           '配合 Obsidian 等工具可构建完整的知识管理工作流',
+        ],
+        risks: [
+          '需要代理访问',
+          '价格较高，批量文档处理成本需预估',
+          '纯文本模型，图片需额外处理',
         ],
       },
       {
@@ -133,6 +171,11 @@ export const useCases: UseCase[] = [
           'Assistants API 支持文件上传和检索',
           '函数调用成熟，适合构建自动化数据处理流水线',
         ],
+        risks: [
+          '需要代理访问，需国际信用卡',
+          '价格是 DeepSeek 的 10 倍以上',
+          'API 结构相对复杂，学习成本较高',
+        ],
       },
       {
         apiId: 'gemini',
@@ -143,6 +186,11 @@ export const useCases: UseCase[] = [
           '超长上下文窗口，适合大批量文档分析',
           'Google 生态集成，与 Google Drive / Sheets 联动方便',
           '数据理解和图表分析能力突出',
+        ],
+        risks: [
+          '需要代理访问，国内稳定性差',
+          '需 Google Cloud 账号和国际支付',
+          '配额和区域限制较多',
         ],
       },
       {
@@ -155,6 +203,11 @@ export const useCases: UseCase[] = [
           '国内直连，处理国内数据无网络障碍',
           '开源可私有部署，数据安全性高',
         ],
+        risks: [
+          '高峰期响应可能变慢',
+          '幻觉率偏高，关键数据务必核实',
+          '无原生多模态，不能直接处理图片',
+        ],
       },
       {
         apiId: 'aliyun',
@@ -165,6 +218,11 @@ export const useCases: UseCase[] = [
           '与阿里云 OSS 等存储服务集成方便',
           '有免费额度，适合轻量级文档处理',
           '中文文档理解能力好',
+        ],
+        risks: [
+          '复杂推理能力与旗舰模型有差距',
+          '长文档处理需付费升级',
+          '多模态支持有限',
         ],
       },
     ],
@@ -193,6 +251,10 @@ export const useCases: UseCase[] = [
       { title: '长文生成能力', desc: '能一次性生成结构完整的长文章，保持逻辑连贯性和主题一致性' },
       { title: '成本可控', desc: '内容创作是高频场景，单次调用成本需要足够低才能支撑日常使用' },
     ],
+    primaryPick: 'DeepSeek V4 Pro',
+    altPick: 'Claude Opus 4.7',
+    notRecommended: '需要极致文学美感或品牌调性极严的场景，Claude 更合适。纯批量标题/摘要用 DeepSeek Flash 即可。',
+    quickPick: '日常内容创作直接选 DeepSeek（便宜 + 中文好），高质量长文或品牌文案选 Claude。',
     recommendations: [
       {
         apiId: 'deepseek',
@@ -203,6 +265,11 @@ export const useCases: UseCase[] = [
           '价格仅为国际模型的 1/10，高频创作无成本压力',
           '国内直连，响应速度快，适合批量内容生产',
           '推理能力强，能理解复杂的创作需求和风格要求',
+        ],
+        risks: [
+          '文学性创作美感略逊于 Claude',
+          '幻觉率偏高，事实性内容需核实',
+          '高峰期响应可能变慢',
         ],
       },
       {
@@ -215,6 +282,11 @@ export const useCases: UseCase[] = [
           '对语气和风格的把控精准，可适配不同品牌调性',
           '200K 上下文，适合基于大量参考资料的深度创作',
         ],
+        risks: [
+          '需要代理访问',
+          '价格较高，批量创作成本需预估',
+          '中文语感不如国产模型自然',
+        ],
       },
       {
         apiId: 'aliyun',
@@ -226,6 +298,11 @@ export const useCases: UseCase[] = [
           '有免费额度，适合个人创作者试用',
           '与阿里云生态集成，可配合其他工具使用',
         ],
+        risks: [
+          '创意多样性不如 DeepSeek 和 Claude',
+          '长文生成能力有限',
+          '风格切换灵活度一般',
+        ],
       },
       {
         apiId: 'zhipu',
@@ -236,6 +313,11 @@ export const useCases: UseCase[] = [
           '支持多种内容风格切换',
           '国内直连，无需代理',
           '有免费额度，上手门槛低',
+        ],
+        risks: [
+          '综合创作能力与 DeepSeek / Claude 有差距',
+          '长文逻辑连贯性一般',
+          '英文创作能力偏弱',
         ],
       },
     ],
@@ -264,6 +346,10 @@ export const useCases: UseCase[] = [
       { title: '知识库集成', desc: '支持 RAG 或函数调用，能对接企业内部知识库和工单系统' },
       { title: '并发与限流', desc: '企业级客服场景需要高并发支持，API 的 QPS 限制和扩容能力很关键' },
     ],
+    primaryPick: 'DeepSeek V4 Pro',
+    altPick: '阿里云通义千问',
+    notRecommended: '需要极致 Agent 编排能力的复杂客服流程，OpenAI Function Calling 更成熟。纯简单 FAQ 回复用轻量模型即可。',
+    quickPick: '国内客服系统首选 DeepSeek（便宜 + 快 + 函数调用好），需要企业合规选阿里云。海外项目选 OpenAI。',
     recommendations: [
       {
         apiId: 'deepseek',
@@ -274,6 +360,11 @@ export const useCases: UseCase[] = [
           '国内直连，延迟低，用户体验好',
           '函数调用支持好，可对接工单和知识库系统',
           '开源可私有部署，数据安全有保障',
+        ],
+        risks: [
+          '高峰期响应可能变慢或排队',
+          '幻觉率偏高，客服回复需设审核机制',
+          '复杂多步工具调用不如 OpenAI 稳定',
         ],
       },
       {
@@ -286,6 +377,11 @@ export const useCases: UseCase[] = [
           '多轮对话稳定性好，上下文保持能力强',
           '生态完善，有大量客服场景的最佳实践',
         ],
+        risks: [
+          '需要代理访问，国内延迟高',
+          '价格是 DeepSeek 的 10 倍以上',
+          '需国际信用卡支付',
+        ],
       },
       {
         apiId: 'aliyun',
@@ -297,6 +393,11 @@ export const useCases: UseCase[] = [
           '与钉钉、阿里云客服系统深度集成',
           '有专属企业版方案，支持定制化需求',
         ],
+        risks: [
+          '复杂对话编排能力不如 DeepSeek / OpenAI',
+          '高级功能需付费升级',
+          '与非阿里云生态集成需额外开发',
+        ],
       },
       {
         apiId: 'zhipu',
@@ -307,6 +408,11 @@ export const useCases: UseCase[] = [
           '有企业级 API 方案，支持高并发',
           '国内直连，数据合规',
           '支持知识库对接和函数调用',
+        ],
+        risks: [
+          '综合能力与 DeepSeek / OpenAI 有差距',
+          '开源版本与商业版有差距',
+          '生态和文档不如头部厂商完善',
         ],
       },
     ],
@@ -335,6 +441,10 @@ export const useCases: UseCase[] = [
       { title: '上下文理解', desc: '能理解整篇文档的语境，保持术语一致性，而非逐句独立翻译' },
       { title: '批量处理能力', desc: '支持长文档和批量翻译，上下文窗口要足够大' },
     ],
+    primaryPick: 'Claude Opus 4.7',
+    altPick: 'DeepSeek V4 Pro',
+    notRecommended: '小语种翻译或图片文字翻译，Gemini 更合适。简单短文翻译用 DeepSeek Flash 即可。',
+    quickPick: '高质量文档翻译选 Claude（术语一致 + 长文好），日常翻译选 DeepSeek（便宜）。小语种选 Gemini。',
     recommendations: [
       {
         apiId: 'claude',
@@ -345,6 +455,11 @@ export const useCases: UseCase[] = [
           '翻译质量高，译文地道自然，术语准确',
           '能保持长文档的术语一致性和风格统一',
           '支持多种语言，小语种翻译质量也很好',
+        ],
+        risks: [
+          '需要代理访问',
+          '价格较高，大批量翻译成本需预估',
+          '翻译速度受上下文长度影响',
         ],
       },
       {
@@ -357,6 +472,11 @@ export const useCases: UseCase[] = [
           '国内直连，翻译国内文档无网络障碍',
           '推理能力强，能理解专业术语和上下文',
         ],
+        risks: [
+          '小语种翻译质量不如 Claude / Gemini',
+          '超长文档需分段处理',
+          '幻觉率偏高，专业术语翻译需人工校验',
+        ],
       },
       {
         apiId: 'gemini',
@@ -368,6 +488,11 @@ export const useCases: UseCase[] = [
           '超长上下文，适合长文档翻译',
           'Google 翻译技术积累，基础翻译质量有保障',
         ],
+        risks: [
+          '需要代理访问，国内稳定性差',
+          '需 Google Cloud 账号和国际支付',
+          '中文翻译质量不如国产模型自然',
+        ],
       },
       {
         apiId: 'openai',
@@ -378,6 +503,11 @@ export const useCases: UseCase[] = [
           'API 生态成熟，有大量翻译工具集成',
           '支持函数调用，可构建自动化翻译流水线',
           '多模态支持，可处理图片和文档翻译',
+        ],
+        risks: [
+          '需要代理访问',
+          '价格是 DeepSeek 的 10 倍以上',
+          '中文翻译语感不如国产模型',
         ],
       },
     ],
@@ -406,6 +536,10 @@ export const useCases: UseCase[] = [
       { title: '多学科覆盖', desc: '需要覆盖文理多个学科，不能只擅长某一领域' },
       { title: '互动引导能力', desc: '不是直接给答案，而是通过提问和引导帮助学习者自己思考' },
     ],
+    primaryPick: 'DeepSeek V4 Pro',
+    altPick: 'Claude Opus 4.7',
+    notRecommended: '需要极致论文润色或长文献综述，Claude 更合适。简单题目答疑用 DeepSeek Flash 免费额度即可。',
+    quickPick: '学生党首选 DeepSeek（免费 + 数学推理强 + 国内直连），论文写作选 Claude（长文逻辑好）。',
     recommendations: [
       {
         apiId: 'claude',
@@ -416,6 +550,11 @@ export const useCases: UseCase[] = [
           '逻辑推理能力强，题目解析步骤清晰',
           '长上下文适合论文写作和文献综述',
           '安全性好，不会生成有害或误导性内容',
+        ],
+        risks: [
+          '需要代理访问',
+          '价格较高，学生群体成本压力大',
+          '中文讲解语感不如国产模型自然',
         ],
       },
       {
@@ -428,6 +567,11 @@ export const useCases: UseCase[] = [
           '国内直连，无需代理，随时随地可用',
           '赠送大量免费 Token，上手零成本',
         ],
+        risks: [
+          '幻觉率偏高，答案需交叉验证',
+          '高峰期响应可能变慢',
+          '文科类讲解深度不如 Claude',
+        ],
       },
       {
         apiId: 'openai',
@@ -439,6 +583,11 @@ export const useCases: UseCase[] = [
           '多模态支持，可解析题目图片',
           '生态丰富，有大量教育类应用案例',
         ],
+        risks: [
+          '需要代理访问',
+          '价格是 DeepSeek 的 10 倍以上',
+          '需国际信用卡支付',
+        ],
       },
       {
         apiId: 'aliyun',
@@ -449,6 +598,11 @@ export const useCases: UseCase[] = [
           '有免费额度，学习使用零成本',
           '中文理解好，适合中文学习场景',
           '与阿里云教育生态有集成潜力',
+        ],
+        risks: [
+          '复杂推理能力与旗舰模型有差距',
+          '深度讲解能力有限',
+          '高级功能需付费升级',
         ],
       },
     ],

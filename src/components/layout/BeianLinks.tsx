@@ -5,7 +5,7 @@ export function BeianLinks() {
     <div className="flex flex-col items-center justify-center gap-2">
       <a
         href="https://beian.miit.gov.cn/"
-        rel="noreferrer"
+        rel="noopener noreferrer"
         target="_blank"
         className="transition-colors hover:text-foreground"
       >
@@ -13,7 +13,7 @@ export function BeianLinks() {
       </a>
       <a
         href="https://beian.mps.gov.cn/#/query/webSearch?code=44162102000181"
-        rel="noreferrer"
+        rel="noopener noreferrer"
         target="_blank"
         className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
       >

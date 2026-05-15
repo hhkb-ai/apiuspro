@@ -249,13 +249,52 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
             )}
           </div>
 
+          {/* 教程概览卡片 */}
+          {(tutorial.estimatedTime || tutorial.prerequisites || tutorial.successSign || tutorial.commonPitfall || tutorial.securityReminder) && (
+            <section id="tutorial-overview" className="scroll-mt-[68px] mx-8 mt-6 rounded-lg border border-sky-200 bg-sky-50 px-5 py-4 dark:border-sky-800 dark:bg-sky-950/20">
+              <p className="mb-3 text-[13px] font-semibold text-sky-800 dark:text-sky-300">教程概览</p>
+              <div className="space-y-2.5 text-sm">
+                {tutorial.estimatedTime && (
+                  <div className="flex items-start gap-2">
+                    <span className="mt-0.5 shrink-0 text-sky-600 dark:text-sky-400">&#9201;</span>
+                    <span className="text-sky-900 dark:text-sky-200"><strong className="font-semibold">预计耗时：</strong>{tutorial.estimatedTime}</span>
+                  </div>
+                )}
+                {tutorial.prerequisites && tutorial.prerequisites.length > 0 && (
+                  <div className="flex items-start gap-2">
+                    <span className="mt-0.5 shrink-0 text-sky-600 dark:text-sky-400">&#128230;</span>
+                    <span className="text-sky-900 dark:text-sky-200"><strong className="font-semibold">准备材料：</strong>{tutorial.prerequisites.join('、')}</span>
+                  </div>
+                )}
+                {tutorial.successSign && (
+                  <div className="flex items-start gap-2">
+                    <span className="mt-0.5 shrink-0 text-emerald-600 dark:text-emerald-400">&#9989;</span>
+                    <span className="text-emerald-800 dark:text-emerald-200"><strong className="font-semibold">成功标志：</strong>{tutorial.successSign}</span>
+                  </div>
+                )}
+                {tutorial.commonPitfall && (
+                  <div className="flex items-start gap-2">
+                    <span className="mt-0.5 shrink-0 text-amber-600 dark:text-amber-400">&#9888;</span>
+                    <span className="text-amber-800 dark:text-amber-200"><strong className="font-semibold">最容易卡住：</strong>{tutorial.commonPitfall}</span>
+                  </div>
+                )}
+                {tutorial.securityReminder && (
+                  <div className="flex items-start gap-2">
+                    <span className="mt-0.5 shrink-0 text-red-600 dark:text-red-400">&#128274;</span>
+                    <span className="text-red-800 dark:text-red-200"><strong className="font-semibold">安全提醒：</strong>{tutorial.securityReminder}</span>
+                  </div>
+                )}
+              </div>
+            </section>
+          )}
+
           {/* 移动端目录 - 折叠式 */}
           <div className="mx-8 mt-6 overflow-hidden rounded-lg border border-border lg:hidden">
             <details>
               <summary className="cursor-pointer select-none bg-muted/60 px-4 py-2.5 text-sm font-semibold text-foreground">
                 教程步骤（{tutorial.steps.length} 步）
               </summary>
-              <div className="space-y-0.5 border-t border-border px-4 py-2">
+              <div className="max-h-60 overflow-y-auto space-y-0.5 border-t border-border px-4 py-2">
                 {tutorial.steps.map((step, i) => (
                   <a key={i} href={`#step-${i}`} className={`block py-1.5 text-[13px] hover:text-foreground ${step.important ? 'font-semibold text-amber-600 dark:text-amber-400' : 'text-muted-foreground'}`}>
                     {i + 1}. {step.important && '★ '}{step.title}
@@ -294,6 +333,28 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                 {/* 步骤描述 */}
                 {step.description && (
                   <p className="mb-4 text-[15px] leading-7 text-muted-foreground">{step.description}</p>
+                )}
+
+                {/* 步骤实操指引 */}
+                {(step.whereToClick || step.expectedResult || (step.failureChecklist && step.failureChecklist.length > 0)) && (
+                  <div className="mb-4 rounded-md border-l-2 border-border bg-muted/30 px-4 py-3 space-y-1.5 text-[13px]">
+                    {step.whereToClick && (
+                      <p className="text-muted-foreground"><strong className="font-semibold text-foreground">点击位置：</strong>{step.whereToClick}</p>
+                    )}
+                    {step.expectedResult && (
+                      <p className="text-emerald-700 dark:text-emerald-400"><strong className="font-semibold">完成后看到：</strong>{step.expectedResult}</p>
+                    )}
+                    {step.failureChecklist && step.failureChecklist.length > 0 && (
+                      <div className="text-amber-700 dark:text-amber-400">
+                        <strong className="font-semibold">失败检查：</strong>
+                        <ul className="mt-1 space-y-0.5 pl-4">
+                          {step.failureChecklist.map((item, fi) => (
+                            <li key={fi} className="list-disc">{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
                 )}
 
                 {/* 图片展示 */}
@@ -404,6 +465,54 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
             </div>
           ) : null}
 
+          {/* 适合谁 / 不适合谁 */}
+          <div className="mx-8 mb-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-5 py-4">
+              <p className="mb-2 text-[13px] font-semibold text-emerald-800">适合谁</p>
+              <ul className="space-y-1.5 text-sm leading-6 text-emerald-700">
+                <li>• {needProxy ? '有稳定代理环境和国际信用卡的开发者' : '国内用户，想快速接入 AI API'}</li>
+                <li>• 需要手把手指导完成注册、充值和获取 Key 的新手</li>
+                <li>• 想把 {api.name} 接入 Claude Code、Codex 等工具的用户</li>
+              </ul>
+            </div>
+            <div className="rounded-lg border border-amber-200 bg-amber-50 px-5 py-4">
+              <p className="mb-2 text-[13px] font-semibold text-amber-800">不适合谁</p>
+              <ul className="space-y-1.5 text-sm leading-6 text-amber-700">
+                <li>• 已经熟悉接入流程，只需要查 Base URL 或模型名</li>
+                <li>• 不确定该用哪个 API（请看 <Link href="/use-case" className="text-foreground hover:underline">场景推荐</Link>）</li>
+                <li>• 想对比多个 API 的测评数据（请看 <Link href="/api-review" className="text-foreground hover:underline">API 测评</Link>）</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* 常见问题 */}
+          <div className="mx-8 mb-8">
+            <h3 className="mb-4 text-base font-semibold text-foreground">常见问题</h3>
+            <div className="space-y-3">
+              {[
+                {
+                  q: `${api.name} 有免费额度吗？`,
+                  a: api.free ? `有，${api.free}。建议先用免费额度测试真实任务，确认满足需求后再充值。` : '请查看上方教程中的额度和计费说明，建议先小额充值测试。',
+                },
+                {
+                  q: `注册 ${api.name} 需要什么？`,
+                  a: needProxy
+                    ? '需要能接收验证码的邮箱、稳定的代理网络和国际信用卡（或虚拟信用卡）。'
+                    : '手机号或邮箱即可注册，支持支付宝/微信充值。部分 API 需要实名认证。',
+                },
+                {
+                  q: 'API Key 泄露了怎么办？',
+                  a: '立即到控制台删除泄露的 Key 并重新生成。建议把 Key 存在环境变量或 .env 文件中，不要提交到 Git 仓库。',
+                },
+              ].map((faq) => (
+                <div key={faq.q} className="rounded-lg border border-border bg-card px-5 py-4">
+                  <h4 className="text-sm font-semibold text-foreground">{faq.q}</h4>
+                  <p className="mt-1.5 text-sm leading-6 text-muted-foreground">{faq.a}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* 相关教程推荐 */}
           {relatedAPIs.length > 0 && (
             <div className="mx-8 mb-8 border-t border-border pt-6">
@@ -433,7 +542,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
               按实际使用场景选择，找到最适合你的模型。
             </p>
             <Link href="/use-case">
-              <Button variant="outline" size="sm">查看场景推荐 &#8594;</Button>
+              <Button variant="outline" size="sm">按使用场景选择 AI API &#8594;</Button>
             </Link>
           </div>
         </main>
@@ -443,6 +552,15 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
           <div className="sticky top-20">
             <p className="mb-3 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">On this page</p>
             <nav className="space-y-0.5 border-l border-border">
+              {/* 教程概览 */}
+              {(tutorial.estimatedTime || tutorial.prerequisites || tutorial.successSign || tutorial.commonPitfall || tutorial.securityReminder) && (
+                <a
+                  href="#tutorial-overview"
+                  className="block truncate py-1.5 pl-3 text-[12px] text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  教程概览
+                </a>
+              )}
               {tutorial.steps.map((step, i) => (
                 <a
                   key={i}

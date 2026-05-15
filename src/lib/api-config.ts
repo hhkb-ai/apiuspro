@@ -9,6 +9,9 @@ export interface TutorialStep {
   codeExplanation?: string;
   warning?: string;
   important?: boolean;
+  whereToClick?: string;
+  expectedResult?: string;
+  failureChecklist?: string[];
 }
 
 export interface Tutorial {
@@ -18,6 +21,11 @@ export interface Tutorial {
   tips?: string[];
   warnings?: string[];
   advantages?: string[];
+  estimatedTime?: string;
+  prerequisites?: string[];
+  successSign?: string;
+  commonPitfall?: string;
+  securityReminder?: string;
 }
 
 export interface APIConfig {
@@ -60,7 +68,10 @@ export const apiList: APIConfig[] = [
             '确认账号已经绑定邮箱，只用手机号注册的账号建议先补绑邮箱',
             '国内用户准备支付宝或微信支付，海外用户可准备 Apple Pay 或信用卡',
             '国内用户充值或购买前通常需要完成实名认证'
-          ]
+          ],
+          whereToClick: '浏览器访问 id.mi.com → 登录或注册',
+          expectedResult: '小米账号页面显示已绑定邮箱，账号状态正常',
+          failureChecklist: ['手机号注册的账号是否已补绑邮箱', '国内用户是否已完成实名认证']
         },
         {
           title: '登录 MiMo 开放平台',
@@ -70,7 +81,10 @@ export const apiList: APIConfig[] = [
             '访问 MiMo 开放平台：https://platform.xiaomimimo.com/',
             '使用小米账号完成登录',
             '登录后可查看文档、代币计划和控制台入口'
-          ]
+          ],
+          whereToClick: '浏览器访问 platform.xiaomimimo.com → 使用小米账号登录',
+          expectedResult: '登录后进入 MiMo 开放平台首页，可看到文档、代币计划和控制台入口',
+          failureChecklist: ['确认小米账号密码正确', '如提示账号异常，先到 id.mi.com 检查账号状态']
         },
         {
           title: '先领取免费额度',
@@ -82,6 +96,9 @@ export const apiList: APIConfig[] = [
             '等待审核，通过后回到平台的「订阅计划」页面查看 Token 额度',
             '免费 Token 有有效期，领取后建议尽快测试使用'
           ],
+          whereToClick: '访问 100t.xiaomimimo.com → 填写申请信息 → 提交',
+          expectedResult: '审核通过后，平台「订阅计划」页面出现赠送的 Token 额度',
+          failureChecklist: ['审核可能需要时间，耐心等待', '免费 Token 有有效期，领取后尽快测试使用'],
           warning: '免费额度规则、审核时间和有效期可能变化，请以 MiMo 官方页面为准。'
         },
         {
@@ -93,7 +110,10 @@ export const apiList: APIConfig[] = [
             '查看 Lite、Standard、Pro、Max 等套餐的月费、Credit 和适用场景',
             '购买前确认 Credit 与 Token 的换算规则',
             '首次购买、夜间调用或连续包月优惠以官方页面展示为准'
-          ]
+          ],
+          whereToClick: '顶部导航 → 「代币计划」或「控制台」',
+          expectedResult: '页面显示 Lite、Standard、Pro、Max 等套餐的月费和 Credit 信息',
+          failureChecklist: ['确认已登录正确的 MiMo 账号', '如看不到套餐信息，尝试刷新页面或更换浏览器']
         },
         {
           title: '创建并保存 API Key',
@@ -106,6 +126,9 @@ export const apiList: APIConfig[] = [
             '复制生成的 Key，并保存到密码管理器或本地安全位置',
             '忘记密钥内容时只能删除后重新创建'
           ],
+          whereToClick: '控制台左侧 → 「API 密钥」→ 「新建 API Key」',
+          expectedResult: '页面弹出一串以 sk- 开头的密钥字符串，可复制',
+          failureChecklist: ['确认已完成实名认证', '检查浏览器是否拦截了弹窗', '密钥只显示一次，复制后立即保存'],
           warning: 'API Key 只会完整显示一次，务必立即保存。'
         },
         {
@@ -117,6 +140,9 @@ export const apiList: APIConfig[] = [
             '配置 Base URL：https://api.xiaomimimo.com/v1',
             '模型可先选择 mimo-v2-flash（更快）或 mimo-v2-pro（更强）'
           ],
+          whereToClick: '终端运行 pip install openai python-dotenv，创建 .env 文件写入 MIMO_API_KEY',
+          expectedResult: 'Python 脚本成功打印模型的自我介绍回复，无报错',
+          failureChecklist: ['确认 MIMO_API_KEY 环境变量已正确设置', '检查 base_url 是否为 https://api.xiaomimimo.com/v1', '确认网络可访问 MiMo API 地址', '如报错 401，说明 API Key 无效或已过期'],
           codeLanguage: 'python',
           code: `import os
 from openai import OpenAI
@@ -145,7 +171,12 @@ print(response.choices[0].message.content)`,
         '不要在前端、公开仓库或截图中暴露 API Key',
         '首次使用建议先了解免费额度和计费规则'
       ],
-      advantages: ['推理能力强', '数学能力突出', '小米出品', '国内直连']
+      advantages: ['推理能力强', '数学能力突出', '小米出品', '国内直连'],
+      estimatedTime: '约 10 分钟',
+      prerequisites: ['小米账号（建议绑定邮箱）', '支付宝或微信支付（海外可用 Apple Pay 或信用卡）'],
+      successSign: '控制台「API 密钥」页面出现以 sk- 开头的密钥，Python 脚本成功打印模型回复',
+      commonPitfall: '只用手机号注册的小米账号没有绑邮箱，导致登录或找回密码受限；国内用户未完成实名认证导致无法购买',
+      securityReminder: 'API Key 只会完整显示一次，复制后立即保存到密码管理器或 .env 文件，不要提交到公开仓库或前端代码'
     }
   },
   {
@@ -170,7 +201,10 @@ print(response.choices[0].message.content)`,
             '访问 DeepSeek 开放平台：https://platform.deepseek.com',
             '点击 Sign Up 或登录入口创建账号',
             '按页面提示完成手机号、邮箱或扫码登录'
-          ]
+          ],
+          whereToClick: '浏览器访问 platform.deepseek.com → 点击 Sign Up 或登录入口',
+          expectedResult: '成功登录 DeepSeek 开放平台，能看到控制台首页',
+          failureChecklist: ['确认手机号或邮箱能正常接收验证码', '如扫码登录失败，尝试手机号方式']
         },
         {
           title: '完成实名认证',
@@ -181,6 +215,9 @@ print(response.choices[0].message.content)`,
             '个人开发者按要求提交身份证与人脸识别',
             '企业用户提交营业执照及相关证明材料'
           ],
+          whereToClick: '账号设置或个人中心 → 实名认证',
+          expectedResult: '认证状态显示为「已通过」',
+          failureChecklist: ['身份证照片是否清晰、未过期', '人脸识别时光线是否充足', '企业认证是否上传了有效营业执照'],
           warning: '认证通过后再创建密钥和充值，流程会更顺。'
         },
         {
@@ -194,6 +231,9 @@ print(response.choices[0].message.content)`,
             '为密钥命名，避免空格和特殊字符',
             '复制完整密钥并保存到安全位置'
           ],
+          whereToClick: '控制台 → API Keys 管理页面 → Create API Key / Generate New Token',
+          expectedResult: '页面显示一串密钥字符串，可复制',
+          failureChecklist: ['确认实名认证已通过', '密钥命名避免空格和特殊字符', '复制后立即保存，关闭页面后无法再次查看'],
           warning: 'DeepSeek API Key 通常只完整显示一次，不要提交到 GitHub 或写进客户端代码。'
         },
         {
@@ -205,7 +245,10 @@ print(response.choices[0].message.content)`,
             '选择合适充值档位，例如 10、20、50 或 100 元',
             '可使用支付宝、微信等本地支付方式',
             '支付成功后检查账户余额是否更新'
-          ]
+          ],
+          whereToClick: '控制台 → 账单/余额/Usage 页面 → 选择充值档位 → 支付',
+          expectedResult: '账户余额显示充值金额，可用额度大于 0',
+          failureChecklist: ['确认支付宝/微信支付是否成功扣款', '余额未更新时等待几分钟后刷新', '确认充值到了正确的 DeepSeek 账号']
         },
         {
           title: '配置环境变量并首次调用',
@@ -216,6 +259,9 @@ print(response.choices[0].message.content)`,
             '将 DEEPSEEK_API_KEY 写入环境变量或 .env',
             'base_url 指向 https://api.deepseek.com'
           ],
+          whereToClick: '终端运行 pip install openai python-dotenv，创建 .env 写入 DEEPSEEK_API_KEY',
+          expectedResult: 'Python 脚本成功打印模型的自我介绍回复，无报错',
+          failureChecklist: ['确认 DEEPSEEK_API_KEY 环境变量已正确设置', '检查 base_url 是否为 https://api.deepseek.com', '如报错 401，说明 API Key 无效或已过期'],
           codeLanguage: 'python',
           code: `import os
 from openai import OpenAI
@@ -243,6 +289,9 @@ print(response.choices[0].message.content)`,
             'deepseek-v4-pro：推理能力更强，适合复杂代码、长文档和技术问答',
             '在控制台查看用量、余额和预算告警'
           ],
+          whereToClick: '控制台 → 模型列表或文档页面',
+          expectedResult: '页面显示 deepseek-chat、deepseek-v4-flash、deepseek-v4-pro 等模型名称和价格',
+          failureChecklist: ['确认当前使用的模型名称拼写正确', '在控制台查看用量是否正常累计'],
           warning: '模型名称、免费试用和价格会随平台调整，正式使用前请以控制台和官方文档为准。'
         }
       ],
@@ -255,7 +304,12 @@ print(response.choices[0].message.content)`,
         '不要在前端、公开仓库或截图中暴露 API Key',
         '所有调用都会按模型计价扣除余额，建议定期查看用量'
       ],
-      advantages: ['性价比高', '国内直连', 'OpenAI 兼容接口', '代码与推理能力强']
+      advantages: ['性价比高', '国内直连', 'OpenAI 兼容接口', '代码与推理能力强'],
+      estimatedTime: '约 10 分钟',
+      prerequisites: ['手机号或邮箱（用于注册 DeepSeek 账号）', '支付宝或微信支付（用于充值）'],
+      successSign: 'API Keys 页面显示有效密钥，Python 脚本成功打印模型回复，控制台余额已更新',
+      commonPitfall: '未完成实名认证导致无法创建密钥或充值；API Key 只显示一次忘记复制',
+      securityReminder: 'API Key 不要提交到 GitHub、前端代码或截图中，建议保存在 .env 或环境变量里'
     }
   },
   {
@@ -280,7 +334,10 @@ print(response.choices[0].message.content)`,
             '访问阿里云官网：https://aliyun.com，使用手机号或邮箱注册账号',
             '进入「账号管理」中的「账号认证」',
             '按个人或企业身份完成实名认证'
-          ]
+          ],
+          whereToClick: '浏览器访问 aliyun.com → 注册或登录 → 账号管理 → 账号认证',
+          expectedResult: '阿里云账号状态显示「已实名认证」',
+          failureChecklist: ['手机号是否能正常接收验证码', '实名认证信息是否与身份证一致']
         },
         {
           title: '开通百炼或 DashScope 服务',
@@ -290,7 +347,10 @@ print(response.choices[0].message.content)`,
             '进入 https://bailian.console.aliyun.com 或 https://dashscope.console.aliyun.com',
             '搜索或找到「通义千问」服务并点击开通',
             '新用户免费额度以控制台当前展示为准'
-          ]
+          ],
+          whereToClick: '访问 bailian.console.aliyun.com 或 dashscope.console.aliyun.com → 搜索「通义千问」→ 开通',
+          expectedResult: '控制台显示已开通服务，可看到免费额度信息',
+          failureChecklist: ['确认实名认证已完成', '如提示权限不足，检查账号类型是否支持开通']
         },
         {
           title: '创建并保存 API Key',
@@ -302,6 +362,9 @@ print(response.choices[0].message.content)`,
             '点击「创建 API-KEY」',
             '复制以 sk- 开头的密钥，并保存到安全位置'
           ],
+          whereToClick: '控制台 → 「API-KEY 管理」→ 「创建 API-KEY」',
+          expectedResult: '页面显示以 sk- 开头的密钥字符串，可复制',
+          failureChecklist: ['确认服务已开通', '复制后立即保存到安全位置', '关闭页面后通常无法再次查看完整密钥'],
           warning: 'API Key 通常只完整显示一次，不要写入前端代码或公开仓库。'
         },
         {
@@ -313,6 +376,9 @@ print(response.choices[0].message.content)`,
             '设置 DASHSCOPE_API_KEY 环境变量',
             'base_url 使用 DashScope 兼容模式地址'
           ],
+          whereToClick: '终端运行 pip install openai python-dotenv，创建 .env 写入 DASHSCOPE_API_KEY',
+          expectedResult: 'Python 脚本成功打印模型回复，无报错',
+          failureChecklist: ['确认 DASHSCOPE_API_KEY 环境变量已设置', '检查 base_url 是否为 DashScope 兼容模式地址', '如报错 401，检查 API Key 是否正确'],
           codeLanguage: 'python',
           code: `import os
 from openai import OpenAI
@@ -340,6 +406,9 @@ print(response.choices[0].message.content)`,
             'Qwen-Max：适合复杂推理、深度创作和企业级高质量任务',
             'Qwen-Long：适合长文档总结、论文分析、合同解析和代码仓库理解'
           ],
+          whereToClick: '控制台 → 模型列表或文档页面',
+          expectedResult: '页面显示 Qwen-Turbo、Qwen-Plus、Qwen-Max、Qwen-Long 等模型名称和价格',
+          failureChecklist: ['确认模型名称拼写正确', '首次使用建议从 qwen-plus 开始测试'],
           warning: '模型价格、免费额度和上下文长度会随平台更新，正式购买前以控制台为准。'
         },
         {
@@ -350,7 +419,10 @@ print(response.choices[0].message.content)`,
             '在「模型用量」页面查看剩余额度',
             '免费额度用尽后按输入和输出 Token 计费',
             '批量推理或缓存能力可进一步降低成本'
-          ]
+          ],
+          whereToClick: '控制台 → 「模型用量」页面',
+          expectedResult: '页面显示已使用的 Token 数量和剩余额度',
+          failureChecklist: ['确认查看的是正确的账号和区域', '免费额度用尽后会按量计费']
         }
       ],
       tips: [
@@ -362,7 +434,12 @@ print(response.choices[0].message.content)`,
         '实名认证完成前，部分服务可能无法开通',
         '不要把 API Key 写入公开代码、截图或客户端页面'
       ],
-      advantages: ['免费额度大', '国内直连', 'OpenAI 兼容接口', '模型选择丰富']
+      advantages: ['免费额度大', '国内直连', 'OpenAI 兼容接口', '模型选择丰富'],
+      estimatedTime: '约 10 分钟',
+      prerequisites: ['阿里云账号（手机号或邮箱注册）', '支付宝或微信支付（用于购买资源包）'],
+      successSign: 'API-KEY 管理页面出现以 sk- 开头的密钥，Python 脚本成功打印模型回复',
+      commonPitfall: '未完成阿里云实名认证导致无法开通百炼/DashScope 服务；API Key 只显示一次忘记复制',
+      securityReminder: 'API Key 通常只完整显示一次，不要写入前端代码或公开仓库，建议保存在环境变量中'
     }
   },
   {
@@ -387,7 +464,10 @@ print(response.choices[0].message.content)`,
             '访问智谱AI开放平台：https://open.bigmodel.cn',
             '点击右上角「登录 / 注册」',
             '确认进入 BigModel 控制台入口'
-          ]
+          ],
+          whereToClick: '浏览器访问 open.bigmodel.cn → 右上角「登录/注册」',
+          expectedResult: '进入 BigModel 控制台登录页面',
+          failureChecklist: ['确认浏览器可正常访问 open.bigmodel.cn', '如页面加载异常，尝试清除缓存或更换浏览器']
         },
         {
           title: '完成账号注册与登录',
@@ -397,7 +477,10 @@ print(response.choices[0].message.content)`,
             '选择「手机号注册」或「邮箱注册」',
             '填写验证码并完成注册',
             '使用注册手机号、邮箱和密码登录'
-          ]
+          ],
+          whereToClick: '选择手机号或邮箱注册 → 填写验证码 → 完成注册',
+          expectedResult: '成功登录平台，可看到控制台首页',
+          failureChecklist: ['确认手机号或邮箱能接收验证码', '如验证码未收到，检查垃圾邮件或稍后重试']
         },
         {
           title: '完成实名认证',
@@ -409,6 +492,9 @@ print(response.choices[0].message.content)`,
             '个人上传身份证信息，企业上传营业执照信息',
             '等待审核通过，通常几分钟内完成'
           ],
+          whereToClick: '控制台或账号设置 → 个人中心 → 实名认证',
+          expectedResult: '认证状态显示「已通过」，通常几分钟内完成',
+          failureChecklist: ['身份证照片是否清晰且未过期', '企业认证是否上传了有效营业执照', '如审核时间过长，联系智谱客服'],
           warning: '实名认证未完成时，API 额度开通、资源包购买等功能可能受限。'
         },
         {
@@ -422,6 +508,9 @@ print(response.choices[0].message.content)`,
             '复制生成的 API Key / Secret Key',
             '立即保存到本地安全位置'
           ],
+          whereToClick: '控制台 → 「API 密钥管理」或「Access Key」→ 「创建 API Key」',
+          expectedResult: '页面显示生成的 API Key / Secret Key，可复制',
+          failureChecklist: ['确认实名认证已通过', '复制后立即保存，关闭页面后可能无法再次查看'],
           warning: '关闭页面后密钥通常不会再完整显示，不要写入公开仓库或前端代码。'
         },
         {
@@ -433,7 +522,10 @@ print(response.choices[0].message.content)`,
             '在账户页面选择资源包或充值',
             '可使用微信或支付宝完成支付',
             '支付后回到控制台确认额度或余额'
-          ]
+          ],
+          whereToClick: '控制台 → 「财务」→ 选择资源包或充值',
+          expectedResult: '账户余额或资源包额度已更新',
+          failureChecklist: ['确认支付是否成功扣款', '如余额未更新，等待几分钟后刷新页面']
         },
         {
           title: '查看 Coding Plan 接入指南',
@@ -444,7 +536,10 @@ print(response.choices[0].message.content)`,
             '打开「接入指南」查看官方 API 接入步骤',
             '按所选模型复制调用参数和密钥配置',
             '先小规模测试，再扩大并发或正式接入业务'
-          ]
+          ],
+          whereToClick: '进入 Coding Plan 页面 → 打开「接入指南」',
+          expectedResult: '页面显示官方 API 接入步骤、调用参数和密钥配置说明',
+          failureChecklist: ['确认所选模型与购买的资源包匹配', '先小规模测试再正式接入']
         }
       ],
       tips: [
@@ -456,7 +551,12 @@ print(response.choices[0].message.content)`,
         '实名认证完成前，额度开通和资源包购买可能不可用',
         '密钥关闭页面后可能无法再次完整查看，请生成后立即保存'
       ],
-      advantages: ['国内直连', '免费体验额度', 'GLM 系列模型', 'Coding Plan 接入指南']
+      advantages: ['国内直连', '免费体验额度', 'GLM 系列模型', 'Coding Plan 接入指南'],
+      estimatedTime: '约 10 分钟',
+      prerequisites: ['手机号或邮箱（注册智谱AI账号）', '身份证信息（用于实名认证）', '支付宝或微信（购买资源包）'],
+      successSign: 'API 密钥管理页面出现有效的 API Key，控制台显示可用额度',
+      commonPitfall: '未完成实名认证导致无法开通额度或购买资源包；关闭密钥页面后无法再次查看完整密钥',
+      securityReminder: 'API Key 关闭页面后通常无法再次完整查看，生成后立即保存到安全位置，不要写入公开仓库或前端代码'
     }
   },
   {
@@ -481,7 +581,10 @@ print(response.choices[0].message.content)`,
             '进入 https://platform.moonshot.cn 或 https://platform.kimi.ai',
             '使用手机号或企业邮箱注册并登录',
             '本地调试建议准备 Python 3.10+ 或 Node.js 环境'
-          ]
+          ],
+          whereToClick: '浏览器访问 platform.moonshot.cn 或 platform.kimi.ai → 注册或登录',
+          expectedResult: '成功登录 Kimi 开放平台，可看到控制台和 API Keys 入口',
+          failureChecklist: ['手机号是否能接收验证码', '如企业邮箱注册失败，尝试手机号方式']
         },
         {
           title: '创建并保存 API Key',
@@ -493,6 +596,9 @@ print(response.choices[0].message.content)`,
             '填写应用名称，例如 my-first-api',
             '复制生成的 sk-xxx 密钥，并配置到环境变量'
           ],
+          whereToClick: '用户中心 → API Keys 页面 → 「创建新密钥」',
+          expectedResult: '页面显示 sk-xxx 格式的密钥，可复制',
+          failureChecklist: ['密钥命名避免空格和特殊字符', '复制后立即配置到环境变量', '关闭页面后无法再次查看完整密钥'],
           codeLanguage: 'bash',
           code: `export MOONSHOT_API_KEY="sk-your-api-key-here"
 
@@ -510,6 +616,9 @@ $env:MOONSHOT_API_KEY="sk-your-api-key-here"`,
             'Authorization 使用 Bearer $MOONSHOT_API_KEY',
             '返回 JSON 回复即代表基础调用成功'
           ],
+          whereToClick: '终端运行 curl 命令（见下方代码块）',
+          expectedResult: '返回 JSON 格式的 AI 回复，HTTP 状态码 200',
+          failureChecklist: ['确认 MOONSHOT_API_KEY 环境变量已设置', '检查 Authorization 请求头格式为 Bearer sk-xxx', '如超时，将超时时间设为 60 秒以上'],
           codeLanguage: 'bash',
           code: `curl -X POST https://api.moonshot.cn/v1/chat/completions \\
   -H "Content-Type: application/json" \\
@@ -533,6 +642,9 @@ $env:MOONSHOT_API_KEY="sk-your-api-key-here"`,
             'moonshot-v1-128k：适合长文档处理和资料问答',
             'kimi-k2.5 / kimi-k2.6：适合深度推理、Agent 和多模态任务'
           ],
+          whereToClick: '开放平台文档或控制台 → 模型列表',
+          expectedResult: '页面显示 moonshot-v1-8k/32k/128k、kimi-k2.5/k2.6 等模型信息',
+          failureChecklist: ['确认模型名称拼写正确', '首次使用建议从 moonshot-v1-8k 开始测试'],
           warning: '模型列表、免费额度和价格可能变化，购买前以开放平台控制台为准。'
         },
         {
@@ -544,6 +656,9 @@ $env:MOONSHOT_API_KEY="sk-your-api-key-here"`,
             'LobeChat 等客户端：填写 API Key、API 地址和模型名称',
             'OpenClaw 等 Agent 工具：按 OpenAI Provider 方式配置'
           ],
+          whereToClick: '项目代码中设置 api_key 和 base_url，或在客户端填写 API Key 和 API 地址',
+          expectedResult: '代码调用成功返回 AI 回复，或客户端显示连接成功',
+          failureChecklist: ['base_url 是否为 https://api.moonshot.cn/v1', '客户端是否选择了正确的 OpenAI 兼容接口模式'],
           codeLanguage: 'python',
           code: `import os
 from openai import OpenAI
@@ -571,7 +686,10 @@ print(completion.choices[0].message.content)`,
             '请求超时：把超时时间设置到 60 秒以上，并检查网络连通性',
             'HTTP 429：降低并发，加入延迟重试',
             '响应异常：检查模型名称、messages 结构和 Content-Type'
-          ]
+          ],
+          whereToClick: '检查终端报错信息或控制台返回的 HTTP 状态码',
+          expectedResult: '定位到具体错误原因并修复',
+          failureChecklist: ['401/403：API Key 无效或过期', '429：触发速率限制，降低并发并加入重试', '超时：检查网络连通性并增加超时时间', '响应异常：检查 model、messages 结构和 Content-Type']
         }
       ],
       tips: [
@@ -583,7 +701,12 @@ print(completion.choices[0].message.content)`,
         '不要把 API Key 写入前端代码或公开仓库',
         '免费额度通常有速率限制，批量任务建议做并发控制和失败重试'
       ],
-      advantages: ['国内直连', 'OpenAI 兼容接口', '超长上下文', '客户端集成方便']
+      advantages: ['国内直连', 'OpenAI 兼容接口', '超长上下文', '客户端集成方便'],
+      estimatedTime: '约 10 分钟',
+      prerequisites: ['手机号或企业邮箱（注册 Kimi 开放平台账号）', 'Python 3.10+ 或 Node.js 环境（本地调试用）'],
+      successSign: 'API Keys 页面显示有效密钥，curl 测试命令返回 JSON 格式的 AI 回复',
+      commonPitfall: 'API Key 只显示一次忘记复制；请求超时未设置足够长的超时时间；HTTP 429 速率限制未做重试',
+      securityReminder: 'API Key 通常只显示一次，不要写进前端代码、公开仓库或截图里，建议用环境变量管理'
     }
   },
   {
@@ -608,7 +731,10 @@ print(completion.choices[0].message.content)`,
             '访问腾讯云官网注册账号：https://cloud.tencent.com，国内用户按提示完成实名认证',
             '登录后进入「混元大模型控制台」',
             '阅读并同意服务条款，点击「立即开通」'
-          ]
+          ],
+          whereToClick: '浏览器访问 cloud.tencent.com → 注册/登录 → 混元大模型控制台 → 立即开通',
+          expectedResult: '控制台显示混元服务已开通，可看到模型列表和 API 入口',
+          failureChecklist: ['确认已完成腾讯云实名认证', '如提示权限不足，检查账号是否为企业认证']
         },
         {
           title: '创建并保存密钥',
@@ -620,6 +746,9 @@ print(completion.choices[0].message.content)`,
             '填写参数和昵称后生成 SecretId / SecretKey',
             '立即复制保存，后续代码调用需要用到'
           ],
+          whereToClick: '控制台 → API 密钥页面 → 创建密钥',
+          expectedResult: '页面显示 SecretId 和 SecretKey，可复制',
+          failureChecklist: ['填写参数和昵称后才能生成密钥', 'SecretKey 只显示一次，复制后立即保存'],
           warning: 'SecretKey 只应保存在本地环境变量或服务端配置中，不要提交到公开仓库。'
         },
         {
@@ -631,6 +760,9 @@ print(completion.choices[0].message.content)`,
             'base_url 设置为 https://api.hunyuan.cloud.tencent.com/v1',
             '先用 hunyuan-turbos-latest 做基础对话测试'
           ],
+          whereToClick: '终端运行 pip install openai，创建 .env 写入 TENCENT_SECRET_KEY',
+          expectedResult: 'Python 脚本成功打印腾讯混元的自我介绍回复，无报错',
+          failureChecklist: ['确认 TENCENT_SECRET_KEY 环境变量已设置', '检查 base_url 是否为 https://api.hunyuan.cloud.tencent.com/v1', '如报错 401，检查密钥是否正确'],
           codeLanguage: 'python',
           code: `import os
 from openai import OpenAI
@@ -658,6 +790,9 @@ print(completion.choices[0].message.content)`,
             'hunyuan-t1-latest：适合复杂推理、逻辑分析和代码调试',
             'hunyuan-vision / Hunyuan-MT-7B：分别面向多模态和翻译任务'
           ],
+          whereToClick: '控制台 → 模型列表或文档页面',
+          expectedResult: '页面显示 hunyuan-lite、hunyuan-turbos-latest、hunyuan-t1-latest 等模型信息',
+          failureChecklist: ['确认模型名称拼写正确', '首次测试建议用 hunyuan-turbos-latest'],
           warning: '免费额度、后付费规则和模型价格可能调整，正式使用前以腾讯云控制台为准。'
         },
         {
@@ -668,7 +803,10 @@ print(completion.choices[0].message.content)`,
             '聊天类应用建议开启 stream，提升实时交互体验',
             '复杂项目可使用 LangChain 的 ChatHunyuan',
             'PHP、Java 等语言也可通过腾讯云官方 SDK 调用'
-          ]
+          ],
+          whereToClick: '代码中设置 stream=True，或引入 LangChain 的 ChatHunyuan',
+          expectedResult: '实时逐字输出 AI 回复，或 LangChain 集成调用成功',
+          failureChecklist: ['确认 SDK 版本支持流式输出', 'LangChain 集成需额外安装依赖']
         },
         {
           title: '集成到应用框架',
@@ -678,7 +816,10 @@ print(completion.choices[0].message.content)`,
             'LobeChat：选择模型提供商为腾讯混元，填写 API Key 后检查连接',
             'Dify / HAI：在模型供应商中选择 Tencent Hunyuan 并配置密钥',
             'LangChain Embedding：设置密钥后使用社区集成生成向量'
-          ]
+          ],
+          whereToClick: 'LobeChat/Dify/HAI 的模型供应商设置中选择腾讯混元并填写 API Key',
+          expectedResult: '应用框架显示连接成功，可正常调用混元模型',
+          failureChecklist: ['确认 API Key 格式正确', '检查网络是否可访问腾讯云 API 地址']
         }
       ],
       tips: [
@@ -690,7 +831,12 @@ print(completion.choices[0].message.content)`,
         '混元 API 通常为后付费模式，建议在费用中心开启预算或费用预警',
         '批量调用前先小规模测试模型效果、延迟和成本'
       ],
-      advantages: ['国内直连', '腾讯云生态', 'OpenAI 兼容接口', '多模型选择', '适合企业集成']
+      advantages: ['国内直连', '腾讯云生态', 'OpenAI 兼容接口', '多模型选择', '适合企业集成'],
+      estimatedTime: '约 10 分钟',
+      prerequisites: ['腾讯云账号（手机号注册，需实名认证）', '支付宝或微信支付（用于后付费或购买资源包）'],
+      successSign: 'API 密钥页面显示有效的 SecretId/SecretKey，Python 脚本成功打印模型回复',
+      commonPitfall: '未完成实名认证导致无法开通混元服务；SecretKey 只显示一次忘记复制保存',
+      securityReminder: 'SecretKey 只应保存在本地环境变量或服务端配置中，不要提交到公开仓库或前端代码'
     }
   },
   {
@@ -714,7 +860,10 @@ print(completion.choices[0].message.content)`,
             '访问火山引擎官网：https://volcengine.com 或豆包大模型官网入口',
             '使用手机号、邮箱或企业账号注册并登录',
             '按页面提示完成实名认证，企业使用建议走企业认证'
-          ]
+          ],
+          whereToClick: '浏览器访问 volcengine.com → 注册或登录 → 按提示完成实名认证',
+          expectedResult: '成功登录火山引擎控制台，账号状态正常',
+          failureChecklist: ['手机号是否能接收验证码', '企业使用建议走企业认证流程']
         },
         {
           title: '进入火山方舟并开通服务',
@@ -725,6 +874,9 @@ print(completion.choices[0].message.content)`,
             '按业务场景选择文本、视觉、语音、Embedding 或代码模型',
             '如控制台要求创建推理接入点，先创建一个测试用 Endpoint'
           ],
+          whereToClick: '控制台搜索「火山方舟」或「豆包大模型」→ 进入模型服务页面 → 阅读并同意协议',
+          expectedResult: '模型服务页面显示已开通，可看到可用模型列表',
+          failureChecklist: ['确认已完成实名认证', '如要求创建推理接入点，先创建一个测试用 Endpoint'],
           warning: '模型名称、区域和接入点 ID 可能会随控制台更新，请以当前控制台展示为准。'
         },
         {
@@ -737,6 +889,9 @@ print(completion.choices[0].message.content)`,
             '复制生成的 API Key，并保存到密码管理器或服务器环境变量',
             '为正式业务单独创建密钥，方便后续轮换和权限隔离'
           ],
+          whereToClick: '控制台 → 「API Key 管理」或「密钥管理」→ 创建密钥',
+          expectedResult: '页面显示生成的 API Key，可复制',
+          failureChecklist: ['为密钥添加便于识别的名称', '复制后立即保存到密码管理器或环境变量', '为正式业务单独创建密钥'],
           warning: 'API Key 不要写进前端代码、公开仓库、截图或客户端安装包。'
         },
         {
@@ -748,6 +903,9 @@ print(completion.choices[0].message.content)`,
             'base_url 可参考控制台接入说明，常见地址为 https://ark.cn-beijing.volces.com/api/v3',
             'model 填写控制台提供的模型名或推理接入点 ID'
           ],
+          whereToClick: '终端运行 pip install openai，创建 .env 写入 ARK_API_KEY',
+          expectedResult: 'Python 脚本成功打印模型回复，无报错',
+          failureChecklist: ['确认 ARK_API_KEY 环境变量已设置', 'base_url 参考控制台接入说明', 'model 填写控制台里的实际模型名或推理接入点 ID', '不同区域接入地址可能不同'],
           codeLanguage: 'python',
           code: `import os
 from openai import OpenAI
@@ -774,7 +932,10 @@ print(response.choices[0].message.content)`,
             '复杂推理或代码任务：选择更高能力的旗舰或代码模型',
             '图像、语音、Embedding 等任务：选择对应专项模型',
             '购买前查看计费项、免费额度、资源包有效期和后付费开关'
-          ]
+          ],
+          whereToClick: '控制台 → 模型列表或计费页面',
+          expectedResult: '页面显示文本、视觉、语音、Embedding、代码等模型及价格信息',
+          failureChecklist: ['确认所选模型支持当前任务类型', '购买前查看免费额度和资源包有效期']
         },
         {
           title: '查看用量并控制成本',
@@ -784,7 +945,10 @@ print(response.choices[0].message.content)`,
             '为测试环境和生产环境使用不同 API Key',
             '开启余额提醒或预算告警',
             '批量任务先小规模压测，再放大并发和上下文长度'
-          ]
+          ],
+          whereToClick: '费用中心或方舟控制台 → 调用量/Token 消耗/余额',
+          expectedResult: '页面显示调用量统计、Token 消耗和账户余额',
+          failureChecklist: ['测试环境和生产环境使用不同 API Key', '开启余额提醒或预算告警']
         }
       ],
       tips: [
@@ -796,7 +960,12 @@ print(response.choices[0].message.content)`,
         '价格、免费额度和模型列表会随平台更新，购买前以火山引擎控制台为准',
         'API Key 泄露后应立即禁用旧密钥并重新创建'
       ],
-      advantages: ['国内直连', '字节生态', '模型选择丰富', '性价比高', 'OpenAI 兼容接入']
+      advantages: ['国内直连', '字节生态', '模型选择丰富', '性价比高', 'OpenAI 兼容接入'],
+      estimatedTime: '约 10 分钟',
+      prerequisites: ['火山引擎账号（手机号或邮箱注册，需实名认证）', '支付宝或微信支付（用于购买资源包或充值）'],
+      successSign: 'API Key 管理页面显示有效密钥，Python 脚本成功打印模型回复',
+      commonPitfall: '模型名称或推理接入点 ID 填写错误导致调用失败；不同区域的接入地址不同，复制控制台参数最稳',
+      securityReminder: 'API Key 不要写进前端代码、公开仓库、截图或客户端安装包，泄露后应立即禁用并重新创建'
     }
   },
   // ---------- 需要代理 ----------
@@ -822,7 +991,10 @@ print(response.choices[0].message.content)`,
             'Plus · $20/月 — 可用 GPT-5.5 Standard 和 Thinking 模型，99% 个人用户最佳选择',
             'Pro · $100/月 — 全部模型可用，编程次数是 Plus 的 5 倍，适合重度开发者',
             'Pro · $200/月 — 全部模型可用，编程次数是 Plus 的 20 倍，适合顶尖科研'
-          ]
+          ],
+          whereToClick: '浏览器访问 chatgpt.com → 登录 → 查看套餐页面',
+          expectedResult: '页面显示 Go/Plus/Pro/Pro 200 四档套餐的价格和功能对比',
+          failureChecklist: ['确认已登录 OpenAI 账号', '如看不到套餐页面，检查网络是否可正常访问']
         },
         {
           title: '准备一：注册 OpenAI 账号',
@@ -833,6 +1005,9 @@ print(response.choices[0].message.content)`,
             '使用海外手机号验证服务（有新号被封风险，自行承担，请选择合规平台）',
             '买成品号（最省事）：在可靠代充平台购买已注册好的现成账号，请选择合规平台'
           ],
+          whereToClick: '浏览器访问 chatgpt.com → 点击 Sign up → 用邮箱注册',
+          expectedResult: '注册成功并登录 ChatGPT 对话界面',
+          failureChecklist: ['国内手机号可能收不到验证码，尝试海外手机号验证或购买成品号', '确认邮箱能正常接收验证邮件'],
           warning: '购买现成账号时一定要选可靠的代充平台，避免买到被盗或被封的账号。'
         },
         {
@@ -843,6 +1018,9 @@ print(response.choices[0].message.content)`,
             '建议使用稳定节点，避免频繁切换 IP',
             '不稳定的网络可能导致支付中途断开、账号被风控'
           ],
+          whereToClick: '确保网络可访问 chatgpt.com 和 platform.openai.com',
+          expectedResult: '两个网站均可正常打开，无连接超时或被拦截',
+          failureChecklist: ['避免频繁切换 IP，否则账号可能被风控', '不稳定的网络可能导致支付中途断开'],
           warning: '确保网络环境稳定，避免频繁切换 IP，否则账号可能被风控封禁。'
         },
         {
@@ -853,6 +1031,9 @@ print(response.choices[0].message.content)`,
             '美区 Apple ID（iPhone 用户）：注册美区 Apple ID，通过正规渠道购礼品卡充值，通过 ChatGPT App 内购订阅（价格比官网贵，含苹果抽成）',
             '虚拟信用卡（不推荐新手）：风控极严、失败率高，需交开卡费，平台有跑路风险'
           ],
+          whereToClick: '根据自身情况选择：代充平台、美区 Apple ID 或虚拟信用卡',
+          expectedResult: '确认选定的支付方式可用，支付渠道已准备就绪',
+          failureChecklist: ['代充平台是否有口碑和售后保障', '是否确认不需要提供密码和信用卡信息给代充平台'],
           warning: '选择代充平台时请仔细甄别，优先选择有口碑、有售后的大平台。'
         },
         {
@@ -865,7 +1046,10 @@ print(response.choices[0].message.content)`,
             '输入卡号、有效期、CVV（卡片背面三位安全码）和账单地址',
             '确认金额无误后提交，几秒钟验证通过，账号即刻升级',
             '注册邮箱会收到 OpenAI 确认邮件，在 ChatGPT 对话界面即可选择 GPT-5.5 模型'
-          ]
+          ],
+          whereToClick: 'chatgpt.com → 登录 → 左下角头像 → My Plan 或 Upgrade to Plus → 选套餐 → Upgrade',
+          expectedResult: '验证通过后账号立即升级，注册邮箱收到确认邮件，对话界面可选 GPT-5.5',
+          failureChecklist: ['账单地址必须与 IP 所在国家一致', '确认卡号、有效期和 CVV 填写正确', '如支付被拒，尝试更换网络节点']
         },
         {
           title: '路线二：App 内购（iPhone / 安卓）',
@@ -875,7 +1059,10 @@ print(response.choices[0].message.content)`,
             '选择套餐后通过 Apple Pay 或美区 Apple ID 余额支付（比官网贵，含苹果抽成）',
             '安卓：Google Play 下载 ChatGPT → 登录 → Settings → 升级入口 → Google Pay 支付',
             'App 内购的好处：支付在苹果/谷歌生态内完成，无需直接向 OpenAI 填信用卡'
-          ]
+          ],
+          whereToClick: 'iPhone: App Store 下载 ChatGPT → 登录 → 右上角设置 → Upgrade to ChatGPT Plus',
+          expectedResult: 'App 内显示已升级为 Plus/Pro，可选择 GPT-5.5 模型',
+          failureChecklist: ['确认 Apple ID 为美区且有足够余额', 'App 内购价格比官网贵约 30%（含苹果渠道费）']
         },
         {
           title: '路线三：API 按量购买（仅限开发者）',
@@ -886,6 +1073,9 @@ print(response.choices[0].message.content)`,
             'https://platform.openai.com → 登录 → Billing → 绑卡（与 ChatGPT 订阅是独立计费）',
             'API Keys → Create new secret key → 命名 → 创建 → 立刻复制保存'
           ],
+          whereToClick: 'platform.openai.com → 登录 → Billing → 绑卡 → API Keys → Create new secret key',
+          expectedResult: 'API Key 创建成功（格式 sk-xxx），可复制用于代码调用',
+          failureChecklist: ['API Key 只显示一次，创建后立即复制保存', 'API 计费与 ChatGPT 订阅是独立的两套系统'],
           codeLanguage: 'python',
           code: `# 先安装 openai 库：pip install openai
 import openai
@@ -912,6 +1102,9 @@ print(response.choices[0].message.content)`,
             '不建议国内用户尝试虚拟信用卡（VCC）方案，当前风控极严、成功率很低',
             '如果你需要把 GPT-5.5 接入自己的软件（API），也可以在代充平台购买 API 额度或代充值 OpenAI 账户余额'
           ],
+          whereToClick: '选择合规的代充平台或按自身情况选择苹果内购路线',
+          expectedResult: '支付完成，ChatGPT 账号已升级，可使用 GPT-5.5',
+          failureChecklist: ['代充平台是否承诺封号退款', '下单前是否搜索了平台评价', '优先选择有客服、支持退款的平台'],
           warning: '代充平台良莠不齐，下单前建议先搜索评价。优先选择有客服、支持退款的平台。'
         }
       ],
@@ -926,7 +1119,12 @@ print(response.choices[0].message.content)`,
         'API Key 绝对不要提交到公开仓库或前端代码',
         '海外手机号验证注册的账号存在被封风险，建议选择合规代充平台的成品账号'
       ],
-      advantages: ['零基础友好', '三条购买路线全覆盖', '四种套餐详细对比', '国内支付替代方案', '含 API 开发者教程']
+      advantages: ['零基础友好', '三条购买路线全覆盖', '四种套餐详细对比', '国内支付替代方案', '含 API 开发者教程'],
+      estimatedTime: '约 15 分钟',
+      prerequisites: ['Google 账号或邮箱（注册 OpenAI 账号）', '合适的网络环境（需能访问 OpenAI 官网）', 'Visa/Mastercard 国际信用卡或代充平台'],
+      successSign: 'ChatGPT 对话界面可选择 GPT-5.5 模型，或 API Key 创建成功并能完成代码调用',
+      commonPitfall: '国内手机号收不到验证码；支付时 IP 与账单地址国家不一致导致被风控；API Key 只显示一次忘记复制',
+      securityReminder: 'API Key 创建后仅显示一次，必须立刻复制保存。不要提交到公开仓库或前端代码，API 与 ChatGPT 订阅是两套独立计费系统'
     }
   },
   {
@@ -952,6 +1150,9 @@ print(response.choices[0].message.content)`,
             '不存在"完全稳定、绝对不封号"的个人订阅渠道',
             '最稳妥方式：找靠谱第三方中转平台，选提供长周期售后与封号质保的商家'
           ],
+          whereToClick: '仔细阅读本步骤的所有风险提示，不要跳过',
+          expectedResult: '充分了解 Claude 的封号风险，做好心理准备后再继续',
+          failureChecklist: ['是否理解不存在"绝对不封号"的个人订阅渠道', '是否准备好选择承诺封号退款的代充平台'],
           warning: 'Anthropic 风控全球最严，请务必认真对待以上风险提示。不要心存侥幸。'
         },
         {
@@ -961,7 +1162,10 @@ print(response.choices[0].message.content)`,
             'Claude Pro · $20/月 — 可用 Opus 4.7，有月度用量上限，适合轻度使用',
             'Claude Max 5x · $100/月 — 可用 Opus 4.7，使用额度约为 Pro 的 5 倍，适合重度依赖 AI 的专业人士',
             'Claude Max 20x · $200/月 — 可用 Opus 4.7，使用额度约为 Pro 的 20 倍，适合团队或核心生产力'
-          ]
+          ],
+          whereToClick: '浏览器访问 claude.ai → 登录 → 左下角头像 → Plans',
+          expectedResult: '页面显示 Pro($20)、Max 5x($100)、Max 20x($200) 三档套餐',
+          failureChecklist: ['确认已登录 Claude 账号', '如看不到套餐页面，检查网络环境']
         },
         {
           title: '准备一：注册 Google 账号',
@@ -969,7 +1173,10 @@ print(response.choices[0].message.content)`,
           items: [
             '浏览器打开 https://accounts.google.com/signup，按提示填写信息完成注册',
             '国内手机号可能收不到验证短信，可在可靠平台购买已注册好的 Google 账号'
-          ]
+          ],
+          whereToClick: '浏览器访问 accounts.google.com/signup → 按提示填写信息注册',
+          expectedResult: 'Google 账号注册成功，可正常登录',
+          failureChecklist: ['国内手机号可能收不到验证码', '可在可靠平台购买已注册好的 Google 账号']
         },
         {
           title: '准备二：合适的网络环境',
@@ -979,6 +1186,9 @@ print(response.choices[0].message.content)`,
             '建议使用稳定节点，避免频繁切换 IP',
             '账单地址、登录 IP、支付 IP 必须来自同一个国家，否则大概率触发风控被封'
           ],
+          whereToClick: '确保网络可顺畅访问 claude.ai',
+          expectedResult: 'claude.ai 可正常打开，无连接超时',
+          failureChecklist: ['账单地址、登录 IP、支付 IP 必须来自同一个国家', '频繁切换 IP 会触发风控被封'],
           warning: 'IP 地址与账单地址不一致是封号的最常见原因，务必保持一致。'
         },
         {
@@ -989,6 +1199,9 @@ print(response.choices[0].message.content)`,
             '美区 Apple ID（iPhone 用户）：通过正规渠道购礼品卡充值，通过 Claude App 内 Apple ID 内购订阅',
             '虚拟信用卡（高风险）：Anthropic 对 VCC 拒付率极高、极易封号，新手请完全避开'
           ],
+          whereToClick: '根据自身情况选择：代充平台（推荐）、美区 Apple ID 或国际信用卡',
+          expectedResult: '确认选定的支付方式可用，支付渠道已准备就绪',
+          failureChecklist: ['代充平台是否承诺"封号包退款"', '不推荐新手使用虚拟信用卡，Anthropic 对 VCC 拒付率极高'],
           warning: '选择代充平台时务必确认该平台是否承诺"封号包退款"条款，这是保护资金安全的关键。'
         },
         {
@@ -1001,7 +1214,10 @@ print(response.choices[0].message.content)`,
             '输入卡号、有效期、CVV 和账单地址',
             '关键：账单地址必须与 IP 所在国家一致，否则大概率被封',
             '验证通过后账号立即升级，在对话界面即可选择 Opus 4.7 模型'
-          ]
+          ],
+          whereToClick: 'claude.ai → Log in → Continue with Google → 左下角头像 → Plans → Subscribe',
+          expectedResult: '验证通过后账号立即升级，对话界面可选 Opus 4.7 模型',
+          failureChecklist: ['账单地址必须与 IP 所在国家一致（最关键）', '确认卡号、有效期和 CVV 填写正确', '如支付被拒，不要重试，换方案']
         },
         {
           title: '路线二：苹果手机内购（iOS App）',
@@ -1010,7 +1226,10 @@ print(response.choices[0].message.content)`,
             'App Store 搜索 Claude（开发者 Anthropic）→ 下载 → 谷歌账号登录',
             '左上角菜单 → Upgrade to Claude Pro → Apple ID 支付确认',
             '注意：App Store 订阅价格通常比官网贵约 30%（苹果渠道费）'
-          ]
+          ],
+          whereToClick: 'App Store 搜索 Claude → 下载 → 谷歌账号登录 → 左上角菜单 → Upgrade to Claude Pro',
+          expectedResult: 'App 内显示已升级为 Pro，可选择 Opus 4.7 模型',
+          failureChecklist: ['确认 Apple ID 为美区且有足够余额', 'App Store 订阅价格通常比官网贵约 30%']
         },
         {
           title: '路线三：API 按量购买（仅限开发者）',
@@ -1020,6 +1239,9 @@ print(response.choices[0].message.content)`,
             '按 Token 计费：Opus 4.7 输入 $5/百万 Token、输出 $25/百万 Token',
             'https://console.anthropic.com → 登录 → API Keys → 创建新密钥 → 立刻复制保存'
           ],
+          whereToClick: 'console.anthropic.com → 登录 → API Keys → 创建新密钥',
+          expectedResult: 'API Key 创建成功（格式 sk-ant-xxx），可复制用于代码调用',
+          failureChecklist: ['API Key 只显示一次，创建后立即复制保存', 'API 计费与 Claude 订阅是独立的两套系统'],
           codeLanguage: 'python',
           code: `# 先安装 anthropic 库：pip install anthropic
 import anthropic
@@ -1047,6 +1269,9 @@ print(message.content)`,
             '不推荐新手尝试虚拟信用卡方案，Anthropic 风控对 VCC 拒付率极高',
             'Pro（$20/月）适合大多数人，先买一个月试试，随时可取消续费'
           ],
+          whereToClick: '选择合规的第三方代充平台或中转平台，确认有"封号包退款"承诺',
+          expectedResult: '支付完成，Claude 账号已升级，可使用 Opus 4.7',
+          failureChecklist: ['代充平台是否承诺封号退款', '下单前是否搜索了平台评价', 'Pro($20/月) 适合大多数人，先买一个月试试'],
           warning: 'Claude 封号是全球性问题，没有任何渠道能 100% 避免。保护资金的最佳方式是选择承诺封号退款的代充平台。'
         }
       ],
@@ -1062,7 +1287,12 @@ print(message.content)`,
         'API Key 绝对不要提交到公开仓库或前端代码',
         '账单地址与 IP 所在国不一致 = 极高概率被封'
       ],
-      advantages: ['200K 超长上下文', '代码能力业界领先', '安全可靠', 'iOS App 体验优秀']
+      advantages: ['200K 超长上下文', '代码能力业界领先', '安全可靠', 'iOS App 体验优秀'],
+      estimatedTime: '约 15 分钟',
+      prerequisites: ['Google 账号（Claude 使用 Google 一键登录）', '合适的网络环境（需能访问 claude.ai）', 'Visa/Mastercard 国际信用卡或代充平台'],
+      successSign: 'Claude 对话界面可选择 Opus 4.7 模型，或 API Key 创建成功并能完成代码调用',
+      commonPitfall: 'IP 地址与账单地址国家不一致导致封号（最常见原因）；使用虚拟信用卡被拒付率极高；新用户操作稍有不慎刚付款就被封',
+      securityReminder: 'API Key 创建后仅显示一次，必须立刻复制保存。不要提交到公开仓库或前端代码。Claude 风控全球最严，2025 下半年封禁 145 万账号'
     }
   },
   {
@@ -1088,7 +1318,10 @@ print(message.content)`,
             'AI Pro · $20/月 — 可用 Pro + Thinking，2TB 存储，每日 Deep Research 20 份，99% 用户最佳选择',
             'AI Ultra · $250/月 — 独家 Deep Think 模式，每日 1500 次 Thinking，30TB 存储，适合顶尖科研',
             '年付优惠：AI Pro 首年仅 $99.99（原价 $199.99，相当于每月 $8.33）'
-          ]
+          ],
+          whereToClick: '浏览器访问 gemini.google.com → 登录 → 查看升级选项',
+          expectedResult: '页面显示 Free/AI Plus($8)/AI Pro($20)/AI Ultra($250) 四档套餐',
+          failureChecklist: ['确认已登录 Google 账号', '如看不到套餐页面，检查网络是否可正常访问 Google 服务']
         },
         {
           title: '准备一：注册 Google 账号',
@@ -1098,7 +1331,10 @@ print(message.content)`,
             '国内手机号可能收不到验证短信。两个解决办法：',
             '换网络节点：更换不同国家的网络环境后重试验证',
             '买成品号：在可靠平台购买已注册好的 Google 账号，注意甄别信誉'
-          ]
+          ],
+          whereToClick: '浏览器访问 accounts.google.com/signup → 按提示填写信息注册',
+          expectedResult: 'Google 账号注册成功，可正常登录',
+          failureChecklist: ['国内手机号可能收不到验证码', '换不同国家的网络节点重试', '或在可靠平台购买已注册好的 Google 账号']
         },
         {
           title: '准备二：合适的网络环境',
@@ -1108,6 +1344,9 @@ print(message.content)`,
             '建议使用稳定节点，避免频繁切换 IP',
             '不稳定的网络可能导致支付中途断开、账号被风控'
           ],
+          whereToClick: '确保网络可顺畅访问 gemini.google.com',
+          expectedResult: 'Gemini 官网可正常打开，无连接超时',
+          failureChecklist: ['避免频繁切换 IP，否则账号可能被风控', '不稳定的网络可能导致支付中途断开'],
           warning: '确保网络环境稳定，避免频繁切换 IP。'
         },
         {
@@ -1118,6 +1357,9 @@ print(message.content)`,
             'Google Play 内购（安卓）：将国内卡绑为美区 Google Play 付款方式，在 Gemini App 内购，部分用户可使用此方式完成支付',
             '虚拟信用卡（不推荐新手）：风控严格、失败率高，需开卡费和充值手续费'
           ],
+          whereToClick: '根据自身情况选择：代充平台（推荐）、Google Play 内购或国际信用卡/PayPal',
+          expectedResult: '确认选定的支付方式可用，支付渠道已准备就绪',
+          failureChecklist: ['代充平台是否有口碑和售后保障', '国内双币卡可能因账单地址问题被拒', '虚拟信用卡风控严格、失败率高，不推荐新手'],
           warning: '选择代充平台时请仔细甄别，优先选择有口碑、有售后的大平台。国内发行的双币卡也可能因账单地址问题被拒。'
         },
         {
@@ -1129,7 +1371,10 @@ print(message.content)`,
             '对比套餐后点击"订阅"，填写信用卡信息或登录 PayPal',
             '注意：账单地址需与网络 IP 所在国家一致，否则容易被拒',
             '确认总额无误后提交，验证通过后账号立即升级，邮箱收到确认邮件'
-          ]
+          ],
+          whereToClick: 'gemini.google.com → 登录 → 设置菜单 → 升级到 Gemini Advanced → 选套餐 → 订阅',
+          expectedResult: '验证通过后账号立即升级，邮箱收到确认邮件，Gemini Advanced 功能可用',
+          failureChecklist: ['账单地址需与网络 IP 所在国家一致', '确认信用卡信息填写正确', '如支付被拒，尝试更换网络节点']
         },
         {
           title: '路线二：App 内购（安卓手机 / 网页端）',
@@ -1139,7 +1384,10 @@ print(message.content)`,
             '选择套餐，通过 Google Play 余额或绑定支付方式完成付款',
             '技巧：将国内卡绑为美区 Google Play 付款方式，部分用户可成功订阅',
             '也可在 https://gemini.google.com 网页端通过弹窗提示直接升级，流程同路线一'
-          ]
+          ],
+          whereToClick: 'Google Play 下载 Gemini App → 登录 → 设置 → 找到升级入口 → 选择套餐',
+          expectedResult: 'App 内显示已升级为 Advanced，可使用 Gemini 3 Pro 等高级模型',
+          failureChecklist: ['确认 Google Play 账号为美区', '将国内卡绑为美区 Google Play 付款方式可尝试', '也可在网页端通过弹窗直接升级']
         },
         {
           title: '路线三：API 按量购买（仅限开发者）',
@@ -1152,6 +1400,9 @@ print(message.content)`,
             'Gemini 3.1 Flash-Lite：输入 $0.25/百万、输出 $1.50/百万（性价比最高）',
             'Gemini 3 Deep Think：按次计费，需查看官方文档'
           ],
+          whereToClick: '访问 aistudio.google.com → 创建 API Key',
+          expectedResult: 'API Key 创建成功（格式 AIza...），免费额度：每分钟 15 次，每天 1500 次',
+          failureChecklist: ['API Key 只显示一次，创建后立即复制保存', 'API 计费与 Google One 订阅是独立的两套系统', '新用户可注册 Google Cloud 获取 $300 体验金'],
           codeLanguage: 'bash',
           code: `# 获取 API Key：访问 aistudio.google.com，创建密钥（格式：AIza...）
 # 免费额度：每分钟 15 次，每天 1500 次，轻度开发和个人项目完全够用
@@ -1176,6 +1427,9 @@ print(message.content)`,
             'Google 允许随时降级或取消，下个账单周期生效，不会多扣钱',
             '支付遇风控：尝试换账单地址，或确保 IP、支付地址来自同一国家'
           ],
+          whereToClick: '选择正规 AI 聚合平台，支持微信/支付宝支付',
+          expectedResult: '支付完成，Gemini Advanced 已开通，可使用高级模型',
+          failureChecklist: ['代充平台是否承诺售后保障', '下单前是否搜索了平台评价', 'AI Pro($20/月) 是 99% 用户最佳选择', 'Google 允许随时降级或取消'],
           warning: '代充平台良莠不齐，下单前建议先搜索评价。优先选择有客服、支持退款的平台。'
         }
       ],
@@ -1190,7 +1444,12 @@ print(message.content)`,
         'API Key 绝对不要提交到公开仓库或前端代码',
         '代充平台需仔细甄别，优先选择有口碑的大平台'
       ],
-      advantages: ['多模态能力最强', 'Deep Think 超级推理', '2TB 云存储', '5 人家庭共享', '新用户首年半价', 'API 免费额度充裕']
+      advantages: ['多模态能力最强', 'Deep Think 超级推理', '2TB 云存储', '5 人家庭共享', '新用户首年半价', 'API 免费额度充裕'],
+      estimatedTime: '约 15 分钟',
+      prerequisites: ['Google 账号（注册 Gemini 和 Google One 都需要）', '合适的网络环境（需能访问 Google 服务）', 'Visa/Mastercard 国际信用卡、PayPal 或代充平台'],
+      successSign: 'Gemini Advanced 界面显示已升级，或 API Key 创建成功（格式 AIza...）并能完成代码调用',
+      commonPitfall: '账单地址与网络 IP 所在国家不一致导致支付被拒；代充平台良莠不齐选到不靠谱商家',
+      securityReminder: 'API Key 创建后仅显示一次，必须立刻复制保存。不要提交到公开仓库或前端代码。API 计费与 Google One 订阅是两套独立计费系统'
     }
   }
 ];

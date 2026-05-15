@@ -63,7 +63,7 @@ export default async function UseCaseDetailPage({ params }: { params: Promise<{ 
       const reviewSlug = reviewSlugByApiId[rec.apiId];
       return { ...rec, api, reviewSlug };
     })
-    .filter((r) => r.api)
+    .filter((r): r is typeof r & { api: NonNullable<typeof r.api> } => Boolean(r.api))
     .sort((a, b) => b.score - a.score);
 
   return (
@@ -84,6 +84,28 @@ export default async function UseCaseDetailPage({ params }: { params: Promise<{ 
             {uc.heroDescription}
           </p>
         </div>
+
+        {/* 选型结论 */}
+        <section className="mb-8 space-y-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4">
+              <p className="text-xs font-semibold uppercase tracking-wider text-emerald-600">首选 API</p>
+              <p className="mt-1 text-lg font-bold text-emerald-900">{uc.primaryPick}</p>
+            </div>
+            <div className="rounded-lg border border-sky-200 bg-sky-50 p-4">
+              <p className="text-xs font-semibold uppercase tracking-wider text-sky-600">备选 API</p>
+              <p className="mt-1 text-lg font-bold text-sky-900">{uc.altPick}</p>
+            </div>
+            <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
+              <p className="text-xs font-semibold uppercase tracking-wider text-amber-600">不建议选择</p>
+              <p className="mt-1 text-sm leading-5 text-amber-800">{uc.notRecommended}</p>
+            </div>
+          </div>
+          <div className="rounded-lg border bg-card p-4">
+            <p className="text-xs font-semibold text-muted-foreground">新手快速选择</p>
+            <p className="mt-1 text-sm leading-6 text-muted-foreground">{uc.quickPick}</p>
+          </div>
+        </section>
 
         {/* 选型要点 */}
         <section className="mb-8">
@@ -163,24 +185,34 @@ export default async function UseCaseDetailPage({ params }: { params: Promise<{ 
                 <ul className="mt-3 space-y-1">
                   {rec.strengths.map((s) => (
                     <li key={s} className="flex items-start gap-2 text-sm text-muted-foreground">
-                      <span className="mt-0.5 text-muted-foreground">-</span>
+                      <span className="mt-0.5 text-emerald-500">+</span>
                       {s}
                     </li>
                   ))}
                 </ul>
+                {rec.risks.length > 0 && (
+                  <ul className="mt-2 space-y-1">
+                    {rec.risks.map((r) => (
+                      <li key={r} className="flex items-start gap-2 text-sm text-amber-600">
+                        <span className="mt-0.5">!</span>
+                        {r}
+                      </li>
+                    ))}
+                  </ul>
+                )}
 
                 <div className="mt-4 flex flex-wrap gap-2">
                   <Link href={`/api/${rec.apiId}`}>
-                    <Button variant="outline" size="sm">API 详情</Button>
+                    <Button variant="outline" size="sm">{rec.api!.name} 官网与教程</Button>
                   </Link>
                   {rec.reviewSlug && (
                     <Link href={`/api-review/${rec.reviewSlug}`}>
-                      <Button variant="outline" size="sm">查看测评</Button>
+                      <Button variant="outline" size="sm">{rec.api!.name} 完整测评</Button>
                     </Link>
                   )}
                   {rec.api!.tutorial && (
                     <Link href={`/tutorial/${rec.apiId}`}>
-                      <Button variant="outline" size="sm">购买教程</Button>
+                      <Button variant="outline" size="sm">{rec.api!.name} 购买教程</Button>
                     </Link>
                   )}
                 </div>
@@ -196,10 +228,10 @@ export default async function UseCaseDetailPage({ params }: { params: Promise<{ 
           </p>
           <div className="mt-4 flex justify-center gap-3">
             <Link href="/cloud-api">
-              <Button variant="outline" size="sm">全部 API</Button>
+              <Button variant="outline" size="sm">全部 API 官网入口</Button>
             </Link>
             <Link href="/api-review">
-              <Button variant="outline" size="sm">API 测评</Button>
+              <Button variant="outline" size="sm">API 测评对比</Button>
             </Link>
           </div>
         </div>

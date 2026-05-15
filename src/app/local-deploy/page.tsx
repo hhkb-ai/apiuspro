@@ -394,6 +394,28 @@ export default function LocalDeployPage() {
             ))}
           </section>
 
+          {/* 适合谁 / 不适合谁 */}
+          <section className="mb-10 grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
+              <p className="text-sm font-semibold text-emerald-800">适合谁</p>
+              <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">
+                <li>• 想零成本体验 AI 对话和代码生成的初学者</li>
+                <li>• 处理隐私资料、不希望数据上传到云端的用户</li>
+                <li>• 在没有网络的环境下也需要使用 AI 的人</li>
+                <li>• 想学习 AI 模型原理、Prompt 工程的学生和研究者</li>
+              </ul>
+            </div>
+            <div className="rounded-lg border border-amber-200 bg-amber-50 p-5">
+              <p className="text-sm font-semibold text-amber-800">不适合谁</p>
+              <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700">
+                <li>• 需要稳定代码生成、复杂推理或生产环境 SLA（请看 <Link href="/cloud-api" className="text-foreground hover:underline">云端 API 官网入口</Link>）</li>
+                <li>• 电脑内存低于 8GB 且不想升级硬件</li>
+                <li>• 需要多模态、长上下文、函数调用等高级能力</li>
+                <li>• 不想占用本机资源，希望直接接入应用（请看 <Link href="/tutorial" className="text-foreground hover:underline">AI API 购买教程</Link>）</li>
+              </ul>
+            </div>
+          </section>
+
           {/* 步骤导航 - 固定在顶部 */}
           <div className="sticky top-14 z-40 mb-8 p-4 rounded-lg border border-border bg-card shadow-sm">
             <p className="text-sm font-semibold mb-3">快速导航</p>
@@ -661,7 +683,7 @@ export default function LocalDeployPage() {
                 href="/tutorial"
                 className="rounded-lg border border-border p-5 transition-colors hover:border-foreground/30 hover:bg-muted/30"
               >
-                <p className="font-semibold text-sm mb-2">API 购买教程</p>
+                <p className="font-semibold text-sm mb-2">AI API 购买教程</p>
                 <p className="text-xs text-muted-foreground">如果本地模型不够用，可以使用云端API</p>
               </Link>
               <Link
@@ -682,7 +704,7 @@ export default function LocalDeployPage() {
             <div className="flex justify-center gap-3">
               <a href="/faq">
                 <span className="inline-block rounded-md border border-border px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-muted">
-                  查看 FAQ
+                  AI API 接入常见问题
                 </span>
               </a>
               <a href="https://ollama.ai" target="_blank" rel="noopener noreferrer">

@@ -9,12 +9,13 @@ import { BeianLinks } from '@/components/layout/BeianLinks';
 
 const navigation = [
   { name: '返回首页', href: '/' },
-  { name: 'API官网', href: '/cloud-api' },
-  { name: 'API测评', href: '/api-review' },
-  { name: '购买教程', href: '/tutorial' },
-  { name: 'API应用', href: '/app' },
-  { name: '场景推荐', href: '/use-case' },
-  { name: '本地部署', href: '/local-deploy' },
+  { name: 'API 官网入口', href: '/cloud-api' },
+  { name: 'API 测评对比', href: '/api-review' },
+  { name: 'API 购买教程', href: '/tutorial' },
+  { name: 'API 应用教程', href: '/app' },
+  { name: 'API 错误解决', href: '/error' },
+  { name: '按场景选 API', href: '/use-case' },
+  { name: '本地部署教程', href: '/local-deploy' },
 ];
 
 export function SidebarLayout({ children }: { children: React.ReactNode }) {
@@ -28,6 +29,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!mobileMenuOpen) return;
 
+    document.body.style.overflow = 'hidden';
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setMobileMenuOpen(false);
@@ -35,7 +37,10 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
     };
 
     document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', handleKeyDown);
+    };
   }, [mobileMenuOpen]);
 
   return (

@@ -13,6 +13,39 @@ export interface ReviewDetail {
   conclusion: string;
 }
 
+const reviewRatingWeights: Record<string, number> = {
+  '质量': 0.45,
+  '稳定性': 0.25,
+  '速度': 0.2,
+  '性价比': 0.1,
+};
+
+export const reviewRatingWeightDescription = '质量 45%、稳定性 25%、速度 20%、性价比 10%';
+
+export function getReviewScore(review: ReviewDetail) {
+  if (review.ratings.length === 0) return 0;
+
+  const weightedRatings = review.ratings
+    .map(rating => ({
+      score: rating.score,
+      weight: reviewRatingWeights[rating.label] ?? 0,
+    }))
+    .filter(rating => rating.weight > 0);
+
+  if (weightedRatings.length === 0) {
+    const total = review.ratings.reduce((sum, item) => sum + item.score, 0);
+    return total / review.ratings.length;
+  }
+
+  const weightTotal = weightedRatings.reduce((sum, rating) => sum + rating.weight, 0);
+  const scoreTotal = weightedRatings.reduce(
+    (sum, rating) => sum + rating.score * rating.weight,
+    0,
+  );
+
+  return scoreTotal / weightTotal;
+}
+
 export const reviewDetails: Record<string, ReviewDetail> = {
   'gpt-5.5': {
     slug: 'gpt-5.5',

@@ -4,7 +4,7 @@ import { SidebarLayout } from '@/components/layout/SidebarLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { reviewDetails } from '@/lib/review-config';
+import { getReviewScore, reviewDetails, reviewRatingWeightDescription } from '@/lib/review-config';
 import type { ReviewDetail } from '@/lib/review-config';
 import { BreadcrumbSchema } from '@/components/seo/structured-data';
 import { RememberListLink } from '@/components/navigation/ReturnNavigation';
@@ -27,12 +27,6 @@ function badgeClass(variant?: 'destructive' | 'success') {
   return '';
 }
 
-function averageScore(review: ReviewDetail) {
-  if (review.ratings.length === 0) return 0;
-  const total = review.ratings.reduce((sum, item) => sum + item.score, 0);
-  return total / review.ratings.length;
-}
-
 function Rating({ score }: { score: number }) {
   const fullStars = Math.floor(score);
   const hasHalf = score % 1 >= 0.5;
@@ -52,7 +46,7 @@ function Rating({ score }: { score: number }) {
 }
 
 function ReviewCard({ review }: { review: ReviewDetail }) {
-  const score = averageScore(review);
+  const score = getReviewScore(review);
 
   return (
     <Card className="overflow-hidden border-border/80 shadow-sm">
@@ -138,7 +132,7 @@ function ReviewCard({ review }: { review: ReviewDetail }) {
 
         <div className="border-t pt-5">
           <RememberListLink href={`/api-review/${review.slug}`} listLabel="测评列表">
-            <Button variant="outline">查看完整测评</Button>
+            <Button variant="outline">{review.name} 完整测评</Button>
           </RememberListLink>
         </div>
       </CardContent>
@@ -160,11 +154,41 @@ export default function APIReviewPage() {
       <div className="mx-auto max-w-5xl p-6 lg:p-8">
         <div className="mb-10 border-b pb-8">
           <p className="text-sm font-medium text-muted-foreground">Reviews</p>
-          <h1 className="mt-1 text-3xl font-semibold tracking-tight">API测评</h1>
+          <h1 className="mt-1 text-3xl font-semibold tracking-tight">AI API 测评对比</h1>
           <p className="mt-3 max-w-3xl text-[15px] leading-7 text-muted-foreground">
             详细的 API 性能评测与使用体验分享，帮助你选择最适合的 AI 服务。
           </p>
         </div>
+
+        {/* BLUF 摘要 */}
+        <section className="mb-8 rounded-lg border border-sky-200 bg-sky-50 px-5 py-4">
+          <p className="text-sm font-semibold text-sky-800">结论先行</p>
+          <p className="mt-1 text-sm leading-6 text-sky-700">
+            写代码选 DeepSeek 或 Claude，性价比选 DeepSeek，最强能力选 Claude Opus。
+            通用对话和内容创作选通义千问或 Kimi，长文档处理选 Gemini 或通义千问。
+            先用免费额度跑真实任务，再决定长期使用哪个。
+          </p>
+        </section>
+
+        {/* 适合谁 / 不适合谁 */}
+        <section className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
+            <p className="text-sm font-semibold text-emerald-800">适合谁</p>
+            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">
+              <li>• 想对比不同 API 的性能、价格和使用体验</li>
+              <li>• 需要根据具体场景（编程、翻译、创作）选 API</li>
+              <li>• 想了解各 API 的优缺点再做决定</li>
+            </ul>
+          </div>
+          <div className="rounded-lg border border-amber-200 bg-amber-50 p-5">
+            <p className="text-sm font-semibold text-amber-800">不适合谁</p>
+            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700">
+              <li>• 已经确定 API，需要注册和购买指导（请看 <Link href="/tutorial" className="text-foreground hover:underline">购买教程</Link>）</li>
+              <li>• 只想查官网入口和免费额度（请看 <Link href="/cloud-api" className="text-foreground hover:underline">API 列表</Link>）</li>
+              <li>• 想按编程、翻译等场景直接选 API（请看 <Link href="/use-case" className="text-foreground hover:underline">场景推荐</Link>）</li>
+            </ul>
+          </div>
+        </section>
 
         <section className="mb-8">
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
@@ -193,6 +217,9 @@ export default function APIReviewPage() {
               </CardContent>
             </Card>
           </div>
+          <p className="mt-3 text-xs leading-5 text-muted-foreground">
+            综合评分权重：{reviewRatingWeightDescription}。价格会影响分数，但不会压过模型质量和稳定性。
+          </p>
         </section>
 
         <section className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -204,7 +231,7 @@ export default function APIReviewPage() {
             >
               <h2 className="text-base font-semibold">{item.title}</h2>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">{item.desc}</p>
-              <p className="mt-4 text-sm font-medium text-foreground">查看场景推荐 →</p>
+              <p className="mt-4 text-sm font-medium text-foreground">{item.title} →</p>
             </Link>
           ))}
         </section>
@@ -221,10 +248,55 @@ export default function APIReviewPage() {
               购买前建议同时查看官网、购买教程和测评结论，再用自己的真实任务小规模测试。
             </p>
             <Link href="/cloud-api">
-              <Button>查看所有 API</Button>
+              <Button>全部 API 官网入口</Button>
             </Link>
           </CardContent>
         </Card>
+
+        {/* 常见问题 */}
+        <section className="mt-10">
+          <h2 className="mb-4 text-xl font-semibold tracking-tight">常见问题</h2>
+          <div className="space-y-3">
+            {[
+              {
+                q: '测评分数怎么用？',
+                a: `综合评分按 ${reviewRatingWeightDescription} 计算，适合快速横向对比。但选 API 时建议重点看你最在意的单维度分数，比如编程场景重点看质量和稳定性。`,
+              },
+              {
+                q: '测评数据多久更新一次？',
+                a: '模型更新或价格调整时会同步更新测评。建议购买前到官网确认最新的模型名称和定价。',
+              },
+              {
+                q: '测评结果和我自己测试不一样怎么办？',
+                a: '基准测试是通用场景，你的业务场景可能有差异。建议用自己的真实任务跑 3-5 个样本对比，记录响应质量、速度和成本。',
+              },
+            ].map((faq) => (
+              <div key={faq.q} className="rounded-lg border bg-card p-5">
+                <h3 className="text-sm font-semibold">{faq.q}</h3>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">{faq.a}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* 下一步推荐 */}
+        <section className="mt-10 rounded-lg border bg-card p-6">
+          <h2 className="font-semibold">下一步推荐</h2>
+          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <Link href="/tutorial" className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
+              <p className="text-sm font-semibold">购买教程</p>
+              <p className="mt-1 text-xs text-muted-foreground">按步骤完成注册、支付与 API Key 创建</p>
+            </Link>
+            <Link href="/use-case" className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
+              <p className="text-sm font-semibold">场景推荐</p>
+              <p className="mt-1 text-xs text-muted-foreground">按编程、翻译、创作等场景选 API</p>
+            </Link>
+            <Link href="/faq" className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
+              <p className="text-sm font-semibold">常见问题</p>
+              <p className="mt-1 text-xs text-muted-foreground">注册、支付、Key 配置问题速查</p>
+            </Link>
+          </div>
+        </section>
 
         {/* 权威基准引用 */}
         <Card className="mt-8 border-border/80 shadow-sm">

@@ -2,9 +2,11 @@ import { MetadataRoute } from 'next';
 import { appTutorials, visibleAPIList, visibleProxyServices } from '@/lib/api-config';
 import { reviewDetails } from '@/lib/review-config';
 import { getAllUseCaseIds } from '@/lib/use-case-config';
+import { getAllErrorSolutionIds } from '@/lib/error-solution-config';
 import {
   getApiUpdatedAt,
   getAppTutorialUpdatedAt,
+  getErrorSolutionUpdatedAt,
   getReviewUpdatedAt,
   getStaticPageUpdatedAt,
   getUseCaseUpdatedAt,
@@ -18,6 +20,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const apisWithTutorial = visibleAPIList.filter((a: { tutorial?: unknown }) => a.tutorial);
   const reviewSlugs = Object.keys(reviewDetails);
   const useCaseIds = getAllUseCaseIds();
+  const errorSolutionIds = getAllErrorSolutionIds();
 
   // 静态页面
   const staticPages: MetadataRoute.Sitemap = [
@@ -26,6 +29,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/tutorial`, lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/tutorial')), changeFrequency: 'weekly', priority: 0.9 },
     { url: `${BASE_URL}/api-review`, lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/api-review')), changeFrequency: 'weekly', priority: 0.9 },
     { url: `${BASE_URL}/app`, lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/app')), changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${BASE_URL}/error`, lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/error')), changeFrequency: 'weekly', priority: 0.8 },
     { url: `${BASE_URL}/local-deploy`, lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/local-deploy')), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE_URL}/faq`, lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/faq')), changeFrequency: 'monthly', priority: 0.7 },
   ];
@@ -62,6 +66,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
+  // 错误解决页
+  const errorPages: MetadataRoute.Sitemap = errorSolutionIds.map(id => ({
+    url: `${BASE_URL}/error/${id}`,
+    lastModified: toSitemapLastModified(getErrorSolutionUpdatedAt(id)),
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
+
   // 场景推荐页
   const useCaseListPage: MetadataRoute.Sitemap = [
     { url: `${BASE_URL}/use-case`, lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/use-case')), changeFrequency: 'weekly', priority: 0.8 },
@@ -73,5 +85,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...staticPages, ...apiPages, ...tutorialPages, ...reviewPages, ...appPages, ...useCaseListPage, ...useCaseDetailPages];
+  return [...staticPages, ...apiPages, ...tutorialPages, ...reviewPages, ...appPages, ...errorPages, ...useCaseListPage, ...useCaseDetailPages];
 }

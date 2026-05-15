@@ -7,6 +7,7 @@ export const staticPageUpdatedAt: Record<string, string> = {
   '/tutorial': '2026-05-11',
   '/api-review': '2026-05-11',
   '/app': '2026-05-11',
+  '/error': '2026-05-15',
   '/local-deploy': '2026-05-11',
   '/faq': '2026-05-11',
   '/use-case': '2026-05-11',
@@ -46,6 +47,17 @@ export const appTutorialUpdatedAtById: Record<string, string> = {
   'llm-wiki': '2026-05-11',
 };
 
+export const errorSolutionUpdatedAtById: Record<string, string> = {
+  '401-unauthorized': '2026-05-15',
+  '403-forbidden': '2026-05-15',
+  '404-model-not-found': '2026-05-15',
+  '429-too-many-requests': '2026-05-15',
+  timeout: '2026-05-15',
+  'insufficient-quota': '2026-05-15',
+  'invalid-api-key': '2026-05-15',
+  'base-url-config-error': '2026-05-15',
+};
+
 export const useCaseUpdatedAtById: Record<string, string> = {
   coding: '2026-05-11',
   knowledge: '2026-05-11',
@@ -69,6 +81,10 @@ export function getReviewUpdatedAt(slug: string) {
 
 export function getAppTutorialUpdatedAt(id: string) {
   return appTutorialUpdatedAtById[id] ?? DEFAULT_CONTENT_UPDATED_AT;
+}
+
+export function getErrorSolutionUpdatedAt(id: string) {
+  return errorSolutionUpdatedAtById[id] ?? DEFAULT_CONTENT_UPDATED_AT;
 }
 
 export function getUseCaseUpdatedAt(id: string) {
