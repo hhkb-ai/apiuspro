@@ -123,3 +123,32 @@ pnpm exec eslint  # passed
 pnpm exec next build  # passed
 pnpm exec tsup src/server.ts --format cjs --platform node --target node20 --outDir dist --no-splitting --no-minify  # passed
 ```
+
+### 2026-05-17 Container deployment command cleanup
+
+Deployment scope:
+
+- Add `scripts/deploy-container.sh` so the production container startup command can delegate deploy/build/start logic to a versioned repository script.
+- Keep `/app/node_modules`, pnpm store, env files, and logs while replacing source files from GitHub.
+- Preserve the existing production behavior: pull `main`, build with pnpm, then start `node dist/server.js` with `COZE_PROJECT_ENV=PROD`.
+
+Recommended container command after this script is deployed:
+
+```bash
+bash -lc 'if [ -f /app/scripts/deploy-container.sh ]; then bash /app/scripts/deploy-container.sh; else rm -rf /tmp/apiuspro-bootstrap && git clone --depth 1 --branch main https://github.com/hhkb-ai/apiuspro.git /tmp/apiuspro-bootstrap && SOURCE_DIR=/tmp/apiuspro-bootstrap bash /tmp/apiuspro-bootstrap/scripts/deploy-container.sh; fi'
+```
+
+Explicitly excluded from this commit:
+
+- `.claude/`
+- `docs/seo-longtail-pages.md`
+- `scripts/test-fuzzy-search.mjs`
+- `src/app/local-deploy/page.tsx`
+
+Verification to complete before push:
+
+```bash
+pnpm exec tsc -p tsconfig.json --noEmit
+pnpm exec eslint
+pnpm exec next build
+```
