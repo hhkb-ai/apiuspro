@@ -15,7 +15,7 @@ export function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <Button variant="ghost" size="icon" className="h-9 w-9">
+      <Button variant="ghost" size="icon" className="h-11 w-11">
         <span className="sr-only">切换主题</span>
       </Button>
     );

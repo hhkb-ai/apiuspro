@@ -12,6 +12,7 @@ const aliasEntries: Array<[string, string[]]> = [
   ['ccswitch', ['cc switch', 'cc-switch', '模型切换', '配置切换']],
   ['claude-code', ['claude code', 'claudecode', '克劳德代码']],
   ['openclaw', ['open claw', 'openc law']],
+  ['hermes-agent', ['hermes', 'hermes agent', 'nous', 'nousresearch', 'mcp client', 'agent']],
   ['llm-wiki', ['llm wiki', 'wiki', '知识库']],
   ['local-deploy', ['本地部署', 'ollama', '离线', '私有化']],
 ];

@@ -3042,6 +3042,291 @@ export const appTutorials: AppTutorial[] = [
     ]
   },
   {
+    id: 'hermes-agent',
+    name: 'Hermes Agent',
+    desc: 'Nous Research 开源 AI Agent 安装与初始化教程，覆盖一键安装、模型配置、健康检查和常见问题排查',
+    url: 'https://github.com/NousResearch/hermes-agent',
+    icon: '🪽',
+    badge: { text: 'Agent', type: 'warning' },
+    sections: [
+      {
+        title: '先判断 Hermes Agent 适不适合你',
+        content: 'Hermes Agent 是 Nous Research 开源的终端 AI Agent。它不是单纯的聊天网页，而是可以在本机、WSL2 或服务器里运行的 Agent 工具，适合需要长期会话、工具调用、MCP、自动化任务和消息网关的用户。',
+        steps: [
+          {
+            title: '适合的使用场景',
+            description: '如果你想把 AI Agent 放进真实工作流里，Hermes Agent 会比单纯网页聊天更有价值。',
+            image: '/images/tutorial/hermes-agent-overview.png',
+            items: [
+              '想在终端里使用可调用工具的 AI Agent',
+              '需要连接 OpenAI、OpenRouter、Claude、Kimi、Qwen 或本地模型',
+              '想尝试 MCP、Skills、记忆、定时任务或消息机器人',
+              '愿意处理命令行、配置文件和 API Key'
+            ]
+          },
+          {
+            title: '首次安装目标',
+            description: '第一次安装不要把所有功能都打开，先完成一个最小闭环。',
+            items: [
+              '先完成 CLI 对话，再考虑 Telegram、Discord、Slack 等网关',
+              '先配置一个模型提供商，不要同时配置多个 fallback',
+              '先用 hermes doctor 排查，再接入浏览器、MCP、自动化任务',
+              'API Key 不要写进公开仓库或截图里'
+            ],
+            warning: 'Hermes Agent 有较强工具执行能力，建议先在个人目录或测试环境验证，确认权限边界后再用于重要项目。'
+          }
+        ],
+        tips: [
+          'Windows 用户更稳的路径是 WSL2；原生 Windows 支持仍属于 early beta，遇到路径、编码或子进程问题时优先切到 WSL2。',
+          '如果你只是想购买和调用 API，不需要 Agent 工作流，可以先看本站的 API 购买教程和模型选择页面。'
+        ]
+      },
+      {
+        title: '准备安装环境',
+        content: 'Hermes Agent 官方安装器会自动处理 uv、Python、Node.js、ripgrep、ffmpeg 等依赖。你需要先确认系统路径和网络环境正常。',
+        steps: [
+          {
+            title: 'Linux / macOS / WSL2 前置检查',
+            description: '官方推荐的一键安装路径适用于 Linux、macOS 和 Windows WSL2。',
+            image: '/images/tutorial/hermes-agent-install.png',
+            code: 'git --version',
+            items: [
+              '打开终端',
+              '确认可以访问 GitHub',
+              '确认 git 可用',
+              '预留一点安装时间，首次安装会拉取依赖'
+            ]
+          },
+          {
+            title: 'Windows 原生安装前确认',
+            description: 'Windows 10/11 可以尝试官方 PowerShell 安装器，但目前属于 early beta。',
+            items: [
+              '使用 PowerShell 或 Windows Terminal',
+              '安装后需要重新打开一个终端窗口',
+              '如果终端工具、路径或中文编码异常，改用 WSL2',
+              'WSL2 和 Windows 原生安装可以并存，但配置目录不同'
+            ]
+          },
+          {
+            title: '准备一个模型提供商',
+            description: '安装完成后最关键的一步是选择模型。先准备一个可用的 API Key 或本地模型端点。',
+            items: [
+              'OpenRouter、OpenAI、Anthropic、Kimi、Qwen、DeepSeek 等都可以作为候选',
+              '本地模型需要确认端点、模型名和上下文长度',
+              '官方建议使用至少 64K 上下文的模型',
+              '先用便宜或稳定的模型跑通，再换更强模型'
+            ]
+          }
+        ],
+        warnings: [
+          '不要把 API Key 粘贴到公开聊天记录、公开仓库或可被搜索引擎访问的页面。',
+          '如果你在公司或服务器环境安装，先确认是否允许脚本安装依赖和执行命令。'
+        ]
+      },
+      {
+        title: 'Linux / macOS / WSL2 一键安装',
+        content: '这是官方当前最推荐、最稳定的安装路径。安装器会克隆 Hermes Agent、创建环境、配置 hermes 命令，并进入后续设置流程。',
+        steps: [
+          {
+            title: '运行官方安装脚本',
+            description: '在 Linux、macOS 或 WSL2 终端中执行以下命令。',
+            image: '/images/tutorial/hermes-agent-install.png',
+            code: 'curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash',
+            items: [
+              '命令来自 Nous Research 官方仓库',
+              '安装过程会下载依赖，网络慢时需要等待',
+              '安装完成后先不要急着配置网关或 MCP',
+              '只追求先跑通一次普通对话'
+            ]
+          },
+          {
+            title: '刷新终端环境',
+            description: '安装完成后让当前 shell 读取新的 PATH。不同 shell 使用不同命令。',
+            code: 'source ~/.bashrc\n# 或者\nsource ~/.zshrc',
+            items: [
+              '也可以直接关闭终端再重新打开',
+              '如果提示 hermes: command not found，优先检查 PATH 是否刷新',
+              'WSL2 中的配置通常在 ~/.hermes'
+            ]
+          },
+          {
+            title: '确认 hermes 命令可用',
+            description: '先确认命令能被终端识别，再进入模型配置。',
+            code: 'hermes --version\nhermes doctor',
+            items: [
+              'hermes --version 用来确认命令可执行',
+              'hermes doctor 用来检查配置、依赖和环境问题',
+              'doctor 报错时先按提示修复，不要继续叠加其它功能'
+            ]
+          }
+        ],
+        tips: [
+          '第一次安装只追求能打开 Hermes 并跑通一次普通对话。',
+          '服务器或无 sudo 环境安装时，浏览器相关系统依赖可能需要管理员单独处理。'
+        ]
+      },
+      {
+        title: 'Windows 原生安装方式',
+        content: '如果你不想使用 WSL2，可以尝试官方 Windows PowerShell 安装器。官方说明里 Windows 原生仍是 early beta，因此本教程建议把它作为可选路径。',
+        steps: [
+          {
+            title: '在 PowerShell 里运行安装器',
+            description: '打开 PowerShell 或 Windows Terminal，执行官方 Windows 安装命令。',
+            image: '/images/tutorial/hermes-agent-install.png',
+            code: 'irm https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.ps1 | iex',
+            items: [
+              '默认不需要管理员权限',
+              '安装目录通常在 %LOCALAPPDATA%\\hermes',
+              '安装器会把 hermes 加到用户 PATH',
+              '安装完成后必须重新打开终端'
+            ],
+            warning: 'Windows 原生路径还在 early beta。如果遇到路径、编码、子进程或 dashboard 终端面板问题，优先改用 WSL2。'
+          },
+          {
+            title: '重新打开终端并验证',
+            description: '新开 PowerShell 后运行版本和健康检查命令。',
+            code: 'hermes --version\nhermes doctor',
+            items: [
+              '如果找不到命令，检查用户 PATH 是否生效',
+              '如果 doctor 提示缺少配置，继续运行 hermes setup 或 hermes model',
+              '如果中文输出或路径异常，先尝试 WSL2 版本'
+            ]
+          }
+        ],
+        tips: [
+          'WSL2 与 Windows 原生安装的数据目录不同，切换路径时不要混用配置文件。',
+          '需要更像 Linux 的终端行为时，WSL2 更适合长期使用。'
+        ]
+      },
+      {
+        title: '配置模型提供商',
+        content: '安装成功不代表 Hermes 已经能工作。你还需要配置一个模型提供商，并确认它能完成普通对话。',
+        steps: [
+          {
+            title: '进入模型配置向导',
+            description: 'Hermes 官方建议使用 hermes model 选择 LLM provider 和模型。',
+            image: '/images/tutorial/hermes-agent-model.png',
+            code: 'hermes model',
+            items: [
+              '只先配置一个你最确定能用的 provider',
+              '按向导填写 API Key、Base URL 或 OAuth 登录',
+              '确认模型名称没有拼写错误',
+              '本地或自托管模型要确认 OpenAI-compatible 接口是否真实可用'
+            ]
+          },
+          {
+            title: '完整向导配置',
+            description: '如果你不确定该配置哪些项，可以运行完整 setup 向导。',
+            code: 'hermes setup',
+            items: [
+              'setup 会串起模型、工具和其它基础配置',
+              '首次使用建议跟着向导走',
+              '已经明确 provider 时，hermes model 更直接',
+              '配置失败后先回到 hermes model，不要反复手改配置文件'
+            ]
+          },
+          {
+            title: '先做一次普通对话',
+            description: '模型配置完成后，先发一个最小测试请求。',
+            code: 'hermes chat -q "Say hello in one sentence."',
+            items: [
+              '能正常回复，说明模型和认证基本可用',
+              '不能回复，先检查 Key、Base URL、模型名和额度',
+              '不要在基础对话失败时继续配置 gateway、cron 或 MCP'
+            ]
+          }
+        ],
+        warnings: [
+          '如果使用 OpenRouter、OpenAI、Anthropic 等付费服务，先确认额度和计费方式。',
+          '本地模型需要足够上下文窗口；过小的上下文会影响多步骤工具调用。'
+        ]
+      },
+      {
+        title: '用 hermes doctor 做健康检查',
+        content: 'Hermes Agent 的排错顺序应该很清楚：先 doctor，再 model，再 setup。这样可以避免把配置问题误判成工具问题。',
+        steps: [
+          {
+            title: '运行诊断命令',
+            description: 'doctor 会检查缺失依赖、配置项和常见环境问题。',
+            image: '/images/tutorial/hermes-agent-doctor.png',
+            code: 'hermes doctor',
+            items: [
+              '如果提示 API key not set，回到 hermes model 配置 provider',
+              '如果提示依赖缺失，按 doctor 输出修复',
+              '修复后再重新运行 doctor',
+              'doctor 通过后再做真实任务'
+            ]
+          },
+          {
+            title: '按顺序恢复到可用状态',
+            description: '遇到问题时建议按以下顺序排查。',
+            code: 'hermes doctor\nhermes model\nhermes setup\nhermes sessions list\nhermes --continue',
+            items: [
+              '先排配置和依赖，再排会话问题',
+              '先确认普通聊天可用，再接入消息平台',
+              '切换 profile 后如果找不到旧会话，检查 sessions list',
+              '多 provider fallback 不稳定时，先关闭复杂路由'
+            ]
+          }
+        ],
+        tips: [
+          '最小闭环是：安装成功、模型配置成功、doctor 通过、普通聊天能回复。',
+          '只有完成最小闭环后，再考虑浏览器工具、MCP、消息网关、Skills 和自动化任务。'
+        ]
+      },
+      {
+        title: '常见问题排查',
+        content: '下面是新手最容易遇到的问题。排查时不要同时改很多项，每次只改一个变量并重新测试。',
+        steps: [
+          {
+            title: 'hermes: command not found',
+            description: '终端找不到 hermes 命令通常是 PATH 没刷新。',
+            items: [
+              '关闭终端重新打开',
+              'Linux / macOS / WSL2 执行 source ~/.bashrc 或 source ~/.zshrc',
+              'Windows 检查用户 PATH 是否包含 Hermes 安装目录',
+              '仍然失败时重新运行官方安装器并观察输出'
+            ]
+          },
+          {
+            title: 'API key not set 或 401/403',
+            description: '认证失败通常来自 Key 没填、Key 过期、额度不足或 provider 选错。',
+            items: [
+              '重新运行 hermes model',
+              '确认 API Key 没有多余空格',
+              '确认当前账号有该模型调用权限',
+              '确认 Base URL 和 provider 对应'
+            ]
+          },
+          {
+            title: '模型名错误或自托管端点不兼容',
+            description: '如果 endpoint 能访问但回复异常，通常是模型名、接口路径或上下文长度不匹配。',
+            items: [
+              '先用 provider 官方控制台或 curl 单独测试端点',
+              '确认接口是 OpenAI-compatible 还是专有格式',
+              '确认模型上下文长度足够',
+              '关闭复杂 fallback，先跑通单模型'
+            ]
+          },
+          {
+            title: 'Windows 原生路径异常',
+            description: 'Windows early beta 路径可能遇到编码、子进程或终端能力差异。',
+            items: [
+              '先重新打开 PowerShell',
+              '确认安装目录在 %LOCALAPPDATA%\\hermes',
+              '检查是否被安全软件拦截',
+              '问题持续时改用 WSL2 安装路径'
+            ]
+          }
+        ],
+        tips: [
+          '排错时先保留最简单的配置：一个 provider、一个模型、一个普通聊天请求。',
+          '不要把 token、Key 或完整配置文件发到公开页面；需要求助时先脱敏。'
+        ]
+      }
+    ]
+  },
+  {
     id: 'llm-wiki',
     name: 'LLM Wiki 知识编译器',
     desc: '将零散信息编译成结构化知识网络的AI驱动知识管理系统，基于Obsidian和Claude构建',

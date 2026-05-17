@@ -44,6 +44,7 @@ export const appTutorialUpdatedAtById: Record<string, string> = {
   openclaw: '2026-05-11',
   'openclaw-feishu': '2026-05-11',
   'claudian-obsidian': '2026-05-11',
+  'hermes-agent': '2026-05-16',
   'llm-wiki': '2026-05-11',
 };
 

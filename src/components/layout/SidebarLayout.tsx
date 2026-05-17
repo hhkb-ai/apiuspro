@@ -100,8 +100,12 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
       </div>
 
       {mobileMenuOpen && (
-        <div id="mobile-navigation" className="lg:hidden fixed inset-0 top-16 bg-background/95 z-40 backdrop-blur">
-          <nav className="p-4 space-y-1.5">
+        <div
+          id="mobile-navigation"
+          className="lg:hidden fixed inset-0 top-16 bg-background/95 z-40 backdrop-blur"
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          <nav className="p-4 space-y-1.5" onClick={(event) => event.stopPropagation()}>
             {navigation.map((item) => {
               const isActive = pathname === item.href;
               return (

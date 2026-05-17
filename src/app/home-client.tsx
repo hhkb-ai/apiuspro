@@ -1,6 +1,6 @@
 'use client';
 
-import { useDeferredValue, useMemo, useState, useCallback } from 'react';
+import { useDeferredValue, useMemo, useState, useCallback, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
@@ -149,9 +149,41 @@ function SearchBar({ query, setQuery, onSubmit, suggestions, showSuggestions, se
   variant: 'mobile' | 'desktop';
 }) {
   const isMobile = variant === 'mobile';
+  const searchRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!showSuggestions) return;
+
+    function handlePointerDown(event: PointerEvent) {
+      if (!searchRef.current?.contains(event.target as Node)) {
+        setShowSuggestions(false);
+      }
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setShowSuggestions(false);
+      }
+    }
+
+    document.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [setShowSuggestions, showSuggestions]);
 
   return (
-    <div className="relative">
+    <div
+      ref={searchRef}
+      className="relative"
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          setShowSuggestions(false);
+        }
+      }}
+    >
       <form
         className={isMobile ? 'grid gap-2 rounded-lg border bg-background p-1.5' : 'flex items-center gap-3 rounded-lg border border-border bg-card p-2 shadow-sm'}
         onSubmit={onSubmit}
@@ -412,42 +444,41 @@ function DesktopHome() {
               <p className="mt-4 text-base leading-8 text-muted-foreground">搜索模型、供应商或工具名，或从下方栏目开始浏览。</p>
             </div>
 
-            <div className="mt-8 grid gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
-              <div>
-                <div className="relative">
+            <div className="mt-8 grid gap-5">
+              <div className="max-w-3xl">
                 <SearchBar query={query} setQuery={setQuery} onSubmit={submitSearch} suggestions={suggestions} showSuggestions={showSuggestions} setShowSuggestions={setShowSuggestions} variant="desktop" />
-                </div>
-                <div className="mt-6 grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-2">
-                  {sectionEntries.map(item => {
-                    const Icon = item.icon;
-                    return (
-                      <Link key={item.href} href={item.href} className={`min-w-0 rounded-lg border p-3 transition-colors hover:-translate-y-px ${item.className}`}>
-                        <div className="flex min-w-0 items-center gap-2"><Icon className="size-4 shrink-0" /><span className="truncate text-sm font-semibold">{item.title}</span></div>
-                        <p className="mt-1 text-xs leading-4 opacity-70">{item.desc}</p>
-                      </Link>
-                    );
-                  })}
-                </div>
               </div>
 
-              <section className="rounded-lg border border-border bg-card p-5 shadow-sm">
+              <nav className="grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-6" aria-label="首页栏目入口">
+                {sectionEntries.map(item => {
+                  const Icon = item.icon;
+                  return (
+                    <Link key={item.href} href={item.href} className={`flex min-h-14 min-w-0 items-center gap-2 rounded-lg border px-3 py-2 transition-colors hover:-translate-y-px ${item.className}`}>
+                      <Icon className="size-4 shrink-0" />
+                      <span className="truncate text-sm font-semibold">{item.title}</span>
+                    </Link>
+                  );
+                })}
+              </nav>
+
+              <section className="rounded-lg border border-border bg-card p-4 shadow-sm sm:p-5">
               <div className="mb-4 flex items-center justify-between">
                 <div><p className="text-sm font-medium text-muted-foreground">快速了解</p><h2 className="mt-1 text-xl font-semibold tracking-tight">常见 API 速览</h2></div>
                 <Link href="/cloud-api" className="text-sm font-medium text-foreground hover:underline">全部 API 官网入口</Link>
               </div>
               <div className="overflow-x-auto rounded-md border border-border">
-                <table className="min-w-[780px] w-full text-sm">
+                <table className="min-w-[700px] w-full text-sm">
                   <thead className="bg-muted text-left text-xs font-medium text-muted-foreground">
-                    <tr><th className="w-40 px-4 py-3">API</th><th className="w-28 px-4 py-3">访问</th><th className="w-48 px-4 py-3">免费额度</th><th className="px-4 py-3">主要特点</th><th className="w-28 px-4 py-3">教程</th></tr>
+                    <tr><th className="w-40 px-3 py-3">API</th><th className="w-28 px-3 py-3">访问</th><th className="w-40 px-3 py-3">免费额度</th><th className="px-3 py-3">主要特点</th><th className="w-24 px-3 py-3">教程</th></tr>
                   </thead>
                   <tbody className="divide-y divide-border">
                     {quickViewAPIs.map(api => (
                       <tr key={api.id} role="link" tabIndex={0} aria-label={`查看 ${api.name} API 详情`} onClick={() => router.push(`/api/${api.id}`)} onKeyDown={(e) => { if (e.currentTarget !== e.target || (e.key !== 'Enter' && e.key !== ' ')) return; e.preventDefault(); router.push(`/api/${api.id}`); }} className="cursor-pointer transition-colors hover:bg-muted/40 focus-visible:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50">
-                        <td className="px-4 py-3"><Link href={`/api/${api.id}`} onClick={(e) => e.stopPropagation()} className="font-semibold text-foreground hover:underline">{api.name}</Link></td>
-                        <td className="px-4 py-3"><span className={`whitespace-nowrap rounded-full border px-2 py-1 text-xs font-medium ${api.proxy ? 'border-amber-200 bg-amber-50 text-amber-700' : 'border-emerald-200 bg-emerald-50 text-emerald-700'}`}>{accessText(api.proxy)}</span></td>
-                        <td className="px-4 py-3 text-muted-foreground">{api.free || '—'}</td>
-                        <td className="px-4 py-3 text-muted-foreground">{api.features.slice(0, 2).join('、')}</td>
-                        <td className="px-4 py-3">{api.tutorial ? <Link href={`/tutorial/${api.id}`} onClick={(e) => e.stopPropagation()} className="whitespace-nowrap rounded-full border border-sky-200 bg-sky-50 px-2 py-1 text-xs font-medium text-sky-700 hover:border-sky-300">有教程</Link> : <span className="text-xs text-muted-foreground">—</span>}</td>
+                        <td className="px-3 py-3"><Link href={`/api/${api.id}`} onClick={(e) => e.stopPropagation()} className="font-semibold text-foreground hover:underline">{api.name}</Link></td>
+                        <td className="px-3 py-3"><span className={`whitespace-nowrap rounded-full border px-2 py-1 text-xs font-medium ${api.proxy ? 'border-amber-200 bg-amber-50 text-amber-700' : 'border-emerald-200 bg-emerald-50 text-emerald-700'}`}>{accessText(api.proxy)}</span></td>
+                        <td className="px-3 py-3 text-muted-foreground">{api.free || '—'}</td>
+                        <td className="px-3 py-3 text-muted-foreground">{api.features.slice(0, 2).join('、')}</td>
+                        <td className="px-3 py-3">{api.tutorial ? <Link href={`/tutorial/${api.id}`} onClick={(e) => e.stopPropagation()} className="whitespace-nowrap rounded-full border border-sky-200 bg-sky-50 px-2 py-1 text-xs font-medium text-sky-700 hover:border-sky-300">有教程</Link> : <span className="text-xs text-muted-foreground">—</span>}</td>
                       </tr>
                     ))}
                   </tbody>

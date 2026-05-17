@@ -97,3 +97,29 @@ pnpm exec next build
 
 - 当前工作区还存在未跟踪文件：`.claude/`、`docs/seo-longtail-pages.md`、`scripts/test-fuzzy-search.mjs`。推送前需要确认是否属于本次提交范围。
 - 本日志文件本身用于维护记录，推送前也应纳入 diff 审核。
+
+### 2026-05-17
+
+Deployment scope for this push:
+
+- Add Hermes Agent tutorial data in `src/lib/api-config.ts`.
+- Add required Hermes Agent tutorial images: `public/images/tutorial/hermes-agent-*.png`.
+- Improve homepage search suggestion dismissal, mobile menu dismissal, and theme toggle tap target size.
+- Update search aliases and tutorial updated-at metadata in `src/lib/fuzzy-search.ts` and `src/lib/content-updates.ts`.
+- Update `.gitignore` to ignore local `.coze`.
+
+Explicitly excluded from this commit:
+
+- `.claude/`
+- `docs/seo-longtail-pages.md`
+- `scripts/test-fuzzy-search.mjs`
+- `src/app/local-deploy/page.tsx`: local working copy has encoding damage, so it is excluded to avoid shipping corrupted content.
+
+Verification completed:
+
+```bash
+pnpm exec tsc -p tsconfig.json --noEmit  # passed
+pnpm exec eslint  # passed
+pnpm exec next build  # passed
+pnpm exec tsup src/server.ts --format cjs --platform node --target node20 --outDir dist --no-splitting --no-minify  # passed
+```
