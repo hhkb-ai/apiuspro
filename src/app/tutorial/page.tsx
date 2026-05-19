@@ -22,12 +22,12 @@ const purchaseChecklist = [
 
 function badgeClass(type: string) {
   if (type === 'success') {
-    return 'border-emerald-200 bg-emerald-50 text-emerald-700';
+    return 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700';
   }
   if (type === 'warning') {
-    return 'border-amber-200 bg-amber-50 text-amber-700';
+    return 'border-amber-200 bg-amber-50 dark:bg-amber-950/30 text-amber-700';
   }
-  return 'border-sky-200 bg-sky-50 text-sky-700';
+  return 'border-sky-200 bg-sky-50 dark:bg-sky-950/30 text-sky-700';
 }
 
 function TutorialCard({ api }: { api: APIConfig }) {
@@ -129,7 +129,7 @@ export default function TutorialPage() {
         </div>
 
         {/* BLUF 摘要 */}
-        <section className="mb-8 rounded-lg border border-sky-200 bg-sky-50 px-5 py-4">
+        <section className="mb-8 rounded-lg border border-sky-200 bg-sky-50 dark:bg-sky-950/30 px-5 py-4">
           <p className="text-sm font-semibold text-sky-800">结论先行</p>
           <p className="mt-1 text-sm leading-6 text-sky-700">
             第一次买 API？选国内直连的（DeepSeek、通义千问），注册即用、有免费额度、支持支付宝。
@@ -263,7 +263,7 @@ export default function TutorialPage() {
 
         {/* 适合谁 / 不适合谁 */}
         <section className="order-6 mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
+          <div className="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 p-5">
             <p className="text-sm font-semibold text-emerald-800">适合谁</p>
             <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">
               <li>• 第一次接触 AI API，需要手把手指导注册和配置</li>
@@ -272,7 +272,7 @@ export default function TutorialPage() {
               <li>• 想了解如何安全保存 API Key 和配置限流告警</li>
             </ul>
           </div>
-          <div className="rounded-lg border border-amber-200 bg-amber-50 p-5">
+          <div className="rounded-lg border border-amber-200 bg-amber-50 dark:bg-amber-950/30 p-5">
             <p className="text-sm font-semibold text-amber-800">不适合谁</p>
             <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700">
               <li>• 已经熟悉 API 接入流程，只需要查 Base URL 或模型名</li>

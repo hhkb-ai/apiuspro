@@ -290,9 +290,9 @@ export default async function ReviewDetailPage({ params }: { params: Promise<{ s
               </ul>
             </CardContent>
           </Card>
-          <Card className="border-amber-200 bg-amber-50/35 shadow-sm dark:border-amber-900 dark:bg-amber-950/10">
+          <Card className="border-amber-200 bg-amber-50 shadow-sm dark:border-amber-900 dark:bg-amber-950/10">
             <CardHeader className="pb-3">
-              <CardTitle className="text-amber-700 dark:text-amber-400 text-base">需要谨慎</CardTitle>
+              <CardTitle className="text-amber-700 text-base dark:text-amber-400">需要谨慎</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-2 text-sm leading-6 text-muted-foreground">

@@ -98,10 +98,10 @@ function CodeBlock({ code, lang = 'bash' }: { code: string; lang?: string }) {
 
     // 简单模式匹配
     const patterns = [
-      { regex: /(https?:\/\/[^\s]+)/g, className: 'text-blue-600 underline' },
-      { regex: /(~?\/[^\s]*)/g, className: 'text-teal-700' },
-      { regex: /\b(sudo|npm|npx|pip|git|curl|chmod|mkdir|cd|export|source|echo|cat|brew|node|python|claude|llm-wiki)\b/g, className: 'text-purple-700 font-semibold' },
-      { regex: /(--[\w-]+)/g, className: 'text-cyan-700' },
+      { regex: /(https?:\/\/[^\s]+)/g, className: 'text-blue-600 dark:text-blue-400 underline' },
+      { regex: /(~?\/[^\s]*)/g, className: 'text-teal-700 dark:text-teal-400' },
+      { regex: /\b(sudo|npm|npx|pip|git|curl|chmod|mkdir|cd|export|source|echo|cat|brew|node|python|claude|llm-wiki)\b/g, className: 'text-purple-700 dark:text-purple-400 font-semibold' },
+      { regex: /(--[\w-]+)/g, className: 'text-cyan-700 dark:text-cyan-400' },
     ];
 
     let key = 0;
@@ -261,7 +261,7 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background content-article">
       <BreadcrumbSchema
         items={[
           { name: 'API知识站', url: 'https://apiuspro.cn' },
@@ -323,15 +323,15 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
                 <h1 className="text-2xl font-semibold tracking-tight text-foreground">{tutorial.name}</h1>
               </div>
               <span className={`ml-2 text-[11px] font-semibold px-2 py-0.5 rounded-full ${
-                tutorial.badge.type === 'warning' ? 'border border-amber-200 bg-amber-50 text-amber-700' :
-                tutorial.badge.type === 'success' ? 'border border-emerald-200 bg-emerald-50 text-emerald-700' :
-                'border border-sky-200 bg-sky-50 text-sky-700'
+                tutorial.badge.type === 'warning' ? 'border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700' :
+                tutorial.badge.type === 'success' ? 'border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700' :
+                'border border-sky-200 bg-sky-50 dark:bg-sky-950/30 text-sky-700'
               }`}>
                 {tutorial.badge.text}
               </span>
             </div>
             <p className="text-sm text-muted-foreground">{tutorial.desc}</p>
-            <section className="mt-5 rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 text-sm leading-6 text-sky-900">
+            <section className="mt-5 rounded-lg border border-sky-200 bg-sky-50 dark:bg-sky-950/30 px-4 py-3 text-sm leading-6 text-sky-900">
               <p className="font-semibold">BLUF 摘要</p>
               <p className="mt-1">
                 这篇教程说明如何配置 {tutorial.name}，重点是先准备 API Key、Base URL 和模型名称，再按章节完成安装、配置、验证与排错。
@@ -473,7 +473,7 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
                       {/* 警告 */}
                       {step.warning && (
                         <div className="pl-4 my-3">
-                          <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-800">
+                          <div className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 px-4 py-3 text-sm leading-6 text-amber-800">
                             &#9888; {step.warning}
                           </div>
                         </div>
@@ -484,7 +484,7 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
 
                 {/* 核心要点卡片 */}
                 {section.tips && section.tips.length > 0 && (
-                  <div className="mt-6 space-y-2 rounded-lg border border-sky-200 bg-sky-50 px-5 py-4">
+                  <div className="mt-6 space-y-2 rounded-lg border border-sky-200 bg-sky-50 dark:bg-sky-950/30 px-5 py-4">
                     <p className="mb-1 text-[13px] font-semibold text-sky-800">核心要点</p>
                     {section.tips.map((tip, tipIdx) => (
                       <p key={tipIdx} className="pl-5 text-sm leading-6 text-sky-700">
@@ -496,7 +496,7 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
 
                 {/* 注意事项卡片 */}
                 {section.warnings && section.warnings.length > 0 && (
-                  <div className="mt-6 space-y-2 rounded-lg border border-amber-200 bg-amber-50 px-5 py-4">
+                  <div className="mt-6 space-y-2 rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 px-5 py-4">
                     <p className="mb-1 text-[13px] font-semibold text-amber-800">注意事项</p>
                     {section.warnings.map((warning, warningIdx) => (
                       <p key={warningIdx} className="text-sm text-amber-700 leading-6 pl-5">
@@ -537,9 +537,9 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
                     <div className="flex items-center gap-2 mb-1">
                       <h4 className="text-sm font-semibold text-foreground">{t.name}</h4>
                       <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${
-                        t.badge.type === 'warning' ? 'border border-amber-200 bg-amber-50 text-amber-700' :
-                        t.badge.type === 'success' ? 'border border-emerald-200 bg-emerald-50 text-emerald-700' :
-                        'border border-sky-200 bg-sky-50 text-sky-700'
+                        t.badge.type === 'warning' ? 'border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700' :
+                        t.badge.type === 'success' ? 'border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700' :
+                        'border border-sky-200 bg-sky-50 dark:bg-sky-950/30 text-sky-700'
                       }`}>
                         {t.badge.text}
                       </span>

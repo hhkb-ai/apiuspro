@@ -26,9 +26,9 @@ const workflowNotes = [
 export const metadata: Metadata = generateTdkMetadata('/app');
 
 function badgeClass(type: string) {
-  if (type === 'success') return 'border-emerald-200 bg-emerald-50 text-emerald-700';
-  if (type === 'warning') return 'border-amber-200 bg-amber-50 text-amber-700';
-  return 'border-sky-200 bg-sky-50 text-sky-700';
+  if (type === 'success') return 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700';
+  if (type === 'warning') return 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300';
+  return 'border-sky-200 bg-sky-50 dark:bg-sky-950/30 text-sky-700';
 }
 
 export default function AppListPage() {
@@ -50,7 +50,7 @@ export default function AppListPage() {
         </div>
 
         {/* BLUF 摘要 */}
-        <section className="mb-8 rounded-lg border border-sky-200 bg-sky-50 px-5 py-4">
+        <section className="mb-8 rounded-lg border border-sky-200 bg-sky-50 dark:bg-sky-950/30 px-5 py-4">
           <p className="text-sm font-semibold text-sky-800">结论先行</p>
           <p className="mt-1 text-sm leading-6 text-sky-700">
             想用 AI 写代码？先装 Claude Code 或 Codex，再用 CC Switch 配好 API Key 和模型名，5 分钟跑通。
@@ -134,7 +134,7 @@ export default function AppListPage() {
 
         {/* 适合谁 / 不适合谁 */}
         <section className="order-5 mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
+          <div className="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 p-5">
             <p className="text-sm font-semibold text-emerald-800">适合谁</p>
             <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">
               <li>• 想用 AI 工具提升开发效率的程序员</li>
@@ -143,9 +143,9 @@ export default function AppListPage() {
               <li>• 需要把 AI 接入现有工具链（编辑器、终端、笔记软件）的用户</li>
             </ul>
           </div>
-          <div className="rounded-lg border border-amber-200 bg-amber-50 p-5">
-            <p className="text-sm font-semibold text-amber-800">不适合谁</p>
-            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700">
+          <div className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-5">
+            <p className="text-sm font-semibold text-amber-800 dark:text-amber-200">不适合谁</p>
+            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700 dark:text-amber-300">
               <li>• 还没买过 API，需要先看注册和购买流程（请看 <Link href="/tutorial" className="text-foreground hover:underline">购买教程</Link>）</li>
               <li>• 不确定该用哪个 API（请看 <Link href="/use-case" className="text-foreground hover:underline">场景推荐</Link>）</li>
               <li>• 想看模型测评和基准数据（请看 <Link href="/api-review" className="text-foreground hover:underline">API 测评</Link>）</li>

@@ -42,11 +42,11 @@ export function TutorialCard({ id, tutorial }: TutorialCardProps) {
         <div className="space-y-6">
           {/* 步骤 */}
           {tutorial.steps.map((step, index) => (
-            <div key={index} className={`rounded-lg border p-4 ${step.important ? 'border-amber-300 bg-amber-50/50 dark:border-amber-700 dark:bg-amber-950/30' : 'bg-muted/30'}`}>
+            <div key={index} className={`rounded-lg border p-4 ${step.important ? 'border-amber-300 bg-amber-50 dark:bg-amber-950/30/50 dark:border-amber-700 dark:bg-amber-950/30' : 'bg-muted/30'}`}>
               <div className="flex items-start gap-4">
                 {/* 步骤编号 */}
                 <div className="flex-shrink-0">
-                  <div className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold ${step.important ? 'bg-amber-500 text-white' : 'bg-foreground text-background'}`}>
+                  <div className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold ${step.important ? 'bg-amber-50 dark:bg-amber-950/30 text-white' : 'bg-foreground text-background'}`}>
                     {index + 1}
                   </div>
                 </div>
@@ -56,7 +56,7 @@ export function TutorialCard({ id, tutorial }: TutorialCardProps) {
                     <h4 className="font-semibold">
                       {step.title}
                       {step.important && (
-                        <span className="ml-2 inline-flex items-center rounded-full bg-amber-500 px-2 py-0.5 text-[10px] font-bold text-white">
+                        <span className="ml-2 inline-flex items-center rounded-full bg-amber-50 dark:bg-amber-950/30 px-2 py-0.5 text-[10px] font-bold text-white">
                           重要
                         </span>
                       )}
@@ -111,7 +111,7 @@ export function TutorialCard({ id, tutorial }: TutorialCardProps) {
 
                   {/* 警告提示 */}
                   {step.warning && (
-                    <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800 dark:bg-amber-950/20 dark:text-amber-200">
+                    <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800 dark:border-amber-800 dark:bg-amber-950/20 dark:text-amber-200">
                       <span>{step.warning}</span>
                     </div>
                   )}
@@ -123,7 +123,7 @@ export function TutorialCard({ id, tutorial }: TutorialCardProps) {
 
         {/* 提示信息 */}
         {tutorial.tips && tutorial.tips.length > 0 && (
-          <div className="mt-6 rounded-lg border border-sky-200 bg-sky-50 p-4 dark:bg-sky-950/20">
+          <div className="mt-6 rounded-lg border border-sky-200 bg-sky-50 p-4 dark:border-sky-800 dark:bg-sky-950/20">
             <p className="mb-2 font-medium text-sky-800 dark:text-sky-200">提示</p>
             <ul className="space-y-1 text-sm text-sky-700 dark:text-sky-300">
               {tutorial.tips.map((tip, index) => (
@@ -149,7 +149,7 @@ export function TutorialCard({ id, tutorial }: TutorialCardProps) {
         {tutorial.advantages && tutorial.advantages.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-2">
             {tutorial.advantages.map((advantage, index) => (
-              <Badge key={index} variant="outline" className="border-emerald-200 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/20 dark:text-emerald-300">
+              <Badge key={index} variant="outline" className="border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/20 dark:text-emerald-300">
                 {advantage}
               </Badge>
             ))}

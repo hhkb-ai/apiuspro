@@ -88,17 +88,17 @@ export default async function UseCaseDetailPage({ params }: { params: Promise<{ 
         {/* 选型结论 */}
         <section className="mb-8 space-y-3">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4">
+            <div className="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 p-4">
               <p className="text-xs font-semibold uppercase tracking-wider text-emerald-600">首选 API</p>
-              <p className="mt-1 text-lg font-bold text-emerald-900">{uc.primaryPick}</p>
+              <p className="mt-1 text-lg font-bold text-emerald-900 dark:text-emerald-200">{uc.primaryPick}</p>
             </div>
-            <div className="rounded-lg border border-sky-200 bg-sky-50 p-4">
+            <div className="rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 p-4">
               <p className="text-xs font-semibold uppercase tracking-wider text-sky-600">备选 API</p>
-              <p className="mt-1 text-lg font-bold text-sky-900">{uc.altPick}</p>
+              <p className="mt-1 text-lg font-bold text-sky-900 dark:text-sky-200">{uc.altPick}</p>
             </div>
-            <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
+            <div className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-4">
               <p className="text-xs font-semibold uppercase tracking-wider text-amber-600">不建议选择</p>
-              <p className="mt-1 text-sm leading-5 text-amber-800">{uc.notRecommended}</p>
+              <p className="mt-1 text-sm leading-5 text-amber-800 dark:text-amber-200">{uc.notRecommended}</p>
             </div>
           </div>
           <div className="rounded-lg border bg-card p-4">
@@ -166,12 +166,12 @@ export default async function UseCaseDetailPage({ params }: { params: Promise<{ 
                   </div>
                   <div className="flex gap-2">
                     {rec.api!.proxy === true && (
-                      <Badge variant="outline" className="border-amber-200 bg-amber-50 text-amber-700">
+                      <Badge variant="outline" className="border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700">
                         需代理
                       </Badge>
                     )}
                     {rec.api!.free && (
-                      <Badge variant="outline" className="border-emerald-200 bg-emerald-50 text-emerald-700">
+                      <Badge variant="outline" className="border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700">
                         {rec.api!.free}
                       </Badge>
                     )}

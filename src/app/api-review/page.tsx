@@ -111,12 +111,12 @@ function ReviewCard({ review }: { review: ReviewDetail }) {
               ))}
             </ul>
           </div>
-          <div className="rounded-md border border-amber-200 bg-amber-50/55 p-4 dark:border-amber-900 dark:bg-amber-950/10">
+          <div className="rounded-md border border-amber-200 bg-amber-50 p-4 dark:border-amber-900 dark:bg-amber-950/10">
             <p className="mb-2 font-medium text-foreground">需要注意</p>
             <ul className="space-y-2">
               {review.cons.slice(0, 3).map((item) => (
                 <li key={item} className="flex gap-2 leading-6">
-                  <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-amber-500" />
+                  <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-amber-50 dark:bg-amber-950/30" />
                   <span>{item}</span>
                 </li>
               ))}
@@ -152,16 +152,16 @@ export default function APIReviewPage() {
           </p>
         </div>
 
-        <section className="mb-6 rounded-lg border border-sky-200 bg-sky-50 px-4 py-3">
+        <section className="mb-6 rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 px-4 py-3">
           <p className="text-sm font-semibold text-sky-800">结论先行</p>
-          <div className="mt-2 grid gap-1.5 text-sm leading-6 text-sky-700">
+          <div className="mt-2 grid gap-1.5 text-sm leading-6 text-sky-700 dark:text-sky-300">
             <p><span className="font-semibold">代码 / 推理：</span>性价比看 DeepSeek V4 Flash；顶级能力看 DeepSeek V4 Pro、Claude Opus。</p>
             <p><span className="font-semibold">通用对话 / 内容创作：</span>中文场景看通义千问（Qwen）、Kimi。</p>
             <p><span className="font-semibold">长文档 / 多模态：</span>海外看 Gemini 3.1 Pro；安全长文本看 Claude Opus 4.7。</p>
             <p><span className="font-semibold">综合最强：</span>OpenAI GPT-5.5，科研、金融、Agent 能力最强，但价格高。</p>
             <p><span className="font-semibold">策略：</span>先用各家免费额度跑真实任务，再决定长期使用哪个。</p>
           </div>
-          <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs leading-5 text-sky-700/80">
+          <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs leading-5 text-sky-700 dark:text-sky-300/80">
             <Link href="/tutorial" className="font-medium text-foreground hover:underline">购买教程</Link>
             <Link href="/cloud-api" className="font-medium text-foreground hover:underline">API 列表</Link>
             <Link href="/use-case" className="font-medium text-foreground hover:underline">场景推荐</Link>
@@ -232,17 +232,17 @@ export default function APIReviewPage() {
 
         {/* 适合谁 / 不适合谁 */}
         <section className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
+          <div className="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 p-5">
             <p className="text-sm font-semibold text-emerald-800">适合谁</p>
-            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">
+            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700 dark:text-emerald-300">
               <li>• 想对比不同 API 的性能、价格和使用体验</li>
               <li>• 需要根据具体场景（编程、翻译、创作）选 API</li>
               <li>• 想了解各 API 的优缺点再做决定</li>
             </ul>
           </div>
-          <div className="rounded-lg border border-amber-200 bg-amber-50 p-5">
+          <div className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-5">
             <p className="text-sm font-semibold text-amber-800">不适合谁</p>
-            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700">
+            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700 dark:text-amber-300">
               <li>• 已经确定 API，需要注册和购买指导（请看 <Link href="/tutorial" className="text-foreground hover:underline">购买教程</Link>）</li>
               <li>• 只想查官网入口和免费额度（请看 <Link href="/cloud-api" className="text-foreground hover:underline">API 列表</Link>）</li>
               <li>• 想按编程、翻译等场景直接选 API（请看 <Link href="/use-case" className="text-foreground hover:underline">场景推荐</Link>）</li>

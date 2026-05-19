@@ -396,18 +396,18 @@ export default function LocalDeployPage() {
 
           {/* 适合谁 / 不适合谁 */}
           <section className="mb-10 grid grid-cols-1 gap-4 md:grid-cols-2">
-            <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
+            <div className="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 p-5">
               <p className="text-sm font-semibold text-emerald-800">适合谁</p>
-              <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">
+              <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700 dark:text-emerald-300">
                 <li>• 想零成本体验 AI 对话和代码生成的初学者</li>
                 <li>• 处理隐私资料、不希望数据上传到云端的用户</li>
                 <li>• 在没有网络的环境下也需要使用 AI 的人</li>
                 <li>• 想学习 AI 模型原理、Prompt 工程的学生和研究者</li>
               </ul>
             </div>
-            <div className="rounded-lg border border-amber-200 bg-amber-50 p-5">
+            <div className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-5">
               <p className="text-sm font-semibold text-amber-800">不适合谁</p>
-              <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700">
+              <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700 dark:text-amber-300">
                 <li>• 需要稳定代码生成、复杂推理或生产环境 SLA（请看 <Link href="/cloud-api" className="text-foreground hover:underline">云端 API 官网入口</Link>）</li>
                 <li>• 电脑内存低于 8GB 且不想升级硬件</li>
                 <li>• 需要多模态、长上下文、函数调用等高级能力</li>
@@ -506,7 +506,7 @@ export default function LocalDeployPage() {
 
                 {/* 警告 */}
                 {step.warning && (
-                  <div className="my-4 rounded-lg border border-amber-200 bg-amber-50 px-5 py-3 text-sm leading-6 text-amber-800">
+                  <div className="my-4 rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 px-5 py-3 text-sm leading-6 text-amber-800">
                     注意：<LinkText text={step.warning} />
                   </div>
                 )}
@@ -522,11 +522,11 @@ export default function LocalDeployPage() {
           </div>
 
           {/* CC Switch 推荐 */}
-          <section id="ccswitch" className="mt-12 rounded-lg border border-emerald-200 bg-emerald-50 px-5 py-4">
+          <section id="ccswitch" className="mt-12 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 px-5 py-4">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div>
                 <h2 className="mb-1 text-base font-semibold text-emerald-800">配置推荐：用 CC Switch 管理本地和云端模型</h2>
-                <p className="text-sm leading-6 text-emerald-700">
+                <p className="text-sm leading-6 text-emerald-700 dark:text-emerald-300">
                   启动 Ollama API 后，如果要接入 Claude Code、Codex、Gemini CLI、OpenCode 或 OpenClaw，建议使用 CC Switch 统一管理 Base URL、模型名和供应商切换。云端 API 与本地兼容接口可以放在同一个工具里管理，后续切换更方便。
                 </p>
               </div>
@@ -564,7 +564,7 @@ export default function LocalDeployPage() {
                       <td className="py-3 px-4 font-medium">
                         {model.name}
                         {model.isNew && (
-                          <span className="ml-2 text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700">
+                          <span className="ml-2 text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:text-emerald-300">
                             新
                           </span>
                         )}
@@ -647,18 +647,18 @@ export default function LocalDeployPage() {
           {/* 使用提示 */}
           <section className="mt-12 pt-8 border-t border-border">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="rounded-lg border border-sky-200 bg-sky-50 p-5">
+              <div className="rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 p-5">
                 <p className="text-sm font-semibold text-sky-800 mb-3">使用提示</p>
-                <ul className="space-y-2 text-sm text-sky-700">
+                <ul className="space-y-2 text-sm text-sky-700 dark:text-sky-300">
                   <li>首次下载模型需要一定时间，请耐心等待</li>
                   <li>模型文件会缓存到本地，下次启动无需重新下载</li>
                   <li>可以同时下载多个模型，按需切换使用</li>
                   <li>遇到问题可以查看 Ollama 官方文档</li>
                 </ul>
               </div>
-              <div className="rounded-lg border border-amber-200 bg-amber-50 p-5">
+              <div className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-5">
                 <p className="text-sm font-semibold text-amber-800 mb-3">注意事项</p>
-                <ul className="space-y-2 text-sm text-amber-700">
+                <ul className="space-y-2 text-sm text-amber-700 dark:text-amber-300">
                   <li>本地模型能力有限，复杂任务建议使用云端API</li>
                   <li>模型运行时会占用较多系统资源</li>
                   <li>定期更新模型以获得最佳体验</li>

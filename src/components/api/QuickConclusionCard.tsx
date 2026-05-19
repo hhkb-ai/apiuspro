@@ -53,15 +53,15 @@ export function QuickConclusionCard({ api, reviewSlug }: QuickConclusionCardProp
   const access = getAccessInfo(api);
 
   return (
-    <Card className="mb-8 border-sky-200 bg-sky-50/70">
+    <Card className="mb-8 border-border bg-card shadow-sm">
       <CardHeader>
         <CardTitle className="flex flex-wrap items-center gap-3">
           快速结论
-          <span className="rounded-md bg-amber-100 px-2 py-0.5 text-sm font-semibold text-amber-700">推荐指数 {rating}/10</span>
+          <span className="rounded-md bg-amber-100 px-2 py-0.5 text-sm font-semibold text-amber-700 dark:text-amber-300">推荐指数 {rating}/10</span>
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4 text-sm">
-        <p className="rounded-md bg-sky-100/80 px-3 py-2 text-sky-800">{getConclusion(api)}</p>
+      <CardContent className="space-y-4 text-sm text-foreground">
+        <p className="rounded-md border border-sky-200 bg-sky-50 px-3 py-2 text-sky-900 dark:border-sky-800 dark:bg-sky-950/30 dark:text-sky-100">{getConclusion(api)}</p>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
@@ -92,7 +92,7 @@ export function QuickConclusionCard({ api, reviewSlug }: QuickConclusionCardProp
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-2 border-t border-sky-200 pt-4">
+        <div className="flex flex-wrap gap-2 border-t border-border pt-4">
           <a href={api.url} target="_blank" rel="noopener noreferrer">
             <Button variant="outline" size="sm">官网入口</Button>
           </a>

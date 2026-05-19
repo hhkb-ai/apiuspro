@@ -54,12 +54,12 @@ function getRelatedAPIs(currentId: string, type: string): APIConfig[] {
 
 function badgeClass(type: string) {
   if (type === 'success') {
-    return 'border-emerald-200 bg-emerald-50 text-emerald-700';
+    return 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700';
   }
   if (type === 'warning') {
-    return 'border-amber-200 bg-amber-50 text-amber-700';
+    return 'border-amber-200 bg-amber-50 dark:bg-amber-950/30 text-amber-700';
   }
-  return 'border-sky-200 bg-sky-50 text-sky-700';
+  return 'border-sky-200 bg-sky-50 dark:bg-sky-950/30 text-sky-700';
 }
 
 function getAudienceText(api: APIConfig) {

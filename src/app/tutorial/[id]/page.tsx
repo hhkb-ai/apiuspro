@@ -145,15 +145,15 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
         totalTime="PT20M"
         tool={['浏览器', 'API 控制台', 'CC Switch']}
       />
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background content-article overflow-safe">
       {/* ── 顶部导航栏 ── */}
       <header className="sticky top-0 z-50 border-b border-border bg-card">
-        <div className="max-w-[1200px] mx-auto px-6 py-3 flex flex-wrap items-center gap-y-2">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center gap-y-2">
           <DetailBackNav listHref="/tutorial" listLabel="教程列表" className="mb-0" />
           <span className="mx-3 text-border">|</span>
           <span className="truncate text-sm font-semibold text-foreground">{api.name} 购买教程</span>
           <span className={`ml-2 text-[11px] font-semibold px-2 py-0.5 rounded-full ${
-            needProxy ? 'border border-amber-200 bg-amber-50 text-amber-700' : 'border border-emerald-200 bg-emerald-50 text-emerald-700'
+            needProxy ? 'border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700' : 'border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700'
           }`}>
             {needProxy ? '需要代理' : '无需代理'}
           </span>
@@ -171,7 +171,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
       </header>
 
       {/* ── 三栏布局 ── */}
-      <div className="max-w-[1200px] mx-auto px-6 py-8 flex gap-8">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-6 sm:py-8 flex gap-8">
         {/* 左侧指南导航 */}
         <aside className="hidden lg:block w-52 shrink-0">
           <div className="sticky top-20">
@@ -216,20 +216,20 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
         {/* 中间主内容区 */}
         <main className="flex-1 min-w-0 rounded-lg border border-border bg-card">
           {/* 文档头部 */}
-          <div className="border-b border-border px-8 pb-6 pt-8">
-            <div className="flex items-center gap-3 mb-2">
+          <div className="border-b border-border px-4 sm:px-8 pb-5 sm:pb-6 pt-6 sm:pt-8">
+            <div className="flex items-center gap-2 sm:gap-3 mb-2">
               <div>
-                <h1 className="text-2xl font-semibold tracking-tight text-foreground">{tutorial.title}</h1>
+                <h1 className="text-[1.45rem] sm:text-2xl font-semibold tracking-tight leading-[1.2] text-foreground">{tutorial.title}</h1>
               </div>
               <span className={`ml-2 text-[11px] font-semibold px-2 py-0.5 rounded-full ${
-                needProxy ? 'border border-amber-200 bg-amber-50 text-amber-700' : 'border border-emerald-200 bg-emerald-50 text-emerald-700'
+                needProxy ? 'border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700' : 'border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700'
               }`}>
                 {needProxy ? '需要代理' : '无需代理'}
               </span>
             </div>
-            {tutorial.subtitle && <p className="mt-1 text-sm text-muted-foreground">{tutorial.subtitle}</p>}
+            {tutorial.subtitle && <p className="mt-1 text-[15px] sm:text-sm text-foreground/80">{tutorial.subtitle}</p>}
 
-            <section className="mt-5 rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 text-sm leading-6 text-sky-900">
+            <section className="mt-5 rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 text-[15px] sm:text-sm leading-7 sm:leading-6 text-sky-900 dark:border-sky-800 dark:bg-sky-950/20 dark:text-sky-200">
               <p className="font-semibold">BLUF 摘要</p>
               <p className="mt-1">
                 这篇教程用 {tutorial.steps.length} 个步骤说明 {api.name} API 如何注册、开通、获取 API Key 并完成首次接入；先确认
@@ -241,7 +241,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
             {tutorial.advantages && tutorial.advantages.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-4">
                 {tutorial.advantages.map((advantage, index) => (
-                  <span key={index} className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[12px] text-emerald-700">
+                  <span key={index} className="rounded-full border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 px-2.5 py-1 text-[12px] text-emerald-700">
                     &#10003; {advantage}
                   </span>
                 ))}
@@ -251,9 +251,9 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
 
           {/* 教程概览卡片 */}
           {(tutorial.estimatedTime || tutorial.prerequisites || tutorial.successSign || tutorial.commonPitfall || tutorial.securityReminder) && (
-            <section id="tutorial-overview" className="scroll-mt-[68px] mx-8 mt-6 rounded-lg border border-sky-200 bg-sky-50 px-5 py-4 dark:border-sky-800 dark:bg-sky-950/20">
+            <section id="tutorial-overview" className="scroll-mt-[68px] mx-4 sm:mx-8 mt-6 rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 sm:px-5 sm:py-4 dark:border-sky-800 dark:bg-sky-950/20">
               <p className="mb-3 text-[13px] font-semibold text-sky-800 dark:text-sky-300">教程概览</p>
-              <div className="space-y-2.5 text-sm">
+              <div className="space-y-2.5 text-[15px] sm:text-sm">
                 {tutorial.estimatedTime && (
                   <div className="flex items-start gap-2">
                     <span className="mt-0.5 shrink-0 text-sky-600 dark:text-sky-400">&#9201;</span>
@@ -289,7 +289,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
           )}
 
           {/* 移动端目录 - 折叠式 */}
-          <div className="mx-8 mt-6 overflow-hidden rounded-lg border border-border lg:hidden">
+          <div className="mx-4 sm:mx-8 mt-6 overflow-hidden rounded-lg border border-border lg:hidden">
             <details>
               <summary className="cursor-pointer select-none bg-muted/60 px-4 py-2.5 text-sm font-semibold text-foreground">
                 教程步骤（{tutorial.steps.length} 步）
@@ -305,16 +305,16 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
           </div>
 
           {/* 教程步骤 */}
-          <div className="space-y-10 px-5 py-6 sm:px-8">
+          <div className="space-y-10 px-4 py-5 sm:px-8">
             {tutorial.steps.map((step, stepIdx) => (
               <section
                 key={stepIdx}
                 id={`step-${stepIdx}`}
-                className={`scroll-mt-[68px] ${stepIdx < tutorial.steps.length - 1 ? 'border-b border-border pb-10' : ''} ${step.important ? 'relative rounded-lg border-2 border-amber-300 bg-amber-50/30 p-6 -mx-2 dark:border-amber-700 dark:bg-amber-950/20' : ''}`}
+                className={`scroll-mt-[68px] ${stepIdx < tutorial.steps.length - 1 ? 'border-b border-border pb-8 sm:pb-10' : ''} ${step.important ? 'relative rounded-lg border-2 border-amber-300 bg-amber-50 dark:bg-amber-950/30/30 p-4 sm:p-6 -mx-1 sm:-mx-2 dark:border-amber-700 dark:bg-amber-950/20' : ''}`}
               >
                 {/* 重要步骤标记 */}
                 {step.important && (
-                  <div className="absolute -top-3 left-4 flex items-center gap-1.5 rounded-full bg-amber-500 px-3 py-1 text-xs font-bold text-white shadow-sm">
+                  <div className="absolute -top-3 left-4 flex items-center gap-1.5 rounded-full bg-amber-50 dark:bg-amber-950/30 px-3 py-1 text-xs font-bold text-white shadow-sm">
                     <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                     </svg>
@@ -323,21 +323,21 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                 )}
 
                 {/* 步骤标题：编号 + 文字 */}
-                <div className="flex items-center gap-3 mb-5">
-                  <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm font-bold ${step.important ? 'bg-amber-500 text-white' : 'bg-foreground text-background'}`}>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-4 sm:mb-5">
+                  <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm font-bold ${step.important ? 'bg-amber-50 dark:bg-amber-950/30 text-white' : 'bg-foreground text-background'}`}>
                     {stepIdx + 1}
                   </span>
-                  <h2 className="text-xl font-semibold tracking-tight text-foreground">{step.title}</h2>
+                  <h2 className="text-lg sm:text-xl font-semibold tracking-tight leading-[1.2] text-foreground">{step.title}</h2>
                 </div>
 
                 {/* 步骤描述 */}
                 {step.description && (
-                  <p className="mb-4 text-[15px] leading-7 text-muted-foreground">{step.description}</p>
+                  <p className="mb-4 text-[15px] sm:text-base leading-7 sm:leading-8 text-foreground/85">{step.description}</p>
                 )}
 
                 {/* 步骤实操指引 */}
                 {(step.whereToClick || step.expectedResult || (step.failureChecklist && step.failureChecklist.length > 0)) && (
-                  <div className="mb-4 rounded-md border-l-2 border-border bg-muted/30 px-4 py-3 space-y-1.5 text-[13px]">
+                  <div className="mb-4 rounded-md border-l-2 border-border bg-muted/30 px-3 sm:px-4 py-3 space-y-1.5 text-[13px] sm:text-sm">
                     {step.whereToClick && (
                       <p className="text-muted-foreground"><strong className="font-semibold text-foreground">点击位置：</strong>{step.whereToClick}</p>
                     )}
@@ -361,13 +361,14 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                 {step.image && (
                   <div className="my-4">
                     <div className="overflow-hidden rounded-lg border border-border bg-muted/40">
-                      <div className="relative aspect-[16/9]">
+                      <div className="relative aspect-[16/9] w-full">
                         <Image
                           src={step.image}
                           alt={step.title}
                           fill
                           className="object-contain"
                           sizes="(min-width: 1280px) 760px, (min-width: 768px) calc(100vw - 18rem), calc(100vw - 2rem)"
+                          priority={stepIdx === 0}
                         />
                       </div>
                     </div>
@@ -383,9 +384,9 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                       const hasColon = colonIdx > 0 && colonIdx < 20;
 
                       return (
-                        <li key={itemIdx} className="flex items-start gap-2 text-sm text-muted-foreground">
-                          <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-muted-foreground/50" />
-                          <span className="leading-6">
+                        <li key={itemIdx} className="flex items-start gap-2 text-[15px] sm:text-sm text-foreground/85">
+                          <span className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-foreground/50" />
+                          <span className="leading-7 sm:leading-6">
                             {hasColon ? (
                               <>
                                 <strong className="font-semibold text-foreground">{item.substring(0, colonIdx + 1)}</strong>
@@ -412,7 +413,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
 
                 {/* 警告 */}
                 {step.warning && (
-                  <div className="my-4 rounded-lg border border-amber-200 bg-amber-50 px-5 py-3 text-sm leading-6 text-amber-800">
+                  <div className="my-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-800 dark:border-amber-800 dark:bg-amber-950/20 dark:text-amber-300">
                     &#9888; {step.warning}
                   </div>
                 )}
@@ -421,11 +422,11 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
           </div>
 
           {/* CC Switch 推荐 */}
-          <div id="ccswitch-section" className="mx-8 mb-8 rounded-lg border border-emerald-200 bg-emerald-50 px-5 py-4">
+          <div id="ccswitch-section" className="mx-4 sm:mx-8 mb-8 rounded-lg border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 px-4 py-3 sm:px-5 sm:py-4">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div>
                 <p className="mb-1 text-[13px] font-semibold text-emerald-800">配置推荐：使用 CC Switch 接入 AI 工具</p>
-                <p className="text-sm leading-6 text-emerald-700">
+                <p className="text-[15px] sm:text-sm leading-7 sm:leading-6 text-emerald-700 dark:text-emerald-300">
                   创建 API Key 后，建议用 CC Switch 统一填写 API Key、Base URL 和模型名称，再接入 Claude Code、Codex、Gemini CLI、OpenCode、OpenClaw 等工具，避免手动修改配置文件出错。
                 </p>
               </div>
@@ -440,12 +441,12 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
 
           {/* 使用提示和注意事项 */}
           {(tutorial.tips && tutorial.tips.length > 0) || (tutorial.warnings && tutorial.warnings.length > 0) ? (
-            <div className="mx-8 mb-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="mx-4 sm:mx-8 mb-8 grid grid-cols-1 md:grid-cols-2 gap-4">
               {tutorial.tips && tutorial.tips.length > 0 && (
-                <div id="tips-section" className="scroll-mt-[68px] space-y-2 rounded-lg border border-sky-200 bg-sky-50 px-5 py-4">
+                <div id="tips-section" className="scroll-mt-[68px] space-y-2 rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 px-4 py-3 sm:px-5 sm:py-4">
                   <p className="mb-1 text-[13px] font-semibold text-sky-800">使用提示</p>
                   {tutorial.tips.map((tip, index) => (
-                    <p key={index} className="pl-5 text-sm leading-6 text-sky-700">
+                    <p key={index} className="pl-4 sm:pl-5 text-[15px] sm:text-sm leading-7 sm:leading-6 text-sky-700 dark:text-sky-300">
                       <LinkText text={tip} />
                     </p>
                   ))}
@@ -453,10 +454,10 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
               )}
 
               {tutorial.warnings && tutorial.warnings.length > 0 && (
-                <div id="warnings-section" className="scroll-mt-[68px] space-y-2 rounded-lg border border-amber-200 bg-amber-50 px-5 py-4">
+                <div id="warnings-section" className="scroll-mt-[68px] space-y-2 rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 px-4 py-3 sm:px-5 sm:py-4">
                   <p className="mb-1 text-[13px] font-semibold text-amber-800">注意事项</p>
                   {tutorial.warnings.map((warning, index) => (
-                    <p key={index} className="text-sm text-amber-700 leading-6 pl-5">
+                    <p key={index} className="text-[15px] sm:text-sm text-amber-700 dark:text-amber-300 leading-7 sm:leading-6 pl-4 sm:pl-5">
                       <LinkText text={warning} />
                     </p>
                   ))}
@@ -466,18 +467,18 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
           ) : null}
 
           {/* 适合谁 / 不适合谁 */}
-          <div className="mx-8 mb-8 grid grid-cols-1 gap-4 md:grid-cols-2">
-            <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-5 py-4">
+          <div className="mx-4 sm:mx-8 mb-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="rounded-lg border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 px-4 py-3 sm:px-5 sm:py-4">
               <p className="mb-2 text-[13px] font-semibold text-emerald-800">适合谁</p>
-              <ul className="space-y-1.5 text-sm leading-6 text-emerald-700">
+              <ul className="space-y-1.5 text-[15px] sm:text-sm leading-7 sm:leading-6 text-emerald-700 dark:text-emerald-300">
                 <li>• {needProxy ? '有稳定代理环境和国际信用卡的开发者' : '国内用户，想快速接入 AI API'}</li>
                 <li>• 需要手把手指导完成注册、充值和获取 Key 的新手</li>
                 <li>• 想把 {api.name} 接入 Claude Code、Codex 等工具的用户</li>
               </ul>
             </div>
-            <div className="rounded-lg border border-amber-200 bg-amber-50 px-5 py-4">
+            <div className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 px-4 py-3 sm:px-5 sm:py-4">
               <p className="mb-2 text-[13px] font-semibold text-amber-800">不适合谁</p>
-              <ul className="space-y-1.5 text-sm leading-6 text-amber-700">
+              <ul className="space-y-1.5 text-[15px] sm:text-sm leading-7 sm:leading-6 text-amber-700 dark:text-amber-300">
                 <li>• 已经熟悉接入流程，只需要查 Base URL 或模型名</li>
                 <li>• 不确定该用哪个 API（请看 <Link href="/use-case" className="text-foreground hover:underline">场景推荐</Link>）</li>
                 <li>• 想对比多个 API 的测评数据（请看 <Link href="/api-review" className="text-foreground hover:underline">API 测评</Link>）</li>
@@ -486,7 +487,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
           </div>
 
           {/* 常见问题 */}
-          <div className="mx-8 mb-8">
+          <div className="mx-4 sm:mx-8 mb-8">
             <h3 className="mb-4 text-base font-semibold text-foreground">常见问题</h3>
             <div className="space-y-3">
               {[
@@ -505,9 +506,9 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                   a: '立即到控制台删除泄露的 Key 并重新生成。建议把 Key 存在环境变量或 .env 文件中，不要提交到 Git 仓库。',
                 },
               ].map((faq) => (
-                <div key={faq.q} className="rounded-lg border border-border bg-card px-5 py-4">
-                  <h4 className="text-sm font-semibold text-foreground">{faq.q}</h4>
-                  <p className="mt-1.5 text-sm leading-6 text-muted-foreground">{faq.a}</p>
+                <div key={faq.q} className="rounded-lg border border-border bg-card px-4 sm:px-5 py-4">
+                  <h4 className="text-[15px] sm:text-sm font-semibold text-foreground">{faq.q}</h4>
+                  <p className="mt-1.5 text-[15px] sm:text-sm leading-7 sm:leading-6 text-foreground/80">{faq.a}</p>
                 </div>
               ))}
             </div>
@@ -515,7 +516,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
 
           {/* 相关教程推荐 */}
           {relatedAPIs.length > 0 && (
-            <div className="mx-8 mb-8 border-t border-border pt-6">
+            <div className="mx-4 sm:mx-8 mb-8 border-t border-border pt-6">
               <h3 className="mb-4 text-base font-semibold text-foreground">相关教程推荐</h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {relatedAPIs.map((related) => (
@@ -525,10 +526,10 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                     className="group rounded-lg border border-border bg-muted/40 p-4 transition-colors hover:border-foreground/30 hover:bg-card"
                   >
                     <div className="mb-1 flex items-center gap-2">
-                      <h4 className="text-sm font-semibold text-foreground">{related.name}</h4>
+                      <h4 className="text-[15px] sm:text-sm font-semibold text-foreground">{related.name}</h4>
                     </div>
-                    <p className="text-xs text-muted-foreground">{related.desc}</p>
-                    <div className="mt-2 text-xs font-medium text-foreground">查看教程 &#8594;</div>
+                    <p className="text-[13px] sm:text-xs text-foreground/70">{related.desc}</p>
+                    <div className="mt-2 text-[13px] sm:text-xs font-medium text-foreground">查看教程 &#8594;</div>
                   </Link>
                 ))}
               </div>
@@ -536,9 +537,9 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
           )}
 
           {/* 场景推荐 */}
-          <div className="mx-8 mb-8 border-t border-border pt-6">
+          <div className="mx-4 sm:mx-8 mb-8 border-t border-border pt-6">
             <h3 className="mb-3 text-base font-semibold text-foreground">不知道选哪个 API？</h3>
-            <p className="text-sm text-muted-foreground mb-4">
+            <p className="text-sm text-foreground/80 mb-4">
               按实际使用场景选择，找到最适合你的模型。
             </p>
             <Link href="/use-case">
@@ -603,7 +604,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
         </aside>
       </div>
 
-      <footer className="border-t border-border px-4 py-8 text-center text-sm text-muted-foreground">
+      <footer className="border-t border-border px-4 py-6 sm:py-8 text-center text-sm text-foreground/80">
         <p>API知识站 - 适合初学者的 AI API 学习平台</p>
         <div className="mt-3">
           <BeianLinks />

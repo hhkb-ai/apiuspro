@@ -35,12 +35,12 @@ const decisionGuides = [
 
 function badgeClass(type: string) {
   if (type === 'success') {
-    return 'border-emerald-200 bg-emerald-50 text-emerald-700';
+    return 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700';
   }
   if (type === 'warning') {
-    return 'border-amber-200 bg-amber-50 text-amber-700';
+    return 'border-amber-200 bg-amber-50 dark:bg-amber-950/30 text-amber-700';
   }
-  return 'border-sky-200 bg-sky-50 text-sky-700';
+  return 'border-sky-200 bg-sky-50 dark:bg-sky-950/30 text-sky-700';
 }
 
 function APICard({ api }: { api: APIConfig }) {
@@ -204,7 +204,7 @@ export default function CloudAPIPage() {
         </div>
 
         {/* BLUF 摘要 */}
-        <section className="mb-8 rounded-lg border border-sky-200 bg-sky-50 px-5 py-4">
+        <section className="mb-8 rounded-lg border border-sky-200 bg-sky-50 dark:bg-sky-950/30 px-5 py-4">
           <p className="text-sm font-semibold text-sky-800">结论先行</p>
           <p className="mt-1 text-sm leading-6 text-sky-700">
             国内用户首选无需代理的 API（DeepSeek、通义千问、智谱），注册即用、有免费额度。
@@ -369,7 +369,7 @@ export default function CloudAPIPage() {
 
         {/* 适合谁 / 不适合谁 */}
         <section className="order-7 mt-10 grid grid-cols-1 gap-4 md:order-9 md:grid-cols-2">
-          <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
+          <div className="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 p-5">
             <p className="text-sm font-semibold text-emerald-800">适合谁</p>
             <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">
               <li>• 已经确定要用哪个 API，需要快速找到官网和控制台</li>
@@ -377,7 +377,7 @@ export default function CloudAPIPage() {
               <li>• 需要对比不同 API 的功能特性和免费额度</li>
             </ul>
           </div>
-          <div className="rounded-lg border border-amber-200 bg-amber-50 p-5">
+          <div className="rounded-lg border border-amber-200 bg-amber-50 dark:bg-amber-950/30 p-5">
             <p className="text-sm font-semibold text-amber-800">不适合谁</p>
             <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700">
               <li>• 不确定该用哪个 API（请看 <Link href="/use-case" className="text-foreground hover:underline">场景推荐</Link>）</li>

@@ -50,9 +50,9 @@ function statusClass(statusLabel: string) {
     return 'border-red-200 bg-red-50 text-red-700';
   }
   if (statusLabel.includes('限流') || statusLabel.includes('额度')) {
-    return 'border-amber-200 bg-amber-50 text-amber-700';
+    return 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700';
   }
-  return 'border-sky-200 bg-sky-50 text-sky-700';
+  return 'border-sky-200 bg-sky-50 dark:bg-sky-950/30 text-sky-700';
 }
 
 function getRelatedTutorials(solution: ErrorSolution): APIConfig[] {
@@ -134,9 +134,9 @@ export default async function ErrorSolutionDetailPage({ params }: { params: Prom
               </p>
             </div>
 
-            <Card className="mb-8 border-sky-200 bg-sky-50/70 shadow-sm">
+            <Card className="mb-8 border-sky-200 bg-sky-50 dark:bg-sky-950/30/70 shadow-sm">
               <CardContent className="p-5">
-                <p className="text-sm font-semibold text-sky-900">排查结论</p>
+                <p className="text-sm font-semibold text-sky-900 dark:text-sky-200">排查结论</p>
                 <p className="mt-2 text-sm leading-6 text-sky-800">
                   先用最小请求隔离问题：只保留 API Key、Base URL、模型名和一条 ping 消息。最小请求失败，先修配置；最小请求成功，再回到业务代码排查并发、上下文和部署环境。
                 </p>
@@ -221,7 +221,7 @@ export default async function ErrorSolutionDetailPage({ params }: { params: Prom
                       <CardContent className="p-5">
                         <div className="mb-3 flex items-start justify-between gap-3">
                           <h3 className="font-semibold">{api.name} 购买教程</h3>
-                          <Badge variant="outline" className={api.proxy ? 'border-amber-200 bg-amber-50 text-amber-700' : 'border-emerald-200 bg-emerald-50 text-emerald-700'}>
+                          <Badge variant="outline" className={api.proxy ? 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700' : 'border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700'}>
                             {api.proxy ? '需代理' : '国内直连'}
                           </Badge>
                         </div>

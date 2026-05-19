@@ -91,9 +91,9 @@ export default function FAQPage() {
           </div>
 
           {/* BLUF 摘要 */}
-          <section className="mb-8 rounded-lg border border-sky-200 bg-sky-50 px-5 py-4">
+          <section className="mb-8 rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 px-5 py-4">
             <p className="text-sm font-semibold text-sky-800">结论先行</p>
-            <p className="mt-1 text-sm leading-6 text-sky-700">
+            <p className="mt-1 text-sm leading-6 text-sky-700 dark:text-sky-300">
               大多数 API 接入问题集中在三个环节：注册验证（手机号/邮箱/实名）、支付方式（国内能否直接付款）、API Key 配置（保存位置和调用格式）。
               先确认这三个环节没有卡住，再排查模型选择和费用问题。
             </p>
@@ -149,17 +149,17 @@ export default function FAQPage() {
 
           {/* 适合谁 / 不适合谁 */}
           <section className="order-3 mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
-            <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
+            <div className="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 p-5">
               <p className="text-sm font-semibold text-emerald-800">适合谁</p>
-              <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">
+              <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700 dark:text-emerald-300">
                 <li>• 第一次接触 AI API，遇到注册或配置问题</li>
                 <li>• 已有 API Key 但调用报错，需要排查原因</li>
                 <li>• 想了解不同 API 的支付方式和费用结构</li>
               </ul>
             </div>
-            <div className="rounded-lg border border-amber-200 bg-amber-50 p-5">
+            <div className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-5">
               <p className="text-sm font-semibold text-amber-800">不适合谁</p>
-              <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700">
+              <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700 dark:text-amber-300">
                 <li>• 还没选好用哪个 API（请看 <Link href="/use-case" className="text-foreground hover:underline">场景推荐</Link>）</li>
                 <li>• 需要手把手注册和购买指导（请看 <Link href="/tutorial" className="text-foreground hover:underline">购买教程</Link>）</li>
                 <li>• 想对比模型能力和价格（请看 <Link href="/api-review" className="text-foreground hover:underline">API 测评</Link>）</li>

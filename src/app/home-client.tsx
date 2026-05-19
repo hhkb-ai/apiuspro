@@ -43,25 +43,25 @@ const quickLinks = [
 ];
 
 const sectionEntries = [
-  { title: 'API 列表', desc: '对比官网入口、代理要求和免费额度', href: '/cloud-api', icon: Compass, className: 'border-emerald-200 bg-emerald-50 text-emerald-900' },
-  { title: '购买教程', desc: '按步骤完成注册、支付与 API Key 创建', href: '/tutorial', icon: BookOpen, className: 'border-sky-200 bg-sky-50 text-sky-900' },
-  { title: 'API 测评', desc: '查看模型能力、价格和使用体验对比', href: '/api-review', icon: Star, className: 'border-amber-200 bg-amber-50 text-amber-900' },
+  { title: 'API 列表', desc: '对比官网入口、代理要求和免费额度', href: '/cloud-api', icon: Compass, className: 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-900' },
+  { title: '购买教程', desc: '按步骤完成注册、支付与 API Key 创建', href: '/tutorial', icon: BookOpen, className: 'border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-900' },
+  { title: 'API 测评', desc: '查看模型能力、价格和使用体验对比', href: '/api-review', icon: Star, className: 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-900' },
   { title: '场景推荐', desc: '按编程、知识库、翻译等场景选择', href: '/use-case', icon: Target, className: 'border-violet-200 bg-violet-50 text-violet-900' },
-  { title: 'API 应用', desc: 'Claude Code、CC Switch 等工具接入', href: '/app', icon: Wrench, className: 'border-rose-200 bg-rose-50 text-rose-900' },
+  { title: 'API 应用', desc: 'Claude Code、CC Switch 等工具接入', href: '/app', icon: Wrench, className: 'border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/30 text-rose-900' },
   { title: '本地部署', desc: 'Ollama 一键部署开源模型', href: '/local-deploy', icon: Server, className: 'border-orange-200 bg-orange-50 text-orange-900' },
 ];
 
-const quickViewApiIds = ['openai', 'claude', 'gemini', 'deepseek', 'zhipu', 'kimi'];
+const quickViewApiIds = ['deepseek', 'openai', 'claude', 'gemini', 'zhipu', 'kimi'];
 const quickViewAPIs = quickViewApiIds
   .map(id => apiList.find(api => api.id === id))
   .filter((api): api is APIConfig => Boolean(api));
 
 const scenarioCards = [
-  { title: '编程开发', desc: '代码生成、调试、仓库理解和自动化脚本。', href: '/use-case/coding', icon: Code2, className: 'border-rose-200 bg-rose-50 text-rose-950', iconClassName: 'bg-rose-100 text-rose-700' },
-  { title: '知识库', desc: '长文档解析、资料检索和个人知识沉淀。', href: '/use-case/knowledge', icon: Database, className: 'border-emerald-200 bg-emerald-50 text-emerald-950', iconClassName: 'bg-emerald-100 text-emerald-700' },
+  { title: '编程开发', desc: '代码生成、调试、仓库理解和自动化脚本。', href: '/use-case/coding', icon: Code2, className: 'border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/30 text-rose-950', iconClassName: 'bg-rose-100 text-rose-700' },
+  { title: '知识库', desc: '长文档解析、资料检索和个人知识沉淀。', href: '/use-case/knowledge', icon: Database, className: 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-950', iconClassName: 'bg-emerald-100 text-emerald-700' },
   { title: '内容创作', desc: '选题、改写、脚本、营销文案和图文草稿。', href: '/use-case/content-creation', icon: PenLine, className: 'border-violet-200 bg-violet-50 text-violet-950', iconClassName: 'bg-violet-100 text-violet-700' },
-  { title: '翻译', desc: '多语种翻译、术语一致性和风格改写。', href: '/use-case/translation', icon: Languages, className: 'border-sky-200 bg-sky-50 text-sky-950', iconClassName: 'bg-sky-100 text-sky-700' },
-  { title: '智能客服', desc: '问答机器人、意图识别和工单摘要。', href: '/use-case/chatbot', icon: MessageCircle, className: 'border-amber-200 bg-amber-50 text-amber-950', iconClassName: 'bg-amber-100 text-amber-700' },
+  { title: '翻译', desc: '多语种翻译、术语一致性和风格改写。', href: '/use-case/translation', icon: Languages, className: 'border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-950', iconClassName: 'bg-sky-100 text-sky-700' },
+  { title: '智能客服', desc: '问答机器人、意图识别和工单摘要。', href: '/use-case/chatbot', icon: MessageCircle, className: 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-950', iconClassName: 'bg-amber-100 text-amber-700' },
   { title: '教育辅导', desc: '分步讲解、练习反馈和学习路径规划。', href: '/use-case/education', icon: GraduationCap, className: 'border-orange-200 bg-orange-50 text-orange-950', iconClassName: 'bg-orange-100 text-orange-700' },
 ];
 
@@ -72,7 +72,11 @@ const integrationSteps = [
 ];
 
 const tutorialsList = apiList.filter(api => api.tutorial);
-const hotTutorials = tutorialsList.slice(0, 5);
+const hotTutorials = [...tutorialsList].sort((a, b) => {
+  if (a.id === 'deepseek') return -1;
+  if (b.id === 'deepseek') return 1;
+  return 0;
+}).slice(0, 5);
 
 const faqItems = [
   { q: '国内可以访问哪些 API？', a: 'DeepSeek、通义千问、智谱 GLM、Kimi 等支持国内直连，无需代理。', href: '/faq' },
@@ -89,9 +93,9 @@ const desktopNavLinks = [
 ];
 
 function badgeClass(type: string) {
-  if (type === 'success') return 'border-emerald-200 bg-emerald-50 text-emerald-700';
-  if (type === 'warning') return 'border-amber-200 bg-amber-50 text-amber-700';
-  return 'border-sky-200 bg-sky-50 text-sky-700';
+  if (type === 'success') return 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700';
+  if (type === 'warning') return 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700';
+  return 'border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-700';
 }
 
 function accessText(proxy?: boolean) {
@@ -287,8 +291,8 @@ function MobileHome() {
       <main className="pb-10">
         <section className="px-4 pb-5 pt-4">
           <div className="rounded-lg border bg-card p-4 shadow-sm">
-            <p className="text-xl font-semibold leading-tight tracking-tight">浏览主流 AI API 的入口、教程和使用场景</p>
-            <p className="mt-2 text-sm leading-6 text-muted-foreground">搜索模型、供应商或工具名，或从下方栏目开始浏览。</p>
+            <p className="text-xl font-semibold leading-tight tracking-tight">DeepSeek API 怎么购买和首次调用？</p>
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">国内直连、支持支付宝/微信、代码与推理能力突出。</p>
             <div className="mt-4">
               <SearchBar query={query} setQuery={setQuery} onSubmit={submitSearch} suggestions={suggestions} showSuggestions={showSuggestions} setShowSuggestions={setShowSuggestions} variant="mobile" />
             </div>
@@ -315,7 +319,7 @@ function MobileHome() {
                   {api.features.slice(0, 3).map(f => <span key={f} className="rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">{f}</span>)}
                 </div>
                 <div className="grid grid-cols-2 gap-2">
-                  <Link href={`/api/${api.id}`} className="flex min-w-0 items-center justify-center rounded-md border px-3 py-2 text-sm font-medium active:bg-muted">查看详情</Link>
+                  <Link href={api.id === 'openai' ? `/tutorial/${api.id}` : `/api/${api.id}`} className="flex min-w-0 items-center justify-center rounded-md border px-3 py-2 text-sm font-medium active:bg-muted">{api.id === 'openai' ? '购买教程' : '查看详情'}</Link>
                   <a href={api.url} target="_blank" rel="noopener noreferrer" className="flex min-w-0 items-center justify-center gap-1 rounded-md bg-foreground px-3 py-2 text-sm font-medium text-background">官网 <ExternalLink className="size-3.5" /></a>
                 </div>
               </article>
@@ -394,7 +398,7 @@ function MobileHome() {
           <div className="rounded-lg border bg-card p-4">
             <p className="text-sm font-semibold">常用 API</p>
             <div className="mt-3 flex flex-wrap gap-2">
-              {quickLinks.map(link => <Link key={link.id} href={`/api/${link.id}`} className="rounded-full border bg-background px-3 py-1.5 text-sm text-muted-foreground active:bg-muted">{link.name}</Link>)}
+              {quickLinks.map(link => <Link key={link.id} href={link.id === 'openai' ? `/tutorial/${link.id}` : `/api/${link.id}`} className="rounded-full border bg-background px-3 py-1.5 text-sm text-muted-foreground active:bg-muted">{link.name}</Link>)}
             </div>
           </div>
         </section>
@@ -440,8 +444,8 @@ function DesktopHome() {
         <section className="border-b border-border px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
           <div className="mx-auto max-w-7xl">
             <div className="max-w-3xl">
-              <h1 className="text-3xl sm:text-4xl font-semibold leading-tight tracking-tight text-foreground">浏览主流 AI API 的入口、教程和使用场景</h1>
-              <p className="mt-4 text-base leading-8 text-muted-foreground">搜索模型、供应商或工具名，或从下方栏目开始浏览。</p>
+              <h1 className="text-3xl sm:text-4xl font-semibold leading-tight tracking-tight text-foreground">DeepSeek API 怎么购买和首次调用？</h1>
+              <p className="mt-4 text-base leading-8 text-muted-foreground">国内直连、支持支付宝/微信支付、代码与推理能力突出，按步骤完成首次调用。</p>
             </div>
             <div className="mt-6 lg:mt-8 max-w-3xl">
               <SearchBar query={query} setQuery={setQuery} onSubmit={submitSearch} suggestions={suggestions} showSuggestions={showSuggestions} setShowSuggestions={setShowSuggestions} variant="desktop" />
@@ -454,16 +458,16 @@ function DesktopHome() {
           <div className="mx-auto max-w-7xl">
             <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
               {/* Left Sidebar: Section Entries */}
-              <aside className="w-full lg:w-56 shrink-0">
-                <nav className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-1 gap-2" aria-label="首页栏目入口">
+              <aside className="w-full shrink-0 lg:w-64 lg:self-stretch">
+                <nav className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:h-full lg:grid-cols-1 lg:grid-rows-6 lg:gap-3" aria-label="首页栏目入口">
                   {sectionEntries.map(item => {
                     const Icon = item.icon;
                     return (
-                      <Link key={item.href} href={item.href} className={`flex min-h-12 min-w-0 items-center gap-2.5 rounded-lg border px-3 py-2.5 transition-colors hover:-translate-y-px ${item.className}`}>
-                        <Icon className="size-4 shrink-0" />
+                      <Link key={item.href} href={item.href} className={`flex min-h-12 min-w-0 items-center gap-2.5 rounded-lg border px-3 py-2.5 transition-colors hover:-translate-y-px lg:min-h-0 lg:gap-3 lg:px-4 lg:py-3.5 ${item.className}`}>
+                        <Icon className="size-4 shrink-0 lg:size-5" />
                         <div className="min-w-0">
-                          <span className="block truncate text-sm font-semibold">{item.title}</span>
-                          <span className="block text-[11px] leading-tight opacity-70 truncate">{item.desc}</span>
+                          <span className="block truncate text-sm font-semibold lg:text-base">{item.title}</span>
+                          <span className="block truncate text-[11px] leading-tight opacity-70 lg:mt-1 lg:text-xs">{item.desc}</span>
                         </div>
                       </Link>
                     );
@@ -496,12 +500,12 @@ function DesktopHome() {
                       </thead>
                       <tbody className="divide-y divide-border">
                         {quickViewAPIs.map(api => (
-                          <tr key={api.id} role="link" tabIndex={0} aria-label={`查看 ${api.name} API 详情`} onClick={() => router.push(`/api/${api.id}`)} onKeyDown={(e) => { if (e.currentTarget !== e.target || (e.key !== 'Enter' && e.key !== ' ')) return; e.preventDefault(); router.push(`/api/${api.id}`); }} className="cursor-pointer transition-colors hover:bg-muted/40 focus-visible:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50">
+                          <tr key={api.id} role="link" tabIndex={0} aria-label={`查看 ${api.name} API 详情`} onClick={() => router.push(api.id === 'openai' ? `/tutorial/${api.id}` : `/api/${api.id}`)} onKeyDown={(e) => { if (e.currentTarget !== e.target || (e.key !== 'Enter' && e.key !== ' ')) return; e.preventDefault(); router.push(api.id === 'openai' ? `/tutorial/${api.id}` : `/api/${api.id}`); }} className="cursor-pointer transition-colors hover:bg-muted/40 focus-visible:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50">
                             <td className="px-4 py-3">
-                              <Link href={`/api/${api.id}`} onClick={(e) => e.stopPropagation()} className="font-semibold text-foreground hover:underline">{api.name}</Link>
+                              <Link href={api.id === 'openai' ? `/tutorial/${api.id}` : `/api/${api.id}`} onClick={(e) => e.stopPropagation()} className="font-semibold text-foreground hover:underline">{api.name}</Link>
                             </td>
                             <td className="px-4 py-3">
-                              <span className={`whitespace-nowrap rounded-full border px-2 py-1 text-xs font-medium ${api.proxy ? 'border-amber-200 bg-amber-50 text-amber-700' : 'border-emerald-200 bg-emerald-50 text-emerald-700'}`}>
+                              <span className={`whitespace-nowrap rounded-full border px-2 py-1 text-xs font-medium ${api.proxy ? 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700' : 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700'}`}>
                                 {accessText(api.proxy)}
                               </span>
                             </td>
@@ -509,7 +513,7 @@ function DesktopHome() {
                             <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell">{api.features.slice(0, 2).join('、')}</td>
                             <td className="px-4 py-3">
                               {api.tutorial ? (
-                                <Link href={`/tutorial/${api.id}`} onClick={(e) => e.stopPropagation()} className="whitespace-nowrap rounded-full border border-sky-200 bg-sky-50 px-2 py-1 text-xs font-medium text-sky-700 hover:border-sky-300">有教程</Link>
+                                <Link href={`/tutorial/${api.id}`} onClick={(e) => e.stopPropagation()} className="whitespace-nowrap rounded-full border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 px-2 py-1 text-xs font-medium text-sky-700 hover:border-sky-300">有教程</Link>
                               ) : (
                                 <span className="text-xs text-muted-foreground">—</span>
                               )}

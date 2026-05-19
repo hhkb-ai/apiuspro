@@ -29,9 +29,9 @@ function statusClass(statusLabel: string) {
     return 'border-red-200 bg-red-50 text-red-700';
   }
   if (statusLabel.includes('限流') || statusLabel.includes('额度')) {
-    return 'border-amber-200 bg-amber-50 text-amber-700';
+    return 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700';
   }
-  return 'border-sky-200 bg-sky-50 text-sky-700';
+  return 'border-sky-200 bg-sky-50 dark:bg-sky-950/30 text-sky-700';
 }
 
 export default function ErrorSolutionPage() {
@@ -82,7 +82,7 @@ export default function ErrorSolutionPage() {
           </Card>
         </section>
 
-        <section className="mb-8 rounded-lg border border-sky-200 bg-sky-50 px-5 py-4 text-sky-900">
+        <section className="mb-8 rounded-lg border border-sky-200 bg-sky-50 dark:bg-sky-950/30 px-5 py-4 text-sky-900">
           <p className="text-sm font-semibold">先按这个顺序排查</p>
           <div className="mt-3 grid gap-3 text-sm leading-6 md:grid-cols-4">
             {['API Key 是否有效', 'Base URL 是否匹配', '模型名是否存在', '额度与限流是否触发'].map((item, index) => (

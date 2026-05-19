@@ -57,9 +57,9 @@ export interface ContentPageData {
 
 const toneClass = {
   default: 'border-border bg-card',
-  blue: 'border-sky-200 bg-sky-50 text-sky-950',
+  blue: 'border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-950',
   amber: 'border-amber-200 bg-amber-50 text-amber-950',
-  emerald: 'border-emerald-200 bg-emerald-50 text-emerald-950',
+  emerald: 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-950',
   rose: 'border-rose-200 bg-rose-50 text-rose-950',
 };
 
@@ -70,7 +70,7 @@ const toneTextClass = {
   },
   blue: {
     heading: 'text-sky-950',
-    body: 'text-sky-800',
+    body: 'text-sky-800 dark:text-sky-300',
   },
   amber: {
     heading: 'text-amber-950',
@@ -78,7 +78,7 @@ const toneTextClass = {
   },
   emerald: {
     heading: 'text-emerald-950',
-    body: 'text-emerald-800',
+    body: 'text-emerald-800 dark:text-emerald-200',
   },
   rose: {
     heading: 'text-rose-950',
@@ -120,7 +120,7 @@ function ContentHero({ page }: { page: ContentPageData }) {
       <p className="text-sm font-medium text-muted-foreground">{page.eyebrow}</p>
       <div className="mt-3 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
         <div className="max-w-3xl">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground md:text-5xl">{page.title}</h1>
+          <h1 className="text-[1.55rem] font-bold leading-[1.18] tracking-tight text-foreground md:text-5xl md:leading-tight">{page.title}</h1>
           <p className="mt-4 text-base leading-7 text-muted-foreground md:text-lg">{page.description}</p>
         </div>
         <div className="flex shrink-0 flex-col gap-3 sm:flex-row lg:flex-col">
@@ -174,7 +174,7 @@ function ContentSection({ section, index }: { section: ContentSectionData; index
         </span>
         <div className="min-w-0 flex-1">
           {section.eyebrow && <p className={cn('text-sm font-medium', toneTextClass[tone].body)}>{section.eyebrow}</p>}
-          <h2 className={cn('text-2xl font-bold tracking-tight', toneTextClass[tone].heading)}>{section.title}</h2>
+          <h2 className={cn('text-xl font-bold tracking-tight md:text-2xl', toneTextClass[tone].heading)}>{section.title}</h2>
           {section.description && <p className={cn('mt-3 text-base leading-7', toneTextClass[tone].body)}>{section.description}</p>}
 
           {section.bullets && (
@@ -212,7 +212,7 @@ function ContentSection({ section, index }: { section: ContentSectionData; index
                     </div>
                   )}
                   {step.note && (
-                    <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm leading-6 text-amber-900">
+                    <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm leading-6 text-amber-900 dark:text-amber-200">
                       {step.note}
                     </p>
                   )}

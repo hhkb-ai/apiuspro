@@ -44,7 +44,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
   }, [mobileMenuOpen]);
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="min-h-screen bg-background flex content-article">
       <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 lg:border-r lg:border-border lg:bg-card">
         <div className="h-16 px-6 border-b border-border flex flex-col justify-center">
           <Link href="/" className="font-semibold tracking-tight">
