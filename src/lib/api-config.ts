@@ -972,159 +972,137 @@ print(response.choices[0].message.content)`,
   {
     id: 'openai',
     name: 'OpenAI GPT',
-    desc: 'GPT-5.5 国内怎么订阅？1M上下文、代码能力最强',
+    desc: 'OpenAI API 怎么购买和首次调用？覆盖 Billing、API Key、GPT-5.5 与常见报错排查',
     url: 'https://platform.openai.com/',
     proxy: true,
-    features: ['1M上下文', 'GPT-5.5', '代码能力最强', 'Agent能力强'],
+    features: ['GPT-5.5', 'Agent能力强', '长上下文', '生态成熟'],
     icon: '🟠',
     badge: { text: '需代理', type: 'warning' },
     tutorial: {
-      title: 'GPT-5.5 国内怎么订阅？代充与购买完全指南（零基础版）',
-      subtitle: '专为新手编写，含四种套餐对比、三条支付路线和国内替代方案，零基础也能完成订阅',
+      title: 'OpenAI API 购买与首次调用教程（2026最新，适合开发者）',
+      subtitle: '从 OpenAI Platform 账号、Billing 付款、API Key 创建到本地首次调用的精简流程',
       steps: [
         {
-          title: '了解 GPT-5.5 订阅套餐',
-          description: '在购买前，先看清每种套餐的价格和区别，避免买错。目前 ChatGPT 提供四档订阅。',
+          title: '准备 OpenAI Platform 账号',
+          description: 'OpenAI API 和 ChatGPT 订阅是两套计费体系。先确认你能登录 Platform，而不是只登录 ChatGPT 网页。',
+          items: [
+            '访问 OpenAI Platform：https://platform.openai.com',
+            '使用邮箱、Google 或 Microsoft 账号登录',
+            '确认当前 Project 正确，团队账号要确认自己有创建 API Key 和查看 Billing 的权限',
+            '国内网络环境通常需要稳定代理，避免注册、支付或请求中途超时'
+          ],
+          whereToClick: '浏览器访问 platform.openai.com → 登录 → 进入 Dashboard 或 Project 页面',
+          expectedResult: '能正常进入 OpenAI Platform 控制台，并看到当前 Project',
+          failureChecklist: ['如果页面打不开，先检查代理和 DNS', '如果登录反复验证，保持同一网络节点，不要频繁切换 IP', '如果看不到 Project，确认账号是否加入了正确组织'],
+          warning: 'ChatGPT Plus/Pro 订阅额度不能直接抵扣 API 费用，API 需要单独开通 Billing。'
+        },
+        {
+          title: '开通 Billing 并确认 API 额度',
+          description: '没有 Billing 或余额不足时，即使 API Key 正确，也会出现 insufficient quota。先把计费状态确认清楚。',
           important: true,
           items: [
-            'Go · $8/月 — 仅可用 GPT-5.3，不能使用最新 GPT-5.5，适合尝鲜',
-            'Plus · $20/月 — 可用 GPT-5.5 Standard 和 Thinking 模型，99% 个人用户最佳选择',
-            'Pro · $100/月 — 全部模型可用，编程次数是 Plus 的 5 倍，适合重度开发者',
-            'Pro · $200/月 — 全部模型可用，编程次数是 Plus 的 20 倍，适合顶尖科研'
+            '进入 Billing 或 Usage 页面查看当前计费状态',
+            '添加可用的付款方式，通常需要支持国际支付的银行卡',
+            '团队或企业账号要确认当前 Project 可以使用该付款方式',
+            '正式接入前先设置用量上限或预算提醒，避免测试脚本误跑高成本任务'
           ],
-          whereToClick: '浏览器访问 chatgpt.com → 登录 → 查看套餐页面',
-          expectedResult: '页面显示 Go/Plus/Pro/Pro 200 四档套餐的价格和功能对比',
-          failureChecklist: ['确认已登录 OpenAI 账号', '如看不到套餐页面，检查网络是否可正常访问']
+          whereToClick: 'Platform → Billing / Usage → Add payment method 或设置预算提醒',
+          expectedResult: 'Billing 状态正常，Usage 页面能显示可用额度或付款方式',
+          failureChecklist: ['支付失败时检查卡片是否支持国际支付', '账单地址和支付信息要保持一致', '如果提示额度不足，先处理 Billing 再排查代码'],
+          warning: '不要把 ChatGPT 订阅成功误认为 API 已有额度，两者独立计费。'
         },
         {
-          title: '准备一：注册 OpenAI 账号',
-          description: '没有账号就什么都买不了。先搞定这第一步。',
-          items: [
-            '浏览器打开 https://chatgpt.com，点击 Sign up 用邮箱注册，按提示验证邮箱',
-            '国内手机号可能收不到验证短信。两个解决办法：',
-            '使用海外手机号验证服务（有新号被封风险，自行承担，请选择合规平台）',
-            '买成品号（最省事）：在可靠代充平台购买已注册好的现成账号，请选择合规平台'
-          ],
-          whereToClick: '浏览器访问 chatgpt.com → 点击 Sign up → 用邮箱注册',
-          expectedResult: '注册成功并登录 ChatGPT 对话界面',
-          failureChecklist: ['国内手机号可能收不到验证码，尝试海外手机号验证或购买成品号', '确认邮箱能正常接收验证邮件'],
-          warning: '购买现成账号时一定要选可靠的代充平台，避免买到被盗或被封的账号。'
-        },
-        {
-          title: '准备二：合适的网络环境',
-          description: 'ChatGPT 的网站和订阅页面在国内无法直接访问，需要合适的网络。',
-          items: [
-            '确保可以顺畅访问 OpenAI 官网：https://chatgpt.com 和 https://platform.openai.com',
-            '建议使用稳定节点，避免频繁切换 IP',
-            '不稳定的网络可能导致支付中途断开、账号被风控'
-          ],
-          whereToClick: '确保网络可访问 chatgpt.com 和 platform.openai.com',
-          expectedResult: '两个网站均可正常打开，无连接超时或被拦截',
-          failureChecklist: ['避免频繁切换 IP，否则账号可能被风控', '不稳定的网络可能导致支付中途断开'],
-          warning: '确保网络环境稳定，避免频繁切换 IP，否则账号可能被风控封禁。'
-        },
-        {
-          title: '准备三：选择适合你的支付方式',
-          description: 'OpenAI 官网只支持 Visa、Mastercard、American Express 国际信用卡。没有境外卡？三种替代方案供你选择。',
-          items: [
-            '代充平台（推荐）：支持支付宝/微信支付，无需境外卡，无需提供密码和信用卡信息',
-            '美区 Apple ID（iPhone 用户）：注册美区 Apple ID，通过正规渠道购礼品卡充值，通过 ChatGPT App 内购订阅（价格比官网贵，含苹果抽成）',
-            '虚拟信用卡（不推荐新手）：风控极严、失败率高，需交开卡费，平台有跑路风险'
-          ],
-          whereToClick: '根据自身情况选择：代充平台、美区 Apple ID 或虚拟信用卡',
-          expectedResult: '确认选定的支付方式可用，支付渠道已准备就绪',
-          failureChecklist: ['代充平台是否有口碑和售后保障', '是否确认不需要提供密码和信用卡信息给代充平台'],
-          warning: '选择代充平台时请仔细甄别，优先选择有口碑、有售后的大平台。'
-        },
-        {
-          title: '路线一：官网直充（有境外信用卡）',
-          description: '如果你有 Visa/Mastercard 国际卡，且网络能稳定访问 OpenAI 官网，这是最直接的购买方式。',
+          title: '创建并安全保存 API Key',
+          description: 'API Key 只会完整显示一次，创建后立刻复制到安全位置。',
           important: true,
           items: [
-            '打开 https://chatgpt.com → 登录 → 左下角头像 → My Plan 或 Upgrade to Plus',
-            '在套餐页面对比 Go / Plus / Pro / Pro 200，选好后点击 Upgrade',
-            '输入卡号、有效期、CVV（卡片背面三位安全码）和账单地址',
-            '确认金额无误后提交，几秒钟验证通过，账号即刻升级',
-            '注册邮箱会收到 OpenAI 确认邮件，在 ChatGPT 对话界面即可选择 GPT-5.5 模型'
+            '进入 API Keys 页面',
+            '点击 Create new secret key，为密钥按项目或用途命名',
+            '复制完整 Key，保存到密码管理器、.env 或系统环境变量',
+            '为不同项目创建不同 Key，方便后续单独撤销和追踪用量'
           ],
-          whereToClick: 'chatgpt.com → 登录 → 左下角头像 → My Plan 或 Upgrade to Plus → 选套餐 → Upgrade',
-          expectedResult: '验证通过后账号立即升级，注册邮箱收到确认邮件，对话界面可选 GPT-5.5',
-          failureChecklist: ['账单地址必须与 IP 所在国家一致', '确认卡号、有效期和 CVV 填写正确', '如支付被拒，尝试更换网络节点']
+          whereToClick: 'Platform → API Keys → Create new secret key → 命名 → Create',
+          expectedResult: '页面显示一串以 sk- 开头的密钥，并且你已安全保存',
+          failureChecklist: ['如果按钮不可用，检查当前 Project 权限', '如果 Key 忘记复制，删除后重新创建', '如果 Key 泄露，立即撤销并重新生成'],
+          warning: '不要把 API Key 写进前端代码、截图、公开仓库或聊天记录。'
         },
         {
-          title: '路线二：App 内购（iPhone / 安卓）',
-          description: '有美区 Apple ID 或海外 Google Play 账号的用户，可直接在手机 App 内完成订阅。',
+          title: '写入环境变量并安装 SDK',
+          description: '本地开发建议用 .env 或系统环境变量保存 Key，代码只读取变量，不硬编码密钥。',
           items: [
-            'iPhone：App Store 搜索 ChatGPT → 下载 → 登录 → 右上角设置 → Upgrade to ChatGPT Plus',
-            '选择套餐后通过 Apple Pay 或美区 Apple ID 余额支付（比官网贵，含苹果抽成）',
-            '安卓：Google Play 下载 ChatGPT → 登录 → Settings → 升级入口 → Google Pay 支付',
-            'App 内购的好处：支付在苹果/谷歌生态内完成，无需直接向 OpenAI 填信用卡'
+            '安装 openai 和 python-dotenv',
+            '创建 .env 文件并写入 OPENAI_API_KEY',
+            '确认 .env 已加入 .gitignore',
+            '不要在浏览器前端直接调用 OpenAI API，避免 Key 暴露'
           ],
-          whereToClick: 'iPhone: App Store 下载 ChatGPT → 登录 → 右上角设置 → Upgrade to ChatGPT Plus',
-          expectedResult: 'App 内显示已升级为 Plus/Pro，可选择 GPT-5.5 模型',
-          failureChecklist: ['确认 Apple ID 为美区且有足够余额', 'App 内购价格比官网贵约 30%（含苹果渠道费）']
+          whereToClick: '终端运行 pip install openai python-dotenv，项目根目录创建 .env 文件',
+          expectedResult: '本地程序能读取 OPENAI_API_KEY 环境变量',
+          failureChecklist: ['变量名必须是 OPENAI_API_KEY', '修改 .env 后重启终端或开发服务', '确认 .env 没有被提交到 Git'],
+          codeLanguage: 'env',
+          code: `OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxx`,
+          codeExplanation: '把真实 Key 写入 .env，代码中通过环境变量读取，不要直接写在源码里。'
         },
         {
-          title: '路线三：API 按量购买（仅限开发者）',
-          description: '不是程序员、不打算把 AI 嵌入到自己开发的软件里，可以跳过本节。普通用户用订阅套餐就全包含了。',
+          title: '用 Python 完成首次调用',
+          description: '第一次测试只做最小请求，先确认 Key、网络、Billing 和模型权限都正常。',
+          image: '/images/tutorial/openai-docx-1.png',
           items: [
-            'API = 程序向 GPT-5.5 提问的"后门"，适合把 AI 嵌入自己的软件中',
-            '按 Token 计费：GPT-5.5 输入 $5/百万、输出 $30/百万，一次简单任务成本 < 1 分钱',
-            'https://platform.openai.com → 登录 → Billing → 绑卡（与 ChatGPT 订阅是独立计费）',
-            'API Keys → Create new secret key → 命名 → 创建 → 立刻复制保存'
+            '从 .env 读取 OPENAI_API_KEY',
+            '使用 OpenAI 官方 SDK 创建 client',
+            '先用短 prompt 测试，不要一开始上传大文件或跑高并发',
+            '能打印模型回复就说明基础接入成功'
           ],
-          whereToClick: 'platform.openai.com → 登录 → Billing → 绑卡 → API Keys → Create new secret key',
-          expectedResult: 'API Key 创建成功（格式 sk-xxx），可复制用于代码调用',
-          failureChecklist: ['API Key 只显示一次，创建后立即复制保存', 'API 计费与 ChatGPT 订阅是独立的两套系统'],
+          whereToClick: '终端运行 python test_openai.py',
+          expectedResult: 'Python 脚本成功打印模型回复，无 401、403、404、429 或 quota 报错',
+          failureChecklist: ['401 多数是 Key 无效或环境变量没生效', '403 检查 Project、组织和模型权限', '404 检查模型名称是否正确', '429 降低并发或等待限流恢复', 'insufficient quota 回到 Billing 检查额度'],
           codeLanguage: 'python',
-          code: `# 先安装 openai 库：pip install openai
-import openai
+          code: `from dotenv import load_dotenv
+from openai import OpenAI
 
-client = openai.OpenAI(api_key="YOUR_API_KEY")
+load_dotenv()
 
-response = client.chat.completions.create(
+client = OpenAI()
+
+response = client.responses.create(
     model="gpt-5.5",
-    messages=[
-        {"role": "user", "content": "请用一句话解释什么是量子力学。"}
-    ]
+    input="请用一句话说明 OpenAI API 已经接入成功。"
 )
 
-print(response.choices[0].message.content)`,
-          codeExplanation: '使用 OpenAI Python SDK 调用 GPT-5.5 模型，让它用一句话解释量子力学并打印结果。替换 YOUR_API_KEY 为真实密钥后即可运行。',
-          warning: 'API Key 创建后仅显示一次，必须立刻复制保存。不要写入前端代码或公开仓库。API 与 ChatGPT 订阅是两套独立的计费系统，互不影响。'
+print(response.output_text)`,
+          codeExplanation: '使用 OpenAI SDK 的 Responses API 发起一次最小调用。能打印 output_text 即代表 API Key、Billing、网络和模型权限基本正常。'
         },
         {
-          title: '国内用户替代方案与总结',
-          description: '如果你在国内、没有境外卡，通过第三方代充平台是目前最省心的 GPT-5.5 订阅方式。',
+          title: '按任务选择模型并控制成本',
+          description: '跑通后再根据任务切换模型，不要所有任务都默认使用最贵模型。',
           items: [
-            '代充平台：用支付宝/微信支付，平台替你完成 OpenAI 订阅。只需提供账号，不用密码和卡信息。请选择合规平台',
-            '苹果内购路线：美区 Apple ID + 礼品卡充值 → ChatGPT App 内订阅。适合 iPhone/iPad 用户',
-            '不建议国内用户尝试虚拟信用卡（VCC）方案，当前风控极严、成功率很低',
-            '如果你需要把 GPT-5.5 接入自己的软件（API），也可以在代充平台购买 API 额度或代充值 OpenAI 账户余额'
+            'GPT-5.5：适合科研、金融、Agent、多步骤工具调用和高难代码任务',
+            '较轻量模型：适合摘要、分类、客服、批量结构化等成本敏感任务',
+            '长上下文任务先压缩材料，再提交必要内容，避免无效 token 成本',
+            '高并发任务使用 Batch 或队列，避免触发 429'
           ],
-          whereToClick: '选择合规的代充平台或按自身情况选择苹果内购路线',
-          expectedResult: '支付完成，ChatGPT 账号已升级，可使用 GPT-5.5',
-          failureChecklist: ['代充平台是否承诺封号退款', '下单前是否搜索了平台评价', '优先选择有客服、支持退款的平台'],
-          warning: '代充平台良莠不齐，下单前建议先搜索评价。优先选择有客服、支持退款的平台。'
+          whereToClick: 'Platform → Docs / Models / Usage 页面查看模型、价格和用量',
+          expectedResult: '根据任务选择了模型，并能在 Usage 中看到调用记录',
+          failureChecklist: ['模型名要以官方文档和控制台为准', '如果模型不可用，检查 Project 权限', '如果成本异常，先降低上下文长度和输出长度'],
+          warning: '模型价格、上下文和权限会随平台变化，正式上线前以控制台和官方文档为准。'
         }
       ],
       tips: [
-        'Plus（$20/月）最适合 99% 个人用户，能用最新 GPT-5.5 模型，性价比最高',
-        '代充平台是目前国内用户较省心的订阅方式，用支付宝/微信就能完成，务必选择合规平台',
-        'API 用户切记：Key 只显示一次，且 API 计费与 ChatGPT 订阅是完全独立的',
-        '如果不确定选哪个方案，先买一个月 Plus 试试，随时可以取消续费'
+        '先用免费或小额度真实任务测试，再决定是否长期使用 OpenAI API',
+        'ChatGPT 订阅和 API Billing 独立计费，排查 quota 时优先看 Platform Billing',
+        '把 API Key 放在 .env、环境变量或密钥管理器里，不要硬编码',
+        '如果要接入 Claude Code、Codex、Gemini CLI、OpenCode 等工具，建议用 CC Switch 统一管理 Key、Base URL 和模型名'
       ],
       warnings: [
-        '账号可能因 IP 频繁变动、支付异常等原因被风控，建议保持网络环境稳定',
-        'API Key 绝对不要提交到公开仓库或前端代码',
-        '海外手机号验证注册的账号存在被封风险，建议选择合规代充平台的成品账号'
+        '国内访问通常需要稳定代理，网络不稳定会导致 timeout、支付失败或账号风控',
+        'API Key 泄露后要立即撤销并重新生成',
+        '不要把 ChatGPT Plus/Pro 订阅当成 API 额度使用'
       ],
-      advantages: ['零基础友好', '三条购买路线全覆盖', '四种套餐详细对比', '国内支付替代方案', '含 API 开发者教程'],
+      advantages: ['顶级模型能力', 'Agent 与工具调用强', '长上下文', '生态成熟'],
       estimatedTime: '约 15 分钟',
-      prerequisites: ['Google 账号或邮箱（注册 OpenAI 账号）', '合适的网络环境（需能访问 OpenAI 官网）', 'Visa/Mastercard 国际信用卡或代充平台'],
-      successSign: 'ChatGPT 对话界面可选择 GPT-5.5 模型，或 API Key 创建成功并能完成代码调用',
-      commonPitfall: '国内手机号收不到验证码；支付时 IP 与账单地址国家不一致导致被风控；API Key 只显示一次忘记复制',
-      securityReminder: 'API Key 创建后仅显示一次，必须立刻复制保存。不要提交到公开仓库或前端代码，API 与 ChatGPT 订阅是两套独立计费系统'
+      prerequisites: ['可登录的 OpenAI 账号或邮箱', '稳定网络环境（通常需要代理）', '可用于 Billing 的国际支付方式', 'Python 3.10+ 或其他本地开发环境'],
+      successSign: 'API Keys 页面显示有效密钥，Billing 状态正常，Python 脚本成功打印模型回复',
+      commonPitfall: '把 ChatGPT 订阅误认为 API 额度；Key 创建后忘记复制；环境变量未生效导致 401；模型名写错导致 404',
+      securityReminder: 'API Key 不要提交到 GitHub、前端代码或截图中，建议保存在 .env、系统环境变量或密钥管理器里'
     }
   },
   {

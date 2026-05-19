@@ -6,7 +6,7 @@ import { SidebarLayout } from '@/components/layout/SidebarLayout';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { apiList, APIConfig } from '@/lib/api-config';
+import { apiList, appTutorials, APIConfig, AppTutorial } from '@/lib/api-config';
 import { BreadcrumbSchema } from '@/components/seo/structured-data';
 import { RememberListLink } from '@/components/navigation/ReturnNavigation';
 import { sortByFuzzyScore } from '@/lib/fuzzy-search';
@@ -69,6 +69,21 @@ function SectionCard({ title, desc, apis, emptyText }: { title: string; desc: st
   );
 }
 
+function AppTutorialCard({ app }: { app: AppTutorial }) {
+  return (
+    <article className="flex min-h-44 flex-col rounded-lg border bg-card p-5 transition-colors hover:border-foreground/30">
+      <div className="mb-3 flex items-start justify-between gap-3">
+        <h3 className="font-semibold">{app.name}</h3>
+        <Badge variant="outline" className={badgeClass(app.badge.type)}>{app.badge.text}</Badge>
+      </div>
+      <p className="flex-1 text-sm leading-6 text-muted-foreground">{app.desc}</p>
+      <Link href={`/app/${app.id}`} className="mt-5">
+        <Button variant="outline" className="w-full" size="sm">查看教程</Button>
+      </Link>
+    </article>
+  );
+}
+
 export default function TutorialPage() {
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -91,6 +106,10 @@ export default function TutorialPage() {
   const filteredNeedProxy = hasSearch
     ? sortByFuzzyScore(needProxyWithTutorial, searchQuery, getSearchFields)
     : needProxyWithTutorial;
+
+  const filteredAppTutorials = hasSearch
+    ? sortByFuzzyScore(appTutorials, searchQuery, app => [app.id, app.name, app.desc, app.badge.text])
+    : [];
 
   return (
     <SidebarLayout>
@@ -140,7 +159,7 @@ export default function TutorialPage() {
           </div>
           {hasSearch && (
             <p className="mt-2 text-xs text-muted-foreground">
-              搜索结果：{filteredNoProxy.length + filteredNeedProxy.length} 个教程
+              搜索结果：{filteredNoProxy.length + filteredNeedProxy.length + filteredAppTutorials.length} 个教程
             </p>
           )}
         </form>
@@ -171,6 +190,27 @@ export default function TutorialPage() {
             emptyText="没有找到匹配的需代理 API 教程"
           />
         </div>
+
+        {hasSearch && (
+          <section className="order-4 space-y-4 md:order-4">
+            <div className="flex items-end justify-between gap-3">
+              <div>
+                <h2 className="text-xl font-semibold tracking-tight">API 应用教程</h2>
+                <p className="mt-1 text-sm text-muted-foreground">Claude Code、CC Switch、OpenClaw 等工具的使用教程。</p>
+              </div>
+              <Badge variant="outline" className="border-border bg-card text-muted-foreground">{filteredAppTutorials.length} 个</Badge>
+            </div>
+            {filteredAppTutorials.length > 0 ? (
+              <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+                {filteredAppTutorials.map((app) => <AppTutorialCard key={app.id} app={app} />)}
+              </div>
+            ) : (
+              <div className="rounded-lg border bg-card py-10 text-center text-sm text-muted-foreground">
+                没有找到匹配的应用教程
+              </div>
+            )}
+          </section>
+        )}
 
         {/* 常见问题 */}
         <section className="order-4 mt-10">

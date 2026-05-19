@@ -8,6 +8,8 @@ import { BeianLinks } from '@/components/layout/BeianLinks';
 import { appTutorials } from '@/lib/api-config';
 import { ArticleSchema, BreadcrumbSchema, HowToSchema } from '@/components/seo/structured-data';
 import { DetailBackNav } from '@/components/navigation/ReturnNavigation';
+import { CcswitchContentPage } from '@/components/content/CcswitchContentPage';
+import { OpenclawFeishuContentPage } from '@/components/content/OpenclawFeishuContentPage';
 
 const ARTICLE_DATE_PUBLISHED = '2026-05-11';
 const ARTICLE_DATE_MODIFIED = '2026-05-11';
@@ -249,6 +251,14 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
 
   const tutorial = appTutorials.find(t => t.id === id);
   if (!tutorial) notFound();
+
+  if (tutorial.id === 'ccswitch') {
+    return <CcswitchContentPage />;
+  }
+
+  if (tutorial.id === 'openclaw-feishu') {
+    return <OpenclawFeishuContentPage />;
+  }
 
   return (
     <div className="min-h-screen bg-background">

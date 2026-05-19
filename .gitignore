@@ -102,6 +102,7 @@ Desktop.ini
 .coze
 .coze-logs
 .codex/
+.codex-preview/
 
 # Local drafts and generated planning artifacts
 /assets/

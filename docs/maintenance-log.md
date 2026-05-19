@@ -152,3 +152,31 @@ pnpm exec tsc -p tsconfig.json --noEmit
 pnpm exec eslint
 pnpm exec next build
 ```
+
+### 2026-05-19 Tutorial article layout trials and preview helper
+
+Deployment scope for this push:
+
+- Add reusable long-form tutorial article components under `src/components/content/`.
+- Apply the article-style layout to `/app/ccswitch` and `/app/openclaw-feishu` through targeted route branches in `src/app/app/[id]/page.tsx`.
+- Rewrite the OpenAI tutorial data in `src/lib/api-config.ts` from ChatGPT subscription-oriented copy to API purchase, Billing, API Key, first-call, and troubleshooting flow.
+- Keep `/tutorial/openai` on the same standard tutorial layout used by `/tutorial/deepseek`.
+- Preserve OpenClaw Feishu source screenshots and existing tutorial data while rendering the page with a centered narrow reading column, BLUF summary, overview card, collapsible contents, step cards, responsive images, and scrollable code blocks.
+- Include previously requested homepage search/layout updates, API review conclusion updates, and model scoring data updates in `src/app/home-client.tsx`, `src/app/api-review/page.tsx`, `src/app/tutorial/page.tsx`, and `src/lib/review-config.ts`.
+- Add `scripts/quick-preview.mjs` and package scripts for faster local preview on port 5000.
+- Ignore `.codex-preview/` local preview runtime artifacts.
+
+Explicitly excluded from this commit:
+
+- `.claude/`
+- `.codex-video-analysis/`
+- `CLAUDE.md`
+- `docs/seo-longtail-pages.md`
+- `scripts/test-fuzzy-search.mjs`
+- `src/app/local-deploy/page.tsx`: local working copy is still excluded because it has known encoding damage and is unrelated to this deployment.
+
+Validation notes:
+
+- User requested deployment after previewing local pages.
+- Spot checks already completed during editing: `/app/openclaw-feishu`, `/app/ccswitch`, `/tutorial/openai`, and `/tutorial/deepseek` returned HTTP 200 from the local preview server.
+- Full local checks were intentionally not rerun in this deployment step to follow the user's low-token deployment preference.

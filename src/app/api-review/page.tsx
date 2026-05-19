@@ -157,7 +157,7 @@ export default function APIReviewPage() {
           <div className="mt-2 grid gap-1.5 text-sm leading-6 text-sky-700">
             <p><span className="font-semibold">代码 / 推理：</span>性价比看 DeepSeek V4 Flash；顶级能力看 DeepSeek V4 Pro、Claude Opus。</p>
             <p><span className="font-semibold">通用对话 / 内容创作：</span>中文场景看通义千问（Qwen）、Kimi。</p>
-            <p><span className="font-semibold">长文档 / 多模态：</span>海外看 Gemini 1.5 Pro；安全长文本看 Claude 3.5 Sonnet / Opus。</p>
+            <p><span className="font-semibold">长文档 / 多模态：</span>海外看 Gemini 3.1 Pro；安全长文本看 Claude Opus 4.7。</p>
             <p><span className="font-semibold">综合最强：</span>OpenAI GPT-5.5，科研、金融、Agent 能力最强，但价格高。</p>
             <p><span className="font-semibold">策略：</span>先用各家免费额度跑真实任务，再决定长期使用哪个。</p>
           </div>

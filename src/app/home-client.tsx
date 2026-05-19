@@ -110,7 +110,7 @@ function useSearch(rawQuery: string, maxResults: number) {
   const normalizedQuery = useDeferredValue(rawQuery.toLowerCase().trim());
 
   const result = useMemo(() => {
-    if (!normalizedQuery) return { suggestions: [] as Suggestion[], exactMatch: null };
+    if (!normalizedQuery) return { suggestions: [] as Suggestion[], exactMatch: null, appExactMatch: null };
 
     const apiMatches = sortByFuzzyScore(apiList, normalizedQuery, api => [api.id, api.name, api.desc, api.free, ...api.features])
       .slice(0, maxResults > 6 ? 4 : 3)
@@ -120,11 +120,9 @@ function useSearch(rawQuery: string, maxResults: number) {
       .slice(0, maxResults > 6 ? 3 : 2)
       .map(api => ({ id: `tut-${api.id}`, name: api.tutorial?.title || `${api.name} 购买教程`, desc: '注册、支付、API Key 创建', href: `/tutorial/${api.id}`, type: '教程' }));
 
-    const appMatches = maxResults <= 6
-      ? sortByFuzzyScore(appTutorials, normalizedQuery, app => [app.id, app.name, app.desc, app.badge.text])
-          .slice(0, 2)
-          .map(app => ({ id: `app-${app.id}`, name: app.name, desc: app.desc, href: `/app/${app.id}`, type: '应用' }))
-      : [];
+    const appMatches = sortByFuzzyScore(appTutorials, normalizedQuery, app => [app.id, app.name, app.desc, app.badge.text])
+      .slice(0, maxResults > 6 ? 3 : 2)
+      .map(app => ({ id: `app-${app.id}`, name: app.name, desc: app.desc, href: `/app/${app.id}`, type: '应用' }));
 
     const pageMatches = sortByFuzzyScore(pages, normalizedQuery, page => [page.id, page.name, page.desc, page.tag])
       .slice(0, maxResults > 6 ? 3 : 2)
@@ -133,6 +131,7 @@ function useSearch(rawQuery: string, maxResults: number) {
     return {
       suggestions: [...apiMatches, ...tutorialMatches, ...appMatches, ...pageMatches].slice(0, maxResults),
       exactMatch: apiList.find(api => fuzzyScore(normalizedQuery, [api.id, api.name]) >= 85) ?? null,
+      appExactMatch: appTutorials.find(app => fuzzyScore(normalizedQuery, [app.id, app.name]) >= 85) ?? null,
     };
   }, [normalizedQuery, maxResults]);
 
@@ -263,15 +262,15 @@ function MobileHome() {
   const router = useRouter();
   const [query, setQuery] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const { suggestions, exactMatch } = useSearch(query, 6);
+  const { suggestions, exactMatch, appExactMatch } = useSearch(query, 6);
 
   const submitSearch = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const href = exactMatch ? `/api/${exactMatch.id}` : suggestions[0]?.href;
+    const href = appExactMatch ? `/app/${appExactMatch.id}` : exactMatch ? `/api/${exactMatch.id}` : suggestions[0]?.href;
     if (!href) return;
     router.push(href);
     setShowSuggestions(false);
-  }, [exactMatch, suggestions, router]);
+  }, [appExactMatch, exactMatch, suggestions, router]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -413,23 +412,23 @@ function DesktopHome() {
   const router = useRouter();
   const [query, setQuery] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const { suggestions, exactMatch } = useSearch(query, 8);
+  const { suggestions, exactMatch, appExactMatch } = useSearch(query, 8);
 
   const submitSearch = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const href = exactMatch ? `/api/${exactMatch.id}` : suggestions[0]?.href;
+    const href = appExactMatch ? `/app/${appExactMatch.id}` : exactMatch ? `/api/${exactMatch.id}` : suggestions[0]?.href;
     if (href) router.push(href);
-  }, [exactMatch, suggestions, router]);
+  }, [appExactMatch, exactMatch, suggestions, router]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-8 px-8">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-8 px-4 sm:px-6 lg:px-8">
           <Link href="/" className="shrink-0">
             <span className="block text-base font-semibold tracking-tight">API知识站</span>
             <span className="block text-xs text-muted-foreground">AI API 资料站</span>
           </Link>
-          <nav className="flex items-center gap-1 text-sm">
+          <nav className="hidden md:flex items-center gap-1 text-sm">
             {desktopNavLinks.map(link => <Link key={link.href} href={link.href} className="rounded-md px-3 py-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">{link.name}</Link>)}
           </nav>
           <ThemeToggle />
@@ -437,65 +436,102 @@ function DesktopHome() {
       </header>
 
       <main>
-        <section className="px-8 pb-10 pt-12">
+        {/* Hero + Search Section */}
+        <section className="border-b border-border px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
           <div className="mx-auto max-w-7xl">
             <div className="max-w-3xl">
-              <h1 className="text-4xl font-semibold leading-tight tracking-tight text-foreground">浏览主流 AI API 的入口、教程和使用场景</h1>
+              <h1 className="text-3xl sm:text-4xl font-semibold leading-tight tracking-tight text-foreground">浏览主流 AI API 的入口、教程和使用场景</h1>
               <p className="mt-4 text-base leading-8 text-muted-foreground">搜索模型、供应商或工具名，或从下方栏目开始浏览。</p>
             </div>
-
-            <div className="mt-8 grid gap-5">
-              <div className="max-w-3xl">
-                <SearchBar query={query} setQuery={setQuery} onSubmit={submitSearch} suggestions={suggestions} showSuggestions={showSuggestions} setShowSuggestions={setShowSuggestions} variant="desktop" />
-              </div>
-
-              <nav className="grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-6" aria-label="首页栏目入口">
-                {sectionEntries.map(item => {
-                  const Icon = item.icon;
-                  return (
-                    <Link key={item.href} href={item.href} className={`flex min-h-14 min-w-0 items-center gap-2 rounded-lg border px-3 py-2 transition-colors hover:-translate-y-px ${item.className}`}>
-                      <Icon className="size-4 shrink-0" />
-                      <span className="truncate text-sm font-semibold">{item.title}</span>
-                    </Link>
-                  );
-                })}
-              </nav>
-
-              <section className="rounded-lg border border-border bg-card p-4 shadow-sm sm:p-5">
-              <div className="mb-4 flex items-center justify-between">
-                <div><p className="text-sm font-medium text-muted-foreground">快速了解</p><h2 className="mt-1 text-xl font-semibold tracking-tight">常见 API 速览</h2></div>
-                <Link href="/cloud-api" className="text-sm font-medium text-foreground hover:underline">全部 API 官网入口</Link>
-              </div>
-              <div className="overflow-x-auto rounded-md border border-border">
-                <table className="min-w-[700px] w-full text-sm">
-                  <thead className="bg-muted text-left text-xs font-medium text-muted-foreground">
-                    <tr><th className="w-40 px-3 py-3">API</th><th className="w-28 px-3 py-3">访问</th><th className="w-40 px-3 py-3">免费额度</th><th className="px-3 py-3">主要特点</th><th className="w-24 px-3 py-3">教程</th></tr>
-                  </thead>
-                  <tbody className="divide-y divide-border">
-                    {quickViewAPIs.map(api => (
-                      <tr key={api.id} role="link" tabIndex={0} aria-label={`查看 ${api.name} API 详情`} onClick={() => router.push(`/api/${api.id}`)} onKeyDown={(e) => { if (e.currentTarget !== e.target || (e.key !== 'Enter' && e.key !== ' ')) return; e.preventDefault(); router.push(`/api/${api.id}`); }} className="cursor-pointer transition-colors hover:bg-muted/40 focus-visible:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50">
-                        <td className="px-3 py-3"><Link href={`/api/${api.id}`} onClick={(e) => e.stopPropagation()} className="font-semibold text-foreground hover:underline">{api.name}</Link></td>
-                        <td className="px-3 py-3"><span className={`whitespace-nowrap rounded-full border px-2 py-1 text-xs font-medium ${api.proxy ? 'border-amber-200 bg-amber-50 text-amber-700' : 'border-emerald-200 bg-emerald-50 text-emerald-700'}`}>{accessText(api.proxy)}</span></td>
-                        <td className="px-3 py-3 text-muted-foreground">{api.free || '—'}</td>
-                        <td className="px-3 py-3 text-muted-foreground">{api.features.slice(0, 2).join('、')}</td>
-                        <td className="px-3 py-3">{api.tutorial ? <Link href={`/tutorial/${api.id}`} onClick={(e) => e.stopPropagation()} className="whitespace-nowrap rounded-full border border-sky-200 bg-sky-50 px-2 py-1 text-xs font-medium text-sky-700 hover:border-sky-300">有教程</Link> : <span className="text-xs text-muted-foreground">—</span>}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              </section>
+            <div className="mt-6 lg:mt-8 max-w-3xl">
+              <SearchBar query={query} setQuery={setQuery} onSubmit={submitSearch} suggestions={suggestions} showSuggestions={showSuggestions} setShowSuggestions={setShowSuggestions} variant="desktop" />
             </div>
           </div>
         </section>
 
-        <section className="px-8 py-12">
+        {/* Main Content: Sidebar + Table */}
+        <section className="px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+          <div className="mx-auto max-w-7xl">
+            <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+              {/* Left Sidebar: Section Entries */}
+              <aside className="w-full lg:w-56 shrink-0">
+                <nav className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-1 gap-2" aria-label="首页栏目入口">
+                  {sectionEntries.map(item => {
+                    const Icon = item.icon;
+                    return (
+                      <Link key={item.href} href={item.href} className={`flex min-h-12 min-w-0 items-center gap-2.5 rounded-lg border px-3 py-2.5 transition-colors hover:-translate-y-px ${item.className}`}>
+                        <Icon className="size-4 shrink-0" />
+                        <div className="min-w-0">
+                          <span className="block truncate text-sm font-semibold">{item.title}</span>
+                          <span className="block text-[11px] leading-tight opacity-70 truncate">{item.desc}</span>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </nav>
+              </aside>
+
+              {/* Right Main: API Table */}
+              <div className="flex-1 min-w-0">
+                <section className="rounded-lg border border-border bg-card shadow-sm">
+                  <div className="p-4 sm:p-5 border-b border-border">
+                    <div className="flex items-center justify-between gap-4">
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground">快速了解</p>
+                        <h2 className="mt-1 text-xl font-semibold tracking-tight">常见 API 速览</h2>
+                      </div>
+                      <Link href="/cloud-api" className="text-sm font-medium text-foreground hover:underline whitespace-nowrap">全部 API 官网入口</Link>
+                    </div>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead className="bg-muted text-left text-xs font-medium text-muted-foreground">
+                        <tr>
+                          <th className="w-36 sm:w-40 px-4 py-3">API</th>
+                          <th className="w-24 sm:w-28 px-4 py-3">访问</th>
+                          <th className="w-32 sm:w-40 px-4 py-3">免费额度</th>
+                          <th className="px-4 py-3 hidden sm:table-cell">主要特点</th>
+                          <th className="w-20 sm:w-24 px-4 py-3">教程</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-border">
+                        {quickViewAPIs.map(api => (
+                          <tr key={api.id} role="link" tabIndex={0} aria-label={`查看 ${api.name} API 详情`} onClick={() => router.push(`/api/${api.id}`)} onKeyDown={(e) => { if (e.currentTarget !== e.target || (e.key !== 'Enter' && e.key !== ' ')) return; e.preventDefault(); router.push(`/api/${api.id}`); }} className="cursor-pointer transition-colors hover:bg-muted/40 focus-visible:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50">
+                            <td className="px-4 py-3">
+                              <Link href={`/api/${api.id}`} onClick={(e) => e.stopPropagation()} className="font-semibold text-foreground hover:underline">{api.name}</Link>
+                            </td>
+                            <td className="px-4 py-3">
+                              <span className={`whitespace-nowrap rounded-full border px-2 py-1 text-xs font-medium ${api.proxy ? 'border-amber-200 bg-amber-50 text-amber-700' : 'border-emerald-200 bg-emerald-50 text-emerald-700'}`}>
+                                {accessText(api.proxy)}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3 text-muted-foreground">{api.free || '—'}</td>
+                            <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell">{api.features.slice(0, 2).join('、')}</td>
+                            <td className="px-4 py-3">
+                              {api.tutorial ? (
+                                <Link href={`/tutorial/${api.id}`} onClick={(e) => e.stopPropagation()} className="whitespace-nowrap rounded-full border border-sky-200 bg-sky-50 px-2 py-1 text-xs font-medium text-sky-700 hover:border-sky-300">有教程</Link>
+                              ) : (
+                                <span className="text-xs text-muted-foreground">—</span>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
           <div className="mx-auto max-w-7xl">
             <div className="mb-6 flex items-end justify-between gap-4">
               <div><p className="text-sm font-medium text-muted-foreground">按场景选择</p><h2 className="mt-1 text-2xl font-semibold tracking-tight">按使用场景浏览</h2><p className="mt-2 text-sm text-muted-foreground">根据具体任务找到合适的 API</p></div>
               <Link href="/use-case" className="text-sm font-medium text-foreground hover:underline">全部使用场景推荐</Link>
             </div>
-            <div className="grid gap-4 md:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {scenarioCards.map(card => {
                 const Icon = card.icon;
                 return (
@@ -510,10 +546,10 @@ function DesktopHome() {
           </div>
         </section>
 
-        <section className="border-y border-border bg-muted/35 px-8 py-8">
+        <section className="border-y border-border bg-muted/35 px-4 sm:px-6 lg:px-8 py-8">
           <div className="mx-auto max-w-7xl">
             <div className="mb-6"><p className="text-sm font-medium text-muted-foreground">参考路径</p><h2 className="mt-1 text-2xl font-semibold tracking-tight">常见接入路径</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">第一次使用 AI API 时，通常会先了解可用平台，再创建 API Key，最后接入到代码或工具里。</p></div>
-            <div className="grid gap-4 md:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {integrationSteps.map(step => (
                 <div key={step.step} className="rounded-lg border border-border bg-card p-5">
                   <div className="mb-3 flex items-center gap-3"><span className="flex size-8 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">{step.step}</span><h3 className="font-semibold">{step.title}</h3></div>
@@ -525,17 +561,17 @@ function DesktopHome() {
           </div>
         </section>
 
-        <section className="px-8 py-12">
+        <section className="px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
           <div className="mx-auto max-w-7xl">
             <div className="mb-6 flex items-end justify-between gap-4">
               <div><p className="text-sm font-medium text-muted-foreground">学习资源</p><h2 className="mt-1 text-2xl font-semibold tracking-tight">热门教程</h2></div>
               <Link href="/tutorial" className="text-sm font-medium text-foreground hover:underline">全部 API 购买教程</Link>
             </div>
-            <div className="grid gap-4 md:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {hotTutorials.slice(0, 3).map(api => (
                 <Link key={api.id} href={`/tutorial/${api.id}`} className="rounded-lg border border-border bg-card p-5 transition-colors hover:border-foreground/30">
                   <div className="mb-3 flex items-center gap-3">
-                    <span className="flex size-10 items-center justify-center rounded-md bg-muted text-muted-foreground"><BookOpen className="size-5" /></span>
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground"><BookOpen className="size-5" /></span>
                     <div className="min-w-0 flex-1"><h3 className="truncate font-semibold">{api.name}</h3><p className="text-xs text-muted-foreground">{api.tutorial?.steps.length} 个步骤</p></div>
                     <Badge variant="outline" className={badgeClass(api.badge.type)}>{api.badge.text}</Badge>
                   </div>
@@ -546,13 +582,13 @@ function DesktopHome() {
           </div>
         </section>
 
-        <section className="border-t border-border px-8 py-12">
+        <section className="border-t border-border px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
           <div className="mx-auto max-w-7xl">
             <div className="mb-6 flex items-end justify-between gap-4">
               <div><p className="text-sm font-medium text-muted-foreground">帮助中心</p><h2 className="mt-1 text-2xl font-semibold tracking-tight">常见问题</h2></div>
               <Link href="/faq" className="text-sm font-medium text-foreground hover:underline">全部常见问题</Link>
             </div>
-            <div className="grid gap-4 md:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {faqItems.map(item => (
                 <Link key={item.q} href={item.href} className="rounded-lg border border-border bg-card p-5 transition-colors hover:border-foreground/30">
                   <h3 className="font-semibold">{item.q}</h3>
@@ -564,7 +600,7 @@ function DesktopHome() {
         </section>
       </main>
 
-      <footer className="border-t border-border px-8 py-8 text-center text-sm text-muted-foreground">
+      <footer className="border-t border-border px-4 sm:px-6 lg:px-8 py-8 text-center text-sm text-muted-foreground">
         <p>API知识站 - AI API 资料站</p>
         <div className="mt-3"><BeianLinks /></div>
       </footer>
