@@ -180,3 +180,34 @@ Validation notes:
 - User requested deployment after previewing local pages.
 - Spot checks already completed during editing: `/app/openclaw-feishu`, `/app/ccswitch`, `/tutorial/openai`, and `/tutorial/deepseek` returned HTTP 200 from the local preview server.
 - Full local checks were intentionally not rerun in this deployment step to follow the user's low-token deployment preference.
+
+### 2026-05-20 Homepage purchase tutorial recommendations
+
+Deployment scope for this push:
+
+- Replace the homepage recommendation panel in `src/app/home-client.tsx` with direct links to popular API purchase tutorials.
+- Keep homepage category entry card layout and alignment changes already present in the working copy.
+- Leave the ignored local preview page outside the commit.
+
+Explicitly excluded from this commit:
+
+- `.claude/`
+- `.codex-video-analysis/`
+- `CLAUDE.md`
+- `docs/seo-longtail-pages.md`
+- `index.html`
+- `rollback-backups/`
+- `scripts/test-fuzzy-search.mjs`
+- `skills/`
+- `src/components/content/ClaudianObsidianContentPage.tsx`
+
+Verification completed:
+
+```bash
+.\node_modules\.bin\tsc.CMD -p tsconfig.json --noEmit  # passed
+.\node_modules\.bin\eslint.CMD src/app/home-client.tsx src/app/preview-home/page.tsx  # passed
+.\node_modules\.bin\next.CMD build  # passed
+.\node_modules\.bin\tsup.CMD src/server.ts --format cjs --platform node --target node20 --outDir dist --no-splitting --no-minify  # passed
+```
+
+Note: `pnpm` was not available in PATH in this shell, so the equivalent project-local binaries were used. No `npm` or `yarn` commands were run.

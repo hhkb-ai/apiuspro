@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { BeianLinks } from '@/components/layout/BeianLinks';
-import { apiList, appTutorials, type APIConfig } from '@/lib/api-config';
+import { apiList, appTutorials } from '@/lib/api-config';
 import { fuzzyScore, sortByFuzzyScore } from '@/lib/fuzzy-search';
 import {
   BookOpen,
@@ -14,7 +14,6 @@ import {
   Compass,
   Code2,
   Database,
-  ExternalLink,
   GraduationCap,
   Languages,
   MessageCircle,
@@ -50,11 +49,6 @@ const sectionEntries = [
   { title: 'API 应用', desc: 'Claude Code、CC Switch 等工具接入', href: '/app', icon: Wrench, className: 'border-rose-200 dark:border-rose-700/80 bg-rose-50 dark:bg-rose-950/45 text-rose-900 dark:text-rose-100' },
   { title: '本地部署', desc: 'Ollama 一键部署开源模型', href: '/local-deploy', icon: Server, className: 'border-orange-200 dark:border-orange-700/80 bg-orange-50 dark:bg-orange-950/45 text-orange-900 dark:text-orange-100' },
 ];
-
-const quickViewApiIds = ['deepseek', 'openai', 'claude', 'gemini', 'zhipu', 'kimi'];
-const quickViewAPIs = quickViewApiIds
-  .map(id => apiList.find(api => api.id === id))
-  .filter((api): api is APIConfig => Boolean(api));
 
 const scenarioCards = [
   { title: '编程开发', desc: '代码生成、调试、仓库理解和自动化脚本。', href: '/use-case/coding', icon: Code2, className: 'border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/30 text-rose-950', iconClassName: 'bg-rose-100 text-rose-700' },
@@ -302,27 +296,16 @@ function MobileHome() {
 
         <section className="px-4 py-4">
           <div className="flex items-end justify-between gap-3">
-            <div><p className="text-xs font-medium text-muted-foreground">快速了解</p><h2 className="mt-1 text-lg font-semibold">常见 API 速览</h2></div>
-            <Link href="/cloud-api" className="shrink-0 text-sm font-medium text-foreground">全部 API</Link>
+            <div><p className="text-xs font-medium text-muted-foreground">学习资源</p><h2 className="mt-1 text-lg font-semibold">热门购买教程</h2></div>
+            <Link href="/tutorial" className="shrink-0 text-sm font-medium text-foreground">全部购买教程</Link>
           </div>
-          <div className="mt-3 grid gap-3">
-            {quickViewAPIs.map(api => (
-              <article key={api.id} className="rounded-lg border bg-card p-4">
-                <div className="mb-3 flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <h3 className="truncate font-semibold">{api.name}</h3>
-                    <p className="mt-1 text-xs text-muted-foreground">{accessText(api.proxy)}{api.free ? ` · ${api.free}` : ''}</p>
-                  </div>
-                  <Badge variant="outline" className={badgeClass(api.badge.type)}>{api.badge.text}</Badge>
-                </div>
-                <div className="mb-3 flex flex-wrap gap-1.5">
-                  {api.features.slice(0, 3).map(f => <span key={f} className="rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">{f}</span>)}
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <Link href={api.id === 'openai' ? `/tutorial/${api.id}` : `/api/${api.id}`} className="flex min-w-0 items-center justify-center rounded-md border px-3 py-2 text-sm font-medium active:bg-muted">{api.id === 'openai' ? '购买教程' : '查看详情'}</Link>
-                  <a href={api.url} target="_blank" rel="noopener noreferrer" className="flex min-w-0 items-center justify-center gap-1 rounded-md bg-foreground px-3 py-2 text-sm font-medium text-background">官网 <ExternalLink className="size-3.5" /></a>
-                </div>
-              </article>
+          <div className="mt-3 space-y-2">
+            {hotTutorials.map(api => (
+              <Link key={api.id} href={`/tutorial/${api.id}`} className="flex items-center gap-3 rounded-lg border bg-card p-3 active:bg-muted">
+                <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground"><BookOpen className="size-4" /></span>
+                <span className="min-w-0 flex-1"><span className="block truncate text-sm font-semibold">{api.name} 购买教程</span><span className="mt-0.5 block truncate text-xs text-muted-foreground">{api.tutorial?.steps.length} 个步骤 · {api.badge.text}</span></span>
+                <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
+              </Link>
             ))}
           </div>
         </section>
@@ -458,7 +441,7 @@ function DesktopHome() {
           <div className="mx-auto max-w-7xl">
             <div className="grid gap-6 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-8 lg:items-stretch">
               {/* Left Sidebar: Section Entries */}
-              <aside className="w-full">
+              <aside className="w-full h-full">
                 <nav className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:h-full lg:grid-cols-1 lg:grid-rows-6 lg:gap-3" aria-label="首页栏目入口">
                   {sectionEntries.map(item => {
                     const Icon = item.icon;
@@ -481,47 +464,23 @@ function DesktopHome() {
                   <div className="p-4 sm:p-5 border-b border-border">
                     <div className="flex items-center justify-between gap-4">
                       <div>
-                        <p className="text-sm font-medium text-muted-foreground">快速了解</p>
-                        <h2 className="mt-1 text-xl font-semibold tracking-tight">常见 API 速览</h2>
+                        <p className="text-sm font-medium text-muted-foreground">学习资源</p>
+                        <h2 className="mt-1 text-xl font-semibold tracking-tight">热门购买教程</h2>
                       </div>
-                      <Link href="/cloud-api" className="text-sm font-medium text-foreground hover:underline whitespace-nowrap">全部 API 官网入口</Link>
+                      <Link href="/tutorial" className="text-sm font-medium text-foreground hover:underline whitespace-nowrap">全部购买教程</Link>
                     </div>
                   </div>
-                  <div className="overflow-x-auto flex-1">
-                    <table className="w-full text-sm">
-                      <thead className="bg-muted text-left text-xs font-medium text-muted-foreground">
-                        <tr>
-                          <th className="w-36 sm:w-40 px-4 py-3">API</th>
-                          <th className="w-24 sm:w-28 px-4 py-3">访问</th>
-                          <th className="w-32 sm:w-40 px-4 py-3">免费额度</th>
-                          <th className="px-4 py-3 hidden sm:table-cell">主要特点</th>
-                          <th className="w-20 sm:w-24 px-4 py-3">教程</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-border">
-                        {quickViewAPIs.map(api => (
-                          <tr key={api.id} role="link" tabIndex={0} aria-label={`查看 ${api.name} API 详情`} onClick={() => router.push(api.id === 'openai' ? `/tutorial/${api.id}` : `/api/${api.id}`)} onKeyDown={(e) => { if (e.currentTarget !== e.target || (e.key !== 'Enter' && e.key !== ' ')) return; e.preventDefault(); router.push(api.id === 'openai' ? `/tutorial/${api.id}` : `/api/${api.id}`); }} className="cursor-pointer transition-colors hover:bg-muted/40 focus-visible:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50">
-                            <td className="px-4 py-3">
-                              <Link href={api.id === 'openai' ? `/tutorial/${api.id}` : `/api/${api.id}`} onClick={(e) => e.stopPropagation()} className="font-semibold text-foreground hover:underline">{api.name}</Link>
-                            </td>
-                            <td className="px-4 py-3">
-                              <span className={`whitespace-nowrap rounded-full border px-2 py-1 text-xs font-medium ${api.proxy ? 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700' : 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700'}`}>
-                                {accessText(api.proxy)}
-                              </span>
-                            </td>
-                            <td className="px-4 py-3 text-muted-foreground">{api.free || '—'}</td>
-                            <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell">{api.features.slice(0, 2).join('、')}</td>
-                            <td className="px-4 py-3">
-                              {api.tutorial ? (
-                                <Link href={`/tutorial/${api.id}`} onClick={(e) => e.stopPropagation()} className="whitespace-nowrap rounded-full border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 px-2 py-1 text-xs font-medium text-sky-700 hover:border-sky-300">有教程</Link>
-                              ) : (
-                                <span className="text-xs text-muted-foreground">—</span>
-                              )}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                  <div className="flex-1 divide-y divide-border">
+                    {hotTutorials.map(api => (
+                      <Link key={api.id} href={`/tutorial/${api.id}`} className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-muted/40">
+                        <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground"><BookOpen className="size-4" /></span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-sm font-semibold">{api.name} 购买教程</span>
+                          <span className="mt-0.5 block truncate text-xs text-muted-foreground">{api.tutorial?.steps.length || 0} 个步骤 · {api.badge.text}</span>
+                        </span>
+                        <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
+                      </Link>
+                    ))}
                   </div>
                 </section>
               </div>
