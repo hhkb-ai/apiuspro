@@ -10,9 +10,9 @@ const tutorial = appTutorials.find((item) => item.id === 'openclaw-feishu') as A
 const flatSteps = tutorial.sections.flatMap((section) => section.steps || []);
 
 function badgeClass(type: string) {
-  if (type === 'warning') return 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700';
-  if (type === 'success') return 'border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700';
-  return 'border-sky-200 bg-sky-50 dark:bg-sky-950/30 text-sky-700';
+  if (type === 'warning') return 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300';
+  if (type === 'success') return 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300';
+  return 'border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-700 dark:text-sky-300';
 }
 
 function CodeBlock({ code }: { code: string }) {
@@ -35,7 +35,7 @@ function OverviewItem({
   tone?: 'sky' | 'emerald' | 'amber' | 'rose';
 }) {
   const toneClass = {
-    sky: 'text-sky-900 dark:text-sky-200 dark:text-sky-200',
+    sky: 'text-sky-900 dark:text-sky-200',
     emerald: 'text-emerald-800 dark:text-emerald-200',
     amber: 'text-amber-800 dark:text-amber-200',
     rose: 'text-rose-800 dark:text-rose-200',
@@ -80,7 +80,7 @@ export function OpenclawFeishuContentPage() {
               <h1 className="max-w-3xl text-[1.55rem] font-bold leading-[1.18] tracking-tight text-foreground sm:text-4xl sm:leading-tight">
                 OpenClaw 接入飞书机器人教程
               </h1>
-              <p className="mt-4 text-base leading-8 text-muted-foreground sm:mt-5 sm:text-lg">
+              <p className="mt-4 text-base leading-8 text-foreground/85 sm:mt-5 sm:text-lg">
                 从创建飞书自建应用、开通机器人权限、安装 Feishu 插件到启动 Gateway 测试消息的完整流程。
               </p>
             </div>
@@ -174,7 +174,7 @@ export function OpenclawFeishuContentPage() {
                 </span>
                 <h2 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">{section.title}</h2>
               </div>
-              <p className="mb-6 text-[15px] leading-8 text-muted-foreground">{section.content}</p>
+              <p className="mb-6 text-[15px] leading-8 text-foreground/85">{section.content}</p>
 
               <div className="space-y-7">
                 {section.steps?.map((step, stepIndex) => (
@@ -182,7 +182,7 @@ export function OpenclawFeishuContentPage() {
                     <h3 className="text-lg font-semibold text-foreground">
                       {sectionIndex + 1}.{stepIndex + 1} {step.title}
                     </h3>
-                    <p className="mt-2 text-sm leading-7 text-muted-foreground">{step.description}</p>
+                    <p className="mt-2 text-sm leading-7 text-foreground/85">{step.description}</p>
 
                     {step.code && <CodeBlock code={step.code} />}
 
@@ -203,8 +203,8 @@ export function OpenclawFeishuContentPage() {
                     {step.items && step.items.length > 0 && (
                       <ul className="mt-4 space-y-2">
                         {step.items.map((item) => (
-                          <li key={item} className="flex items-start gap-2 text-sm leading-7 text-muted-foreground">
-                            <span className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-muted-foreground/60" />
+                          <li key={item} className="flex items-start gap-2 text-sm leading-7 text-foreground/85">
+                            <span className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/50" />
                             <span>{item}</span>
                           </li>
                         ))}
@@ -212,7 +212,7 @@ export function OpenclawFeishuContentPage() {
                     )}
 
                     {step.warning && (
-                      <div className="mt-4 rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 px-4 py-3 text-sm leading-6 text-amber-800">
+                      <div className="mt-4 rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 px-4 py-3 text-sm leading-6 text-amber-800 dark:text-amber-200">
                         ⚠️ {step.warning}
                       </div>
                     )}
@@ -221,11 +221,11 @@ export function OpenclawFeishuContentPage() {
               </div>
 
               {section.tips && section.tips.length > 0 && (
-                <div className="mt-6 rounded-lg border border-sky-200 bg-sky-50 dark:bg-sky-950/30 px-5 py-4">
-                  <p className="mb-2 text-sm font-semibold text-sky-800">核心要点</p>
+                <div className="mt-6 rounded-lg border border-sky-200 bg-sky-50 dark:border-sky-800 dark:bg-sky-950/30 px-5 py-4">
+                  <p className="mb-2 text-sm font-semibold text-sky-800 dark:text-sky-300">核心要点</p>
                   <ul className="space-y-2">
                     {section.tips.map((tip) => (
-                      <li key={tip} className="text-sm leading-6 text-sky-700">
+                      <li key={tip} className="text-sm leading-6 text-sky-700 dark:text-sky-200">
                         {tip}
                       </li>
                     ))}
@@ -240,7 +240,7 @@ export function OpenclawFeishuContentPage() {
           <p className="mb-3 text-sm font-semibold text-muted-foreground">关键词</p>
           <div className="flex flex-wrap gap-2">
             {['飞书机器人', 'App Secret', 'OpenClaw Gateway', '配对授权'].map((tag) => (
-              <span key={tag} className="rounded-full border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 px-3 py-1 text-xs font-medium text-emerald-700">
+              <span key={tag} className="rounded-full border border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950/30 px-3 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-300">
                 {tag}
               </span>
             ))}

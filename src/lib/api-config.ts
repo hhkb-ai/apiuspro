@@ -1045,7 +1045,7 @@ print(response.choices[0].message.content)`,
         {
           title: '用 Python 完成首次调用',
           description: '第一次测试只做最小请求，先确认 Key、网络、Billing 和模型权限都正常。',
-          image: '/images/tutorial/openai-docx-1.png',
+          image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=450&fit=crop',
           items: [
             '从 .env 读取 OPENAI_API_KEY',
             '使用 OpenAI 官方 SDK 创建 client',
@@ -2068,7 +2068,6 @@ export const appTutorials: AppTutorial[] = [
           {
             title: '下载 Windows MSI 安装包',
             description: 'Windows 用户优先下载 `CC-Switch-v版本号-Windows.msi`，不要下载源码压缩包。',
-            image: '/images/tutorial/claude-code-deepseek-p08-01.png',
             items: [
               '文件名通常类似 `CC-Switch-v3.14.1-Windows.msi`',
               '下载成功后双击运行安装程序',
