@@ -211,3 +211,37 @@ Verification completed:
 ```
 
 Note: `pnpm` was not available in PATH in this shell, so the equivalent project-local binaries were used. No `npm` or `yarn` commands were run.
+
+### 2026-05-20 Homepage tutorial list expansion and row alignment
+
+Deployment scope for this push:
+
+- Expand the homepage "热门购买教程" panel in `src/app/home-client.tsx` so OpenAI GPT, Anthropic Claude, Google Gemini, and the remaining available purchase tutorials are included instead of limiting the list to five items.
+- Keep DeepSeek first, then show the tutorial providers in a stable priority order.
+- Make the desktop tutorial list rows flex-fill the panel body so the internal row heights align evenly inside the right content card.
+
+Explicitly excluded from this commit:
+
+- `.claude/`
+- `.codex-video-analysis/`
+- `CLAUDE.md`
+- `docs/seo-longtail-pages.md`
+- `index.html`
+- `rollback-backups/`
+- `scripts/test-fuzzy-search.mjs`
+- `skills/`
+- `src/components/content/ClaudianObsidianContentPage.tsx`
+
+Verification completed:
+
+```bash
+.\node_modules\.bin\eslint.CMD src/app/home-client.tsx  # passed
+.\node_modules\.bin\tsc.CMD -p tsconfig.json --noEmit  # passed
+.\node_modules\.bin\next.CMD build  # passed
+.\node_modules\.bin\tsup.CMD src/server.ts --format cjs --platform node --target node20 --outDir dist --no-splitting --no-minify  # passed
+```
+
+SEO/deployment impact:
+
+- Homepage internal tutorial links changed only; no route, metadata, sitemap, or robots changes.
+- `pnpm` was still unavailable in PATH in this shell, so the equivalent project-local binaries were used. No `npm` or `yarn` commands were run.

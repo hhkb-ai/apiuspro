@@ -66,11 +66,12 @@ const integrationSteps = [
 ];
 
 const tutorialsList = apiList.filter(api => api.tutorial);
+const tutorialPriority = ['deepseek', 'openai', 'claude', 'gemini', 'aliyun', 'zhipu', 'kimi', 'tencent', 'doubao', 'mimo'];
 const hotTutorials = [...tutorialsList].sort((a, b) => {
-  if (a.id === 'deepseek') return -1;
-  if (b.id === 'deepseek') return 1;
-  return 0;
-}).slice(0, 5);
+  const aPriority = tutorialPriority.indexOf(a.id);
+  const bPriority = tutorialPriority.indexOf(b.id);
+  return (aPriority === -1 ? 999 : aPriority) - (bPriority === -1 ? 999 : bPriority);
+});
 
 const faqItems = [
   { q: '国内可以访问哪些 API？', a: 'DeepSeek、通义千问、智谱 GLM、Kimi 等支持国内直连，无需代理。', href: '/faq' },
@@ -470,9 +471,9 @@ function DesktopHome() {
                       <Link href="/tutorial" className="text-sm font-medium text-foreground hover:underline whitespace-nowrap">全部购买教程</Link>
                     </div>
                   </div>
-                  <div className="flex-1 divide-y divide-border">
+                  <div className="flex flex-1 flex-col divide-y divide-border">
                     {hotTutorials.map(api => (
-                      <Link key={api.id} href={`/tutorial/${api.id}`} className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-muted/40">
+                      <Link key={api.id} href={`/tutorial/${api.id}`} className="flex min-h-0 flex-1 items-center gap-3 px-4 py-2.5 transition-colors hover:bg-muted/40">
                         <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground"><BookOpen className="size-4" /></span>
                         <span className="min-w-0 flex-1">
                           <span className="block truncate text-sm font-semibold">{api.name} 购买教程</span>
