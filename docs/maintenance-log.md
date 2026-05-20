@@ -245,3 +245,44 @@ SEO/deployment impact:
 
 - Homepage internal tutorial links changed only; no route, metadata, sitemap, or robots changes.
 - `pnpm` was still unavailable in PATH in this shell, so the equivalent project-local binaries were used. No `npm` or `yarn` commands were run.
+
+### 2026-05-21 Content summary and metadata refinement
+
+Deployment scope for this push:
+
+- Add mobile-collapsed summary cards and preserve desktop full summary blocks across tutorial, app, API review, cloud API, FAQ, use-case, and error detail/list pages.
+- Add `/app` overview, mobile directory, and quick configuration examples while keeping existing app tutorial routes and content data.
+- Improve API quick conclusion card mobile behavior and dark-mode text contrast.
+- Refine selected SEO descriptions and IndexNow submission logging/priority URLs.
+
+Explicitly excluded from this commit:
+
+- `.claude/`
+- `.codex-video-analysis/`
+- `CLAUDE.md`
+- `docs/seo-longtail-pages.md`
+- `index.html`
+- `rollback-backups/`
+- `scripts/test-fuzzy-search.mjs`
+- `skills/`
+- `src/components/content/ClaudianObsidianContentPage.tsx`
+
+Verification completed:
+
+```bash
+.\node_modules\.bin\eslint.CMD -- src/app/api-review/[slug]/page.tsx src/app/api-review/page.tsx src/app/app/[id]/page.tsx src/app/app/page.tsx src/app/cloud-api/page.tsx src/app/error/[id]/page.tsx src/app/faq/page.tsx src/app/tutorial/[id]/page.tsx src/app/tutorial/page.tsx src/app/use-case/[id]/page.tsx src/app/use-case/page.tsx src/components/api/QuickConclusionCard.tsx  # passed
+.\node_modules\.bin\eslint.CMD -- scripts/submit-indexnow.mjs src/app/error/page.tsx  # passed
+.\node_modules\.bin\tsc.CMD -p tsconfig.json --noEmit  # passed
+.\node_modules\.bin\next.CMD build  # passed
+```
+
+Browser verification:
+
+- Playwright production-mode smoke check passed at 390px mobile and 1366px desktop for `/app`, `/app/claude-code`, `/tutorial`, `/tutorial/deepseek`, `/cloud-api`, `/api-review`, `/api-review/gpt-5.5`, `/api/deepseek`, `/use-case`, `/use-case/coding`, `/error/401-unauthorized`, and `/faq`.
+- Checks covered horizontal overflow, mobile collapsed summary visibility, desktop summary hiding, image overflow, and code block page overflow.
+
+SEO/deployment impact:
+
+- No route removals or structured data removals.
+- Metadata descriptions were expanded for content clarity; sitemap and robots were not changed.
+- Project-local binaries were used because `pnpm` was not available in PATH. No `npm` or `yarn` commands were run.
