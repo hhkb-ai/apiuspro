@@ -103,12 +103,16 @@ export default async function ReviewDetailPage({ params }: { params: Promise<{ s
         </div>
 
         {/* 省流版 */}
-        <Card className="mb-10 overflow-hidden border-border/80 shadow-sm">
+        <Card className="mb-10 hidden overflow-hidden border-border/80 shadow-sm sm:block">
           <CardContent className="border-l-4 border-foreground/70 bg-muted/25 p-5">
             <p className="mb-2 text-lg font-semibold">BLUF 摘要</p>
             <p className="max-w-3xl text-[15px] leading-7 text-muted-foreground">{review.tlDr}</p>
           </CardContent>
         </Card>
+        <details className="mb-10 rounded-lg border border-border/80 bg-muted/25 text-foreground sm:hidden">
+          <summary className="cursor-pointer select-none px-5 py-3 text-sm font-semibold">BLUF 摘要（点开查看）</summary>
+          <p className="border-t border-border/80 px-5 py-3 text-sm leading-7 text-muted-foreground">{review.tlDr}</p>
+        </details>
 
         {/* 评分维度详解 */}
         <section className="mb-10">

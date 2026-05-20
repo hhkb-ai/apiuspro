@@ -23,6 +23,35 @@ const workflowNotes = [
   },
 ];
 
+const configExamples = [
+  {
+    language: 'ENV',
+    title: '环境变量写法',
+    code: `AI_API_KEY="sk-your-api-key"
+AI_BASE_URL="https://api.example.com/v1"
+AI_MODEL="model-name"`,
+  },
+  {
+    language: 'JSON',
+    title: '工具配置写法',
+    code: `{
+  "provider": "DeepSeek",
+  "apiKey": "sk-your-api-key",
+  "baseURL": "https://api.deepseek.com",
+  "model": "deepseek-chat"
+}`,
+  },
+];
+
+const pageAnchors = [
+  { href: '#app-tutorials', label: '应用教程' },
+  { href: '#config-example', label: '配置示例' },
+  { href: '#workflow', label: '选择思路' },
+  { href: '#faq-section', label: '常见问题' },
+  { href: '#next-step', label: '下一步推荐' },
+  { href: '#fit-section', label: '适合人群' },
+];
+
 export const metadata: Metadata = generateTdkMetadata('/app');
 
 function badgeClass(type: string) {
@@ -47,20 +76,91 @@ export default function AppListPage() {
           <p className="mt-2 max-w-2xl text-muted-foreground">
             围绕 Claude Code、Codex、Gemini CLI、OpenCode、OpenClaw、Obsidian 和 LLM Wiki 整理教程，覆盖安装、API Key 配置、模型切换和实际工作流落地。
           </p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-300">
+              {appTutorials.length} 个应用教程
+            </span>
+            <span className="rounded-full border border-sky-200 bg-sky-50 px-2.5 py-1 text-xs text-sky-700 dark:border-sky-800 dark:bg-sky-950/30 dark:text-sky-300">
+              API Key 配置
+            </span>
+            <span className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-xs text-amber-700 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-300">
+              工具接入
+            </span>
+          </div>
         </div>
 
         {/* BLUF 摘要 */}
-        <section className="mb-8 rounded-lg border border-sky-200 bg-sky-50 dark:bg-sky-950/30 px-5 py-4">
-          <p className="text-sm font-semibold text-sky-800">结论先行</p>
-          <p className="mt-1 text-sm leading-6 text-sky-700">
+        <section className="mb-8 hidden rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 px-5 py-4 sm:block">
+          <p className="text-sm font-semibold text-sky-800 dark:text-sky-200">结论先行</p>
+          <p className="mt-1 text-sm leading-6 text-sky-700 dark:text-sky-300">
             想用 AI 写代码？先装 Claude Code 或 Codex，再用 CC Switch 配好 API Key 和模型名，5 分钟跑通。
             想做知识库？从 Obsidian + LLM Wiki 入手，搭配长上下文模型效果最好。
             不想折腾配置？CC Switch 统一管理所有 API Key、Base URL 和模型切换。
           </p>
         </section>
+        <details className="mb-8 rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-900 dark:text-sky-100 sm:hidden">
+          <summary className="cursor-pointer select-none px-4 py-3 text-sm font-bold">结论先行（点开查看）</summary>
+          <p className="border-t border-sky-200 dark:border-sky-800 px-4 py-3 text-sm leading-7 text-sky-700 dark:text-sky-300">
+            想用 AI 写代码？先装 Claude Code 或 Codex，再用 CC Switch 配好 API Key 和模型名，5 分钟跑通。
+            想做知识库？从 Obsidian + LLM Wiki 入手，搭配长上下文模型效果最好。
+            不想折腾配置？CC Switch 统一管理所有 API Key、Base URL 和模型切换。
+          </p>
+        </details>
+
+        <section id="app-overview" className="scroll-mt-24 mb-8 rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 sm:px-5 sm:py-4 dark:border-sky-800 dark:bg-sky-950/30">
+          <p className="mb-3 text-sm font-semibold text-sky-800 dark:text-sky-200">页面概览</p>
+          <div className="grid gap-3 text-sm leading-6 sm:grid-cols-2">
+            <p className="text-sky-900 dark:text-sky-200"><strong className="font-semibold">预计耗时：</strong>按单个教程操作，通常 5-20 分钟完成基础配置。</p>
+            <p className="text-sky-900 dark:text-sky-200"><strong className="font-semibold">准备材料：</strong><span className="rounded bg-sky-100 px-1 font-semibold text-sky-900 dark:bg-sky-900/60 dark:text-sky-100">API Key</span>、<span className="rounded bg-sky-100 px-1 font-semibold text-sky-900 dark:bg-sky-900/60 dark:text-sky-100">Base URL</span>、<span className="rounded bg-sky-100 px-1 font-semibold text-sky-900 dark:bg-sky-900/60 dark:text-sky-100">模型名称</span>和目标工具安装包。</p>
+            <p className="text-emerald-800 dark:text-emerald-200"><strong className="font-semibold">成功标志：</strong>工具内可以选择模型并完成一次真实请求。</p>
+            <p className="text-amber-800 dark:text-amber-200"><strong className="font-semibold">最容易卡住：</strong><span className="rounded bg-amber-100 px-1 font-semibold text-amber-900 dark:bg-amber-900/50 dark:text-amber-100">Key 写错</span>、<span className="rounded bg-amber-100 px-1 font-semibold text-amber-900 dark:bg-amber-900/50 dark:text-amber-100">Base URL 不匹配</span>、模型名和工具配置不一致。</p>
+          </div>
+        </section>
+
+        <section id="config-example" className="mb-8 scroll-mt-24 rounded-lg border bg-card p-4 sm:p-5">
+          <div className="mb-4">
+            <p className="text-sm font-semibold text-foreground">快速配置示例</p>
+            <p className="mt-1 text-sm leading-6 text-muted-foreground">
+              大多数 AI 工具最终都要填这三项：
+              <span className="mx-1 rounded bg-emerald-100 px-1.5 py-0.5 font-semibold text-emerald-800 dark:bg-emerald-900/45 dark:text-emerald-100">API Key</span>
+              <span className="mx-1 rounded bg-sky-100 px-1.5 py-0.5 font-semibold text-sky-800 dark:bg-sky-900/50 dark:text-sky-100">Base URL</span>
+              <span className="mx-1 rounded bg-amber-100 px-1.5 py-0.5 font-semibold text-amber-800 dark:bg-amber-900/45 dark:text-amber-100">模型名</span>
+              。具体字段名以对应工具教程为准。
+            </p>
+          </div>
+          <div className="grid gap-4 lg:grid-cols-2">
+            {configExamples.map((example) => (
+              <div key={example.title} className="min-w-0 overflow-hidden rounded-lg border border-border bg-background/45 dark:bg-background/50">
+                <div className="flex items-center justify-between border-b border-border px-4 py-2">
+                  <span className="text-xs font-semibold text-foreground">{example.title}</span>
+                  <span className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">{example.language}</span>
+                </div>
+                <pre className="max-w-full overflow-x-auto whitespace-pre p-3 font-mono text-[13px] leading-6 text-foreground sm:p-4 sm:text-sm">
+                  <code className="block min-w-max">{example.code}</code>
+                </pre>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <div className="mb-8 overflow-hidden rounded-lg border border-border sm:hidden">
+          <details>
+            <summary className="cursor-pointer select-none bg-muted/60 px-4 py-2.5 text-sm font-semibold text-foreground">
+              页面目录（点开查看）
+            </summary>
+            <nav className="space-y-0.5 border-t border-border px-4 py-2">
+              <a href="#app-overview" className="block py-1.5 text-sm text-muted-foreground hover:text-foreground">页面概览</a>
+              {pageAnchors.map((item) => (
+                <a key={item.href} href={item.href} className="block py-1.5 text-sm text-muted-foreground hover:text-foreground">
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+          </details>
+        </div>
 
         <div className="flex flex-col">
-        <section className="order-2 mb-8 grid grid-cols-1 gap-4 md:order-1 md:grid-cols-3">
+        <section id="workflow" className="order-2 mb-8 grid scroll-mt-24 grid-cols-1 gap-4 md:order-1 md:grid-cols-3">
           {workflowNotes.map((note) => (
             <div key={note.title} className="rounded-lg border bg-card p-5">
               <h2 className="text-base font-semibold">{note.title}</h2>
@@ -69,7 +169,7 @@ export default function AppListPage() {
           ))}
         </section>
 
-        <div className="order-1 grid grid-cols-1 gap-4 md:order-2 md:grid-cols-2 lg:grid-cols-3">
+        <section id="app-tutorials" className="order-1 grid scroll-mt-24 grid-cols-1 gap-4 md:order-2 md:grid-cols-2 lg:grid-cols-3">
           {appTutorials.map((tutorial) => (
             <article key={tutorial.id} className="flex min-h-48 flex-col rounded-lg border bg-card p-5 transition-colors hover:border-foreground/30">
               <div className="mb-3 flex items-start justify-between gap-3">
@@ -85,10 +185,10 @@ export default function AppListPage() {
               </div>
             </article>
           ))}
-        </div>
+        </section>
 
         {/* 常见问题 */}
-        <section className="order-3 mt-10">
+        <section id="faq-section" className="order-3 mt-10 scroll-mt-24">
           <h2 className="mb-4 text-xl font-semibold tracking-tight">常见问题</h2>
           <div className="space-y-3">
             {[
@@ -114,7 +214,7 @@ export default function AppListPage() {
         </section>
 
         {/* 下一步推荐 */}
-        <section className="order-4 mt-10 rounded-lg border bg-card p-6">
+        <section id="next-step" className="order-4 mt-10 scroll-mt-24 rounded-lg border bg-card p-6">
           <h2 className="font-semibold">下一步推荐</h2>
           <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
             <Link href="/tutorial" className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
@@ -133,7 +233,7 @@ export default function AppListPage() {
         </section>
 
         {/* 适合谁 / 不适合谁 */}
-        <section className="order-5 mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
+        <section id="fit-section" className="order-5 mt-10 grid scroll-mt-24 grid-cols-1 gap-4 md:grid-cols-2">
           <div className="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 p-5">
             <p className="text-sm font-semibold text-emerald-800">适合谁</p>
             <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">

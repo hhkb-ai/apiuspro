@@ -43,13 +43,20 @@ export default function UseCaseListPage() {
         </div>
 
         {/* BLUF 摘要 */}
-        <section className="mb-8 rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 px-5 py-4">
-          <p className="text-sm font-semibold text-sky-800">结论先行</p>
+        <section className="mb-8 hidden rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 px-5 py-4 sm:block">
+          <p className="text-sm font-semibold text-sky-800 dark:text-sky-200">结论先行</p>
           <p className="mt-1 text-sm leading-6 text-sky-700 dark:text-sky-300">
             写代码优先看 DeepSeek 和 Claude，长文档处理看通义千问和 Gemini，内容创作看 Kimi 和通义千问。
             不确定就先用有免费额度的国内 API 跑一轮真实任务，再决定是否切换。
           </p>
         </section>
+        <details className="mb-8 rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-900 dark:text-sky-100 sm:hidden">
+          <summary className="cursor-pointer select-none px-4 py-3 text-sm font-bold">结论先行（点开查看）</summary>
+          <p className="border-t border-sky-200 dark:border-sky-800 px-4 py-3 text-sm leading-7 text-sky-700 dark:text-sky-300">
+            写代码优先看 DeepSeek 和 Claude，长文档处理看通义千问和 Gemini，内容创作看 Kimi 和通义千问。
+            不确定就先用有免费额度的国内 API 跑一轮真实任务，再决定是否切换。
+          </p>
+        </details>
 
         <div className="flex flex-col">
         <section className="order-2 mb-8 grid grid-cols-1 gap-4 md:order-1 md:grid-cols-3">

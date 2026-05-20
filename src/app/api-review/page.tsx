@@ -152,8 +152,8 @@ export default function APIReviewPage() {
           </p>
         </div>
 
-        <section className="mb-6 rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 px-4 py-3">
-          <p className="text-sm font-semibold text-sky-800">结论先行</p>
+        <section className="mb-6 hidden rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 px-4 py-3 sm:block">
+          <p className="text-sm font-semibold text-sky-800 dark:text-sky-200">结论先行</p>
           <div className="mt-2 grid gap-1.5 text-sm leading-6 text-sky-700 dark:text-sky-300">
             <p><span className="font-semibold">代码 / 推理：</span>性价比看 DeepSeek V4 Flash；顶级能力看 DeepSeek V4 Pro、Claude Opus。</p>
             <p><span className="font-semibold">通用对话 / 内容创作：</span>中文场景看通义千问（Qwen）、Kimi。</p>
@@ -167,6 +167,21 @@ export default function APIReviewPage() {
             <Link href="/use-case" className="font-medium text-foreground hover:underline">场景推荐</Link>
           </div>
         </section>
+        <details className="mb-6 rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-900 dark:text-sky-100 sm:hidden">
+          <summary className="cursor-pointer select-none px-4 py-3 text-sm font-bold">结论先行（点开查看）</summary>
+          <div className="border-t border-sky-200 dark:border-sky-800 px-4 py-3 space-y-1.5 text-sm leading-6 text-sky-700 dark:text-sky-300">
+            <p><span className="font-semibold">代码 / 推理：</span>性价比看 DeepSeek V4 Flash；顶级能力看 DeepSeek V4 Pro、Claude Opus。</p>
+            <p><span className="font-semibold">通用对话 / 内容创作：</span>中文场景看通义千问（Qwen）、Kimi。</p>
+            <p><span className="font-semibold">长文档 / 多模态：</span>海外看 Gemini 3.1 Pro；安全长文本看 Claude Opus 4.7。</p>
+            <p><span className="font-semibold">综合最强：</span>OpenAI GPT-5.5，科研、金融、Agent 能力最强，但价格高。</p>
+            <p><span className="font-semibold">策略：</span>先用各家免费额度跑真实任务，再决定长期使用哪个。</p>
+            <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs leading-5 text-sky-700 dark:text-sky-300/80 pt-1">
+              <Link href="/tutorial" className="font-medium text-foreground hover:underline">购买教程</Link>
+              <Link href="/cloud-api" className="font-medium text-foreground hover:underline">API 列表</Link>
+              <Link href="/use-case" className="font-medium text-foreground hover:underline">场景推荐</Link>
+            </div>
+          </div>
+        </details>
 
         <section className="space-y-7">
           {reviews.map((review) => (

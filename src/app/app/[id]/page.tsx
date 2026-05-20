@@ -331,12 +331,18 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
               </span>
             </div>
             <p className="text-sm text-muted-foreground">{tutorial.desc}</p>
-            <section className="mt-5 rounded-lg border border-sky-200 bg-sky-50 dark:bg-sky-950/30 px-4 py-3 text-sm leading-6 text-sky-900">
+            <section className="mt-5 hidden rounded-lg border border-sky-200 bg-sky-50 dark:border-sky-800 dark:bg-sky-950/30 px-4 py-3 text-sm leading-6 text-sky-900 dark:text-sky-200 sm:block">
               <p className="font-semibold">BLUF 摘要</p>
               <p className="mt-1">
                 这篇教程说明如何配置 {tutorial.name}，重点是先准备 API Key、Base URL 和模型名称，再按章节完成安装、配置、验证与排错。
               </p>
             </section>
+            <details className="mt-5 rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-900 dark:text-sky-200 sm:hidden">
+              <summary className="cursor-pointer select-none px-4 py-3 text-sm font-bold">BLUF 摘要（点开查看）</summary>
+              <p className="border-t border-sky-200 dark:border-sky-800 px-4 py-3 text-sm leading-7">
+                这篇教程说明如何配置 {tutorial.name}，重点是先准备 API Key、Base URL 和模型名称，再按章节完成安装、配置、验证与排错。
+              </p>
+            </details>
           </div>
 
           <section className="mx-5 mt-6 grid gap-4 sm:mx-8 lg:grid-cols-2">

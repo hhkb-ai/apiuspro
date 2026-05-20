@@ -91,13 +91,20 @@ export default function FAQPage() {
           </div>
 
           {/* BLUF 摘要 */}
-          <section className="mb-8 rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 px-5 py-4">
-            <p className="text-sm font-semibold text-sky-800">结论先行</p>
+          <section className="mb-8 hidden rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 px-5 py-4 sm:block">
+            <p className="text-sm font-semibold text-sky-800 dark:text-sky-200">结论先行</p>
             <p className="mt-1 text-sm leading-6 text-sky-700 dark:text-sky-300">
               大多数 API 接入问题集中在三个环节：注册验证（手机号/邮箱/实名）、支付方式（国内能否直接付款）、API Key 配置（保存位置和调用格式）。
               先确认这三个环节没有卡住，再排查模型选择和费用问题。
             </p>
           </section>
+          <details className="mb-8 rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-900 dark:text-sky-100 sm:hidden">
+            <summary className="cursor-pointer select-none px-4 py-3 text-sm font-bold">结论先行（点开查看）</summary>
+            <p className="border-t border-sky-200 dark:border-sky-800 px-4 py-3 text-sm leading-7 text-sky-700 dark:text-sky-300">
+              大多数 API 接入问题集中在三个环节：注册验证（手机号/邮箱/实名）、支付方式（国内能否直接付款）、API Key 配置（保存位置和调用格式）。
+              先确认这三个环节没有卡住，再排查模型选择和费用问题。
+            </p>
+          </details>
 
           <div className="flex flex-col">
           {/* 使用前准备 */}

@@ -52,67 +52,84 @@ export function QuickConclusionCard({ api, reviewSlug }: QuickConclusionCardProp
   const rating = getRating(api);
   const access = getAccessInfo(api);
 
+  const detailGrid = (
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div>
+        <p className="mb-1 text-xs font-medium text-muted-foreground">适合谁</p>
+        <p className="leading-5">{getSuitableFor(api)}</p>
+      </div>
+      <div>
+        <p className="mb-1 text-xs font-medium text-muted-foreground">不适合谁</p>
+        <p className="leading-5">{getNotSuitableFor(api)}</p>
+      </div>
+      <div>
+        <p className="mb-1 text-xs font-medium text-muted-foreground">国内访问</p>
+        <p className="leading-5">{api.proxy ? '需要代理，合适的网络环境' : '无需代理，国内直连'}</p>
+      </div>
+      <div>
+        <p className="mb-1 text-xs font-medium text-muted-foreground">免费额度 / 计费</p>
+        <p className="leading-5">
+          {api.free || '暂无免费额度，按量计费'}
+          <span className="ml-1 text-xs text-muted-foreground">（以官网为准）</span>
+        </p>
+      </div>
+      <div>
+        <p className="mb-1 text-xs font-medium text-muted-foreground">接入难度</p>
+        <p>
+          <span className={`font-medium ${access.color}`}>{access.label}</span>
+          <span className="text-muted-foreground"> — {access.desc}</span>
+        </p>
+      </div>
+    </div>
+  );
+
+  const actionLinks = (
+    <div className="flex flex-wrap gap-2 border-t border-border pt-4">
+      <a href={api.url} target="_blank" rel="noopener noreferrer">
+        <Button variant="outline" size="sm">官网入口</Button>
+      </a>
+      {api.tutorial && (
+        <Link href={`/tutorial/${api.id}`}>
+          <Button variant="outline" size="sm">购买教程</Button>
+        </Link>
+      )}
+      {reviewSlug && (
+        <Link href={`/api-review/${reviewSlug}`}>
+          <Button variant="outline" size="sm">完整测评</Button>
+        </Link>
+      )}
+      <Link href="/use-case/coding">
+        <Button variant="outline" size="sm">场景推荐</Button>
+      </Link>
+    </div>
+  );
+
   return (
-    <Card className="mb-8 border-border bg-card shadow-sm">
-      <CardHeader>
-        <CardTitle className="flex flex-wrap items-center gap-3">
-          快速结论
-          <span className="rounded-md bg-amber-100 px-2 py-0.5 text-sm font-semibold text-amber-700 dark:text-amber-300">推荐指数 {rating}/10</span>
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4 text-sm text-foreground">
-        <p className="rounded-md border border-sky-200 bg-sky-50 px-3 py-2 text-sky-900 dark:border-sky-800 dark:bg-sky-950/30 dark:text-sky-100">{getConclusion(api)}</p>
-
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div>
-            <p className="mb-1 text-xs font-medium text-muted-foreground">适合谁</p>
-            <p className="leading-5">{getSuitableFor(api)}</p>
-          </div>
-          <div>
-            <p className="mb-1 text-xs font-medium text-muted-foreground">不适合谁</p>
-            <p className="leading-5">{getNotSuitableFor(api)}</p>
-          </div>
-          <div>
-            <p className="mb-1 text-xs font-medium text-muted-foreground">国内访问</p>
-            <p className="leading-5">{api.proxy ? '需要代理，合适的网络环境' : '无需代理，国内直连'}</p>
-          </div>
-          <div>
-            <p className="mb-1 text-xs font-medium text-muted-foreground">免费额度 / 计费</p>
-            <p className="leading-5">
-              {api.free || '暂无免费额度，按量计费'}
-              <span className="ml-1 text-xs text-muted-foreground">（以官网为准）</span>
-            </p>
-          </div>
-          <div>
-            <p className="mb-1 text-xs font-medium text-muted-foreground">接入难度</p>
-            <p>
-              <span className={`font-medium ${access.color}`}>{access.label}</span>
-              <span className="text-muted-foreground"> — {access.desc}</span>
-            </p>
-          </div>
+    <>
+      <Card className="mb-8 hidden border-border bg-card shadow-sm sm:block">
+        <CardHeader>
+          <CardTitle className="flex flex-wrap items-center gap-3">
+            快速结论
+            <span className="rounded-md bg-amber-100 px-2 py-0.5 text-sm font-semibold text-amber-700 dark:text-amber-300">推荐指数 {rating}/10</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4 text-sm text-foreground">
+          <p className="rounded-md border border-sky-200 bg-sky-50 px-3 py-2 text-sky-900 dark:border-sky-800 dark:bg-sky-950/30 dark:text-sky-100">{getConclusion(api)}</p>
+          {detailGrid}
+          {actionLinks}
+          <p className="text-xs text-muted-foreground">* 价格、额度、模型名等信息以官网为准</p>
+        </CardContent>
+      </Card>
+      <details className="mb-8 rounded-lg border border-border bg-card text-foreground sm:hidden">
+        <summary className="cursor-pointer select-none px-4 py-3 text-sm font-bold">快速结论（点开查看）</summary>
+        <div className="border-t border-border px-4 py-3 space-y-4 text-sm">
+          <p><span className="font-semibold">推荐指数：</span>{rating}/10</p>
+          <p className="rounded-md border border-sky-200 bg-sky-50 px-3 py-2 text-sky-900 dark:border-sky-800 dark:bg-sky-950/30 dark:text-sky-100">{getConclusion(api)}</p>
+          {detailGrid}
+          {actionLinks}
+          <p className="text-xs text-muted-foreground">* 价格、额度、模型名等信息以官网为准</p>
         </div>
-
-        <div className="flex flex-wrap gap-2 border-t border-border pt-4">
-          <a href={api.url} target="_blank" rel="noopener noreferrer">
-            <Button variant="outline" size="sm">官网入口</Button>
-          </a>
-          {api.tutorial && (
-            <Link href={`/tutorial/${api.id}`}>
-              <Button variant="outline" size="sm">购买教程</Button>
-            </Link>
-          )}
-          {reviewSlug && (
-            <Link href={`/api-review/${reviewSlug}`}>
-              <Button variant="outline" size="sm">完整测评</Button>
-            </Link>
-          )}
-          <Link href="/use-case/coding">
-            <Button variant="outline" size="sm">场景推荐</Button>
-          </Link>
-        </div>
-
-        <p className="text-xs text-muted-foreground">* 价格、额度、模型名等信息以官网为准</p>
-      </CardContent>
-    </Card>
+      </details>
+    </>
   );
 }

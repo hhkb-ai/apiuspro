@@ -3,6 +3,17 @@ const key = '7e0fb047ba114379b2991b59347c3b61';
 const keyLocation = `https://${host}/${key}.txt`;
 const sitemapUrl = `https://${host}/sitemap.xml`;
 const endpoint = 'https://api.indexnow.org/indexnow';
+const priorityUrls = [
+  `https://${host}`,
+  `https://${host}/cloud-api`,
+  `https://${host}/tutorial`,
+  `https://${host}/api-review`,
+  `https://${host}/app`,
+  `https://${host}/app/ccswitch`,
+  `https://${host}/api/deepseek`,
+  `https://${host}/tutorial/deepseek`,
+  `https://${host}/error`,
+];
 const args = process.argv.slice(2).filter(arg => arg !== '--');
 const dryRun = args.includes('--dry-run');
 const explicitUrls = args.filter(arg => arg !== '--dry-run');
@@ -10,6 +21,7 @@ const explicitUrls = args.filter(arg => arg !== '--dry-run');
 let urls = explicitUrls;
 
 if (urls.length === 0) {
+  console.log(`Fetching sitemap: ${sitemapUrl}`);
   const sitemapResponse = await fetch(sitemapUrl);
 
   if (!sitemapResponse.ok) {
@@ -17,7 +29,8 @@ if (urls.length === 0) {
   }
 
   const sitemapXml = await sitemapResponse.text();
-  urls = Array.from(sitemapXml.matchAll(/<loc>(.*?)<\/loc>/g), match => match[1]);
+  const sitemapUrls = Array.from(sitemapXml.matchAll(/<loc>(.*?)<\/loc>/g), match => match[1]);
+  urls = [sitemapUrl, ...priorityUrls, ...sitemapUrls];
 }
 
 if (urls.length === 0) {
@@ -32,8 +45,14 @@ if (urls.some(url => !url.startsWith(`https://${host}/`) && url !== `https://${h
 
 if (dryRun) {
   console.log(`Dry run: ${urls.length} URLs ready for IndexNow.`);
+  console.log(`Endpoint: ${endpoint}`);
+  console.log(`Key location: ${keyLocation}`);
   console.log(urls.join('\n'));
 } else {
+  console.log(`Submitting ${urls.length} URLs to IndexNow.`);
+  console.log(`Endpoint: ${endpoint}`);
+  console.log(`Key location: ${keyLocation}`);
+
   const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
@@ -53,5 +72,6 @@ if (dryRun) {
     throw new Error(`IndexNow submission failed: ${response.status} ${response.statusText}${body ? ` - ${body}` : ''}`);
   }
 
+  console.log(`IndexNow submission accepted: ${response.status} ${response.statusText}`);
   console.log(`Submitted ${urls.length} URLs to IndexNow.`);
 }

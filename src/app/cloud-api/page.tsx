@@ -204,14 +204,22 @@ export default function CloudAPIPage() {
         </div>
 
         {/* BLUF 摘要 */}
-        <section className="mb-8 rounded-lg border border-sky-200 bg-sky-50 dark:bg-sky-950/30 px-5 py-4">
-          <p className="text-sm font-semibold text-sky-800">结论先行</p>
-          <p className="mt-1 text-sm leading-6 text-sky-700">
+        <section className="mb-8 hidden rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 px-5 py-4 sm:block">
+          <p className="text-sm font-semibold text-sky-800 dark:text-sky-200">结论先行</p>
+          <p className="mt-1 text-sm leading-6 text-sky-700 dark:text-sky-300">
             国内用户首选无需代理的 API（DeepSeek、通义千问、智谱），注册即用、有免费额度。
             需要最强模型能力选 Claude 或 OpenAI，但要准备代理和国际信用卡。
             不确定选哪个？先看 <Link href="/use-case" className="text-foreground hover:underline">按场景推荐</Link>。
           </p>
         </section>
+        <details className="mb-8 rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-900 dark:text-sky-100 sm:hidden">
+          <summary className="cursor-pointer select-none px-4 py-3 text-sm font-bold">结论先行（点开查看）</summary>
+          <p className="border-t border-sky-200 dark:border-sky-800 px-4 py-3 text-sm leading-7 text-sky-700 dark:text-sky-300">
+            国内用户首选无需代理的 API（DeepSeek、通义千问、智谱），注册即用、有免费额度。
+            需要最强模型能力选 Claude 或 OpenAI，但要准备代理和国际信用卡。
+            不确定选哪个？先看 <Link href="/use-case" className="text-foreground hover:underline">按场景推荐</Link>。
+          </p>
+        </details>
 
         <div className="flex flex-col">
           <section className="order-3 mb-4 grid grid-cols-1 gap-4 md:order-1 md:grid-cols-3">

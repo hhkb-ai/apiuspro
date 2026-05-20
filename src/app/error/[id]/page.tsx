@@ -134,14 +134,20 @@ export default async function ErrorSolutionDetailPage({ params }: { params: Prom
               </p>
             </div>
 
-            <Card className="mb-8 border-sky-200 bg-sky-50 dark:bg-sky-950/30/70 shadow-sm">
+            <Card className="mb-8 hidden border-sky-200 bg-sky-50 dark:border-sky-800 dark:bg-sky-950/30 shadow-sm sm:block">
               <CardContent className="p-5">
                 <p className="text-sm font-semibold text-sky-900 dark:text-sky-200">排查结论</p>
-                <p className="mt-2 text-sm leading-6 text-sky-800">
+                <p className="mt-2 text-sm leading-6 text-sky-800 dark:text-sky-300">
                   先用最小请求隔离问题：只保留 API Key、Base URL、模型名和一条 ping 消息。最小请求失败，先修配置；最小请求成功，再回到业务代码排查并发、上下文和部署环境。
                 </p>
               </CardContent>
             </Card>
+            <details className="mb-8 rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-900 dark:text-sky-100 sm:hidden">
+              <summary className="cursor-pointer select-none px-4 py-3 text-sm font-bold">排查结论（点开查看）</summary>
+              <p className="border-t border-sky-200 dark:border-sky-800 px-4 py-3 text-sm leading-7 text-sky-800 dark:text-sky-300">
+                先用最小请求隔离问题：只保留 API Key、Base URL、模型名和一条 ping 消息。最小请求失败，先修配置；最小请求成功，再回到业务代码排查并发、上下文和部署环境。
+              </p>
+            </details>
 
             <div className="space-y-10">
               <SectionShell id="symptoms" title="1. 问题现象">

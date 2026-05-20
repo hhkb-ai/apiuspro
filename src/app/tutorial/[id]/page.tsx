@@ -229,13 +229,20 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
             </div>
             {tutorial.subtitle && <p className="mt-1 text-[15px] sm:text-sm text-foreground/80">{tutorial.subtitle}</p>}
 
-            <section className="mt-5 rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 text-[15px] sm:text-sm leading-7 sm:leading-6 text-sky-900 dark:border-sky-800 dark:bg-sky-950/20 dark:text-sky-200">
+            <section className="mt-5 hidden rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 text-[15px] sm:text-sm leading-7 sm:leading-6 text-sky-900 dark:border-sky-800 dark:bg-sky-950/20 dark:text-sky-200 sm:block">
               <p className="font-semibold">BLUF 摘要</p>
               <p className="mt-1">
                 这篇教程用 {tutorial.steps.length} 个步骤说明 {api.name} API 如何注册、开通、获取 API Key 并完成首次接入；先确认
                 {needProxy ? '代理访问、支付方式、额度限制' : '国内直连、免费额度、计费单位'}，再把 Key 安全保存到环境变量或工具配置中。
               </p>
             </section>
+            <details className="mt-5 rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/20 text-sky-900 dark:text-sky-200 sm:hidden">
+              <summary className="cursor-pointer select-none px-4 py-3 text-sm font-bold">BLUF 摘要（点开查看）</summary>
+              <p className="border-t border-sky-200 dark:border-sky-800 px-4 py-3 text-sm leading-7">
+                这篇教程用 {tutorial.steps.length} 个步骤说明 {api.name} API 如何注册、开通、获取 API Key 并完成首次接入；先确认
+                {needProxy ? '代理访问、支付方式、额度限制' : '国内直连、免费额度、计费单位'}，再把 Key 安全保存到环境变量或工具配置中。
+              </p>
+            </details>
 
             {/* 优势标签 */}
             {tutorial.advantages && tutorial.advantages.length > 0 && (

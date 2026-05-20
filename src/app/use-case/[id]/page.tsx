@@ -86,7 +86,7 @@ export default async function UseCaseDetailPage({ params }: { params: Promise<{ 
         </div>
 
         {/* 选型结论 */}
-        <section className="mb-8 space-y-3">
+        <section className="mb-8 hidden space-y-3 sm:block">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <div className="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 p-4">
               <p className="text-xs font-semibold uppercase tracking-wider text-emerald-600">首选 API</p>
@@ -106,6 +106,24 @@ export default async function UseCaseDetailPage({ params }: { params: Promise<{ 
             <p className="mt-1 text-sm leading-6 text-muted-foreground">{uc.quickPick}</p>
           </div>
         </section>
+        <details className="mb-8 rounded-lg border border-border bg-card text-foreground sm:hidden">
+          <summary className="cursor-pointer select-none px-4 py-3 text-sm font-bold">选型结论（点开查看）</summary>
+          <div className="border-t border-border px-4 py-3 space-y-3 text-sm">
+            <div className="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 p-3">
+              <p className="text-xs font-semibold uppercase tracking-wider text-emerald-600">首选 API</p>
+              <p className="mt-1 font-bold text-emerald-900 dark:text-emerald-200">{uc.primaryPick}</p>
+            </div>
+            <div className="rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 p-3">
+              <p className="text-xs font-semibold uppercase tracking-wider text-sky-600">备选 API</p>
+              <p className="mt-1 font-bold text-sky-900 dark:text-sky-200">{uc.altPick}</p>
+            </div>
+            <div className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-3">
+              <p className="text-xs font-semibold uppercase tracking-wider text-amber-600">不建议选择</p>
+              <p className="mt-1 text-amber-800 dark:text-amber-200">{uc.notRecommended}</p>
+            </div>
+            <p className="text-muted-foreground"><span className="font-semibold">新手快速选择：</span>{uc.quickPick}</p>
+          </div>
+        </details>
 
         {/* 选型要点 */}
         <section className="mb-8">
