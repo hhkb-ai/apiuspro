@@ -43,12 +43,12 @@ const quickLinks = [
 ];
 
 const sectionEntries = [
-  { title: 'API 列表', desc: '对比官网入口、代理要求和免费额度', href: '/cloud-api', icon: Compass, className: 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-900' },
-  { title: '购买教程', desc: '按步骤完成注册、支付与 API Key 创建', href: '/tutorial', icon: BookOpen, className: 'border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-900' },
-  { title: 'API 测评', desc: '查看模型能力、价格和使用体验对比', href: '/api-review', icon: Star, className: 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-900' },
-  { title: '场景推荐', desc: '按编程、知识库、翻译等场景选择', href: '/use-case', icon: Target, className: 'border-violet-200 bg-violet-50 text-violet-900' },
-  { title: 'API 应用', desc: 'Claude Code、CC Switch 等工具接入', href: '/app', icon: Wrench, className: 'border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/30 text-rose-900' },
-  { title: '本地部署', desc: 'Ollama 一键部署开源模型', href: '/local-deploy', icon: Server, className: 'border-orange-200 bg-orange-50 text-orange-900' },
+  { title: 'API 列表', desc: '对比官网入口、代理要求和免费额度', href: '/cloud-api', icon: Compass, className: 'border-emerald-200 dark:border-emerald-700/80 bg-emerald-50 dark:bg-emerald-950/45 text-emerald-900 dark:text-emerald-100' },
+  { title: '购买教程', desc: '按步骤完成注册、支付与 API Key 创建', href: '/tutorial', icon: BookOpen, className: 'border-sky-200 dark:border-sky-700/80 bg-sky-50 dark:bg-sky-950/45 text-sky-900 dark:text-sky-100' },
+  { title: 'API 测评', desc: '查看模型能力、价格和使用体验对比', href: '/api-review', icon: Star, className: 'border-amber-200 dark:border-amber-700/80 bg-amber-50 dark:bg-amber-950/45 text-amber-900 dark:text-amber-100' },
+  { title: '场景推荐', desc: '按编程、知识库、翻译等场景选择', href: '/use-case', icon: Target, className: 'border-violet-200 dark:border-violet-700/80 bg-violet-50 dark:bg-violet-950/45 text-violet-900 dark:text-violet-100' },
+  { title: 'API 应用', desc: 'Claude Code、CC Switch 等工具接入', href: '/app', icon: Wrench, className: 'border-rose-200 dark:border-rose-700/80 bg-rose-50 dark:bg-rose-950/45 text-rose-900 dark:text-rose-100' },
+  { title: '本地部署', desc: 'Ollama 一键部署开源模型', href: '/local-deploy', icon: Server, className: 'border-orange-200 dark:border-orange-700/80 bg-orange-50 dark:bg-orange-950/45 text-orange-900 dark:text-orange-100' },
 ];
 
 const quickViewApiIds = ['deepseek', 'openai', 'claude', 'gemini', 'zhipu', 'kimi'];
@@ -456,18 +456,18 @@ function DesktopHome() {
         {/* Main Content: Sidebar + Table */}
         <section className="px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
           <div className="mx-auto max-w-7xl">
-            <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+            <div className="grid gap-6 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-8 lg:items-stretch">
               {/* Left Sidebar: Section Entries */}
-              <aside className="w-full shrink-0 lg:w-64 lg:self-stretch">
+              <aside className="w-full">
                 <nav className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:h-full lg:grid-cols-1 lg:grid-rows-6 lg:gap-3" aria-label="首页栏目入口">
                   {sectionEntries.map(item => {
                     const Icon = item.icon;
                     return (
-                      <Link key={item.href} href={item.href} className={`flex min-h-12 min-w-0 items-center gap-2.5 rounded-lg border px-3 py-2.5 transition-colors hover:-translate-y-px lg:min-h-0 lg:gap-3 lg:px-4 lg:py-3.5 ${item.className}`}>
+                      <Link key={item.href} href={item.href} className={`flex h-full min-h-[76px] min-w-0 items-center gap-2.5 rounded-lg border px-3 py-2.5 transition-all hover:-translate-y-px hover:shadow-md lg:min-h-0 lg:gap-3 lg:px-4 lg:py-3.5 ${item.className}`}>
                         <Icon className="size-4 shrink-0 lg:size-5" />
                         <div className="min-w-0">
                           <span className="block truncate text-sm font-semibold lg:text-base">{item.title}</span>
-                          <span className="block truncate text-[11px] leading-tight opacity-70 lg:mt-1 lg:text-xs">{item.desc}</span>
+                          <span className="block truncate text-[11px] leading-tight opacity-70 dark:opacity-85 lg:mt-1 lg:text-xs">{item.desc}</span>
                         </div>
                       </Link>
                     );
@@ -476,8 +476,8 @@ function DesktopHome() {
               </aside>
 
               {/* Right Main: API Table */}
-              <div className="flex-1 min-w-0">
-                <section className="rounded-lg border border-border bg-card shadow-sm">
+              <div className="flex-1 min-w-0 h-full">
+                <section className="rounded-lg border border-border bg-card shadow-sm h-full flex flex-col">
                   <div className="p-4 sm:p-5 border-b border-border">
                     <div className="flex items-center justify-between gap-4">
                       <div>
@@ -487,7 +487,7 @@ function DesktopHome() {
                       <Link href="/cloud-api" className="text-sm font-medium text-foreground hover:underline whitespace-nowrap">全部 API 官网入口</Link>
                     </div>
                   </div>
-                  <div className="overflow-x-auto">
+                  <div className="overflow-x-auto flex-1">
                     <table className="w-full text-sm">
                       <thead className="bg-muted text-left text-xs font-medium text-muted-foreground">
                         <tr>

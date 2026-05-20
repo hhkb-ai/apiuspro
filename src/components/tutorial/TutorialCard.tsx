@@ -33,7 +33,7 @@ interface TutorialCardProps {
 
 export function TutorialCard({ id, tutorial }: TutorialCardProps) {
   return (
-    <Card id={id} className="scroll-mt-4">
+    <Card id={id} className="scroll-mt-4 w-full max-w-full min-w-0 overflow-hidden">
       <CardHeader>
         <CardTitle>{tutorial.title}</CardTitle>
         <CardDescription>{tutorial.subtitle}</CardDescription>
@@ -42,32 +42,32 @@ export function TutorialCard({ id, tutorial }: TutorialCardProps) {
         <div className="space-y-6">
           {/* 步骤 */}
           {tutorial.steps.map((step, index) => (
-            <div key={index} className={`rounded-lg border p-4 ${step.important ? 'border-amber-300 bg-amber-50 dark:bg-amber-950/30/50 dark:border-amber-700 dark:bg-amber-950/30' : 'bg-muted/30'}`}>
-              <div className="flex items-start gap-4">
+            <div key={index} className={`max-w-full min-w-0 overflow-hidden rounded-lg border p-4 ${step.important ? 'border-amber-500/35 bg-amber-500/[0.06] dark:border-amber-500/30 dark:bg-amber-500/[0.08]' : 'bg-muted/30'}`}>
+              <div className="flex max-w-full min-w-0 flex-col gap-4 sm:flex-row sm:items-start">
                 {/* 步骤编号 */}
                 <div className="flex-shrink-0">
-                  <div className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold ${step.important ? 'bg-amber-50 dark:bg-amber-950/30 text-white' : 'bg-foreground text-background'}`}>
+                  <div className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold ${step.important ? 'bg-amber-500/15 text-amber-800 dark:bg-amber-500/20 dark:text-amber-100' : 'bg-foreground text-background'}`}>
                     {index + 1}
                   </div>
                 </div>
                 
-                <div className="flex-1 space-y-3">
+                <div className="min-w-0 flex-1 space-y-3">
                   <div>
-                    <h4 className="font-semibold">
+                    <h4 className="font-semibold min-w-0 break-words">
                       {step.title}
                       {step.important && (
-                        <span className="ml-2 inline-flex items-center rounded-full bg-amber-50 dark:bg-amber-950/30 px-2 py-0.5 text-[10px] font-bold text-white">
+                        <span className="ml-2 inline-flex items-center rounded-full border border-amber-500/35 bg-amber-500/10 px-2 py-0.5 text-[10px] font-semibold text-amber-700 dark:text-amber-200">
                           重要
                         </span>
                       )}
                     </h4>
-                    <p className="text-sm text-muted-foreground">{step.description}</p>
+                    <p className="text-sm text-muted-foreground min-w-0 break-words">{step.description}</p>
                   </div>
 
                   {/* 图片区域 */}
                   {step.image && (
-                    <div className="relative w-full overflow-hidden rounded-lg border bg-background">
-                      <div className="relative aspect-[16/9]">
+                    <div className="relative w-full max-w-full min-w-0 overflow-hidden rounded-lg border border-border bg-background/40 dark:bg-background/50">
+                      <div className="relative aspect-[16/9] w-full max-w-full">
                         <Image
                           src={step.image}
                           alt={step.title}
@@ -95,7 +95,7 @@ export function TutorialCard({ id, tutorial }: TutorialCardProps) {
                       {step.items.map((item, itemIndex) => (
                         <li key={itemIndex} className="flex items-start gap-2">
                           <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-muted-foreground/50" />
-                          <span className="text-muted-foreground">{item}</span>
+                          <span className="text-muted-foreground min-w-0 break-words">{item}</span>
                         </li>
                       ))}
                     </ul>
@@ -123,7 +123,7 @@ export function TutorialCard({ id, tutorial }: TutorialCardProps) {
 
         {/* 提示信息 */}
         {tutorial.tips && tutorial.tips.length > 0 && (
-          <div className="mt-6 rounded-lg border border-sky-200 bg-sky-50 p-4 dark:border-sky-800 dark:bg-sky-950/20">
+          <div className="mt-6 rounded-lg border border-sky-200 bg-sky-50 p-4 dark:border-sky-800 dark:bg-sky-950/20 min-w-0 overflow-hidden">
             <p className="mb-2 font-medium text-sky-800 dark:text-sky-200">提示</p>
             <ul className="space-y-1 text-sm text-sky-700 dark:text-sky-300">
               {tutorial.tips.map((tip, index) => (
@@ -135,7 +135,7 @@ export function TutorialCard({ id, tutorial }: TutorialCardProps) {
 
         {/* 警告信息 */}
         {tutorial.warnings && tutorial.warnings.length > 0 && (
-          <div className="mt-4 rounded-lg border border-red-200 bg-red-50 p-4 dark:bg-red-950/20">
+          <div className="mt-4 rounded-lg border border-red-200 bg-red-50 p-4 dark:bg-red-950/20 min-w-0 overflow-hidden">
             <p className="mb-2 font-medium text-red-800 dark:text-red-200">注意事项</p>
             <ul className="space-y-1 text-sm text-red-700 dark:text-red-300">
               {tutorial.warnings.map((warning, index) => (
@@ -147,7 +147,7 @@ export function TutorialCard({ id, tutorial }: TutorialCardProps) {
 
         {/* 优势标签 */}
         {tutorial.advantages && tutorial.advantages.length > 0 && (
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-4 flex flex-wrap gap-2 min-w-0">
             {tutorial.advantages.map((advantage, index) => (
               <Badge key={index} variant="outline" className="border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/20 dark:text-emerald-300">
                 {advantage}

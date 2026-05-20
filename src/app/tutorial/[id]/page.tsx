@@ -171,7 +171,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
       </header>
 
       {/* ── 三栏布局 ── */}
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-6 sm:py-8 flex gap-8">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-6 sm:py-8 flex flex-col lg:flex-row gap-8 w-full max-w-full min-w-0">
         {/* 左侧指南导航 */}
         <aside className="hidden lg:block w-52 shrink-0">
           <div className="sticky top-20">
@@ -214,7 +214,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
         </aside>
 
         {/* 中间主内容区 */}
-        <main className="flex-1 min-w-0 rounded-lg border border-border bg-card">
+        <main className="flex-1 w-full max-w-full min-w-0 rounded-lg border border-border bg-card">
           {/* 文档头部 */}
           <div className="border-b border-border px-4 sm:px-8 pb-5 sm:pb-6 pt-6 sm:pt-8">
             <div className="flex items-center gap-2 sm:gap-3 mb-2">
@@ -310,21 +310,18 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
               <section
                 key={stepIdx}
                 id={`step-${stepIdx}`}
-                className={`scroll-mt-[68px] ${stepIdx < tutorial.steps.length - 1 ? 'border-b border-border pb-8 sm:pb-10' : ''} ${step.important ? 'relative rounded-lg border-2 border-amber-300 bg-amber-50 dark:bg-amber-950/30/30 p-4 sm:p-6 -mx-1 sm:-mx-2 dark:border-amber-700 dark:bg-amber-950/20' : ''}`}
+                className={`scroll-mt-[68px] max-w-full min-w-0 overflow-hidden ${stepIdx < tutorial.steps.length - 1 ? 'border-b border-border pb-8 sm:pb-10' : ''} ${step.important ? 'rounded-lg border border-amber-500/35 bg-amber-500/[0.06] p-4 sm:p-6 dark:border-amber-500/30 dark:bg-amber-500/[0.08]' : ''}`}
               >
-                {/* 重要步骤标记 */}
+                {/* 关键步骤标签 */}
                 {step.important && (
-                  <div className="absolute -top-3 left-4 flex items-center gap-1.5 rounded-full bg-amber-50 dark:bg-amber-950/30 px-3 py-1 text-xs font-bold text-white shadow-sm">
-                    <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                    </svg>
+                  <div className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-amber-500/35 bg-amber-500/10 px-2.5 py-1 text-xs font-semibold text-amber-700 dark:text-amber-200">
                     关键步骤
                   </div>
                 )}
 
                 {/* 步骤标题：编号 + 文字 */}
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-4 sm:mb-5">
-                  <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm font-bold ${step.important ? 'bg-amber-50 dark:bg-amber-950/30 text-white' : 'bg-foreground text-background'}`}>
+                  <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm font-bold ${step.important ? 'bg-amber-500/20 text-amber-800 dark:text-amber-200' : 'bg-foreground text-background'}`}>
                     {stepIdx + 1}
                   </span>
                   <h2 className="text-lg sm:text-xl font-semibold tracking-tight leading-[1.2] text-foreground">{step.title}</h2>
@@ -332,24 +329,24 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
 
                 {/* 步骤描述 */}
                 {step.description && (
-                  <p className="mb-4 text-[15px] sm:text-base leading-7 sm:leading-8 text-foreground/85">{step.description}</p>
+                  <p className="mb-4 text-[15px] sm:text-base leading-7 sm:leading-8 text-foreground/85 min-w-0 break-words">{step.description}</p>
                 )}
 
                 {/* 步骤实操指引 */}
                 {(step.whereToClick || step.expectedResult || (step.failureChecklist && step.failureChecklist.length > 0)) && (
-                  <div className="mb-4 rounded-md border-l-2 border-border bg-muted/30 px-3 sm:px-4 py-3 space-y-1.5 text-[13px] sm:text-sm">
+                  <div className="mb-4 max-w-full min-w-0 rounded-md border border-border/70 bg-background/45 px-3 py-3 text-[13px] leading-6 sm:px-4 sm:text-sm dark:bg-background/35" style={{ overflowWrap: 'anywhere' }}>
                     {step.whereToClick && (
-                      <p className="text-muted-foreground"><strong className="font-semibold text-foreground">点击位置：</strong>{step.whereToClick}</p>
+                      <p className="text-muted-foreground break-words"><strong className="font-semibold text-foreground">点击位置：</strong>{step.whereToClick}</p>
                     )}
                     {step.expectedResult && (
-                      <p className="text-emerald-700 dark:text-emerald-400"><strong className="font-semibold">完成后看到：</strong>{step.expectedResult}</p>
+                      <p className="text-emerald-700 dark:text-emerald-400 break-words"><strong className="font-semibold">完成后看到：</strong>{step.expectedResult}</p>
                     )}
                     {step.failureChecklist && step.failureChecklist.length > 0 && (
                       <div className="text-amber-700 dark:text-amber-400">
                         <strong className="font-semibold">失败检查：</strong>
                         <ul className="mt-1 space-y-0.5 pl-4">
                           {step.failureChecklist.map((item, fi) => (
-                            <li key={fi} className="list-disc">{item}</li>
+                            <li key={fi} className="list-disc break-words">{item}</li>
                           ))}
                         </ul>
                       </div>
@@ -359,18 +356,16 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
 
                 {/* 图片展示 */}
                 {step.image && (
-                  <div className="my-4">
-                    <div className="overflow-hidden rounded-lg border border-border bg-muted/40">
-                      <div className="relative aspect-[16/9] w-full">
-                        <Image
-                          src={step.image}
-                          alt={step.title}
-                          fill
-                          className="object-contain"
-                          sizes="(min-width: 1280px) 760px, (min-width: 768px) calc(100vw - 18rem), calc(100vw - 2rem)"
-                          priority={stepIdx === 0}
-                        />
-                      </div>
+                  <div className="my-4 max-w-full min-w-0 overflow-hidden rounded-lg border border-border bg-background/40 dark:bg-background/50">
+                    <div className="relative aspect-[16/9] w-full max-w-full overflow-hidden">
+                      <Image
+                        src={step.image}
+                        alt={step.title}
+                        fill
+                        className="object-contain"
+                        sizes="(min-width: 1280px) 760px, (min-width: 768px) calc(100vw - 18rem), calc(100vw - 2rem)"
+                        priority={stepIdx === 0}
+                      />
                     </div>
                   </div>
                 )}
@@ -384,9 +379,9 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                       const hasColon = colonIdx > 0 && colonIdx < 20;
 
                       return (
-                        <li key={itemIdx} className="flex items-start gap-2 text-[15px] sm:text-sm text-foreground/85">
+                        <li key={itemIdx} className="flex items-start gap-2 text-[15px] sm:text-sm text-foreground/85 min-w-0">
                           <span className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-foreground/50" />
-                          <span className="leading-7 sm:leading-6">
+                          <span className="leading-7 sm:leading-6 min-w-0 break-words">
                             {hasColon ? (
                               <>
                                 <strong className="font-semibold text-foreground">{item.substring(0, colonIdx + 1)}</strong>
@@ -413,7 +408,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
 
                 {/* 警告 */}
                 {step.warning && (
-                  <div className="my-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-800 dark:border-amber-800 dark:bg-amber-950/20 dark:text-amber-300">
+                  <div className="my-4 rounded-lg border border-amber-500/30 bg-amber-500/[0.06] px-4 py-3 text-sm leading-6 text-amber-800 dark:text-amber-200">
                     &#9888; {step.warning}
                   </div>
                 )}
