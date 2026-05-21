@@ -3,7 +3,6 @@
 import { useDeferredValue, useMemo, useState, useCallback, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Badge } from '@/components/ui/badge';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { BeianLinks } from '@/components/layout/BeianLinks';
 import { apiList, appTutorials } from '@/lib/api-config';
@@ -66,12 +65,13 @@ const integrationSteps = [
 ];
 
 const tutorialsList = apiList.filter(api => api.tutorial);
-const tutorialPriority = ['deepseek', 'openai', 'claude', 'gemini', 'aliyun', 'zhipu', 'kimi', 'tencent', 'doubao', 'mimo'];
+const tutorialPriority = ['deepseek', 'openai', 'claude', 'gemini', 'aliyun', 'kimi', 'doubao', 'zhipu', 'tencent', 'mimo'];
 const hotTutorials = [...tutorialsList].sort((a, b) => {
   const aPriority = tutorialPriority.indexOf(a.id);
   const bPriority = tutorialPriority.indexOf(b.id);
   return (aPriority === -1 ? 999 : aPriority) - (bPriority === -1 ? 999 : bPriority);
 });
+const featuredHotTutorials = hotTutorials.slice(0, 8);
 
 const faqItems = [
   { q: '国内可以访问哪些 API？', a: 'DeepSeek、通义千问、智谱 GLM、Kimi 等支持国内直连，无需代理。', href: '/faq' },
@@ -86,12 +86,6 @@ const desktopNavLinks = [
   { name: 'API应用', href: '/app' },
   { name: '本地部署', href: '/local-deploy' },
 ];
-
-function badgeClass(type: string) {
-  if (type === 'success') return 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700';
-  if (type === 'warning') return 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700';
-  return 'border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-700';
-}
 
 function accessText(proxy?: boolean) {
   return proxy ? '需要代理' : '无需代理';
@@ -300,12 +294,12 @@ function MobileHome() {
             <div><p className="text-xs font-medium text-muted-foreground">学习资源</p><h2 className="mt-1 text-lg font-semibold">热门购买教程</h2></div>
             <Link href="/tutorial" className="shrink-0 text-sm font-medium text-foreground">全部购买教程</Link>
           </div>
-          <div className="mt-3 space-y-2">
-            {hotTutorials.map(api => (
-              <Link key={api.id} href={`/tutorial/${api.id}`} className="flex items-center gap-3 rounded-lg border bg-card p-3 active:bg-muted">
-                <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground"><BookOpen className="size-4" /></span>
-                <span className="min-w-0 flex-1"><span className="block truncate text-sm font-semibold">{api.name} 购买教程</span><span className="mt-0.5 block truncate text-xs text-muted-foreground">{api.tutorial?.steps.length} 个步骤 · {api.badge.text}</span></span>
-                <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
+          <div className="mt-3 grid gap-3">
+            {featuredHotTutorials.map(api => (
+              <Link key={api.id} href={`/tutorial/${api.id}`} className="flex min-h-24 items-center gap-3 rounded-lg border bg-card p-4 active:bg-muted">
+                <span className="flex size-12 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground"><BookOpen className="size-5" /></span>
+                <span className="min-w-0 flex-1"><span className="block truncate text-base font-semibold">{api.name} 购买教程</span><span className="mt-1 block truncate text-sm text-muted-foreground">{api.tutorial?.steps.length} 个步骤 · {api.badge.text}</span></span>
+                <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
               </Link>
             ))}
           </div>
@@ -343,22 +337,6 @@ function MobileHome() {
                   {step.links.map(link => <Link key={link.href} href={link.href} className="rounded-full border bg-background px-3 py-1.5 text-xs text-muted-foreground active:bg-muted">{link.name}</Link>)}
                 </div>
               </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="px-4 py-4">
-          <div className="flex items-end justify-between gap-3">
-            <div><p className="text-xs font-medium text-muted-foreground">学习资源</p><h2 className="mt-1 text-lg font-semibold">热门教程</h2></div>
-            <Link href="/tutorial" className="text-sm font-medium text-foreground">全部 API 购买教程</Link>
-          </div>
-          <div className="mt-3 space-y-2">
-            {hotTutorials.map(api => (
-              <Link key={api.id} href={`/tutorial/${api.id}`} className="flex items-center gap-3 rounded-lg border bg-card p-3 active:bg-muted">
-                <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground"><BookOpen className="size-4" /></span>
-                <span className="min-w-0 flex-1"><span className="block truncate text-sm font-semibold">{api.name} 购买教程</span><span className="mt-0.5 block truncate text-xs text-muted-foreground">{api.tutorial?.steps.length} 个步骤 · {api.badge.text}</span></span>
-                <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
-              </Link>
             ))}
           </div>
         </section>
@@ -471,15 +449,15 @@ function DesktopHome() {
                       <Link href="/tutorial" className="text-sm font-medium text-foreground hover:underline whitespace-nowrap">全部购买教程</Link>
                     </div>
                   </div>
-                  <div className="flex flex-1 flex-col divide-y divide-border">
-                    {hotTutorials.map(api => (
-                      <Link key={api.id} href={`/tutorial/${api.id}`} className="flex min-h-0 flex-1 items-center gap-3 px-4 py-2.5 transition-colors hover:bg-muted/40">
-                        <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground"><BookOpen className="size-4" /></span>
+                  <div className="grid flex-1 gap-4 p-4 sm:grid-cols-2 sm:p-5">
+                    {featuredHotTutorials.map(api => (
+                      <Link key={api.id} href={`/tutorial/${api.id}`} className="flex min-h-32 items-center gap-4 rounded-lg border border-border bg-background p-5 transition-colors hover:border-foreground/30 hover:bg-muted/30">
+                        <span className="flex size-12 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground"><BookOpen className="size-5" /></span>
                         <span className="min-w-0 flex-1">
-                          <span className="block truncate text-sm font-semibold">{api.name} 购买教程</span>
-                          <span className="mt-0.5 block truncate text-xs text-muted-foreground">{api.tutorial?.steps.length || 0} 个步骤 · {api.badge.text}</span>
+                          <span className="block truncate text-base font-semibold">{api.name} 购买教程</span>
+                          <span className="mt-1 block truncate text-sm text-muted-foreground">{api.tutorial?.steps.length || 0} 个步骤 · {api.badge.text}</span>
                         </span>
-                        <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
+                        <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
                       </Link>
                     ))}
                   </div>
@@ -520,27 +498,6 @@ function DesktopHome() {
                   <p className="mb-3 text-sm leading-6 text-muted-foreground">{step.desc}</p>
                   <div className="flex flex-wrap gap-2">{step.links.map(link => <Link key={link.href} href={link.href} className="rounded-full border border-border bg-background px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground">{link.name}</Link>)}</div>
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-6 flex items-end justify-between gap-4">
-              <div><p className="text-sm font-medium text-muted-foreground">学习资源</p><h2 className="mt-1 text-2xl font-semibold tracking-tight">热门教程</h2></div>
-              <Link href="/tutorial" className="text-sm font-medium text-foreground hover:underline">全部 API 购买教程</Link>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {hotTutorials.slice(0, 3).map(api => (
-                <Link key={api.id} href={`/tutorial/${api.id}`} className="rounded-lg border border-border bg-card p-5 transition-colors hover:border-foreground/30">
-                  <div className="mb-3 flex items-center gap-3">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground"><BookOpen className="size-5" /></span>
-                    <div className="min-w-0 flex-1"><h3 className="truncate font-semibold">{api.name}</h3><p className="text-xs text-muted-foreground">{api.tutorial?.steps.length} 个步骤</p></div>
-                    <Badge variant="outline" className={badgeClass(api.badge.type)}>{api.badge.text}</Badge>
-                  </div>
-                  <p className="line-clamp-2 text-sm leading-6 text-muted-foreground">{api.tutorial?.title}</p>
-                </Link>
               ))}
             </div>
           </div>

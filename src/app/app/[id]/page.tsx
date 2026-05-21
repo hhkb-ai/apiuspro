@@ -93,7 +93,7 @@ function CodeBlock({ code, lang = 'bash' }: { code: string; lang?: string }) {
 
     // 注释行
     if (remaining.trimStart().startsWith('#')) {
-      return <span className="text-muted-foreground italic">{remaining}</span>;
+      return <span className="text-muted-foreground">{remaining}</span>;
     }
 
     // 简单模式匹配

@@ -286,3 +286,38 @@ SEO/deployment impact:
 - No route removals or structured data removals.
 - Metadata descriptions were expanded for content clarity; sitemap and robots were not changed.
 - Project-local binaries were used because `pnpm` was not available in PATH. No `npm` or `yarn` commands were run.
+
+### 2026-05-21 Homepage tutorial recommendation refinement
+
+Commit scope:
+
+- Show 8 featured purchase tutorials on the homepage with DeepSeek ranked first.
+- Keep the larger homepage tutorial card treatment and remove the duplicate secondary hot tutorial section.
+- Refine the Gemini purchase tutorial copy for safer official-account, payment, API Key, and quota guidance.
+- Improve code comment rendering by removing italic styling from app tutorial code comments and related content article styles.
+
+Explicitly excluded from this commit:
+
+- `next-env.d.ts` local Next generated reference change.
+- `.claude/`
+- `.codex-video-analysis/`
+- `CLAUDE.md`
+- `docs/seo-longtail-pages.md`
+- `index.html`
+- `rollback-backups/`
+- `scripts/test-fuzzy-search.mjs`
+- `skills/`
+- `src/components/content/ClaudianObsidianContentPage.tsx`
+
+Verification completed:
+
+```bash
+.\node_modules\.bin\tsc.cmd -p tsconfig.json --noEmit  # passed
+.\node_modules\.bin\next.cmd build  # passed
+```
+
+SEO/deployment impact:
+
+- Homepage internal recommendation layout changed only; no route, sitemap, robots, or structured data removal.
+- Gemini tutorial copy changed within existing `/tutorial/gemini` content data.
+- No deployment was performed in this step.

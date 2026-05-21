@@ -120,19 +120,19 @@ html, body {
 
 .dark {
   --background: #0f0d0b;
-  --foreground: #ede7dd;
+  --foreground: #f7f1e8;
   --card: #1a1714;
-  --card-foreground: #ede7dd;
+  --card-foreground: #f7f1e8;
   --popover: #1a1714;
-  --popover-foreground: #ede7dd;
-  --primary: #ede7dd;
+  --popover-foreground: #f7f1e8;
+  --primary: #f7f1e8;
   --primary-foreground: #1a1714;
   --secondary: #242019;
-  --secondary-foreground: #ede7dd;
+  --secondary-foreground: #f7f1e8;
   --muted: #242019;
-  --muted-foreground: #a89888;
+  --muted-foreground: #cdbfad;
   --accent: #2e2821;
-  --accent-foreground: #ede7dd;
+  --accent-foreground: #f7f1e8;
   --destructive: oklch(0.704 0.191 22.216);
   --border: #332c24;
   --input: #3d352b;
@@ -143,11 +143,11 @@ html, body {
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: #1a1714;
-  --sidebar-foreground: #ede7dd;
-  --sidebar-primary: #ede7dd;
+  --sidebar-foreground: #f7f1e8;
+  --sidebar-primary: #f7f1e8;
   --sidebar-primary-foreground: #1a1714;
   --sidebar-accent: #2e2821;
-  --sidebar-accent-foreground: #ede7dd;
+  --sidebar-accent-foreground: #f7f1e8;
   --sidebar-border: #332c24;
   --sidebar-ring: #c8946c;
 }
@@ -218,6 +218,14 @@ body {
   line-height: 1.75;
   background: #f0ebe3;
   color: var(--foreground);
+}
+.content-article pre .token.comment,
+.content-article pre .hljs-comment,
+.content-article pre .comment,
+.content-article pre .italic,
+.content-article pre span[style*="italic"] {
+  font-family: inherit !important;
+  font-style: normal !important;
 }
 @media (prefers-color-scheme: dark) {
   .content-article pre {

@@ -1276,158 +1276,158 @@ print(message.content)`,
   {
     id: 'gemini',
     name: 'Google Gemini',
-    desc: 'Gemini 国内怎么用？免费 API 获取与订阅教程',
+    desc: 'Gemini API 国内使用、免费额度与订阅购买教程',
     url: 'https://ai.google.dev/',
     proxy: true,
-    features: ['多模态', '长上下文', '免费API'],
+    features: ['多模态', '长上下文', '免费 API'],
     icon: '🟠',
     badge: { text: '需代理', type: 'warning' },
     tutorial: {
-      title: 'Gemini 3 国内怎么用？免费 API 与订阅购买完全指南（零基础版）',
-      subtitle: '专为无 AI 知识的新手编写，四条路线覆盖所有支付场景，含套餐对比与最终购买建议',
+      title: 'Gemini 国内怎么用？免费 API 与订阅购买指南',
+      subtitle: '面向国内开发者和 AI 用户，说明官方订阅、API Key 创建、支付失败排查与安全配置。价格、配额和可用地区会变动，最终以 Google 官方页面为准。',
       steps: [
         {
-          title: '了解 Gemini 订阅套餐',
-          description: '在购买前，先看清每种套餐的价格和区别，避免买错。目前个人用户主要通过 Google One 订阅 AI 服务。',
+          title: '先确认 Gemini 是否适合你的用途',
+          description: 'Gemini 分为网页/ App 订阅和开发者 API 两条线。网页订阅适合对话、文档、图片和日常办公；API 适合把模型接入自己的程序、脚本或开发工具。',
           important: true,
           items: [
-            'Free · 免费 — 能用 Gemini 3 Pro 但每日配额极低，基本是体验级',
-            'AI Plus · $8/月 — 可用 Gemini 3 Pro，含 200GB 存储，可共享 5 位家庭成员，前 2 月半价',
-            'AI Pro · $20/月 — 可用 Pro + Thinking，2TB 存储，每日 Deep Research 20 份，99% 用户最佳选择',
-            'AI Ultra · $250/月 — 独家 Deep Think 模式，每日 1500 次 Thinking，30TB 存储，适合顶尖科研',
-            '年付优惠：AI Pro 首年仅 $99.99（原价 $199.99，相当于每月 $8.33）'
+            '只想在网页聊天、写作、看图、整理资料：优先看 Gemini 网页端或 App 订阅',
+            '要在代码、机器人、自动化脚本里调用模型：需要 Google AI Studio 或 Google Cloud 的 API Key',
+            '订阅权益、模型名称、价格、免费额度和地区支持经常调整，购买前必须以当前官方页面为准',
+            '高强度长文本、图片/视频、多轮推理会更快消耗额度或触发频率限制，重度用户要先用真实任务测试'
           ],
           whereToClick: '浏览器访问 gemini.google.com → 登录 → 查看升级选项',
-          expectedResult: '页面显示 Free/AI Plus($8)/AI Pro($20)/AI Ultra($250) 四档套餐',
-          failureChecklist: ['确认已登录 Google 账号', '如看不到套餐页面，检查网络是否可正常访问 Google 服务']
+          expectedResult: '能看到当前账号可用的免费版、付费订阅或升级入口',
+          failureChecklist: ['确认已登录本人 Google 账号', '如看不到套餐页面，检查当前地区、账号状态和网络是否支持 Google 服务', '不要根据旧教程里的价格或配额直接下单，以官方结算页为准']
         },
         {
-          title: '准备一：注册 Google 账号',
-          description: '没有 Google 账号就什么都买不了。先搞定这第一步。',
+          title: '准备一：使用本人 Google 账号',
+          description: 'Gemini 订阅、Google AI Studio 和 Google Cloud 都依赖 Google 账号。建议使用本人长期账号，避免使用来路不明的账号。',
           items: [
             '浏览器打开 https://accounts.google.com/signup，按提示填写信息完成注册',
-            '国内手机号可能收不到验证短信。两个解决办法：',
-            '换网络节点：更换不同国家的网络环境后重试验证',
-            '买成品号：在可靠平台购买已注册好的 Google 账号，注意甄别信誉'
+            '账号注册后先完善辅助邮箱、手机号和两步验证，提高账号安全性',
+            '尽量保持登录设备和地区稳定，避免短时间内频繁切换环境触发安全验证',
+            '不建议购买或共用来路不明的 Google 账号，后续可能出现找回失败、付款争议或封禁风险'
           ],
           whereToClick: '浏览器访问 accounts.google.com/signup → 按提示填写信息注册',
           expectedResult: 'Google 账号注册成功，可正常登录',
-          failureChecklist: ['国内手机号可能收不到验证码', '换不同国家的网络节点重试', '或在可靠平台购买已注册好的 Google 账号']
+          failureChecklist: ['手机号验证失败时，优先检查号码、地区和账号安全提示', '不要反复高频注册或切换设备重试', '如果账号被要求安全验证，按 Google 页面提示完成验证']
         },
         {
-          title: '准备二：合适的网络环境',
-          description: 'Gemini 的网页端和应用端都需要通过合适的网络才能稳定访问。',
+          title: '准备二：确认合规且稳定的访问环境',
+          description: 'Gemini、Google AI Studio 和 Google Cloud 在不同地区的可用性不同。请遵守所在地法律法规和 Google 服务条款，使用合规网络环境访问。',
           items: [
             '确保可以顺畅访问 Gemini 官网：https://gemini.google.com',
-            '建议使用稳定节点，避免频繁切换 IP',
-            '不稳定的网络可能导致支付中途断开、账号被风控'
+            '确保可以打开开发者入口：https://aistudio.google.com 和 https://cloud.google.com',
+            '订阅或付款过程中保持网络稳定，避免中途断开导致订单状态异常',
+            '如果页面提示地区不可用，说明当前账号或地区暂不支持，应改用官方支持地区或选择其他模型/API'
           ],
           whereToClick: '确保网络可顺畅访问 gemini.google.com',
           expectedResult: 'Gemini 官网可正常打开，无连接超时',
-          failureChecklist: ['避免频繁切换 IP，否则账号可能被风控', '不稳定的网络可能导致支付中途断开'],
-          warning: '确保网络环境稳定，避免频繁切换 IP。'
+          failureChecklist: ['页面提示地区不可用时，不要反复提交付款', '访问经常超时会影响订阅和 API 调试', '账号频繁触发安全验证时，先处理账号安全问题再继续购买'],
+          warning: '本教程只说明官方入口和合规使用路径，不提供绕过地区限制、规避风控或违反服务条款的操作。'
         },
         {
           title: '准备三：选择适合你的支付方式',
-          description: 'Google 官方支持国际信用卡（Visa、Mastercard）和 PayPal。没有境外卡？三种替代方案供你选择。',
+          description: 'Google 的可用支付方式会按国家、账号、设备和订阅渠道变化。优先使用 Google 页面明确支持的本人支付方式。',
           items: [
-            '代充平台（推荐）：支付宝/微信支付，无需海外信用卡，适合快速体验和轻度使用',
-            'Google Play 内购（安卓）：将国内卡绑为美区 Google Play 付款方式，在 Gemini App 内购，部分用户可使用此方式完成支付',
-            '虚拟信用卡（不推荐新手）：风控严格、失败率高，需开卡费和充值手续费'
+            '网页端：按 Google 结算页提示使用支持的信用卡、借记卡或 PayPal',
+            'App 端：按 App Store 或 Google Play 当前账号地区支持的方式订阅',
+            '企业或团队：优先走 Google Cloud / Workspace / Vertex AI 等官方企业账单路径',
+            '不建议使用来源不明的虚拟卡、共享账号或非官方代付服务，可能带来拒付、争议、找回和账号安全风险'
           ],
-          whereToClick: '根据自身情况选择：代充平台（推荐）、Google Play 内购或国际信用卡/PayPal',
+          whereToClick: '根据自身情况选择：Google 结算页、App Store、Google Play 或 Google Cloud Billing',
           expectedResult: '确认选定的支付方式可用，支付渠道已准备就绪',
-          failureChecklist: ['代充平台是否有口碑和售后保障', '国内双币卡可能因账单地址问题被拒', '虚拟信用卡风控严格、失败率高，不推荐新手'],
-          warning: '选择代充平台时请仔细甄别，优先选择有口碑、有售后的大平台。国内发行的双币卡也可能因账单地址问题被拒。'
+          failureChecklist: ['支付被拒时先核对卡片状态、账单地址、币种和 3D 验证', '不要短时间内反复换卡重试，可能触发风控', '订阅前确认自动续费、税费、退款和取消规则'],
+          warning: '涉及账号、支付和订阅的操作都应使用本人账号和官方支持渠道，避免后续产生无法申诉的账户或资金风险。'
         },
         {
-          title: '路线一：Google One 官方直充（有境外卡/PayPal）',
-          description: '如果你有国际信用卡或 PayPal，且网络能稳定访问 Google 服务，这是最直接的购买方式。',
+          title: '路线一：网页端订阅 Gemini Advanced',
+          description: '如果你的账号地区和支付方式被 Google 支持，网页端订阅是最直接的方式。',
           important: true,
           items: [
             'https://gemini.google.com → 登录 → 左下角或设置菜单 → 升级到 Gemini Advanced',
-            '对比套餐后点击"订阅"，填写信用卡信息或登录 PayPal',
-            '注意：账单地址需与网络 IP 所在国家一致，否则容易被拒',
+            '对比页面展示的套餐、模型权益、存储权益、试用期和续费价格',
+            '确认自动续费、税费、退款条款后，再填写 Google 支持的付款方式',
             '确认总额无误后提交，验证通过后账号立即升级，邮箱收到确认邮件'
           ],
           whereToClick: 'gemini.google.com → 登录 → 设置菜单 → 升级到 Gemini Advanced → 选套餐 → 订阅',
           expectedResult: '验证通过后账号立即升级，邮箱收到确认邮件，Gemini Advanced 功能可用',
-          failureChecklist: ['账单地址需与网络 IP 所在国家一致', '确认信用卡信息填写正确', '如支付被拒，尝试更换网络节点']
+          failureChecklist: ['页面提示地区不可用时，说明当前账号暂不支持该订阅', '支付失败时先核对卡片是否支持海外/线上订阅扣款', '连续失败不要反复提交，先等待或更换官方支持的支付方式']
         },
         {
-          title: '路线二：App 内购（安卓手机 / 网页端）',
-          description: '拥有海外 Google Play 账号或支付方式的用户，可直接在手机 App 内完成订阅。',
+          title: '路线二：App 内订阅（iOS / Android）',
+          description: '如果网页端支付失败，可以检查 Gemini App 或 Google App 内是否显示官方订阅入口。App 内购由对应应用商店处理账单。',
           items: [
-            'Google Play 下载 Gemini App → 登录 → 设置或侧边栏 → 找到升级入口',
-            '选择套餐，通过 Google Play 余额或绑定支付方式完成付款',
-            '技巧：将国内卡绑为美区 Google Play 付款方式，部分用户可成功订阅',
-            '也可在 https://gemini.google.com 网页端通过弹窗提示直接升级，流程同路线一'
+            'iOS：使用本人 Apple ID 下载 Gemini 或 Google App，按 App 内升级入口订阅',
+            'Android：使用本人 Google Play 账号下载 Gemini App，按 App 内升级入口订阅',
+            '支付前确认应用商店账号地区、余额、礼品卡来源和自动续费规则符合平台条款',
+            '订阅成功后，通常可在网页端和 App 端同步看到 Advanced 权益'
           ],
-          whereToClick: 'Google Play 下载 Gemini App → 登录 → 设置 → 找到升级入口 → 选择套餐',
-          expectedResult: 'App 内显示已升级为 Advanced，可使用 Gemini 3 Pro 等高级模型',
-          failureChecklist: ['确认 Google Play 账号为美区', '将国内卡绑为美区 Google Play 付款方式可尝试', '也可在网页端通过弹窗直接升级']
+          whereToClick: 'Gemini App 或 Google App → 登录 → 头像/设置 → 升级 Gemini Advanced → 选择套餐',
+          expectedResult: 'App 内显示已订阅或可管理订阅，网页端同步显示 Advanced 权益',
+          failureChecklist: ['下载应用和付款建议使用同一个本人账号', '支付失败时检查应用商店账单设置和余额', '订阅后未同步时，退出重登并等待账单状态刷新']
         },
         {
-          title: '路线三：API 按量购买（仅限开发者）',
-          description: '不是程序员或没打算把 AI 嵌入到自己做的软件里，可以跳过本节。',
+          title: '路线三：创建 Gemini API Key（开发者）',
+          description: '如果你要把 Gemini 接入网站、脚本、Claude Code、Codex、Gemini CLI、OpenCode 或 OpenClaw，需要的是 API Key，而不是网页会员。',
           items: [
-            'API = 程序向 Gemini 提问的"后门"，适合把 AI 嵌入自己的软件中',
-            '按 Token 计费（1 Token ≈ 一个英文单词或一个汉字）：',
-            'Gemini 3 Pro（短文本）：输入 $2/百万、输出 $12/百万',
-            'Gemini 3 Pro（长文本 >200K）：输入 $4/百万、输出 $18/百万',
-            'Gemini 3.1 Flash-Lite：输入 $0.25/百万、输出 $1.50/百万（性价比最高）',
-            'Gemini 3 Deep Think：按次计费，需查看官方文档'
+            '访问 Google AI Studio 创建 API Key，适合个人测试、小脚本和快速原型',
+            '生产环境建议使用 Google Cloud 项目、Billing、配额管理和密钥权限控制',
+            'API 计费、免费额度、速率限制和网页订阅是独立体系，买了 Advanced 不等于 API 免费',
+            '模型价格、上下文长度、批处理折扣和区域可用性变化较快，调用前查看 Google AI / Vertex AI 官方定价页'
           ],
           whereToClick: '访问 aistudio.google.com → 创建 API Key',
-          expectedResult: 'API Key 创建成功（格式 AIza...），免费额度：每分钟 15 次，每天 1500 次',
-          failureChecklist: ['API Key 只显示一次，创建后立即复制保存', 'API 计费与 Google One 订阅是独立的两套系统', '新用户可注册 Google Cloud 获取 $300 体验金'],
+          expectedResult: 'API Key 创建成功，并能在本地脚本或工具配置中完成一次测试调用',
+          failureChecklist: ['API Key 只显示一次或需要自行重新生成，创建后立即安全保存', '确认当前项目已启用对应 API 和 Billing', '遇到 quota / rate limit 时，在 Google Cloud 控制台查看配额而不是重复重试'],
           codeLanguage: 'bash',
-          code: `# 获取 API Key：访问 aistudio.google.com，创建密钥（格式：AIza...）
-# 免费额度：每分钟 15 次，每天 1500 次，轻度开发和个人项目完全够用
+          code: `# 1. 在 Google AI Studio 创建 API Key
+# https://aistudio.google.com/app/apikey
 
-# 省钱技巧：
-# 1. 先用 Google AI Studio 免费额度开发和测试
-# 2. 注册 Google Cloud 开通 Vertex AI，新用户可获 $300 体验金
-# 3. 使用 Batch API 模式，成本可降低 50%`,
-          codeExplanation: '获取 Gemini API Key 并利用免费额度开发的简要步骤。Google AI Studio 提供的免费额度和 Vertex AI 新用户 $300 赠金可大幅降低前期成本。',
-          warning: 'API Key 创建后仅显示一次，必须立刻复制保存。API 计费与 Google One 订阅是两套独立的计费系统。'
+# 2. 本地环境变量保存，不要写进前端代码或提交到 GitHub
+export GEMINI_API_KEY="你的 API Key"
+
+# 3. 在 CC Switch 或工具配置里填写：
+# Provider: Google Gemini
+# API Key: 使用环境变量或本地安全配置
+# Base URL / Model: 以工具和 Google 官方文档要求为准`,
+          codeExplanation: '最小安全配置流程：先创建 Key，再放进环境变量或工具的本地安全配置，最后用一次真实请求确认模型、Base URL 和权限可用。',
+          warning: 'API Key 等同于调用权限。不要硬编码到前端、截图、公开仓库、教程示例或共享文档里。生产环境建议限制 Key 权限并定期轮换。'
         },
         {
-          title: '路线四：国内用户替代方案与最终购买建议',
-          description: '没有境外卡的国内用户首选第三方代充/聚合平台，支持微信和支付宝支付。最后附上各套餐决策指南。',
+          title: '路线四：无法直接使用时的替代方案',
+          description: '如果当前账号、地区或支付方式不支持 Gemini，建议优先选择合规替代方案，而不是强行绕过限制。',
           items: [
-            '国内用户首选：正规 AI 聚合平台，支持微信/支付宝，无需海外信用卡',
-            '安卓备用方案：美区 Google Play + 国内卡（账单地址填美国），在 App 内尝试内购',
-            '选 AI Plus（$8/月）：轻度至中度使用，性价比入门之选',
-            '选 AI Pro（$20/月）：学生、上班族、研究者的最佳方案，全面体验 Gemini 3',
-            '选 AI Ultra（$250/月）：尖端科研、关键决策，需要 Deep Think 超级推理',
-            '家人共用：AI Plus 可共享给最多 5 位家庭成员，人均成本极低',
-            'Google 允许随时降级或取消，下个账单周期生效，不会多扣钱',
-            '支付遇风控：尝试换账单地址，或确保 IP、支付地址来自同一国家'
+            '只需要聊天和写作：可以改用当前地区可稳定访问的合规 AI 服务',
+            '需要 API 接入：先比较 DeepSeek、通义千问、Kimi、Claude、OpenAI、Gemini 的能力、成本和可用性',
+            '需要多模态或长文档：Gemini 值得测试，但要先确认访问、账单、配额和延迟是否满足生产需求',
+            '预算敏感：先用免费额度跑真实任务，再决定是否长期付费',
+            '团队或商业项目：优先选择有合同、发票、权限管理和 SLA 的企业级通道'
           ],
-          whereToClick: '选择正规 AI 聚合平台，支持微信/支付宝支付',
-          expectedResult: '支付完成，Gemini Advanced 已开通，可使用高级模型',
-          failureChecklist: ['代充平台是否承诺售后保障', '下单前是否搜索了平台评价', 'AI Pro($20/月) 是 99% 用户最佳选择', 'Google 允许随时降级或取消'],
-          warning: '代充平台良莠不齐，下单前建议先搜索评价。优先选择有客服、支持退款的平台。'
+          whereToClick: '根据任务选择：继续官方 Gemini、改用其他 API，或采用企业级云服务',
+          expectedResult: '选定一种稳定、可付款、可持续维护的接入方式',
+          failureChecklist: ['不要相信永久无限量、低价共享账号或绕风控承诺', '确认服务条款、退款规则、数据隐私和 API 稳定性', '上线前用自己的真实任务测试延迟、成功率和成本'],
+          warning: '第三方聚合服务要重点核对资质、隐私政策、是否允许商业使用、是否能开票和是否提供稳定售后。不要把敏感数据直接发给不可信平台。'
         }
       ],
       tips: [
-        'AI Pro（$20/月）是 99% 用户的最佳选择，包含 Gemini 3 核心能力 + 2TB 存储',
-        '新用户年付 AI Pro 首年低至 $99.99（原价 $199.99），相当于每月仅 $8.33',
-        'API 开发者优先利用免费额度开发测试，再用 Batch API 模式降低成本',
-        '家庭成员一起用买 AI Plus 最划算，人均成本极低'
+        '网页订阅适合个人使用，API Key 适合程序接入，两者账单和额度通常独立',
+        '价格、模型名称、免费额度、速率限制和地区支持会变化，购买前以官方结算页和文档为准',
+        '开发测试先用免费额度或低成本模型跑真实任务，再决定是否升级付费',
+        '如果要接入多个 AI 工具，建议用 CC Switch 统一管理 API Key、Base URL 和模型名'
       ],
       warnings: [
-        '账号可能因 IP 频繁变动、支付异常等原因被风控，建议保持网络环境稳定',
-        'API Key 绝对不要提交到公开仓库或前端代码',
-        '代充平台需仔细甄别，优先选择有口碑的大平台'
+        '不要购买、共用或出租来路不明的 Google 账号',
+        '不要使用非本人或来源不明的支付方式，避免拒付、争议和账号安全风险',
+        'API Key 绝对不要提交到公开仓库、前端代码、截图或公开文档',
+        '不要把旧教程里的价格、配额和模型名称当作长期有效信息'
       ],
-      advantages: ['多模态能力最强', 'Deep Think 超级推理', '2TB 云存储', '5 人家庭共享', '新用户首年半价', 'API 免费额度充裕'],
+      advantages: ['多模态能力强', '长上下文', 'Google 生态', 'AI Studio 快速创建 Key', '适合文档与图像理解', '可接入开发工具'],
       estimatedTime: '约 15 分钟',
-      prerequisites: ['Google 账号（注册 Gemini 和 Google One 都需要）', '合适的网络环境（需能访问 Google 服务）', 'Visa/Mastercard 国际信用卡、PayPal 或代充平台'],
-      successSign: 'Gemini Advanced 界面显示已升级，或 API Key 创建成功（格式 AIza...）并能完成代码调用',
-      commonPitfall: '账单地址与网络 IP 所在国家不一致导致支付被拒；代充平台良莠不齐选到不靠谱商家',
-      securityReminder: 'API Key 创建后仅显示一次，必须立刻复制保存。不要提交到公开仓库或前端代码。API 计费与 Google One 订阅是两套独立计费系统'
+      prerequisites: ['本人 Google 账号', '可合规访问 Google 服务的稳定网络环境', 'Google 官方支持的付款方式（如适用）', '开发者需要准备 Google AI Studio 或 Google Cloud 项目'],
+      successSign: 'Gemini Advanced 权益在网页或 App 中显示可用，或 API Key 能在本地完成一次测试调用',
+      commonPitfall: '把网页订阅和 API 额度混为一谈；使用旧价格/旧配额下单；把 API Key 写进前端或公开仓库',
+      securityReminder: 'API Key 创建后要安全保存。不要提交到公开仓库或前端代码。网页订阅、Google One 和 API 计费通常是独立体系，扣费前要分别确认。'
     }
   }
 ];
