@@ -94,7 +94,7 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       '注意：个人用户和小预算团队成本压力较大，建议用 GPT-5.4-mini / Batch / Flex 控制成本',
     ],
     conclusion:
-      'GPT-5.5 是 OpenAI 官方文档确认的最新旗舰模型，适合复杂专业工作、编码和工具型 Agent。当前没有官方 GPT-5.5D / gpt-5.5d 模型 ID；上线内容应统一写作 GPT-5.5 或 GPT-5.5 pro，并保留官方快照与价格条件说明。价格信息以 OpenAI 官方文档为准：https://platform.openai.com/docs/pricing',
+      'GPT-5.5 是 OpenAI 官方文档确认的最新旗舰模型，模型 ID 为 gpt-5.5，Pro 版本模型 ID 为 gpt-5.5-pro，适合复杂专业工作、编码和工具型 Agent。当前没有官方 GPT-5.5D / gpt-5.5d 模型 ID；上线内容应统一写作 GPT-5.5 / GPT-5.5 Pro，并保留官方快照与价格条件说明。价格信息以 OpenAI 官方文档为准：https://platform.openai.com/docs/pricing',
   },
 
   tongyi: {
