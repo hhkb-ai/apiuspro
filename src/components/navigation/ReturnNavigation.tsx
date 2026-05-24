@@ -144,13 +144,13 @@ export function DetailBackNav({
 
   return (
     <div className={`flex flex-wrap gap-2 ${navClassName}`}>
-      <Button type="button" variant="outline" size="sm" onClick={goBack}>
+      <Button type="button" variant="outline" size="sm" className="min-h-[44px]" onClick={goBack}>
         ← 返回上一页
       </Button>
-      <Button type="button" variant="outline" size="sm" onClick={goToList}>
+      <Button type="button" variant="outline" size="sm" className="min-h-[44px]" onClick={goToList}>
         {listButtonText}
       </Button>
-      <Button type="button" variant="ghost" size="sm" onClick={goHomeTop}>
+      <Button type="button" variant="ghost" size="sm" className="min-h-[44px]" onClick={goHomeTop}>
         回到首页顶部
       </Button>
     </div>

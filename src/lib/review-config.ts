@@ -54,56 +54,47 @@ export const reviewDetails: Record<string, ReviewDetail> = {
     badges: [
       { label: '需代理', variant: 'destructive' },
       { label: '付费' },
-      { label: 'Batch半价' },
+      { label: '官方快照 2026-04-23' },
     ],
     tlDr:
-      'OpenAI 2026年4月最新旗舰模型，Agent 能力断档领先（Terminal-Bench 2.0 达 82.7%），1M 上下文窗口，编码/科研/金融全面屠榜。定价 $5/$30 每百万 token，Batch 处理半价。',
+      'OpenAI 官方文档确认的最新旗舰模型，模型 ID 为 gpt-5.5，当前快照 gpt-5.5-2026-04-23。适合复杂专业工作、编码、工具型 Agent、长上下文检索和生产级助手；标准价为 $5 输入 / $30 输出每百万 token（<272K 上下文）。',
     ratings: [
-      { label: '质量', score: 5.0, detail: '全场景标杆，基准测试全面领先竞品，Agent 智能体方向尤其突出。' },
-      { label: '速度', score: 4.7, detail: '与 GPT-5.4 相同延迟，但 token 消耗显著降低，推理效率大幅提升。' },
-      { label: '性价比', score: 3.0, detail: '$5/$30 每百万 token，Pro 版更贵。Batch 半价可降低成本，但日常使用仍偏贵。' },
-      { label: '稳定性', score: 4.5, detail: 'OpenAI 基础设施成熟，但与 NVIDIA 协同设计仍在早期，偶有波动。' },
+      { label: '质量', score: 4.9, detail: '官方定位为 newest frontier model，适合复杂专业工作、编码、推理和 Agent 工作流。' },
+      { label: '速度', score: 4.4, detail: '默认 reasoning.effort 为 medium，可按任务调低到 low 或 none 来平衡质量、延迟和成本。' },
+      { label: '性价比', score: 3.2, detail: '标准价 $5/$30 每百万 token，Batch/Flex 可降至 $2.5/$15；长上下文和 Pro 场景成本明显更高。' },
+      { label: '稳定性', score: 4.6, detail: '支持 Responses API、Chat Completions、Batch、工具调用和企业级数据驻留选项。' },
     ],
     pros: [
-      '编码能力断层第一：Terminal-Bench 2.0 82.7%、SWE-Bench Pro 58.6%、Expert-SWE (内部) 73.1%',
-      '100万 token 上下文窗口，Graphwalks BFS 1M f1 达 45.4%（GPT-5.4 仅 9.4%）',
-      'Agent 方向全面领先：OSWorld-Verified 78.7%、FinanceAgent 60%、OfficeQA Pro 54.1%',
-      '知识工作与科研顶级：GDPval 84.9%、FrontierMath Tier 1-3 51.7%、辅助发现 Ramsey 数新证明',
-      '网络安全能力突出：CyberGym 81.8%、CTF 挑战 88.1%',
-      '与 NVIDIA GB200/GB300 NVL72 联合设计，推理栈含 Codex 优化负载均衡',
-      'Batch/Flex 处理半价，批量任务成本友好',
+      '官方模型 ID 为 gpt-5.5，当前快照为 gpt-5.5-2026-04-23',
+      '支持 1M token 上下文窗口，适合长文档、代码库、检索增强和多轮 Agent 状态管理',
+      '支持 Responses API、Chat Completions、Batch、function calling、web search、file search、tool search、code interpreter、hosted shell、computer use、MCP 和结构化输出',
+      'reasoning.effort 支持 none、low、medium（默认）、high、xhigh，可按任务控制延迟与成本',
+      'Batch/Flex 价格低于标准请求，适合离线批处理、内容生成、结构化抽取和批量评测',
+      'GPT-5.5 pro 提供更高计算量版本，适合更难的异步推理任务和 Responses API 工作流',
     ],
     cons: [
-      '价格昂贵：GPT-5.5 $5/$30 每百万 token，GPT-5.5 Pro $30/$180 每百万 token',
+      '价格较高：GPT-5.5 标准价 $5/$30 每百万 token，GPT-5.5 Pro 标准价 $30/$180 每百万 token',
       '国内访问需要代理',
       '需要国际信用卡支付',
-      'OfficeQA Pro 54.1% 在办公场景仍有提升空间',
-      'GeneBench 25% 在生物遗传学领域准确率偏低',
-      'BrowseComp 84.4% 略低于 Gemini 3.1 Pro 的 85.9%',
-    ],
-    benchmarks: [
-      { name: 'Terminal-Bench 2.0', values: { 'GPT-5.5': '82.7%', 'Claude Opus 4.7': '69.4%', 'Gemini 3.1 Pro': '68.5%', 'DeepSeek V4 Pro': '65.2%' } },
-      { name: 'SWE-Bench Pro', values: { 'GPT-5.5': '58.6%', 'Claude Opus 4.7': '52.3%', 'Gemini 3.1 Pro': '48.7%', 'DeepSeek V4 Pro': '45.1%' } },
-      { name: 'GDPval', values: { 'GPT-5.5': '84.9%', 'Claude Opus 4.7': '80.3%', 'Gemini 3.1 Pro': '67.3%', 'DeepSeek V4 Pro': '72.5%' } },
-      { name: 'OSWorld-Verified', values: { 'GPT-5.5': '78.7%', 'Claude Opus 4.7': '78.0%', 'Gemini 3.1 Pro': '71.2%', 'DeepSeek V4 Pro': '68.5%' } },
-      { name: 'FrontierMath T1-3', values: { 'GPT-5.5': '51.7%', 'Claude Opus 4.7': '43.8%', 'Gemini 3.1 Pro': '36.9%', 'DeepSeek V4 Pro': '41.2%' } },
-      { name: 'BrowseComp', values: { 'GPT-5.5': '84.4%', 'Claude Opus 4.7': '79.3%', 'Gemini 3.1 Pro': '85.9%', 'DeepSeek V4 Pro': '72.1%' } },
-      { name: 'BixBench', values: { 'GPT-5.5': '80.5%', 'Claude Opus 4.7': '74.2%', 'Gemini 3.1 Pro': '71.8%', 'DeepSeek V4 Pro': '69.3%' } },
+      '超过 272K 输入 token 的请求会按官方规则加价：GPT-5.5 长上下文标准、Batch 和 Flex 场景均会触发更高计费',
+      'GPT-5.5 pro 没有 cached input 折扣，长上下文 Pro 任务需要提前做预算',
+      '官方文档未提供 GPT-5.5D / gpt-5.5d 模型 ID；页面不应写成 GPT-5.5D',
     ],
     pricing: [
       { model: 'GPT-5.5', input: '$5/百万', output: '$30/百万' },
       { model: 'GPT-5.5 Pro', input: '$30/百万', output: '$180/百万' },
-      { model: 'Batch/Flex', input: '半价', output: '半价' },
+      { model: 'GPT-5.5 Batch/Flex', input: '$2.5/百万', output: '$15/百万' },
+      { model: 'GPT-5.5 Priority', input: '$12.5/百万', output: '$75/百万' },
     ],
     useCases: [
-      '专业开发者：编码和调试能力业界最佳，适合复杂软件工程任务',
-      '科研人员：数学、生物学、遗传学等多个领域的基准领先',
-      '企业自动化：FinanceAgent、OfficeQA 等场景直接替代重复性头脑劳动',
-      '安全团队：CTF 挑战 88.1% 的成绩证明安全领域能力出众',
-      '注意：个人用户和小预算团队成本压力较大，建议使用 Batch API 降低成本',
+      '专业开发者：复杂代码生成、调试、代码库理解、工具调用和长周期软件工程任务',
+      '企业 Agent：多步骤服务流程、工具选择、文件检索、网页检索、MCP 和状态管理',
+      '知识工作：长文档检索、产品规格转执行计划、结构化输出、生产级助手',
+      '高难异步任务：需要更强推理时可评估 GPT-5.5 pro，并配合 background mode 避免超时',
+      '注意：个人用户和小预算团队成本压力较大，建议用 GPT-5.4-mini / Batch / Flex 控制成本',
     ],
     conclusion:
-      'GPT-5.5 是目前综合能力最强的模型，尤其在 Agent 编码和知识工作方向建立了明确护城河。如果你追求最高质量且预算充裕，GPT-5.5 是不二之选。对于成本敏感的场景，建议搭配 Batch 处理或选择其他性价比更高的模型。',
+      'GPT-5.5 是 OpenAI 官方文档确认的最新旗舰模型，适合复杂专业工作、编码和工具型 Agent。当前没有官方 GPT-5.5D / gpt-5.5d 模型 ID；上线内容应统一写作 GPT-5.5 或 GPT-5.5 pro，并保留官方快照与价格条件说明。价格信息以 OpenAI 官方文档为准：https://platform.openai.com/docs/pricing',
   },
 
   tongyi: {
@@ -113,38 +104,54 @@ export const reviewDetails: Record<string, ReviewDetail> = {
     badges: [
       { label: '无需代理', variant: 'success' },
       { label: '免费额度', variant: 'success' },
+      { label: 'Qwen3.7-Max' },
     ],
     tlDr:
-      '国内用户首选，每月100万 tokens 免费额度，中文场景优化良好，访问速度快。适合国内初学者和个人开发者。',
+      '国内用户和阿里云生态项目的稳妥选择。2026 年 5 月重点看 Qwen3.7-Max、Qwen3.6-Plus / Qwen3.6-Flash 以及百炼模型广场；Qwen3.7-Max 更偏 Agent、代码工程、办公自动化和长周期工具调用。',
     ratings: [
-      { label: '质量', score: 4.5, detail: '中文理解和生成质量优秀，日常任务表现出色，复杂推理有差距。' },
+      { label: '质量', score: 4.8, detail: 'Qwen3.7-Max 在复杂推理、代码工程、工具调用和多语言任务上明显增强，普通中文内容任务仍可用 Qwen3.6 控本。' },
       { label: '速度', score: 4.8, detail: '国内部署，响应延迟低，高并发场景下也保持稳定速度。' },
-      { label: '性价比', score: 5.0, detail: '每月100万 tokens 免费额度对个人开发者几乎零成本起步，付费价格也远低于国外竞品。' },
+      { label: '性价比', score: 4.7, detail: 'qwen3.7-max 国内百炼当前为 12 元/百万输入、36 元/百万输出；Qwen3.6-Flash / Plus 更适合日常控本。' },
       { label: '稳定性', score: 4.7, detail: '阿里云基础设施保障，SLA 99.9%，企业级可用性。' },
     ],
     pros: [
-      '每月100万 tokens 免费额度，适合学习和原型开发',
+      '免费额度、试用模型和价格经常调整，购买前以百炼控制台为准',
       '国内直接访问，无需代理，响应速度快',
       '中文场景深度优化，理解和生成质量优秀',
       '阿里云生态完善，文档详尽，易于上手',
       'API 兼容 OpenAI 格式，迁移成本低',
-      '支持多轮对话、函数调用、JSON 模式等高级功能',
+      'qwen3.7-max 支持 1M 上下文、64k 最大输出、Function Calling、内置工具、结构化输出和批量调用',
+      '支持多轮对话、函数调用、JSON 模式，并可在百炼模型广场切换 Qwen、DeepSeek、Kimi、GLM、MiMo 等模型',
     ],
     cons: [
-      '复杂推理和多步逻辑能力略逊于国外旗舰模型',
-      '部分高级功能（如超长上下文）需要付费升级',
+      '复杂 Agent 任务建议优先测试 Qwen3.7-Max，同时对比 DeepSeek V4 Pro、Claude Opus 4.7 或 GPT-5.5',
+      'Qwen3.7-Max 成本高于 Qwen3.6-Plus / Flash，不适合所有轻量高频任务',
       '英文和跨语言场景表现不如原生英文模型',
       '开源版本与商业版本有一定差距',
     ],
     useCases: [
       '个人开发者：免费额度足够日常学习和原型开发',
       '中文内容创作：文章、翻译、摘要等中文任务表现优秀',
-      '初创企业：低成本起步，按需扩展',
+      'Agent 和代码工程：qwen3.7-max 适合复杂代码修改、多文件工程、工具调用和长周期任务',
+      '初创企业：Qwen3.6 系列低成本起步，复杂任务再切换 qwen3.7-max',
       '教育场景：中文教学辅助、代码辅导等场景非常适合',
-      '不适合：对复杂推理和多语言要求极高的企业级应用',
+      '不适合：大量轻量高频任务全部使用 qwen3.7-max，成本会偏高',
+    ],
+    benchmarks: [
+      { name: 'Terminal-Bench 2.0-Terminus', values: { 'Qwen3.7-Max': '69.7', 'DeepSeek V4 Pro Max': '67.9' } },
+      { name: 'SWE-Pro', values: { 'Qwen3.7-Max': '60.6' } },
+      { name: 'SWE-Verified', values: { 'Qwen3.7-Max': '80.4', 'Claude Opus 4.6 Max': '80.8', 'DeepSeek V4 Pro Max': '80.6' } },
+      { name: 'MCP-Mark', values: { 'Qwen3.7-Max': '60.8', 'GLM-5.1': '57.5' } },
+      { name: 'SpreadSheetBench-v1', values: { 'Qwen3.7-Max': '87' } },
+      { name: 'GPQA Diamond', values: { 'Qwen3.7-Max': '92.4', 'Claude Opus 4.6': '91.3' } },
+    ],
+    pricing: [
+      { model: 'qwen3.7-max（国内）', input: '¥12/百万', output: '¥36/百万' },
+      { model: 'qwen3.6-plus（≤256K）', input: '¥2/百万', output: '¥12/百万' },
+      { model: 'qwen-plus / qwen-plus-latest（≤128K）', input: '¥0.8/百万', output: '¥2/百万；思考输出 ¥8/百万' },
     ],
     conclusion:
-      '通义千问是国内用户性价比最高的选择。免费额度、中文优化、低延迟三大优势使其成为个人开发者和中小企业的首选入门模型。',
+      '通义千问适合中文业务、企业控制台和阿里云生态。2026 年 5 月的最新主线是 qwen3.7-max：它面向 Agent 时代，强调代码工程、办公自动化、长周期执行和跨框架工具调用；日常内容、客服和知识库任务仍建议先用 Qwen3.6-Plus / Flash 控制成本。正式采购前必须以百炼控制台的模型权限、免费额度和价格为准。',
   },
 
   claude: {
@@ -156,15 +163,15 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       { label: '付费' },
     ],
     tlDr:
-      '长文本处理能力最强，安全性最高，代码能力优秀。200K 上下文窗口，适合需要处理大量文本和注重安全的场景。',
+      '长文本处理、安全性和代码协作能力突出。当前重点看 Claude Opus 4.7、Sonnet 4.6 和 Haiku 4.5；Opus/Sonnet 支持 1M 上下文，适合长文档和复杂代码任务。',
     ratings: [
       { label: '质量', score: 4.8, detail: '文本理解和生成长文本方向顶尖，安全对齐做得最好的模型。' },
       { label: '速度', score: 4.0, detail: '推理速度中规中矩，长文本处理时延迟有所增加。' },
-      { label: '性价比', score: 3.8, detail: '定价与 GPT-5.5 接近，但综合能力略逊一筹。' },
+      { label: '性价比', score: 3.8, detail: '价格处在海外高端模型区间，适合高价值长文档和代码协作任务。' },
       { label: '稳定性', score: 4.9, detail: 'Anthropic 服务成熟，API 可用性极高，企业级可靠。' },
     ],
     pros: [
-      '200K 上下文窗口，适合长文档分析、合同审查等场景',
+      'Opus 4.7 / Sonnet 4.6 支持 1M 上下文，适合长文档分析、合同审查和代码仓库理解',
       '安全对齐做得最好，Constitutional AI 确保输出安全可靠',
       '代码能力强劲，Claude Code 是顶级 AI 编程助手',
       '对复杂指令遵循度高，思维严谨细致',
@@ -173,24 +180,17 @@ export const reviewDetails: Record<string, ReviewDetail> = {
     cons: [
       '国内访问需要代理',
       '推理速度相对较慢',
-      '价格较高，与 GPT-5.5 相当但综合能力略逊',
-      '多模态能力不及 GPT-5.5',
+      '价格较高，需要结合任务效果与 OpenAI GPT-5.5 分别实测',
+      '多模态和速度场景要与 Gemini 3.5 Flash、OpenAI GPT-5.5 分别实测',
       '中文能力不如国内模型自然流畅',
     ],
-    benchmarks: [
-      { name: 'Terminal-Bench 2.0', values: { 'Claude Opus 4.7': '69.4%', 'GPT-5.5': '82.7%', 'DeepSeek V4 Pro': '65.2%' } },
-      { name: 'SWE-Bench Pro', values: { 'Claude Opus 4.7': '52.3%', 'GPT-5.5': '58.6%', 'DeepSeek V4 Pro': '45.1%' } },
-      { name: 'HumanEval', values: { 'Claude Opus 4.7': '92.1%', 'GPT-5.5': '95.3%', 'DeepSeek V4 Pro': '89.7%' } },
-      { name: 'MMLU', values: { 'Claude Opus 4.7': '91.8%', 'GPT-5.5': '93.2%', 'DeepSeek V4 Pro': '88.5%' } },
-      { name: 'GSM8K', values: { 'Claude Opus 4.7': '95.6%', 'GPT-5.5': '97.1%', 'DeepSeek V4 Pro': '94.2%' } },
-    ],
     pricing: [
-      { model: 'Claude Opus 4.7', input: '$15/百万', output: '$75/百万' },
-      { model: 'Claude Sonnet 4.5', input: '$3/百万', output: '$15/百万' },
-      { model: 'Claude Haiku 4.0', input: '$0.25/百万', output: '$1.25/百万' },
+      { model: 'Claude Opus 4.7', input: '$5/百万', output: '$25/百万' },
+      { model: 'Claude Sonnet 4.6', input: '$3/百万', output: '$15/百万' },
+      { model: 'Claude Haiku 4.5', input: '$1/百万', output: '$5/百万' },
     ],
     useCases: [
-      '长文档处理：200K 上下文窗口特别适合合同审查、法律文件、学术论文',
+      '长文档处理：1M 上下文适合合同审查、法律文件、学术论文和大型代码仓库',
       '安全合规场景：金融、医疗、法律等对输出安全要求极高的行业',
       '代码协作：Claude Code 是顶级的 AI 编程助手',
       '需要思维链推理：Claude 的推理过程更透明可解释',
@@ -209,15 +209,15 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       { label: '免费试用', variant: 'success' },
     ],
     tlDr:
-      '开源生态友好，支持本地部署，性价比高。适合有部署能力的开发者和研究者，数据安全自主可控。',
+      'GLM-5 / GLM-5.1 已经把重点放到 200K 上下文、Agentic Coding 和复杂知识工作。适合国内团队做代码助手、企业知识库和可控部署。',
     ratings: [
-      { label: '质量', score: 4.2, detail: '中文场景表现出色，开源模型中的佼佼者，但与闭源旗舰有差距。' },
+      { label: '质量', score: 4.2, detail: 'GLM-5 系列在中文知识工作、代码和长上下文任务上更强，云端旗舰和开源版本要分开评估。' },
       { label: '速度', score: 4.5, detail: '国内部署延迟低，本地部署速度取决于硬件配置。' },
       { label: '性价比', score: 4.8, detail: '免费试用 + 开源可自部署，长期成本极低。' },
       { label: '稳定性', score: 4.0, detail: '云端版本稳定，本地部署稳定性取决于运维能力。' },
     ],
     pros: [
-      '开源模型可本地部署，数据安全自主可控',
+      'GLM-5 支持 200K 上下文和较长输出，适合代码、知识库和复杂文档工作流',
       '国内直接访问，无需代理',
       '免费试用额度充足，降低入门门槛',
       '中文理解和生成能力优秀',
@@ -225,7 +225,7 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       '开发者生态活跃，社区支持良好',
     ],
     cons: [
-      '综合能力与 GPT-5.5、Claude 等国际旗舰有差距',
+      '不同 GLM 云端模型和开源模型能力差异较大，不要用开源版表现直接代表旗舰 API',
       '代码和复杂推理能力偏弱',
       '本地部署需要较强硬件和运维能力',
       '英文和跨语言场景表现一般',
@@ -239,7 +239,7 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       '不适合：需要全球最前沿 AI 能力的场景',
     ],
     conclusion:
-      '智谱AI GLM 是开源路线的标杆，数据安全+低成本是其核心优势。如果你对数据主权有要求，或希望通过本地部署降低长期成本，GLM 是最合适的选择。',
+      '智谱 GLM 现在更适合看 GLM-5 / GLM-5.1 的 Agentic Coding、长上下文和企业知识工作能力。它仍保留开源生态优势，但云端旗舰模型和本地部署模型要分开评估。',
   },
 
   kimi: {
@@ -250,17 +250,18 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       { label: '无需代理', variant: 'success' },
       { label: '长上下文' },
       { label: '免费额度', variant: 'success' },
+      { label: 'K2.5/K2.6 待确认', variant: 'outline' },
     ],
     tlDr:
-      'Kimi 适合长文档、资料问答和中文知识工作流。它的优势不是单点跑分，而是把长上下文、文件理解和 OpenAI 兼容接入做得比较顺手，适合国内开发者快速落地。',
+      'Kimi 适合长文档、资料问答、中文知识工作流和 Agent 原型。当前重点关注 Kimi K2.5 / K2.6、256K 上下文和 OpenAI 兼容接入。（K2.5/K2.6 模型名称和 256K 上下文信息待官方确认）',
     ratings: [
-      { label: '质量', score: 4.5, detail: '中文理解、总结和长资料问答表现稳定，适合知识密集型任务。' },
+      { label: '质量', score: 4.5, detail: 'Kimi K2.5 / K2.6 适合长资料、复杂问答和中文知识工作流，需用真实文档验证成本。' },
       { label: '速度', score: 4.4, detail: '国内访问延迟友好，长上下文任务会随输入长度增加耗时。' },
       { label: '性价比', score: 4.6, detail: '有免费额度，日常文档处理和中等规模应用成本较好控制。' },
       { label: '稳定性', score: 4.5, detail: '开放平台接入体验成熟，仍需关注模型列表和额度调整。' },
     ],
     pros: [
-      '长上下文和文档理解能力突出，适合合同、论文、资料库和报告分析',
+      'Kimi K2.5 / K2.6 支持更长上下文，适合合同、论文、资料库、报告和代码资料分析',
       '中文表达自然，摘要、改写、问答等常见任务完成度高',
       'OpenAI 兼容接口迁移成本低，现有 SDK 项目容易接入',
       '国内直连，不需要额外代理环境',
@@ -269,7 +270,7 @@ export const reviewDetails: Record<string, ReviewDetail> = {
     cons: [
       '工具调用、复杂 Agent 和极高难度推理场景不一定是首选',
       '多模态和企业生态覆盖不如部分云厂商完整',
-      '免费额度、模型名和价格会调整，正式购买前需要核对控制台',
+      'Kimi K2.6 等新模型价格、上下文和限流策略需要以 Moonshot 控制台为准',
       '超长上下文任务虽然方便，但 Token 成本需要提前估算',
     ],
     useCases: [
@@ -280,7 +281,7 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       '不适合：对顶级代码修复、复杂多步工具调用要求极高的任务',
     ],
     conclusion:
-      'Kimi 是国内长文本场景里很稳的选择。如果你的核心需求是“读得多、总结准、中文顺”，它比追求极限推理跑分更实用；正式上线前重点确认额度、模型名和长上下文成本。',
+      'Kimi 仍是国内长文本和中文知识工作流的重要候选。更新后重点不再只看 128K，而是看 Kimi K2.5/K2.6、256K 上下文、Agent 能力和实际长文成本。（K2.5/K2.6 模型名称和 256K 上下文信息待官方确认，因 platform.kimi.com 返回 404 无法验证）',
   },
 
   tencent: {
@@ -293,7 +294,7 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       { label: '企业友好' },
     ],
     tlDr:
-      '腾讯混元更适合已经在腾讯云、微信生态或企业服务体系里的团队。它的优势是云产品集成、企业稳定性和国内访问体验，适合客服、内容审核、办公自动化和业务系统接入。',
+      '腾讯混元更适合已经在腾讯云、微信生态或企业服务体系里的团队。当前要特别关注 TokenHub 迁移提示：新模型和后续能力可能逐步转向 TokenHub。',
     ratings: [
       { label: '质量', score: 4.4, detail: '通用中文任务表现可靠，多模型覆盖能满足大多数业务接入。' },
       { label: '速度', score: 4.6, detail: '国内云服务延迟低，适合面向国内用户的在线应用。' },
@@ -303,7 +304,7 @@ export const reviewDetails: Record<string, ReviewDetail> = {
     pros: [
       '腾讯云账号体系、费用中心、权限管理和企业运维流程完整',
       '国内访问稳定，适合在线客服、办公系统和内部业务工具',
-      '多模型路线覆盖文本、视觉、轻量和推理场景',
+      '多模型路线覆盖文本、视觉、轻量和推理场景，但新增能力要查看 TokenHub 与腾讯云最新公告',
       '与微信、小程序、腾讯云函数、COS 等生态协同方便',
       'OpenAI 兼容接入降低迁移成本',
     ],
@@ -311,7 +312,7 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       '控制台概念较多，新手需要理解地域、密钥、Endpoint 和模型名',
       '如果没有腾讯云使用基础，开通链路会比独立开放平台稍重',
       '最前沿推理和代码场景不一定优于国际旗舰或专项模型',
-      '价格、免费额度和资源包策略需要以腾讯云控制台为准',
+      '价格、免费额度、资源包和 TokenHub 迁移策略需要以腾讯云控制台为准',
     ],
     useCases: [
       '企业业务系统：CRM、知识库、工单、客服和办公自动化',
@@ -321,7 +322,7 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       '不适合：只想用最简独立 API、完全不想碰云控制台的新手',
     ],
     conclusion:
-      '腾讯混元的价值在“模型 + 云生态”。如果你的业务已经在腾讯云或微信体系里，它会比单独接一个模型更顺；个人开发者也能用，但要留意控制台配置和成本告警。',
+      '腾讯混元的价值在“模型 + 云生态”。如果业务在腾讯云或微信体系里，它仍然顺手；但新项目需要优先确认 TokenHub 入口、可购买模型和后续支持策略。',
   },
 
   doubao: {
@@ -334,9 +335,9 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       { label: '免费额度', variant: 'success' },
     ],
     tlDr:
-      '豆包 API 适合高频中文对话、内容生成和对成本敏感的应用。它的亮点是响应速度、价格友好和字节生态能力，适合作为国内项目的默认候选之一。',
+      '豆包 API 适合高频中文对话、内容生成、Agent 原型和成本敏感应用。当前重点关注 Doubao-Seed-1.6、Seed-Code、Responses API 和火山方舟的模型编排能力。',
     ratings: [
-      { label: '质量', score: 4.3, detail: '中文日常问答、内容生成和轻量推理表现均衡，复杂任务需按模型测试。' },
+      { label: '质量', score: 4.3, detail: 'Doubao-Seed-1.6 覆盖通用与多模态任务，Seed-Code 更适合代码场景，复杂任务要按模型实测。' },
       { label: '速度', score: 4.7, detail: '轻量模型响应快，适合聊天、客服和内容生产类高频调用。' },
       { label: '性价比', score: 4.8, detail: '成本控制友好，适合从免费额度、小额测试逐步放量。' },
       { label: '稳定性', score: 4.5, detail: '火山引擎云服务成熟，正式接入建议配置预算和告警。' },
@@ -344,14 +345,14 @@ export const reviewDetails: Record<string, ReviewDetail> = {
     pros: [
       '高性价比，适合高频调用和成本敏感型产品',
       '国内直连，面向国内用户的延迟体验较好',
-      '模型类型覆盖文本、视觉、语音、Embedding 等常见方向',
+      'Doubao-Seed-1.6、Seed-Code、视觉、语音、Embedding 等方向覆盖较全，适合在火山方舟里统一调度',
       'OpenAI 兼容接入方便迁移已有项目',
       '字节内容生态经验强，适合内容生成和互动场景',
     ],
     cons: [
       '火山方舟里的模型、Endpoint、地域概念对新手有一定学习成本',
       '复杂推理、严肃代码修复需要与 DeepSeek、Claude、OpenAI 等交叉测试',
-      '模型名、免费额度和价格变化较快，正式购买前必须核对控制台',
+      'Doubao-Seed-1.6、Seed-Code、Responses API、免费额度和价格变化较快，正式购买前必须核对火山方舟控制台',
       '长上下文和专项能力要按具体模型确认，不宜只看品牌选择',
     ],
     useCases: [
@@ -362,7 +363,7 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       '不适合：需要绝对顶级复杂推理或跨区域海外稳定访问的项目',
     ],
     conclusion:
-      '豆包的核心吸引力是快、便宜、国内体验顺。它很适合作为中文应用的起步模型；上线前建议用真实业务样本压测质量、延迟和 Token 成本，再决定模型档位。',
+      '豆包的核心吸引力是快、便宜、国内体验顺。新版本更适合把对话、代码、视觉和 Agent 工作流放进火山方舟统一测试；上线前仍要用真实业务样本压测质量、延迟和 Token 成本。',
   },
 
   deepseek: {
@@ -376,18 +377,18 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       { label: '开源可商用' },
     ],
     tlDr:
-      'DeepSeek V4 同时发布 Pro 和 Flash 两个版本。Pro 旗舰大模型擅长数学、编程、长文本处理，能力追平世界顶尖闭源模型；Flash 是性价比黑马，推理接近 Pro、速度快、价格极低，日常写代码和问答绰绰有余。',
+      'DeepSeek V4 当前重点是 deepseek-v4-flash 和 deepseek-v4-pro：两者均支持 1M 上下文、最高 384K 输出、OpenAI/Anthropic 兼容接口。deepseek-chat 和 deepseek-reasoner 未来会作为兼容别名逐步淡出。',
     ratings: [
       { label: '质量', score: 4.8, detail: 'Pro 在数学（HMMT 95.2）、编程（LiveCodeBench 93.5）等基准追平甚至超越 GPT-5.4；Flash 推理接近 Pro，日常任务差距不大。' },
       { label: '速度', score: 4.6, detail: 'Flash 延迟仅 10 毫秒级，响应极快；Pro 参数大略慢，高峰期可能排队。' },
-      { label: '性价比', score: 5.0, detail: 'Pro 输出 6 元/百万 token，Flash 仅 2 元/百万 token，缓存命中时更低。远低于同级别闭源模型。' },
+      { label: '性价比', score: 5.0, detail: '官方按美元/百万 token 计费，V4 Flash 极低价；V4 Pro 当前有折扣期，正式上线前必须复核官方定价页。' },
       { label: '稳定性', score: 4.2, detail: '高峰期算力紧张，Pro 可能变慢或排队。建议做好重试和备用方案。' },
     ],
     pros: [
-      '数学推理顶级：HMMT 数学竞赛 95.2，超过 GPT-5.4（94.8）和 Gemini 3.1 Pro（92.7）',
+      '数学推理顶级：HMMT 数学竞赛 95.2，超过 GPT-5.4（94.8）和 Gemini 3.1 Pro Preview（92.7）',
       '编程能力突出：LiveCodeBench 93.5，Codeforces 积分 3206，均超 GPT-5.4',
-      'Flash 性价比极高：输出 2 元/百万 token，速度 10ms 级别，日常任务无性能断崖',
-      '100 万 token 上下文：Pro 和 Flash 均支持，能一次读完两三本《三体》并回答细节',
+      'Flash 性价比极高：官方价为低成本档，适合日常问答、代码助手和高频调用',
+      '100 万 token 上下文：Pro 和 Flash 均支持，最大输出可到 384K，适合长文档和代码库任务',
       'OpenAI 兼容接口：迁移成本低，可接入 Claude Code、Agent 等开发工具和主流客户端',
       '国内直连：无需代理，支持支付宝/微信充值',
       '开源可商用：模型权重开放，适合本地部署和二次开发',
@@ -402,14 +403,14 @@ export const reviewDetails: Record<string, ReviewDetail> = {
     benchmarks: [
       { name: 'GPQA Diamond', values: { 'V4 Pro': '90.1', 'GPT-5.4': '90.5' } },
       { name: 'MMLU-Pro', values: { 'V4 Pro': '87.5', 'GPT-5.4': '87.1' } },
-      { name: 'HMMT 数学竞赛', values: { 'V4 Pro': '95.2', 'GPT-5.4': '94.8', 'Gemini 3.1 Pro': '92.7' } },
+      { name: 'HMMT 数学竞赛', values: { 'V4 Pro': '95.2', 'GPT-5.4': '94.8', 'Gemini 3.1 Pro Preview': '92.7' } },
       { name: 'LiveCodeBench', values: { 'V4 Pro': '93.5', 'GPT-5.4': '91.6' } },
       { name: 'Codeforces', values: { 'V4 Pro': '3206', 'GPT-5.4': '3052' } },
     ],
     pricing: [
-      { model: 'V4 Pro', input: '—', output: '6 元/百万 token（~0.85 美元）' },
-      { model: 'V4 Flash', input: '—', output: '2 元/百万 token（~0.28 美元）' },
-      { model: '缓存命中', input: '—', output: 'Pro 可低至 0.1 元/百万 token' },
+      { model: 'deepseek-v4-flash', input: '$0.14/百万（缓存命中 $0.0028）', output: '$0.28/百万' },
+      { model: 'deepseek-v4-pro', input: '$0.435/百万（折扣期，缓存命中 $0.003625）', output: '$0.87/百万（折扣期）' },
+      { model: '兼容别名', input: 'deepseek-chat / deepseek-reasoner', output: '未来会废弃为兼容别名' },
     ],
     useCases: [
       '选 Pro：复杂数学/科研推理、大型工程代码、分析整本书或全量代码仓库等深度任务',
@@ -419,7 +420,7 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       '不适合：需原生多模态识别、极致文学创作美感、或极高 SLA 的企业关键链路',
     ],
     conclusion:
-      'DeepSeek V4 打破了”高端模型=天价”的定式。Pro 让你用合理价格换世界顶级推理能力，Flash 则把高性能 AI 普及到近乎零成本。日常办公选 Flash 足够且便宜得多，追求极致效果选 Pro。两者均为国内直连，是 2026 年性价比最高的模型系列之一。',
+      'DeepSeek V4 的更新重点是低价、长上下文和兼容接口。日常办公和代码助手优先试 V4 Flash；复杂推理、长文档和高质量代码任务再上 V4 Pro。注意 Pro 折扣期、并发限制和 deepseek-chat / deepseek-reasoner 兼容别名变化。',
   },
 
   gemini: {
@@ -432,15 +433,15 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       { label: '免费额度', variant: 'success' },
     ],
     tlDr:
-      'Gemini 的优势是多模态、长上下文和 Google 生态。它适合图像、视频、文档理解和海外产品，但国内访问、账号、支付和区域限制会增加接入成本。',
+      'Gemini 的优势是多模态、长上下文和 Google 生态。当前重点看 Gemini 3.5 Flash、Gemini 3.1 Pro Preview 和 Gemini 3 Flash Preview；国内访问、账号、支付和区域限制仍是主要成本。',
     ratings: [
-      { label: '质量', score: 4.7, detail: '多模态理解和长上下文能力强，通用任务表现位于第一梯队。' },
+      { label: '质量', score: 4.7, detail: 'Gemini 3.5 Flash 强在多模态和速度，Gemini 3.1 Pro Preview 更适合长上下文与复杂任务测试。' },
       { label: '速度', score: 4.6, detail: '海外网络环境下响应快，国内体验取决于代理质量和区域配置。' },
       { label: '性价比', score: 4.4, detail: 'AI Studio 免费额度适合试用，正式生产成本需按 Google Cloud 账单核算。' },
       { label: '稳定性', score: 4.3, detail: '平台能力成熟，但国内网络和账号区域会影响稳定性。' },
     ],
     pros: [
-      '多模态能力强，适合图片、音视频、PDF 和网页内容理解',
+      'Gemini 3.5 Flash 适合多模态和低延迟场景，Gemini 3.1 Pro Preview 更适合长上下文与复杂任务测试',
       '长上下文适合大文档、代码库和资料批量分析',
       'AI Studio 上手快，适合快速创建测试 Key',
       'Google 生态完整，可与 Cloud、Workspace、搜索和数据服务协同',
@@ -449,7 +450,7 @@ export const reviewDetails: Record<string, ReviewDetail> = {
     cons: [
       '国内访问通常需要稳定代理，网络质量会直接影响调用体验',
       '付费生产一般涉及 Google Cloud 账号、账单和国际支付',
-      '配额、区域、模型命名和 API 版本变化需要持续关注',
+      '配额、区域、模型命名、预览模型稳定性和 API 版本变化需要持续关注',
       '面向国内用户的在线产品需要额外考虑访问稳定性和合规要求',
     ],
     useCases: [
@@ -460,7 +461,7 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       '不适合：面向国内用户且无法配置稳定代理或国际账单的项目',
     ],
     conclusion:
-      'Gemini 很适合多模态和长上下文场景，尤其是海外产品或 Google Cloud 用户。国内项目要先解决网络、账号和支付问题，再评估是否值得作为主模型。',
+      'Gemini 很适合多模态、长上下文和 Google Cloud 场景。更新后建议先测 Gemini 3.5 Flash 的速度/成本，再用 3.1 Pro Preview 验证复杂任务；国内项目必须先解决网络、账号和账单稳定性。',
   },
 };
 

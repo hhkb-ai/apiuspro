@@ -72,7 +72,7 @@ export default function FAQPage() {
         {/* ── 顶部导航 ── */}
         <header className="sticky top-0 z-50 border-b border-border bg-card">
           <div className="mx-auto flex h-14 max-w-5xl items-center px-6">
-            <Link href="/" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+            <Link href="/" className="text-sm text-muted-foreground transition-colors hover:text-foreground min-h-[44px] flex items-center px-2 -mx-2">
               &#8592; 返回首页
             </Link>
             <span className="mx-3 text-border">|</span>

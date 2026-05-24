@@ -82,7 +82,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
 
       <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-background/95 border-b border-border z-50 flex items-center justify-between px-4 backdrop-blur">
         <div className="min-w-0 flex flex-col">
-          <Link href="/" className="font-semibold tracking-tight">
+          <Link href="/" className="font-semibold tracking-tight min-h-[44px] flex items-center">
             API知识站
           </Link>
           <span className="text-xs text-muted-foreground">学习、对比与使用指南</span>
@@ -91,6 +91,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
           variant="outline"
           size="sm"
           type="button"
+          className="min-h-[44px]"
           aria-expanded={mobileMenuOpen}
           aria-controls="mobile-navigation"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -114,7 +115,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
                   className={cn(
-                    'flex items-center px-4 py-3 rounded-md text-base font-medium transition-colors',
+                    'flex items-center px-4 py-3 min-h-[44px] rounded-md text-base font-medium transition-colors',
                     isActive
                       ? 'bg-primary text-primary-foreground shadow-sm'
                       : 'text-muted-foreground hover:text-foreground hover:bg-muted/70'
@@ -133,6 +134,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
           {children}
         </div>
         <footer className="border-t border-border px-4 py-6 text-center text-sm text-muted-foreground">
+          <p className="text-xs mb-2">注：人民币价格按 1 USD ≈ 7.25 RMB 估算，实际价格以各平台官方结算为准。</p>
           <BeianLinks />
         </footer>
       </main>

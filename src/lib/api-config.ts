@@ -48,11 +48,11 @@ export const apiList: APIConfig[] = [
   {
     id: 'mimo',
     name: '小米MiMo',
-    desc: '小米MiMo API 怎么买？2026 推理模型接入教程，数学与代码能力突出',
+    desc: '小米 MiMo API 怎么买？2026 推理模型接入教程，含 mimo-v2.5-pro 等新模型信息',
     url: 'https://platform.xiaomimimo.com/',
-    free: 'Orbit 计划限时免费 Token',
+    free: 'Orbit 计划与免费 Token 以官方控制台为准',
     proxy: false,
-    features: ['推理能力强', '数学能力突出', '代码生成', '小米出品'],
+    features: ['推理能力强', 'mimo-v2.5-pro', '数学能力突出', '小米出品'],
     icon: '🟠',
     badge: { text: '新上线', type: 'warning' },
     tutorial: {
@@ -138,7 +138,7 @@ export const apiList: APIConfig[] = [
             '安装 openai 和 python-dotenv',
             '设置 MIMO_API_KEY 环境变量',
             '配置 Base URL：https://api.xiaomimimo.com/v1',
-            '模型可先选择 mimo-v2-flash（更快）或 mimo-v2-pro（更强）'
+            '模型可先选择 mimo-v2-flash（更快），如控制台已开放再测试 mimo-v2.5-pro'
           ],
           whereToClick: '终端运行 pip install openai python-dotenv，创建 .env 文件写入 MIMO_API_KEY',
           expectedResult: 'Python 脚本成功打印模型的自我介绍回复，无报错',
@@ -182,9 +182,9 @@ print(response.choices[0].message.content)`,
   {
     id: 'deepseek',
     name: 'DeepSeek',
-    desc: 'DeepSeek API 怎么买？2026 国内支付/充值教程，代码与推理能力突出',
+    desc: 'DeepSeek API 怎么买？2026 国内支付/充值教程，覆盖 V4 Flash、V4 Pro 与 1M 上下文',
     url: 'https://platform.deepseek.com/',
-    free: '赠送500万Tokens',
+    free: '新用户/活动额度以控制台为准',
     proxy: false,
     features: ['高性价比', '代码能力强', '推理模型', '开源'],
     icon: '🔵',
@@ -272,7 +272,7 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="deepseek-chat",
+    model="deepseek-v4-flash",
     messages=[{"role": "user", "content": "你好，请用一句话介绍你自己。"}],
 )
 
@@ -284,13 +284,13 @@ print(response.choices[0].message.content)`,
           description: '首次跑通后，再根据速度、推理能力和成本切换模型。',
           image: '/images/tutorial/deepseek-docx-4.png',
           items: [
-            'deepseek-chat：通用对话和基础问答，适合入门测试',
+            'deepseek-chat：旧版兼容别名，后续可能逐步废弃，不建议新项目作为长期模型名',
             'deepseek-v4-flash：响应快、性价比高，适合实时对话和客服',
-            'deepseek-v4-pro：推理能力更强，适合复杂代码、长文档和技术问答',
+            'deepseek-v4-pro：推理能力更强，适合复杂代码、1M 长上下文、长文档和技术问答',
             '在控制台查看用量、余额和预算告警'
           ],
           whereToClick: '控制台 → 模型列表或文档页面',
-          expectedResult: '页面显示 deepseek-chat、deepseek-v4-flash、deepseek-v4-pro 等模型名称和价格',
+          expectedResult: '页面显示 deepseek-v4-flash、deepseek-v4-pro，以及 deepseek-chat / deepseek-reasoner 兼容别名说明',
           failureChecklist: ['确认当前使用的模型名称拼写正确', '在控制台查看用量是否正常累计'],
           warning: '模型名称、免费试用和价格会随平台调整，正式使用前请以控制台和官方文档为准。'
         }
@@ -298,7 +298,7 @@ print(response.choices[0].message.content)`,
       tips: [
         '推荐用 .env 或环境变量保存 DEEPSEEK_API_KEY',
         'OpenAI SDK 兼容模式最适合迁移已有代码',
-        '个人开发者可先从 deepseek-chat 或 flash 类模型开始控制成本'
+        '个人开发者可先从 deepseek-v4-flash 开始控制成本'
       ],
       warnings: [
         '不要在前端、公开仓库或截图中暴露 API Key',
@@ -315,16 +315,16 @@ print(response.choices[0].message.content)`,
   {
     id: 'aliyun',
     name: '阿里云通义千问',
-    desc: '通义千问 API 怎么申请？免费额度获取与接入教程',
+    desc: '通义千问 API 怎么申请？覆盖 Qwen3.7-Max、Qwen3.6-Plus / Qwen3.6-Flash 与百炼模型广场',
     url: 'https://dashscope.aliyun.com/',
-    free: '100万tokens/月免费',
+    free: '免费额度与试用模型以百炼控制台为准',
     proxy: false,
-    features: ['多模型支持', '长文本处理', '多模态能力'],
+    features: ['Qwen3.7-Max', 'Qwen3.6', '多模型支持', '百炼生态'],
     icon: '🟢',
     badge: { text: '免费', type: 'success' },
     tutorial: {
       title: '通义千问 API 购买与接入教程（免费额度申请）',
-      subtitle: '通过阿里云百炼或 DashScope 开通服务、获取密钥并完成首次调用',
+    subtitle: '通过阿里云百炼或 DashScope 开通服务、获取密钥并调用最新 Qwen3.7-Max',
       steps: [
         {
           title: '准备阿里云账号',
@@ -346,7 +346,7 @@ print(response.choices[0].message.content)`,
           items: [
             '进入 https://bailian.console.aliyun.com 或 https://dashscope.console.aliyun.com',
             '搜索或找到「通义千问」服务并点击开通',
-            '新用户免费额度以控制台当前展示为准'
+            '新用户免费额度、Token Plan 与可用模型以控制台当前展示为准'
           ],
           whereToClick: '访问 bailian.console.aliyun.com 或 dashscope.console.aliyun.com → 搜索「通义千问」→ 开通',
           expectedResult: '控制台显示已开通服务，可看到免费额度信息',
@@ -368,8 +368,8 @@ print(response.choices[0].message.content)`,
           warning: 'API Key 通常只完整显示一次，不要写入前端代码或公开仓库。'
         },
         {
-          title: '配置环境变量并首次调用',
-          description: '通义千问支持 OpenAI 兼容接口，可用 OpenAI SDK 快速调用。',
+          title: '配置环境变量并首次调用 Qwen3.7-Max',
+          description: '通义千问支持 OpenAI 兼容接口。2026 年 5 月百炼已列出 qwen3.7-max，适合先用真实任务验证最新旗舰模型。',
           image: '/images/tutorial/qwen-docx-2.png',
           items: [
             '安装 openai 与 python-dotenv',
@@ -389,27 +389,27 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="qwen-plus",
+    model="qwen3.7-max",
     messages=[{"role": "user", "content": "请用一句话介绍通义千问"}],
 )
 
 print(response.choices[0].message.content)`,
-          codeExplanation: '调用 qwen-plus 模型，让它用一句话介绍通义千问并打印回复。成功执行即代表 API Key 和 base_url 配置正确。'
+          codeExplanation: '调用 qwen3.7-max 模型，让它用一句话介绍通义千问并打印回复。成功执行即代表 API Key、base_url 和模型权限配置正确。'
         },
         {
           title: '按场景选择模型',
-          description: '通义千问覆盖轻量、通用、旗舰和长文本等场景，按任务选择即可。',
+          description: '通义千问覆盖 Agent 旗舰、通用、低成本和长上下文场景，按任务和预算选择即可。',
           image: '/images/tutorial/qwen-docx-2.png',
           items: [
-            'Qwen-Turbo：适合简单对话、实时翻译和低成本高频调用',
-            'Qwen-Plus：适合多数通用对话、摘要、问答和中等复杂代码任务',
-            'Qwen-Max：适合复杂推理、深度创作和企业级高质量任务',
-            'Qwen-Long：适合长文档总结、论文分析、合同解析和代码仓库理解'
+            'Qwen3.7-Max：最新旗舰 Agent 模型，1M 上下文、64k 最大输出，适合复杂推理、代码工程、办公自动化和长周期工具调用',
+            'Qwen3.6-Plus：能力与成本均衡，1M 上下文，适合多数生产对话、知识库、摘要和代码任务',
+            'Qwen3.6-Flash：低成本高频调用，适合简单对话、翻译、分类和批量处理',
+            'qwen-plus / qwen-plus-latest：适合新手先跑通兼容接口，再按效果切换到 Qwen3.7-Max 或 Qwen3.6 系列'
           ],
           whereToClick: '控制台 → 模型列表或文档页面',
-          expectedResult: '页面显示 Qwen-Turbo、Qwen-Plus、Qwen-Max、Qwen-Long 等模型名称和价格',
-          failureChecklist: ['确认模型名称拼写正确', '首次使用建议从 qwen-plus 开始测试'],
-          warning: '模型价格、免费额度和上下文长度会随平台更新，正式购买前以控制台为准。'
+          expectedResult: '页面显示 qwen3.7-max、qwen3.6-plus、qwen3.6-flash 等模型名称、上下文和价格',
+          failureChecklist: ['确认模型名称拼写正确，例如 qwen3.7-max', '如果账号暂未开放旗舰模型，先用 qwen3.6-plus 或 qwen-plus 跑通接口'],
+          warning: 'qwen3.7-max 国内百炼价格当前为 12 元/百万输入 Token、36 元/百万输出 Token；价格、免费额度和上下文长度会随平台更新，正式购买前以控制台为准。'
         },
         {
           title: '查看用量与控制成本',
@@ -418,7 +418,7 @@ print(response.choices[0].message.content)`,
           items: [
             '在「模型用量」页面查看剩余额度',
             '免费额度用尽后按输入和输出 Token 计费',
-            '批量推理或缓存能力可进一步降低成本'
+            'qwen3.7-max 支持上下文缓存折扣，支持 Batch 时可按平台规则降低成本'
           ],
           whereToClick: '控制台 → 「模型用量」页面',
           expectedResult: '页面显示已使用的 Token 数量和剩余额度',
@@ -427,14 +427,14 @@ print(response.choices[0].message.content)`,
       ],
       tips: [
         '优先通过环境变量管理 DASHSCOPE_API_KEY',
-        '日常开发建议从 qwen-plus 或 qwen-turbo 开始测试',
-        '长文档任务优先评估 Qwen-Long'
+        '新手可先用 qwen3.6-plus 或 qwen-plus 跑通接口，再切换 qwen3.7-max 验证复杂任务',
+        'Agent、代码工程和办公自动化优先评估 qwen3.7-max；普通内容任务优先评估 qwen3.6-plus / qwen3.6-flash'
       ],
       warnings: [
         '实名认证完成前，部分服务可能无法开通',
         '不要把 API Key 写入公开代码、截图或客户端页面'
       ],
-      advantages: ['免费额度大', '国内直连', 'OpenAI 兼容接口', '模型选择丰富'],
+      advantages: ['免费额度大', '国内直连', 'OpenAI 兼容接口', 'Qwen3.7-Max'],
       estimatedTime: '约 10 分钟',
       prerequisites: ['阿里云账号（手机号或邮箱注册）', '支付宝或微信支付（用于购买资源包）'],
       successSign: 'API-KEY 管理页面出现以 sk- 开头的密钥，Python 脚本成功打印模型回复',
@@ -445,11 +445,11 @@ print(response.choices[0].message.content)`,
   {
     id: 'zhipu',
     name: '智谱AI',
-    desc: '智谱AI 注册与免费试用教程，GLM 系列开源模型支持本地部署',
+    desc: '智谱 AI 注册与免费试用教程，覆盖 GLM-5、GLM-5.1 与 Agentic Coding 场景',
     url: 'https://open.bigmodel.cn/',
     free: '免费试用',
     proxy: false,
-    features: ['开源生态', '本地部署', '多种尺寸'],
+    features: ['GLM-5/5.1', '200K上下文', 'Agentic Coding', '开源生态'],
     icon: '🟢',
     badge: { text: '免费', type: 'success' },
     tutorial: {
@@ -562,11 +562,11 @@ print(response.choices[0].message.content)`,
   {
     id: 'kimi',
     name: '月之暗面 Kimi',
-    desc: 'Kimi API 怎么用？长文本处理教程，支持 128K tokens 上下文',
+    desc: 'Kimi API 怎么用？长文本处理教程，覆盖 Kimi K2.5/K2.6 与 256K 上下文（K2.5/K2.6 模型名称和 256K 上下文信息待官方确认）',
     url: 'https://platform.moonshot.cn/',
-    free: '免费额度',
+    free: '免费额度与模型价格以控制台为准',
     proxy: false,
-    features: ['128K上下文', '文件解析', '联网搜索'],
+    features: ['256K上下文（待确认）', 'Kimi K2.6（待确认）', '文件解析', '联网搜索'],
     icon: '🟢',
     badge: { text: '免费', type: 'success' },
     tutorial: {
@@ -640,10 +640,10 @@ $env:MOONSHOT_API_KEY="sk-your-api-key-here"`,
             'moonshot-v1-8k：适合基础对话和功能验证',
             'moonshot-v1-32k：适合较长文本生成与摘要',
             'moonshot-v1-128k：适合长文档处理和资料问答',
-            'kimi-k2.5 / kimi-k2.6：适合深度推理、Agent 和多模态任务'
+            'kimi-k2.5 / kimi-k2.6：适合深度推理、Agent 和多模态任务（模型名称待官方确认）'
           ],
           whereToClick: '开放平台文档或控制台 → 模型列表',
-          expectedResult: '页面显示 moonshot-v1-8k/32k/128k、kimi-k2.5/k2.6 等模型信息',
+          expectedResult: '页面显示 moonshot-v1-8k/32k/128k、kimi-k2.5/k2.6 等模型信息（K2.5/K2.6 模型名称待官方确认）',
           failureChecklist: ['确认模型名称拼写正确', '首次使用建议从 moonshot-v1-8k 开始测试'],
           warning: '模型列表、免费额度和价格可能变化，购买前以开放平台控制台为准。'
         },
@@ -712,11 +712,11 @@ print(completion.choices[0].message.content)`,
   {
     id: 'tencent',
     name: '腾讯混元',
-    desc: '腾讯混元 API 怎么开通？企业级多模态大模型接入教程',
+    desc: '腾讯混元 API 怎么开通？覆盖 TokenHub 迁移提示、Hunyuan TurboS/T1 与企业接入',
     url: 'https://cloud.tencent.com/product/hunyuan',
     free: '新用户优惠',
     proxy: false,
-    features: ['多模态', '企业集成', '微信生态'],
+    features: ['TokenHub迁移', '多模态', '企业集成', '微信生态'],
     icon: '🟢',
     badge: { text: '免费', type: 'success' },
     tutorial: {
@@ -782,18 +782,18 @@ print(completion.choices[0].message.content)`,
         },
         {
           title: '按场景选择模型',
-          description: '混元提供轻量、通用、推理、多模态和翻译模型，按任务成本和能力选择即可。',
+          description: '混元提供轻量、通用、推理、多模态和翻译模型，按任务成本和能力选择即可。腾讯云已提示新能力会逐步迁移到 TokenHub，新项目要先确认入口。',
           image: '/images/tutorial/tencent-pdf-models.png',
           items: [
             'hunyuan-lite：轻量快速，适合基础对话和低成本场景',
-            'hunyuan-turbos-latest：主力通用模型，适合内容创作和代码生成',
+            'hunyuan-turbos-latest：主力通用模型，适合内容创作和代码生成；新模型请同步查看 TokenHub',
             'hunyuan-t1-latest：适合复杂推理、逻辑分析和代码调试',
             'hunyuan-vision / Hunyuan-MT-7B：分别面向多模态和翻译任务'
           ],
           whereToClick: '控制台 → 模型列表或文档页面',
-          expectedResult: '页面显示 hunyuan-lite、hunyuan-turbos-latest、hunyuan-t1-latest 等模型信息',
+          expectedResult: '页面显示 hunyuan-lite、hunyuan-turbos-latest、hunyuan-t1-latest，或 TokenHub 推荐的新模型入口',
           failureChecklist: ['确认模型名称拼写正确', '首次测试建议用 hunyuan-turbos-latest'],
-          warning: '免费额度、后付费规则和模型价格可能调整，正式使用前以腾讯云控制台为准。'
+          warning: '免费额度、后付费规则、模型价格和 TokenHub 迁移策略可能调整，正式使用前以腾讯云控制台为准。'
         },
         {
           title: '开启流式输出与进阶调用',
@@ -825,7 +825,8 @@ print(completion.choices[0].message.content)`,
       tips: [
         '优先把密钥放到环境变量或 .env 文件中，避免硬编码泄露',
         '内容生成可适当提高 temperature，代码生成建议使用较低 temperature',
-        '模型默认不启用联网搜索，如需搜索能力需按接口文档开启对应参数'
+        '模型默认不启用联网搜索，如需搜索能力需按接口文档开启对应参数',
+        '新项目优先确认 TokenHub 是否已经成为推荐入口，避免接入即将停止新增能力的旧入口'
       ],
       warnings: [
         '混元 API 通常为后付费模式，建议在费用中心开启预算或费用预警',
@@ -842,11 +843,11 @@ print(completion.choices[0].message.content)`,
   {
     id: 'doubao',
     name: '字节豆包',
-    desc: '火山引擎豆包 API 注册与接入教程，字节跳动旗下大模型',
+    desc: '火山方舟豆包 API 注册与接入教程，覆盖 Doubao-Seed-1.6、Seed-Code 与 Responses API',
     url: 'https://www.volcengine.com/product/doubao',
     free: '免费额度',
     proxy: false,
-    features: ['抖音生态', '多模型', '高性价比'],
+    features: ['Doubao-Seed-1.6', 'Seed-Code', 'Responses API', '高性价比'],
     icon: '🟢',
     badge: { text: '免费', type: 'success' },
     tutorial: {
@@ -928,8 +929,9 @@ print(response.choices[0].message.content)`,
           title: '选择模型与购买方式',
           description: '测试跑通后，再按质量、速度和成本选择正式模型，并确认免费额度、资源包或后付费规则。',
           items: [
-            '轻量对话：优先选择速度快、成本低的模型',
-            '复杂推理或代码任务：选择更高能力的旗舰或代码模型',
+            '轻量对话：优先选择 Doubao-Seed-1.6 系列中速度快、成本低的模型',
+            '复杂推理或代码任务：优先测试 Doubao-Seed-Code 或更高能力的旗舰模型',
+            'Agent 工作流：优先查看 Responses API、Agent Plan 和工具调用能力',
             '图像、语音、Embedding 等任务：选择对应专项模型',
             '购买前查看计费项、免费额度、资源包有效期和后付费开关'
           ],
@@ -954,7 +956,8 @@ print(response.choices[0].message.content)`,
       tips: [
         '个人开发者建议先用免费额度或小额充值完成端到端测试',
         '已有 OpenAI SDK 项目可优先用兼容模式迁移，改动最少',
-        '模型名、Endpoint ID、地域和接入地址尽量从控制台复制，避免手填出错'
+        '模型名、Endpoint ID、地域和接入地址尽量从控制台复制，避免手填出错',
+        '代码任务优先单独测试 Seed-Code，普通聊天和内容任务优先测试 Doubao-Seed-1.6'
       ],
       warnings: [
         '价格、免费额度和模型列表会随平台更新，购买前以火山引擎控制台为准',
@@ -972,15 +975,15 @@ print(response.choices[0].message.content)`,
   {
     id: 'openai',
     name: 'OpenAI GPT',
-    desc: 'OpenAI API 怎么购买和首次调用？覆盖 Billing、API Key、GPT-5.5 与常见报错排查',
+    desc: 'OpenAI API 怎么购买和首次调用？覆盖 Billing、API Key、官方 GPT-5.5 / GPT-5.5 pro 与常见报错排查',
     url: 'https://platform.openai.com/',
     proxy: true,
-    features: ['GPT-5.5', 'Agent能力强', '长上下文', '生态成熟'],
+    features: ['GPT-5.5', 'GPT-5.5 pro', '1M上下文', '工具调用强'],
     icon: '🟠',
     badge: { text: '需代理', type: 'warning' },
     tutorial: {
       title: 'OpenAI API 购买与首次调用教程（2026最新，适合开发者）',
-      subtitle: '从 OpenAI Platform 账号、Billing 付款、API Key 创建到本地首次调用的精简流程',
+      subtitle: '从 OpenAI Platform 账号、Billing 付款、API Key 创建到使用官方模型 ID gpt-5.5 完成首次调用',
       steps: [
         {
           title: '准备 OpenAI Platform 账号',
@@ -1043,8 +1046,8 @@ print(response.choices[0].message.content)`,
           codeExplanation: '把真实 Key 写入 .env，代码中通过环境变量读取，不要直接写在源码里。'
         },
         {
-          title: '用 Python 完成首次调用',
-          description: '第一次测试只做最小请求，先确认 Key、网络、Billing 和模型权限都正常。',
+          title: '用 Python 调用官方 GPT-5.5',
+          description: '第一次测试只做最小请求，使用官方模型 ID gpt-5.5；如果你看到 GPT-5.5D / gpt-5.5d，应先要求来源，因为 OpenAI 官方文档当前未列出这个模型 ID。',
           image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=450&fit=crop',
           items: [
             '从 .env 读取 OPENAI_API_KEY',
@@ -1069,13 +1072,17 @@ response = client.responses.create(
 )
 
 print(response.output_text)`,
-          codeExplanation: '使用 OpenAI SDK 的 Responses API 发起一次最小调用。能打印 output_text 即代表 API Key、Billing、网络和模型权限基本正常。'
+          codeExplanation: '使用 OpenAI SDK 的 Responses API 发起一次最小调用。OpenAI 官方文档确认的模型 ID 是 gpt-5.5，当前快照为 gpt-5.5-2026-04-23。能打印 output_text 即代表 API Key、Billing、网络和模型权限基本正常。'
         },
         {
           title: '按任务选择模型并控制成本',
           description: '跑通后再根据任务切换模型，不要所有任务都默认使用最贵模型。',
           items: [
-            'GPT-5.5：适合科研、金融、Agent、多步骤工具调用和高难代码任务',
+            'GPT-5.5：官方最新旗舰模型，适合复杂专业工作、编码、长上下文检索、工具型 Agent 和生产级助手',
+            'GPT-5.5 pro：更高计算量版本，适合更难的 Responses API 异步任务；请求可能需要数分钟，建议配合 background mode',
+            '标准价格：gpt-5.5 在 <272K 上下文下为 $5 输入 / $30 输出每百万 token（约 ¥36/¥218）；gpt-5.5-pro 为 $30 / $180 每百万 token（约 ¥218/¥1,305）',
+            'Batch/Flex：gpt-5.5 在 <272K 上下文下为 $2.5 输入 / $15 输出每百万 token（约 ¥18/¥109），适合离线批量任务',
+            '长上下文成本：GPT-5.5 超过 272K 输入 token 的请求会按官方规则加价，正式上线前必须重新核对 Pricing 页面',
             '较轻量模型：适合摘要、分类、客服、批量结构化等成本敏感任务',
             '长上下文任务先压缩材料，再提交必要内容，避免无效 token 成本',
             '高并发任务使用 Batch 或队列，避免触发 429'
@@ -1083,12 +1090,14 @@ print(response.output_text)`,
           whereToClick: 'Platform → Docs / Models / Usage 页面查看模型、价格和用量',
           expectedResult: '根据任务选择了模型，并能在 Usage 中看到调用记录',
           failureChecklist: ['模型名要以官方文档和控制台为准', '如果模型不可用，检查 Project 权限', '如果成本异常，先降低上下文长度和输出长度'],
-          warning: '模型价格、上下文和权限会随平台变化，正式上线前以控制台和官方文档为准。'
+          warning: '模型价格、上下文和权限会随平台变化，正式上线前以控制台和官方文档为准；当前官方文档未确认 GPT-5.5D / gpt-5.5d。'
         }
       ],
       tips: [
         '先用免费或小额度真实任务测试，再决定是否长期使用 OpenAI API',
         'ChatGPT 订阅和 API Billing 独立计费，排查 quota 时优先看 Platform Billing',
+        'GPT-5.5 官方模型 ID 是 gpt-5.5，Pro 版本是 gpt-5.5-pro；不要把未证实的 GPT-5.5D 写入生产文案',
+        '参考 OpenAI 官方 Latest model、Models 和 Pricing 页面核对模型快照、工具支持、上下文和价格',
         '把 API Key 放在 .env、环境变量或密钥管理器里，不要硬编码',
         '如果要接入 Claude Code、Codex、Gemini CLI、OpenCode 等工具，建议用 CC Switch 统一管理 Key、Base URL 和模型名'
       ],
@@ -1108,10 +1117,10 @@ print(response.output_text)`,
   {
     id: 'claude',
     name: 'Anthropic Claude',
-    desc: 'Claude 国内怎么订阅？封号避坑指南，1M上下文、代码能力最强',
+    desc: 'Claude 国内怎么订阅？覆盖 Opus 4.7、Sonnet 4.6、Haiku 4.5 与 1M 上下文',
     url: 'https://www.anthropic.com/',
     proxy: true,
-    features: ['1M上下文', '代码能力最强', '视觉能力提升', '安全可靠'],
+    features: ['Opus 4.7', 'Sonnet 4.6', '1M上下文', '安全可靠'],
     icon: '🟠',
     badge: { text: '需代理', type: 'warning' },
     tutorial: {
@@ -1137,12 +1146,12 @@ print(response.output_text)`,
           title: '了解 Claude 三档订阅套餐',
           description: 'Claude 提供三档个人订阅，先了解区别再决定。',
           items: [
-            'Claude Pro · $20/月 — 可用 Opus 4.7，有月度用量上限，适合轻度使用',
-            'Claude Max 5x · $100/月 — 可用 Opus 4.7，使用额度约为 Pro 的 5 倍，适合重度依赖 AI 的专业人士',
-            'Claude Max 20x · $200/月 — 可用 Opus 4.7，使用额度约为 Pro 的 20 倍，适合团队或核心生产力'
+            'Claude Pro · $20/月（约¥145） — 可用 Opus 4.7，有月度用量上限，适合轻度使用',
+            'Claude Max 5x · $100/月（约¥725） — 可用 Opus 4.7，使用额度约为 Pro 的 5 倍，适合重度依赖 AI 的专业人士',
+            'Claude Max 20x · $200/月（约¥1,450） — 可用 Opus 4.7，使用额度约为 Pro 的 20 倍，适合团队或核心生产力'
           ],
           whereToClick: '浏览器访问 claude.ai → 登录 → 左下角头像 → Plans',
-          expectedResult: '页面显示 Pro($20)、Max 5x($100)、Max 20x($200) 三档套餐',
+          expectedResult: '页面显示 Pro($20/¥145)、Max 5x($100/¥725)、Max 20x($200/¥1,450) 三档套餐',
           failureChecklist: ['确认已登录 Claude 账号', '如看不到套餐页面，检查网络环境']
         },
         {
@@ -1214,7 +1223,7 @@ print(response.output_text)`,
           description: '不是程序员或没打算把 AI 嵌入到自己做的软件里，可以跳过本节。普通用户用订阅套餐就全包含了。',
           items: [
             'API = 程序向 Claude Opus 4.7 提问的"后门"，适合把 AI 嵌入自己的软件中',
-            '按 Token 计费：Opus 4.7 输入 $5/百万 Token、输出 $25/百万 Token',
+            '按 Token 计费：Opus 4.7 输入 $5/百万 Token、输出 $25/百万 Token（约 ¥36/¥181）',
             'https://console.anthropic.com → 登录 → API Keys → 创建新密钥 → 立刻复制保存'
           ],
           whereToClick: 'console.anthropic.com → 登录 → API Keys → 创建新密钥',
@@ -1245,11 +1254,11 @@ print(message.content)`,
             '苹果内购路线：美区 Apple ID + 正规渠道礼品卡充值 → Claude App 内订阅（比官网贵约 30%）',
             '中转平台方案：寻找提供长周期售后与封号质保的 API 中转服务，按量付费，无需自己承担封号风险',
             '不推荐新手尝试虚拟信用卡方案，Anthropic 风控对 VCC 拒付率极高',
-            'Pro（$20/月）适合大多数人，先买一个月试试，随时可取消续费'
+            'Pro（$20/月，约¥145）适合大多数人，先买一个月试试，随时可取消续费'
           ],
           whereToClick: '选择合规的第三方代充平台或中转平台，确认有"封号包退款"承诺',
           expectedResult: '支付完成，Claude 账号已升级，可使用 Opus 4.7',
-          failureChecklist: ['代充平台是否承诺封号退款', '下单前是否搜索了平台评价', 'Pro($20/月) 适合大多数人，先买一个月试试'],
+          failureChecklist: ['代充平台是否承诺封号退款', '下单前是否搜索了平台评价', 'Pro($20/月，约¥145) 适合大多数人，先买一个月试试'],
           warning: 'Claude 封号是全球性问题，没有任何渠道能 100% 避免。保护资金的最佳方式是选择承诺封号退款的代充平台。'
         }
       ],
@@ -1276,10 +1285,10 @@ print(message.content)`,
   {
     id: 'gemini',
     name: 'Google Gemini',
-    desc: 'Gemini API 国内使用、免费额度与订阅购买教程',
+    desc: 'Gemini API 国内使用、免费额度与订阅购买教程，覆盖 Gemini 3.5 Flash 与 3.1 Pro Preview',
     url: 'https://ai.google.dev/',
     proxy: true,
-    features: ['多模态', '长上下文', '免费 API'],
+    features: ['Gemini 3.5 Flash', 'Gemini 3.1 Pro Preview', '多模态', '免费 API'],
     icon: '🟠',
     badge: { text: '需代理', type: 'warning' },
     tutorial: {
@@ -1287,14 +1296,15 @@ print(message.content)`,
       subtitle: '面向国内开发者和 AI 用户，说明官方订阅、API Key 创建、支付失败排查与安全配置。价格、配额和可用地区会变动，最终以 Google 官方页面为准。',
       steps: [
         {
-          title: '先确认 Gemini 是否适合你的用途',
-          description: 'Gemini 分为网页/ App 订阅和开发者 API 两条线。网页订阅适合对话、文档、图片和日常办公；API 适合把模型接入自己的程序、脚本或开发工具。',
+          title: '先看清订阅、API 和额度规则',
+          description: 'Gemini 分为网页 / App 订阅和开发者 API 两条线。订阅适合对话、文档、图片和日常办公；API 适合把模型接入程序、脚本或开发工具。',
           important: true,
           items: [
-            '只想在网页聊天、写作、看图、整理资料：优先看 Gemini 网页端或 App 订阅',
-            '要在代码、机器人、自动化脚本里调用模型：需要 Google AI Studio 或 Google Cloud 的 API Key',
-            '订阅权益、模型名称、价格、免费额度和地区支持经常调整，购买前必须以当前官方页面为准',
-            '高强度长文本、图片/视频、多轮推理会更快消耗额度或触发频率限制，重度用户要先用真实任务测试'
+            '网页订阅：面向个人使用，重点是 Gemini App、Gemini 网页端、部分 Google One 权益和高级模型入口',
+            'API Key：面向开发调用，重点是 Google AI Studio、Google Cloud Billing、模型调用、配额和项目权限',
+            '订阅降价不等于实际可用额度一定增加。高级模型、Deep Think、长上下文、图片/视频和代码库分析通常会更快消耗额度',
+            '价格、模型名称、免费额度、速率限制和地区支持经常变化，购买前必须以当前官方页面和结算页为准',
+            '重度开发、科研或长文档用户不要只看宣传页，先用自己的真实任务测试 1-2 天，再决定是否长期订阅'
           ],
           whereToClick: '浏览器访问 gemini.google.com → 登录 → 查看升级选项',
           expectedResult: '能看到当前账号可用的免费版、付费订阅或升级入口',
@@ -1347,12 +1357,13 @@ print(message.content)`,
           important: true,
           items: [
             'https://gemini.google.com → 登录 → 左下角或设置菜单 → 升级到 Gemini Advanced',
+            'Gemini Advanced 订阅价格约 $19.99/月（约¥145），含 Google One AI Premium 权益',
             '对比页面展示的套餐、模型权益、存储权益、试用期和续费价格',
             '确认自动续费、税费、退款条款后，再填写 Google 支持的付款方式',
             '确认总额无误后提交，验证通过后账号立即升级，邮箱收到确认邮件'
           ],
           whereToClick: 'gemini.google.com → 登录 → 设置菜单 → 升级到 Gemini Advanced → 选套餐 → 订阅',
-          expectedResult: '验证通过后账号立即升级，邮箱收到确认邮件，Gemini Advanced 功能可用',
+          expectedResult: '验证通过后账号立即升级，邮箱收到确认邮件，Gemini Advanced 功能可用（订阅约 $19.99/月，约¥145）',
           failureChecklist: ['页面提示地区不可用时，说明当前账号暂不支持该订阅', '支付失败时先核对卡片是否支持海外/线上订阅扣款', '连续失败不要反复提交，先等待或更换官方支持的支付方式']
         },
         {
@@ -1408,10 +1419,26 @@ export GEMINI_API_KEY="你的 API Key"
           expectedResult: '选定一种稳定、可付款、可持续维护的接入方式',
           failureChecklist: ['不要相信永久无限量、低价共享账号或绕风控承诺', '确认服务条款、退款规则、数据隐私和 API 稳定性', '上线前用自己的真实任务测试延迟、成功率和成本'],
           warning: '第三方聚合服务要重点核对资质、隐私政策、是否允许商业使用、是否能开票和是否提供稳定售后。不要把敏感数据直接发给不可信平台。'
+        },
+        {
+          title: '最后：Gemini 自己的提醒',
+          description: '下面这段保留原文想表达的“别被营销话术带着走”，但改成更适合公开教程的表达。它不是 Google 官方声明，而是站内用 Gemini 口吻写给用户的购买提醒。',
+          items: [
+            '如果我是 Gemini，我会建议你先确认自己的真实任务：日常聊天、内容创作、长文档、多模态、代码分析，消耗额度完全不是一回事',
+            '不要只因为“高级”“降价”“Deep Think”这些词就直接付费。先看结算页、额度说明和取消规则，再用真实任务测试',
+            '订阅 Gemini Advanced 不等于 API 调用免费。网页端会员、Google One 权益和开发者 API 计费是不同体系',
+            '如果只是轻度使用，免费版或低成本 API 测试可能已经够用；如果是重度长文档和多模态任务，就要把额度、延迟和账单都算进去',
+            '最稳妥的策略：先用免费额度或短周期订阅跑真实任务，确认效果、稳定性和成本后，再决定是否长期使用'
+          ],
+          whereToClick: '购买前回到套餐页、API 定价页和账单页逐项确认',
+          expectedResult: '明确自己买的是网页订阅还是 API 调用，并知道取消、续费和额度限制在哪里查看',
+          failureChecklist: ['仍然分不清订阅和 API 的区别时，先不要付款', '看不到官方额度说明时，不要相信二手截图或过期教程', '需要生产环境接入时，先做小流量压测和成本估算'],
+          warning: '这段是站内购买建议，不代表 Google 官方承诺。实际权益、模型和额度以产品内展示与官方文档为准。'
         }
       ],
       tips: [
         '网页订阅适合个人使用，API Key 适合程序接入，两者账单和额度通常独立',
+        '订阅价格变低不一定代表重度任务更划算，高级模型、长上下文和多模态任务要重点看额度消耗',
         '价格、模型名称、免费额度、速率限制和地区支持会变化，购买前以官方结算页和文档为准',
         '开发测试先用免费额度或低成本模型跑真实任务，再决定是否升级付费',
         '如果要接入多个 AI 工具，建议用 CC Switch 统一管理 API Key、Base URL 和模型名'
@@ -1542,11 +1569,11 @@ export const faqCategories = [
     items: [
       {
         question: '这么多 AI 模型，到底该选哪个？',
-        answer: '根据使用场景选择：①编程开发首选 Claude（代码理解力最强）或 DeepSeek（性价比最高）；②内容创作和中文场景首选 DeepSeek（中文表达好、价格低）或 Claude（创意能力强）；③数据分析首选 OpenAI（Code Interpreter 生态）或 Gemini（多模态能力强）；④预算有限首选 DeepSeek（价格仅为 GPT-5.5 的 1/10）或国产免费方案；⑤企业级应用首选阿里云通义千问（合规性好、稳定性高）。建议先用各平台的免费额度实际测试，再做最终决定。详见本站 API 测评页面的详细对比。'
+        answer: '根据使用场景选择：①编程开发和 Agent 任务优先测试通义千问 Qwen3.7-Max、Claude、DeepSeek V4 Pro/Flash 或 OpenAI；②内容创作和中文场景优先看通义千问 Qwen3.6-Plus / Flash、Kimi K2.6 和豆包；③长文档/多模态看 Gemini 3.5 Flash、Gemini 3.1 Pro Preview、Claude Opus 4.7；④预算有限先测 DeepSeek V4 Flash、Qwen3.6-Flash、豆包和国产免费额度；⑤企业级应用按云生态选阿里云百炼、火山方舟、腾讯云/TokenHub。建议先用各平台免费额度跑真实任务，再做最终决定。详见本站 API 测评页面。'
       },
       {
         question: 'GPT-5.5、Claude Opus、DeepSeek V4 之间怎么选？',
-        answer: '三个模型各有优势：①GPT-5.5：Agent 能力最强（Terminal-Bench 82.7%），工具链生态最成熟，适合构建复杂的 AI Agent 应用，但价格最高且需要代理；②Claude Opus：代码理解和长文档处理能力最强，200K 上下文窗口，适合编程和深度分析，价格中等，需要代理；③DeepSeek V4：性价比之王，代码和推理能力在国产模型中顶尖，价格仅为 GPT-5.5 的 1/10，国内直连无需代理。简单总结：追求极致能力选 Claude/GPT，追求性价比选 DeepSeek。'
+        answer: '三个模型各有优势：①GPT-5.5：OpenAI 官方确认的最新旗舰模型，模型 ID 为 gpt-5.5，适合复杂专业工作、编码、工具型 Agent 和长上下文检索，但价格高且国内通常需要代理；②Claude Opus / Sonnet：长文档、代码理解和安全输出强，但国内使用成本和账号风险更高；③DeepSeek V4：Flash 便宜快速，Pro 更适合复杂推理和长上下文，国内直连且兼容 OpenAI/Anthropic 接口。简单总结：极致能力先看官方 GPT-5.5 / Claude，性价比和国内直连看 DeepSeek。当前 OpenAI 官方文档未确认 GPT-5.5D / gpt-5.5d。'
       },
       {
         question: '免费模型和付费模型差距大吗？',
@@ -1575,7 +1602,7 @@ export const faqCategories = [
       },
       {
         question: '如何处理长文本输入超过 Token 限制的问题？',
-        answer: '各模型的 Token 限制不同，超限后会报错。解决方案：①使用 tiktoken 等库预先计算 Token 数，超过限制时自动截断或分段；②使用摘要模型先压缩长文本，再输入主模型处理；③选择上下文窗口更大的模型（Claude 200K、GPT-5.5 1M）；④对于超长文档，采用"分段处理 + 合并结果"的策略；⑤在 prompt 中明确告诉模型只关注关键部分，减少无用上下文。注意：上下文越长，调用成本越高且响应越慢，建议在效果和成本间找平衡。'
+        answer: '各模型的 Token 限制不同，超限后会报错。解决方案：①使用 tiktoken 等库预先计算 Token 数，超过限制时自动截断或分段；②使用摘要模型先压缩长文本，再输入主模型处理；③选择上下文窗口更大的模型（如 OpenAI 官方 GPT-5.5 1M、DeepSeek V4 1M、Claude 长上下文模型等，具体以上线时官方文档为准）；④超长文档采用“分段处理 + 合并结果”；⑤在 prompt 中明确只关注关键部分，减少无用上下文。注意：GPT-5.5 超过 272K 输入 token 的请求会触发更高计费，上下文越长成本越高且响应越慢。'
       },
       {
         question: '什么是 Token？怎么计算？',
@@ -1772,7 +1799,7 @@ export const appTutorials: AppTutorial[] = [
           {
             title: '示例：接入 OpenAI 兼容 API',
             description: '多数国产和中转平台都提供 OpenAI 兼容格式，通常只需要填 API Key、Base URL 和模型名。',
-            code: 'Provider Name: DeepSeek\nAPI Endpoint: https://api.deepseek.com\nAPI Key: sk-xxxxxxxxxxxxxxxx\nModel Name: deepseek-chat',
+            code: 'Provider Name: DeepSeek\nAPI Endpoint: https://api.deepseek.com\nAPI Key: sk-xxxxxxxxxxxxxxxx\nModel Name: deepseek-v4-flash',
             items: [
               'DeepSeek 可使用 `https://api.deepseek.com`',
               'MiMo 可使用 `https://api.xiaomimimo.com/v1`',
@@ -1865,6 +1892,499 @@ export const appTutorials: AppTutorial[] = [
         tips: [
           '排查顺序：工具标签 → API Key → Base URL → 模型名 → 账户余额 → 网络代理',
           '配置成功后建议记录一组稳定可用的低成本模型，作为日常默认方案'
+        ]
+      }
+    ]
+  },
+  {
+    "id": "codex",
+    "name": "OpenAI Codex",
+    "desc": "OpenAI 官方 AI 编程助手安装与使用教程，覆盖 CLI、IDE 扩展、云端任务、AGENTS.md、权限审批、安全规范和真实项目工作流。",
+    "url": "https://chatgpt.com/codex",
+    "icon": "🤖",
+    "badge": {
+      "text": "官方",
+      "type": "success"
+    },
+    "sections": [
+      {
+        "title": "Codex 是什么，适合谁",
+        "content": "Codex 是 OpenAI 面向软件开发的 AI 编程助手。它不是单纯聊天工具，而是可以读取项目、解释代码、修改文件、运行命令、做 code review，并把失败日志继续交给模型修复的开发代理。新手最容易混淆的是：Codex 有 CLI、IDE 扩展和云端任务三种入口，适合的场景并不完全一样。",
+        "steps": [
+          {
+            "title": "先分清三种入口",
+            "description": "如果你只记一件事：本地 CLI 适合直接在项目目录里干活，IDE 扩展适合边看代码边改，云端 Codex 适合把明确任务委托出去后台跑。",
+            "image": "/images/tutorial/codex-site-overview.png",
+            "items": [
+              "Codex CLI：在终端中启动，适合修 bug、跑测试、生成脚本、批量读写项目文件。",
+              "Codex IDE：在 VS Code、Cursor、Windsurf、JetBrains 等编辑器内使用，适合结合当前文件和选区做修改。",
+              "Codex Cloud：从 chatgpt.com/codex 进入，适合把任务交给云端环境处理，例如修复 issue、分析仓库、准备 PR 草稿。",
+              "三者不是替代关系：日常本地开发优先 CLI/IDE，明确的大任务再交给云端。"
+            ]
+          },
+          {
+            "title": "Codex 最适合的任务",
+            "description": "Codex 的优势在于“理解项目上下文 + 修改代码 + 自己验证”。不要把它只当成问答模型，用任务目标和验收标准驱动它。",
+            "items": [
+              "读项目：让它先总结目录结构、技术栈、关键路由和数据来源。",
+              "修 bug：给出复现路径、报错日志、期望行为，让它定位并改最小范围。",
+              "写功能：明确页面路径、组件范围、数据结构、移动端要求和验证命令。",
+              "做 review：让它检查当前 diff 的 bug、回归风险、遗漏测试和安全问题。",
+              "写维护材料：让它生成 AGENTS.md、README、部署日志、排错清单。"
+            ]
+          },
+          {
+            "title": "哪些任务不建议直接交给它",
+            "description": "Codex 很强，但不代表所有任务都应该一次性交给它自动完成。权限、安全、支付、生产数据库相关任务要拆小并人工确认。",
+            "items": [
+              "不要直接让它执行生产删除、批量覆盖、数据库迁移、密钥轮换这类高风险动作。",
+              "不要把需求写成“优化一下全站”，应改成“只改这个页面，验证 360px 移动端不横向溢出”。",
+              "不要把 API Key、服务器密码、Cookie 直接写进聊天记录或提交到仓库。",
+              "不要让它在脏工作区里随便 commit，先要求列出会包含和会排除的文件。"
+            ]
+          }
+        ],
+        "tips": [
+          "官方 CLI 文档：https://developers.openai.com/codex/cli",
+          "官方 IDE 文档：https://developers.openai.com/codex/ide",
+          "官方 AGENTS.md 文档：https://developers.openai.com/codex/guides/agents-md"
+        ]
+      },
+      {
+        "title": "安装前准备",
+        "content": "安装 Codex 前先把基础环境准备好，可以避免一半以上的新手报错。Windows 用户尤其要确认 Node.js、npm、Git、终端路径和项目目录都可用。",
+        "steps": [
+          {
+            "title": "准备账号与网络",
+            "description": "Codex 首次启动需要登录 OpenAI / ChatGPT 账号，或按提示使用 API Key。账号、套餐、组织和项目权限会影响可用模型与额度。",
+            "image": "/images/tutorial/codex-site-auth.png",
+            "items": [
+              "准备一个可正常登录的 ChatGPT / OpenAI 账号。",
+              "如果使用 API Key，确认 key 属于正确的 OpenAI Project，并且账号有可用额度。",
+              "网络需要能正常访问 OpenAI 相关服务，否则登录、模型调用和云端任务都会失败。",
+              "不要把 API Key 写进前端代码、公开仓库、截图或教程评论区。"
+            ]
+          },
+          {
+            "title": "检查本机基础命令",
+            "description": "打开终端，先确认 Node.js、npm 和 Git 都能输出版本号。没有版本号就先安装对应工具。",
+            "code": "node -v\nnpm -v\ngit --version",
+            "items": [
+              "Node.js：建议安装 LTS 版本，安装后重新打开终端。",
+              "npm：随 Node.js 一起安装，用来安装 Codex CLI。",
+              "Git：建议安装 Git for Windows，便于 Codex 查看 diff、分支和提交历史。",
+              "终端：Windows 可用 PowerShell、Windows Terminal 或 Git Bash。"
+            ]
+          },
+          {
+            "title": "准备一个干净项目目录",
+            "description": "第一次不要直接拿生产项目练手，建议新建一个测试目录，或在真实项目里先让 Codex 只读分析。",
+            "code": "mkdir codex-demo\ncd codex-demo\ngit init",
+            "items": [
+              "真实项目使用前先执行 `git status --short`，确认有哪些未提交改动。",
+              "让 Codex 修改前先要求它列出计划修改的文件。",
+              "重要项目先新建分支，避免把实验改动混进主分支。",
+              "不要在没有版本控制的目录里让 Codex 大范围改文件。"
+            ]
+          }
+        ],
+        "warnings": [
+          "如果你的项目里已经有未提交改动，先保存或提交自己的工作，再让 Codex 动手。否则很难区分哪些是你改的，哪些是 AI 改的。"
+        ]
+      },
+      {
+        "title": "安装 Codex CLI",
+        "content": "Codex CLI 是最直接的本地入口。官方推荐通过 npm 全局安装 `@openai/codex`，安装完成后用 `codex --version` 验证。",
+        "steps": [
+          {
+            "title": "执行官方安装命令",
+            "description": "在终端执行 npm 全局安装命令。安装过程需要联网下载依赖，第一次可能需要几十秒到几分钟。",
+            "image": "/images/tutorial/codex-site-install-cli.png",
+            "code": "npm install -g @openai/codex",
+            "items": [
+              "只从 npm 官方包名安装，不要安装来源不明的同名包。",
+              "Windows 如果提示权限不足，尝试以管理员身份打开终端后重试。",
+              "macOS / Linux 如果全局安装权限失败，优先修复 npm 全局目录权限，不要随便使用来路不明的一键脚本。"
+            ]
+          },
+          {
+            "title": "验证安装结果",
+            "description": "安装完成后检查 Codex 命令是否可用。能输出版本号，说明 CLI 已经进入 PATH。",
+            "code": "codex --version",
+            "items": [
+              "能看到类似 `codex-cli 0.x.x` 的版本号：安装成功。",
+              "提示 command not found：终端没有读取到 npm 全局 bin 路径。",
+              "提示权限或执行策略错误：检查 Windows PowerShell 执行策略或 npm 全局目录权限。"
+            ]
+          },
+          {
+            "title": "command not found 的快速修复",
+            "description": "先查 npm 全局安装目录，再确认对应 bin 目录已经加入 PATH。Windows 用户安装后一定要重新打开终端。",
+            "code": "npm config get prefix\nnpm bin -g",
+            "items": [
+              "Windows 常见路径：`C:\\Users\\你的用户名\\AppData\\Roaming\\npm`。",
+              "macOS / Linux 常见路径：`/usr/local/bin`、`~/.npm-global/bin` 或 Node 版本管理器目录。",
+              "修改 PATH 后重新打开终端，再执行 `codex --version`。",
+              "如果公司电脑限制全局安装，先咨询管理员或使用受控开发环境。"
+            ]
+          }
+        ],
+        "tips": [
+          "官方安装命令以 OpenAI 文档为准：https://developers.openai.com/codex/cli",
+          "如果只是临时试用，可以先在测试目录里启动，确认体验后再进入真实项目。"
+        ]
+      },
+      {
+        "title": "登录与首次启动",
+        "content": "安装完成后不要急着让 Codex 改项目。第一次启动的目标是完成登录、确认当前目录、让它只读分析项目，并验证你能控制权限。",
+        "steps": [
+          {
+            "title": "启动 Codex",
+            "description": "进入一个测试目录或项目根目录，执行 `codex`。首次启动会进入登录或授权流程。",
+            "image": "/images/tutorial/codex-site-auth.png",
+            "code": "cd your-project\ncodex",
+            "items": [
+              "如果弹出浏览器登录，按页面提示完成 OpenAI / ChatGPT 授权。",
+              "如果选择 API Key，确认 key 不会被写进项目文件。",
+              "登录成功后，Codex 会以当前目录作为主要工作区。",
+              "不要在桌面、下载目录或整个磁盘根目录直接启动 Codex。"
+            ]
+          },
+          {
+            "title": "第一条指令只做只读分析",
+            "description": "首次使用建议先让 Codex 读项目，不要修改文件。这样可以确认它理解的是正确目录和技术栈。",
+            "image": "/images/tutorial/codex-site-first-task.png",
+            "code": "请阅读当前项目，先总结目录结构、技术栈、主要页面入口和数据来源。\n不要修改任何文件，也不要运行会改变文件的命令。",
+            "items": [
+              "回答里应该能看到框架、路由目录、主要配置文件和启动脚本。",
+              "如果它识别错项目，先退出，进入正确目录再启动。",
+              "如果它准备修改文件，立刻打断并要求先给计划。"
+            ]
+          },
+          {
+            "title": "确认权限审批逻辑",
+            "description": "Codex 在执行命令、写文件、联网或高风险操作时通常会按当前模式请求确认。新手建议保留审批，不要一开始就全自动。",
+            "items": [
+              "允许：读文件、搜索代码、运行无副作用的检查命令。",
+              "谨慎允许：安装依赖、写文件、启动服务、联网下载。",
+              "拒绝或拆小：删除目录、覆盖大量文件、重置 Git、修改生产配置。",
+              "每次同意前看清命令和工作目录，尤其是 `rm`、`del`、`git reset`、`git checkout`。"
+            ],
+            "warning": "如果你看不懂某条命令，不要直接同意。让 Codex 先解释命令目的、影响范围和回退方式。"
+          }
+        ],
+        "tips": [
+          "安全的第一条提示词：先读项目，只总结，不修改。",
+          "Codex 能力越强，越要把任务边界、验收方式和禁止事项写清楚。"
+        ]
+      },
+      {
+        "title": "在真实项目里使用 Codex",
+        "content": "真实项目里最稳的做法是：先让 Codex 只读定位，再确认计划，然后小范围修改，最后运行验证命令并查看 diff。不要一次性把“设计、重构、测试、部署”全部塞进一个模糊请求。",
+        "steps": [
+          {
+            "title": "让它先定位问题，不要立刻改",
+            "description": "当页面错位、接口报错或构建失败时，先让 Codex 收集上下文和复现原因。",
+            "code": "请只读排查这个问题：移动端 390px 下搜索框和推荐栏没有对齐。\n先指出可能相关的文件、CSS 规则和复现路径，不要修改文件。",
+            "items": [
+              "适合 UI bug、构建失败、路由 404、搜索结果缺失等问题。",
+              "让它先列文件和原因，可以避免误改无关页面。",
+              "如果它的判断不准确，再补充截图、URL、报错日志。"
+            ]
+          },
+          {
+            "title": "确认计划后再让它修改",
+            "description": "计划合理后，把任务改成可验收的修改请求。范围越明确，结果越稳定。",
+            "code": "按刚才定位结果修复，但只允许修改首页相关组件和样式。\n要求：桌面端不变，移动端 360px 不横向溢出，修完后运行相关检查并给出截图。",
+            "items": [
+              "写清楚允许修改的目录或文件。",
+              "写清楚不能影响的页面或端。",
+              "写清楚验证方式，例如截图、lint、ts-check、单测、构建。"
+            ]
+          },
+          {
+            "title": "让它验证并解释 diff",
+            "description": "修改完成后，要求 Codex 用命令和浏览器验证，并说明每个文件为什么被改。",
+            "code": "请运行必要检查，然后总结：\n1. 修改了哪些文件\n2. 每个文件为什么改\n3. 如何验证\n4. 是否有未处理风险",
+            "items": [
+              "前端页面：至少看桌面端和移动端首屏。",
+              "后端或脚本：至少跑最接近的测试或类型检查。",
+              "上线前：要求列出会提交的文件和排除的脏文件。"
+            ]
+          }
+        ],
+        "tips": [
+          "推荐工作流：只读分析 → 修改计划 → 小范围改动 → 运行验证 → 查看 diff → 再决定提交。",
+          "如果项目有 AGENTS.md，Codex 会更稳定地遵守包管理器、测试命令、代码风格和安全边界。"
+        ]
+      },
+      {
+        "title": "写好 AGENTS.md",
+        "content": "AGENTS.md 是给 Codex 看的项目说明文件，适合写包管理器、构建命令、目录约定、禁止事项、测试流程和提交规范。它相当于把你经常重复告诉 AI 的规则固化到仓库里。",
+        "steps": [
+          {
+            "title": "在项目根目录创建 AGENTS.md",
+            "description": "把项目级规则写在仓库根目录。以后 Codex 进入这个项目时，会优先读取这些说明。",
+            "image": "/images/tutorial/codex-site-agents-md.png",
+            "code": "# AGENTS.md\n\n## Project Rules\n\n- Use pnpm only. Do not use npm or yarn.\n- Make surgical changes. Do not refactor unrelated files.\n- Before editing, state which files you plan to change.\n- Never run destructive git commands unless explicitly requested.\n- After code changes, run pnpm exec tsc -p tsconfig.json --noEmit.\n- For frontend changes, verify desktop and 390px mobile layout.",
+            "items": [
+              "规则要短、具体、可验证，不要写空泛价值观。",
+              "把最容易出错的地方写进去，例如包管理器、启动命令、部署方式。",
+              "如果项目有多套应用，可以在子目录再放一个 AGENTS.md 覆盖局部规则。"
+            ]
+          },
+          {
+            "title": "把常用验证命令写进去",
+            "description": "不要只告诉 Codex “测试一下”，要把项目真实命令写清楚。",
+            "code": "## Verification\n\n- Type check: pnpm exec tsc -p tsconfig.json --noEmit\n- Lint changed files: pnpm exec eslint <changed-files>\n- Local preview: pnpm run preview:local\n- Production build: pnpm exec next build",
+            "items": [
+              "命令越准确，Codex 越不容易乱猜。",
+              "如果某些命令很慢，写明什么时候才需要跑。",
+              "如果部署由人工处理，写明 Codex 不要自动部署。"
+            ]
+          },
+          {
+            "title": "写清楚提交和部署边界",
+            "description": "很多事故不是代码不会写，而是 AI 把无关文件一起提交或提前部署。把边界写进 AGENTS.md。",
+            "code": "## Git and Deployment\n\n- Do not commit or push unless the user explicitly asks.\n- Do not include unrelated dirty files in a commit.\n- Before any commit, show git diff --stat and git status --short.\n- Deployment requires a separate explicit instruction.",
+            "items": [
+              "适合多人协作仓库、线上网站、带密钥或部署脚本的项目。",
+              "Codex 可以帮你写日志，但不应该在你没确认时推送。",
+              "如果有服务器部署流程，把入口和等待时间写清楚。"
+            ]
+          }
+        ],
+        "tips": [
+          "官方 AGENTS.md 指南：https://developers.openai.com/codex/guides/agents-md",
+          "AGENTS.md 不是给用户看的文章，而是给 Codex 看的操作手册。"
+        ]
+      },
+      {
+        "title": "IDE 扩展怎么用",
+        "content": "如果你主要在编辑器里写代码，Codex IDE 扩展比纯 CLI 更顺手。它能结合当前文件、选区、打开的上下文和编辑器状态，让你少复制路径和代码片段。",
+        "steps": [
+          {
+            "title": "选择你的编辑器",
+            "description": "OpenAI 官方 Codex IDE 扩展覆盖常见开发编辑器。安装前确认自己使用的是 VS Code、Cursor、Windsurf 或 JetBrains 系列。",
+            "image": "/images/tutorial/codex-site-ide.png",
+            "items": [
+              "VS Code / Cursor / Windsurf：通常从扩展市场搜索 Codex 或 OpenAI Codex。",
+              "JetBrains：从插件市场安装对应插件。",
+              "安装后按提示登录同一个 OpenAI / ChatGPT 账号。",
+              "如果扩展无法连接，先确认本机网络和账号权限，再检查编辑器代理设置。"
+            ]
+          },
+          {
+            "title": "用选区驱动修改",
+            "description": "IDE 场景下不要只说“优化这个文件”，更好的做法是选中一段代码，再要求它做具体修改。",
+            "code": "请只修改我选中的组件：\n- 保持桌面端不变\n- 移动端按钮换行\n- 不改数据结构\n- 修改后解释 CSS 变化",
+            "items": [
+              "适合局部 CSS、组件拆分、类型修复、函数重写。",
+              "如果涉及多个文件，要求它先列出依赖关系。",
+              "修改后在编辑器里逐个查看 diff，不要盲目全部接受。"
+            ]
+          },
+          {
+            "title": "CLI 和 IDE 怎么搭配",
+            "description": "IDE 适合局部编辑，CLI 适合项目级搜索、批量修改和跑命令。两者搭配比只用一种入口更稳定。",
+            "items": [
+              "先用 CLI 让 Codex 读项目、找文件、跑测试。",
+              "再用 IDE 扩展针对关键组件做精修。",
+              "最后回到 CLI 跑检查、看 git diff、生成变更总结。"
+            ]
+          }
+        ],
+        "tips": [
+          "官方 IDE 文档：https://developers.openai.com/codex/ide",
+          "编辑器扩展适合“看着代码改”，CLI 适合“围绕项目完成任务”。"
+        ]
+      },
+      {
+        "title": "云端 Codex 怎么用",
+        "content": "云端 Codex 适合把边界清楚的任务交给后台处理。它不适合你一边改一边实时观察的小修小补，更适合“分析这个仓库并准备一个修复方案”这类明确任务。",
+        "steps": [
+          {
+            "title": "进入云端入口",
+            "description": "打开 chatgpt.com/codex，按页面提示选择仓库或任务入口。具体可用能力取决于你的账号、组织和产品开通状态。",
+            "image": "/images/tutorial/codex-site-cloud.png",
+            "items": [
+              "入口地址：https://chatgpt.com/codex",
+              "适合处理 issue、代码审查、修复明确 bug、准备 PR 草稿。",
+              "第一次使用时通常需要授权代码仓库或选择可访问的项目。",
+              "不要给云端任务粘贴生产密钥、服务器密码或私有客户数据。"
+            ]
+          },
+          {
+            "title": "给云端任务写清楚验收标准",
+            "description": "云端任务比本地 CLI 更需要边界，因为你不会一直盯着它每一步。任务描述必须包含目标、范围、禁止事项和验证方式。",
+            "code": "目标：修复 /app/codex 移动端图片溢出。\n范围：只允许修改 app 教程详情页样式。\n禁止：不要重构路由，不要改其他内容数据。\n验证：390px 宽度无横向滚动，桌面端布局不变。",
+            "items": [
+              "任务越像 issue，云端 Codex 越容易交付可 review 的结果。",
+              "不要只写“优化一下”，要写页面、文件范围和成功标准。",
+              "完成后先 review diff，再决定是否合并。"
+            ]
+          },
+          {
+            "title": "什么时候不用云端",
+            "description": "如果你需要频繁查看本地浏览器、处理本机文件、使用本地登录态，优先用本地 CLI 或 IDE。",
+            "items": [
+              "需要本机浏览器截图：优先本地 Codex。",
+              "需要访问本机服务 localhost：优先本地 Codex。",
+              "需要非常快地来回调整 UI：优先 IDE 扩展。",
+              "需要长时间后台分析仓库或准备 PR：适合云端 Codex。"
+            ]
+          }
+        ],
+        "tips": [
+          "云端任务要写成“可验收的工单”，不要写成随口聊天。",
+          "本地 CLI、IDE 扩展和云端 Codex 可以按任务阶段组合使用。"
+        ]
+      },
+      {
+        "title": "权限、安全和密钥管理",
+        "content": "Codex 可以读取和修改本地文件，也可能运行命令。安全使用的关键不是完全不用它，而是把权限边界、密钥处理和 Git 回退路径设置好。",
+        "steps": [
+          {
+            "title": "先保护密钥文件",
+            "description": "任何包含 API Key、数据库密码、Cookie、Token 的文件，都应该被 `.gitignore` 排除，并避免让 Codex 在回答中原样输出。",
+            "code": "# .gitignore\n.env\n.env.local\n.env.*.local\n*.key\n*.pem\nsecrets.json\ncredentials.json",
+            "items": [
+              "让 Codex 检查配置时，可以要求它只说明变量名，不展示变量值。",
+              "如果发现密钥已经提交到仓库，先轮换密钥，再清理 Git 历史。",
+              "截图前检查页面上是否显示 API Key、Token 或服务器地址。"
+            ]
+          },
+          {
+            "title": "高风险命令必须人工确认",
+            "description": "删除、覆盖、迁移、重置、推送、部署都属于高风险操作。让 Codex 先解释，再决定是否执行。",
+            "items": [
+              "谨慎命令：`rm -rf`、`Remove-Item -Recurse`、`git reset --hard`、`git clean -fd`。",
+              "谨慎操作：数据库迁移、生产部署、批量替换、依赖大版本升级。",
+              "执行前要求它说明：影响目录、是否可回退、验证方式。",
+              "如果只是改文章或页面，不应该出现删除整个目录的命令。"
+            ],
+            "warning": "不要让 Codex 在你没确认的情况下执行 `git reset --hard` 或清理未跟踪文件。"
+          },
+          {
+            "title": "用 Git 做回退保险",
+            "description": "Codex 修改前后都看一眼 Git 状态。小步提交可以把风险控制在可回退范围内。",
+            "code": "git status --short\ngit diff --stat\ngit diff",
+            "items": [
+              "修改前：确认当前有哪些你自己的未提交改动。",
+              "修改后：看 diff 是否只包含本次任务范围。",
+              "提交前：排除无关文件、日志、临时截图、密钥和构建产物。",
+              "不确定时：先让 Codex 列出“本次会提交”和“不会提交”的文件。"
+            ]
+          }
+        ],
+        "tips": [
+          "Codex 能帮你提高速度，但最终合并、推送、部署仍然应由你确认。",
+          "安全边界写进 AGENTS.md，比每次口头提醒更稳定。"
+        ]
+      },
+      {
+        "title": "常见问题排查",
+        "content": "Codex 的常见问题大多集中在 npm 安装、PATH、登录、网络、额度、权限和当前目录。按下面顺序排查，通常能快速定位。",
+        "steps": [
+          {
+            "title": "npm 安装失败",
+            "description": "先判断是网络问题、权限问题还是 npm 缓存问题。不要反复换来源不明的安装脚本。",
+            "code": "npm cache verify\nnpm install -g @openai/codex",
+            "items": [
+              "网络超时：换稳定网络后重试。",
+              "权限不足：Windows 用管理员终端，macOS/Linux 修复 npm 全局目录权限。",
+              "依赖解析失败：升级 Node.js LTS 后重新安装。",
+              "公司网络限制：使用公司允许的代理或内部 npm 源。"
+            ]
+          },
+          {
+            "title": "codex 命令不存在",
+            "description": "这通常不是 Codex 没装好，而是 npm 全局 bin 没进 PATH，或安装后没有重新打开终端。",
+            "code": "npm config get prefix\nnpm bin -g\nwhere codex",
+            "items": [
+              "Windows 用 `where codex` 查看命令是否能被找到。",
+              "macOS/Linux 用 `which codex` 查看命令路径。",
+              "修改环境变量后关闭所有终端窗口，再重新打开。",
+              "如果仍失败，重新安装 Node.js LTS 并勾选加入 PATH。"
+            ]
+          },
+          {
+            "title": "登录失败或无可用模型",
+            "description": "先确认账号能正常登录 OpenAI / ChatGPT，再确认 API Key、项目权限、组织权限和额度。",
+            "items": [
+              "浏览器能登录，不代表 CLI 一定已授权；按 CLI 提示重新登录。",
+              "API Key 要属于正确项目，不要复制错组织或旧 key。",
+              "额度不足、项目没开通、组织权限不足都会导致模型不可用。",
+              "网络不稳定时，登录回调和模型请求都可能超时。"
+            ]
+          },
+          {
+            "title": "Codex 改错目录或改太多文件",
+            "description": "这通常是启动目录不对，或任务边界写得太宽。先停止，再回到正确项目根目录重新启动。",
+            "code": "pwd\ngit status --short",
+            "items": [
+              "确认当前目录就是目标项目根目录。",
+              "要求 Codex 先列修改计划，不要直接改。",
+              "修改后如果范围不对，不要继续叠加修复，先查看 diff 再决定回退。",
+              "把“只允许修改哪些文件”写进任务描述。"
+            ]
+          },
+          {
+            "title": "接口报 401、429、timeout",
+            "description": "这些属于 API 调用问题，先按错误类型排查，不要盲目重装 Codex。",
+            "items": [
+              "401 / invalid API key：重新复制 API Key，确认没有空格、没有用错项目。",
+              "429 / rate limit：降低并发，稍后重试，或检查套餐和限速。",
+              "insufficient quota：检查账单、余额、项目额度和组织限制。",
+              "timeout：先排查网络，再缩短上下文或换更快模型。"
+            ]
+          }
+        ],
+        "tips": [
+          "本站相关排错：/error/invalid-api-key、/error/429-too-many-requests、/error/timeout、/error/insufficient-quota",
+          "如果只是 API Key 或额度问题，重装 Codex 通常没有用。"
+        ]
+      },
+      {
+        "title": "推荐工作流和内链",
+        "content": "把 Codex 用好，不靠一次性长提示词，而靠稳定流程。下面这套流程适合大多数网站、脚本、后端和工具项目。",
+        "steps": [
+          {
+            "title": "日常开发推荐流程",
+            "description": "每次任务都按“读、计划、改、验、总结”推进，速度会比直接让它乱改更快。",
+            "code": "1. 只读分析：找相关文件和原因\n2. 修改计划：列出要改的文件和验证方式\n3. 小范围实现：只改本次任务需要的代码\n4. 本地验证：运行测试、类型检查或页面截图\n5. 查看 diff：确认没有混入无关文件\n6. 人工决定：是否 commit、push、deploy",
+            "items": [
+              "复杂任务拆成多次小任务，比一次性全自动更可靠。",
+              "UI 任务必须给桌面端和移动端验收标准。",
+              "内容任务必须给结构、语气、不可删除项和内链要求。",
+              "部署任务必须明确是否只部署、是否需要检查、是否需要推送。"
+            ]
+          },
+          {
+            "title": "本站相关教程",
+            "description": "如果你要把 Codex 和其他 AI API、模型切换工具一起用，可以继续看这些页面。",
+            "items": [
+              "OpenAI API 接入：/api/openai",
+              "CC Switch 统一管理 Codex、Claude Code、Gemini CLI 配置：/app/ccswitch",
+              "Claude Code 安装与模型接入：/app/claude-code",
+              "API Key 错误排查：/error/invalid-api-key",
+              "请求超时排查：/error/timeout"
+            ]
+          },
+          {
+            "title": "一个可以直接复制的高质量任务模板",
+            "description": "以后给 Codex 派任务，可以从这个模板开始改。",
+            "code": "目标：修复/新增 [具体页面或功能]\n范围：只允许修改 [文件或目录]\n禁止：不要修改 [无关页面、数据源、部署脚本]\n要求：保留现有风格，移动端 360px 不横向溢出\n验证：运行 [具体命令]，并截图检查 [具体 URL]\n交付：列出修改文件、验证结果、未处理风险",
+            "items": [
+              "把“你要什么”和“不要什么”都写进去。",
+              "把验收标准写成可检查的事实。",
+              "把提交、推送、部署作为单独指令，不要默认授权。"
+            ]
+          }
+        ],
+        "tips": [
+          "Codex 最适合处理边界清楚、可验证、有版本控制保护的开发任务。",
+          "写给 Codex 的提示词越像工程任务单，交付质量越稳定。"
         ]
       }
     ]
@@ -2136,7 +2656,7 @@ export const appTutorials: AppTutorial[] = [
             title: '填写 DeepSeek API Key 并保存',
             description: '选择 DeepSeek 后，将刚才复制的 API Key 粘贴进去，保存配置。',
             image: '/images/tutorial/claude-code-deepseek-p11-01.png',
-            code: 'Provider Name: DeepSeek\nAPI Endpoint: https://api.deepseek.com\nAPI Key: sk-xxxxxxxxxxxxxxxx\nModel Name: deepseek-chat',
+            code: 'Provider Name: DeepSeek\nAPI Endpoint: https://api.deepseek.com\nAPI Key: sk-xxxxxxxxxxxxxxxx\nModel Name: deepseek-v4-flash',
             items: [
               'Provider 选择 DeepSeek',
               '粘贴 DeepSeek API Key',
@@ -2944,7 +3464,7 @@ export const appTutorials: AppTutorial[] = [
               '点击「环境变量」按钮',
               '在「用户变量」区域点击「新建」'
             ],
-            code: '# 依次创建以下三个环境变量\n# 变量名                    变量值\nANTHROPIC_BASE_URL     https://api.deepseek.com/anthropic\nANTHROPIC_AUTH_TOKEN   你的DeepSeek API Key\nANTHROPIC_MODEL        deepseek-chat',
+            code: '# 依次创建以下三个环境变量\n# 变量名                    变量值\nANTHROPIC_BASE_URL     https://api.deepseek.com/anthropic\nANTHROPIC_AUTH_TOKEN   你的DeepSeek API Key\nANTHROPIC_MODEL        deepseek-v4-flash',
           },
           {
             title: '保存并重启',

@@ -40,7 +40,7 @@ function TutorialCard({ api }: { api: APIConfig }) {
       <p className="flex-1 text-sm leading-6 text-muted-foreground">{api.desc}</p>
       <p className="mt-3 text-xs text-muted-foreground">{api.tutorial?.steps?.length || 0} 个步骤</p>
       <RememberListLink href={`/tutorial/${api.id}`} listLabel="教程列表" className="mt-5">
-        <Button variant="outline" className="w-full" size="sm">查看教程</Button>
+        <Button variant="outline" className="w-full min-h-[44px]" size="sm">查看教程</Button>
       </RememberListLink>
     </article>
   );
@@ -78,7 +78,7 @@ function AppTutorialCard({ app }: { app: AppTutorial }) {
       </div>
       <p className="flex-1 text-sm leading-6 text-muted-foreground">{app.desc}</p>
       <Link href={`/app/${app.id}`} className="mt-5">
-        <Button variant="outline" className="w-full" size="sm">查看教程</Button>
+        <Button variant="outline" className="w-full min-h-[44px]" size="sm">查看教程</Button>
       </Link>
     </article>
   );
