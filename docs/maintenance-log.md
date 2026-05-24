@@ -321,3 +321,50 @@ SEO/deployment impact:
 - Homepage internal recommendation layout changed only; no route, sitemap, robots, or structured data removal.
 - Gemini tutorial copy changed within existing `/tutorial/gemini` content data.
 - No deployment was performed in this step.
+
+### 2026-05-24 AI model content source refresh
+
+Commit scope:
+
+- Refresh Qwen/Tongyi purchase tutorial and review copy for Qwen3.7 / Qwen3.6 era model naming, pricing notes, and selection guidance.
+- Refresh OpenAI GPT-5.5 review and tutorial copy around the official `gpt-5.5` / `gpt-5.5-pro` model IDs, while removing unsupported benchmark-style claims.
+- Refresh DeepSeek tutorial, review, app example, FAQ, error guidance, and use-case copy for DeepSeek V4 model names, pricing, old alias retirement, and free-quota wording.
+- Update content freshness dates for affected tutorial, review, API overview, app, and error pages.
+
+Explicitly excluded from this commit:
+
+- `next-env.d.ts` local Next generated reference change.
+- `src/app/app/[id]/page.tsx` existing app tutorial/layout edits.
+- `src/lib/fuzzy-search.ts` existing search tweak.
+- `.claude/`
+- `.codex-video-analysis/`
+- `.tmp-playwright/`
+- `CLAUDE.md`
+- `docs/seo-longtail-pages.md`
+- `index.html`
+- `public/images/tutorial/codex-site-*.png`
+- `rollback-backups/`
+- `scripts/test-fuzzy-search.mjs`
+- `scripts/test-responsive.mjs`
+- `skills/`
+- `src/components/content/ClaudianObsidianContentPage.tsx`
+
+Verification completed:
+
+```bash
+pnpm exec tsc -p tsconfig.json --noEmit  # passed
+pnpm exec eslint  # passed
+pnpm exec next build  # passed
+pnpm exec tsup src/server.ts --format cjs --platform node --target node20 --outDir dist --no-splitting --no-minify  # passed
+```
+
+Content smoke checks:
+
+- Local HTTP checks returned 200 for `/api/deepseek`, `/tutorial/deepseek`, `/api-review/deepseek`, `/api-review`, and `/app`.
+- Checked that current DeepSeek pages include `deepseek-v4-flash`, `deepseek-v4-pro`, the old alias retirement note, and updated RMB pricing.
+- Checked that outdated DeepSeek `500 万 Token` and old USD V4 pricing claims no longer appear in the current rendered routes.
+
+SEO/deployment impact:
+
+- Existing route structure, sitemap, robots, and structured data behavior were not changed.
+- This update changes page copy and freshness dates only, focused on model names, pricing caveats, and unsupported-claim cleanup.

@@ -182,7 +182,7 @@ print(response.choices[0].message.content)`,
   {
     id: 'deepseek',
     name: 'DeepSeek',
-    desc: 'DeepSeek API 怎么买？2026 国内支付/充值教程，覆盖 V4 Flash、V4 Pro 与 1M 上下文',
+    desc: 'DeepSeek API 怎么买？2026 国内支付/充值教程，覆盖 deepseek-v4-flash、deepseek-v4-pro、1M 上下文与旧别名退役',
     url: 'https://platform.deepseek.com/',
     free: '新用户/活动额度以控制台为准',
     proxy: false,
@@ -284,20 +284,22 @@ print(response.choices[0].message.content)`,
           description: '首次跑通后，再根据速度、推理能力和成本切换模型。',
           image: '/images/tutorial/deepseek-docx-4.png',
           items: [
-            'deepseek-chat：旧版兼容别名，后续可能逐步废弃，不建议新项目作为长期模型名',
-            'deepseek-v4-flash：响应快、性价比高，适合实时对话和客服',
-            'deepseek-v4-pro：推理能力更强，适合复杂代码、1M 长上下文、长文档和技术问答',
+            'deepseek-v4-flash：官方 V4 Flash 模型，支持 1M 上下文、最高 384K 输出、思考/非思考双模式，适合实时对话、客服和高频调用',
+            'deepseek-v4-pro：官方 V4 Pro 模型，支持 1M 上下文、最高 384K 输出、思考/非思考双模式，适合复杂代码、长文档、Agent 和技术问答',
+            'deepseek-chat / deepseek-reasoner：旧兼容别名，当前分别路由到 deepseek-v4-flash 的非思考/思考模式，将在 2026-07-24 15:59 UTC 后完全退役',
+            '官方人民币价格：v4-flash 为缓存命中 0.02 元/百万输入、缓存未命中 1 元/百万输入、2 元/百万输出；v4-pro 折扣期为 0.025 元、3 元、6 元',
             '在控制台查看用量、余额和预算告警'
           ],
           whereToClick: '控制台 → 模型列表或文档页面',
-          expectedResult: '页面显示 deepseek-v4-flash、deepseek-v4-pro，以及 deepseek-chat / deepseek-reasoner 兼容别名说明',
+          expectedResult: '页面显示 deepseek-v4-flash、deepseek-v4-pro，以及 deepseek-chat / deepseek-reasoner 兼容别名和退役时间说明',
           failureChecklist: ['确认当前使用的模型名称拼写正确', '在控制台查看用量是否正常累计'],
-          warning: '模型名称、免费试用和价格会随平台调整，正式使用前请以控制台和官方文档为准。'
+          warning: '模型名称、免费试用、价格和折扣期会随平台调整，正式使用前请以控制台和官方文档为准。'
         }
       ],
       tips: [
         '推荐用 .env 或环境变量保存 DEEPSEEK_API_KEY',
         'OpenAI SDK 兼容模式最适合迁移已有代码',
+        '新项目优先使用 deepseek-v4-flash 或 deepseek-v4-pro，不要继续把 deepseek-chat / deepseek-reasoner 当作长期模型名',
         '个人开发者可先从 deepseek-v4-flash 开始控制成本'
       ],
       warnings: [
@@ -308,7 +310,7 @@ print(response.choices[0].message.content)`,
       estimatedTime: '约 10 分钟',
       prerequisites: ['手机号或邮箱（用于注册 DeepSeek 账号）', '支付宝或微信支付（用于充值）'],
       successSign: 'API Keys 页面显示有效密钥，Python 脚本成功打印模型回复，控制台余额已更新',
-      commonPitfall: '未完成实名认证导致无法创建密钥或充值；API Key 只显示一次忘记复制',
+      commonPitfall: '未完成实名认证导致无法创建密钥或充值；API Key 只显示一次忘记复制；新项目仍使用 deepseek-chat / deepseek-reasoner 旧别名导致后续迁移风险',
       securityReminder: 'API Key 不要提交到 GitHub、前端代码或截图中，建议保存在 .env 或环境变量里'
     }
   },
@@ -1539,7 +1541,7 @@ export const faqCategories = [
       },
       {
         question: '有没有免费的 AI API 可以用？',
-        answer: '有多家平台提供免费额度：①DeepSeek：注册即送 500 万 Token，足够日常开发测试；②通义千问（阿里云）：有免费额度，国内直连；③智谱 GLM：注册送 Token，有 Coding Plan 免费方案；④Google Gemini：免费版有调用限制但可体验；⑤OpenAI：新用户有 $5 免费额度。建议先用免费额度充分测试，确认模型能力和稳定性后再决定是否付费升级。详见本站各 API 详情页的"免费额度"信息。'
+        answer: '有多家平台提供免费额度或试用资源，但规则变化很快：①DeepSeek：免费额度、赠送余额和活动以 DeepSeek 控制台当前展示为准；②通义千问（阿里云）：有免费额度，国内直连；③智谱 GLM：注册送 Token，有 Coding Plan 免费方案；④Google Gemini：免费版有调用限制但可体验；⑤OpenAI：是否有新用户赠额以官方账号和 Billing 页面为准。建议先用免费额度或小额充值充分测试，确认模型能力和稳定性后再决定是否付费升级。详见本站各 API 详情页的额度说明。'
       }
     ]
   },
@@ -1610,7 +1612,7 @@ export const faqCategories = [
       },
       {
         question: 'API 调用有免费额度吗？',
-        answer: '大部分国产 API 都有免费额度：①DeepSeek：新用户赠送 500 万 Tokens；②通义千问：每月 100 万 Tokens 免费；③智谱 GLM：新用户赠送一定额度；④Kimi：有免费试用额度。免费额度通常有调用频率限制（如每分钟 60 次），但足够学习和测试使用。建议：先用免费额度学习和测试，确认需求后再付费升级。详见各 API 的购买教程。'
+        answer: '大部分国产 API 都有免费额度或试用活动，但具体额度会变化：①DeepSeek：赠送余额、免费额度和活动以控制台当前展示为准；②通义千问：有免费额度，具体模型和到期时间以百炼控制台为准；③智谱 GLM：注册送 Token，有 Coding Plan 免费方案；④Kimi：有免费试用额度。免费额度通常有调用频率限制，建议先用免费额度或小额充值学习和测试，确认需求后再付费升级。详见各 API 的购买教程。'
       }
     ]
   },

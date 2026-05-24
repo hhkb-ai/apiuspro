@@ -250,7 +250,7 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       { label: '无需代理', variant: 'success' },
       { label: '长上下文' },
       { label: '免费额度', variant: 'success' },
-      { label: 'K2.5/K2.6 待确认', variant: 'outline' },
+      { label: 'K2.5/K2.6 待确认' },
     ],
     tlDr:
       'Kimi 适合长文档、资料问答、中文知识工作流和 Agent 原型。当前重点关注 Kimi K2.5 / K2.6、256K 上下文和 OpenAI 兼容接入。（K2.5/K2.6 模型名称和 256K 上下文信息待官方确认）',
@@ -377,40 +377,34 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       { label: '开源可商用' },
     ],
     tlDr:
-      'DeepSeek V4 当前重点是 deepseek-v4-flash 和 deepseek-v4-pro：两者均支持 1M 上下文、最高 384K 输出、OpenAI/Anthropic 兼容接口。deepseek-chat 和 deepseek-reasoner 未来会作为兼容别名逐步淡出。',
+      'DeepSeek V4 当前重点是 deepseek-v4-flash 和 deepseek-v4-pro：两者均支持 1M 上下文、最高 384K 输出、思考/非思考双模式、OpenAI/Anthropic 兼容接口。deepseek-chat 和 deepseek-reasoner 当前只是兼容别名，将在 2026-07-24 15:59 UTC 后完全退役。',
     ratings: [
-      { label: '质量', score: 4.8, detail: 'Pro 在数学（HMMT 95.2）、编程（LiveCodeBench 93.5）等基准追平甚至超越 GPT-5.4；Flash 推理接近 Pro，日常任务差距不大。' },
-      { label: '速度', score: 4.6, detail: 'Flash 延迟仅 10 毫秒级，响应极快；Pro 参数大略慢，高峰期可能排队。' },
-      { label: '性价比', score: 5.0, detail: '官方按美元/百万 token 计费，V4 Flash 极低价；V4 Pro 当前有折扣期，正式上线前必须复核官方定价页。' },
+      { label: '质量', score: 4.8, detail: '官方定位 V4 Pro 为面向 Agent 编码、世界知识、数学/STEM/代码推理的旗舰开源模型；Flash 更偏快速和高性价比。' },
+      { label: '速度', score: 4.6, detail: 'Flash 参数规模更小，适合实时对话和高频任务；Pro 更适合高难推理和长上下文任务。' },
+      { label: '性价比', score: 5.0, detail: '官方按人民币/百万 token 计费，V4 Flash 成本低；V4 Pro 当前有折扣期，正式上线前必须复核官方定价页。' },
       { label: '稳定性', score: 4.2, detail: '高峰期算力紧张，Pro 可能变慢或排队。建议做好重试和备用方案。' },
     ],
     pros: [
-      '数学推理顶级：HMMT 数学竞赛 95.2，超过 GPT-5.4（94.8）和 Gemini 3.1 Pro Preview（92.7）',
-      '编程能力突出：LiveCodeBench 93.5，Codeforces 积分 3206，均超 GPT-5.4',
-      'Flash 性价比极高：官方价为低成本档，适合日常问答、代码助手和高频调用',
+      '官方 V4 模型名为 deepseek-v4-flash 和 deepseek-v4-pro，新项目应优先使用这两个模型名',
+      'V4 Pro：1.6T 总参数、49B 激活参数，官方定位为性能接近世界顶级闭源模型',
+      'V4 Flash：284B 总参数、13B 激活参数，参数更小、响应更快、API 成本更低',
       '100 万 token 上下文：Pro 和 Flash 均支持，最大输出可到 384K，适合长文档和代码库任务',
+      '两款模型均支持思考/非思考双模式，deepseek-chat / deepseek-reasoner 仅作为旧别名兼容',
       'OpenAI 兼容接口：迁移成本低，可接入 Claude Code、Agent 等开发工具和主流客户端',
       '国内直连：无需代理，支持支付宝/微信充值',
       '开源可商用：模型权重开放，适合本地部署和二次开发',
     ],
     cons: [
-      '幻觉率偏高：Pro 约 94%、Flash 约 96%，不确定时会编造而非承认不知道，重要信息务必核实',
+      'deepseek-chat / deepseek-reasoner 将在 2026-07-24 15:59 UTC 后退役，旧项目必须提前迁移',
       '高峰期算力紧张：热门时段 Pro 响应可能变慢或需排队',
       '审美与前端偏弱：能写好逻辑代码，但生成的网页界面不美观，需人工润色',
       '暂无原生多模态：纯文本模型，不能直接识别图片和视频（可配合外部工具）',
       '中文写作美感：在极难的文学性创作上，Claude Opus 4.7 仍稍强',
     ],
-    benchmarks: [
-      { name: 'GPQA Diamond', values: { 'V4 Pro': '90.1', 'GPT-5.4': '90.5' } },
-      { name: 'MMLU-Pro', values: { 'V4 Pro': '87.5', 'GPT-5.4': '87.1' } },
-      { name: 'HMMT 数学竞赛', values: { 'V4 Pro': '95.2', 'GPT-5.4': '94.8', 'Gemini 3.1 Pro Preview': '92.7' } },
-      { name: 'LiveCodeBench', values: { 'V4 Pro': '93.5', 'GPT-5.4': '91.6' } },
-      { name: 'Codeforces', values: { 'V4 Pro': '3206', 'GPT-5.4': '3052' } },
-    ],
     pricing: [
-      { model: 'deepseek-v4-flash', input: '$0.14/百万（缓存命中 $0.0028）', output: '$0.28/百万' },
-      { model: 'deepseek-v4-pro', input: '$0.435/百万（折扣期，缓存命中 $0.003625）', output: '$0.87/百万（折扣期）' },
-      { model: '兼容别名', input: 'deepseek-chat / deepseek-reasoner', output: '未来会废弃为兼容别名' },
+      { model: 'deepseek-v4-flash', input: '¥1/百万；缓存命中 ¥0.02/百万', output: '¥2/百万' },
+      { model: 'deepseek-v4-pro（折扣期）', input: '¥3/百万；缓存命中 ¥0.025/百万', output: '¥6/百万' },
+      { model: '兼容别名', input: 'deepseek-chat / deepseek-reasoner', output: '2026-07-24 15:59 UTC 后退役' },
     ],
     useCases: [
       '选 Pro：复杂数学/科研推理、大型工程代码、分析整本书或全量代码仓库等深度任务',
@@ -420,7 +414,7 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       '不适合：需原生多模态识别、极致文学创作美感、或极高 SLA 的企业关键链路',
     ],
     conclusion:
-      'DeepSeek V4 的更新重点是低价、长上下文和兼容接口。日常办公和代码助手优先试 V4 Flash；复杂推理、长文档和高质量代码任务再上 V4 Pro。注意 Pro 折扣期、并发限制和 deepseek-chat / deepseek-reasoner 兼容别名变化。',
+      'DeepSeek V4 的更新重点是低价、1M 长上下文、384K 最大输出和兼容接口。日常办公和代码助手优先试 V4 Flash；复杂推理、长文档和高质量代码任务再上 V4 Pro。注意 Pro 折扣期、并发限制，以及 deepseek-chat / deepseek-reasoner 在 2026-07-24 15:59 UTC 后退役。',
   },
 
   gemini: {

@@ -250,7 +250,7 @@ print(response.choices[0].message.content)`,
     apiSpecialCases: [
       {
         api: 'DeepSeek',
-        note: '常见模型名是 deepseek-chat、deepseek-reasoner；不要填 OpenAI 的 gpt-* 模型名。'
+        note: 'DeepSeek V4 新项目优先用 deepseek-v4-flash 或 deepseek-v4-pro；deepseek-chat、deepseek-reasoner 仅作为旧项目兼容别名，并将在 2026-07-24 15:59 UTC 后退役。'
       },
       {
         api: 'Kimi',
@@ -290,7 +290,7 @@ for item in client.models.list().data:
         language: 'bash',
         code: `# DeepSeek 示例
 export BASE_URL="https://api.deepseek.com"
-export MODEL_ID="deepseek-chat"
+export MODEL_ID="deepseek-v4-flash"
 
 # Kimi 示例
 # export BASE_URL="https://api.moonshot.cn/v1"
@@ -780,7 +780,7 @@ const apiKey = readRequiredSecret("DEEPSEEK_API_KEY");`,
         language: 'bash',
         code: `# DeepSeek
 export BASE_URL="https://api.deepseek.com"
-export MODEL_ID="deepseek-chat"
+export MODEL_ID="deepseek-v4-flash"
 
 # 通义千问 DashScope 兼容模式
 # export BASE_URL="https://dashscope.aliyuncs.com/compatible-mode/v1"

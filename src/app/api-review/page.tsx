@@ -152,14 +152,22 @@ export default function APIReviewPage() {
           </p>
         </div>
 
+        <section className="mb-6 rounded-lg border bg-card px-4 py-3 text-sm leading-6 text-muted-foreground">
+          <p className="font-semibold text-foreground">2026-05-24 信息更新</p>
+          <p className="mt-1">
+            本页已补充 Qwen3.7-Max、Gemini 3.5 Flash、Kimi K2.6、GLM-5 / 5.1、Doubao-Seed-1.6、腾讯 TokenHub 迁移和 DeepSeek V4 价格/别名变化。模型名、免费额度和价格变动很快，正式购买前仍以各家官方控制台为准。
+          </p>
+        </section>
+
         <section className="mb-6 hidden rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 px-4 py-3 sm:block">
           <p className="text-sm font-semibold text-sky-800 dark:text-sky-200">结论先行</p>
           <div className="mt-2 grid gap-1.5 text-sm leading-6 text-sky-700 dark:text-sky-300">
             <p><span className="font-semibold">代码 / 推理：</span>性价比看 DeepSeek V4 Flash；顶级能力看 DeepSeek V4 Pro、Claude Opus。</p>
-            <p><span className="font-semibold">通用对话 / 内容创作：</span>中文场景看通义千问（Qwen）、Kimi。</p>
-            <p><span className="font-semibold">长文档 / 多模态：</span>海外看 Gemini 3.1 Pro；安全长文本看 Claude Opus 4.7。</p>
-            <p><span className="font-semibold">综合最强：</span>OpenAI GPT-5.5，科研、金融、Agent 能力最强，但价格高。</p>
-            <p><span className="font-semibold">策略：</span>先用各家免费额度跑真实任务，再决定长期使用哪个。</p>
+            <p><span className="font-semibold">通用对话 / 内容创作：</span>中文场景看通义千问（Qwen）、Kimi；高难度 Agent / 代码任务看 Qwen3.7-Max。</p>
+            <p><span className="font-semibold">长文档 / 多模态：</span>海外先测 Gemini 3.5 Flash，再用 Gemini 3.1 Pro Preview 验证复杂任务；安全长文本看 Claude Opus 4.7。</p>
+            <p><span className="font-semibold">国内生态：</span>阿里云项目看 Qwen3.7-Max / Qwen3.6；火山方舟看 Doubao-Seed-1.6 / Seed-Code；腾讯云项目先确认 TokenHub 迁移。</p>
+            <p><span className="font-semibold">海外旗舰：</span>OpenAI GPT-5.5（官方模型 ID：gpt-5.5，快照：2026-04-23），适合复杂专业工作、编码和工具型 Agent，但价格高。</p>
+            <p><span className="font-semibold">策略：</span>所有价格、额度和模型名先看官方控制台，再用免费额度跑真实任务。</p>
           </div>
           <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs leading-5 text-sky-700 dark:text-sky-300/80">
             <Link href="/tutorial" className="font-medium text-foreground hover:underline">购买教程</Link>
@@ -171,10 +179,11 @@ export default function APIReviewPage() {
           <summary className="cursor-pointer select-none px-4 py-3 text-sm font-bold">结论先行（点开查看）</summary>
           <div className="border-t border-sky-200 dark:border-sky-800 px-4 py-3 space-y-1.5 text-sm leading-6 text-sky-700 dark:text-sky-300">
             <p><span className="font-semibold">代码 / 推理：</span>性价比看 DeepSeek V4 Flash；顶级能力看 DeepSeek V4 Pro、Claude Opus。</p>
-            <p><span className="font-semibold">通用对话 / 内容创作：</span>中文场景看通义千问（Qwen）、Kimi。</p>
-            <p><span className="font-semibold">长文档 / 多模态：</span>海外看 Gemini 3.1 Pro；安全长文本看 Claude Opus 4.7。</p>
-            <p><span className="font-semibold">综合最强：</span>OpenAI GPT-5.5，科研、金融、Agent 能力最强，但价格高。</p>
-            <p><span className="font-semibold">策略：</span>先用各家免费额度跑真实任务，再决定长期使用哪个。</p>
+            <p><span className="font-semibold">通用对话 / 内容创作：</span>中文场景看通义千问（Qwen）、Kimi；高难度 Agent / 代码任务看 Qwen3.7-Max。</p>
+            <p><span className="font-semibold">长文档 / 多模态：</span>先测 Gemini 3.5 Flash，再用 Gemini 3.1 Pro Preview 验证复杂任务；安全长文本看 Claude Opus 4.7。</p>
+            <p><span className="font-semibold">国内生态：</span>阿里云看 Qwen3.7-Max / Qwen3.6；火山看 Doubao-Seed-1.6 / Seed-Code；腾讯云先确认 TokenHub 迁移。</p>
+            <p><span className="font-semibold">海外旗舰：</span>OpenAI GPT-5.5（官方模型 ID：gpt-5.5，快照：2026-04-23），适合复杂专业工作、编码和工具型 Agent，但价格高。</p>
+            <p><span className="font-semibold">策略：</span>所有价格、额度和模型名先看官方控制台，再用免费额度跑真实任务。</p>
             <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs leading-5 text-sky-700 dark:text-sky-300/80 pt-1">
               <Link href="/tutorial" className="font-medium text-foreground hover:underline">购买教程</Link>
               <Link href="/cloud-api" className="font-medium text-foreground hover:underline">API 列表</Link>

@@ -38,7 +38,7 @@ AI_MODEL="model-name"`,
   "provider": "DeepSeek",
   "apiKey": "sk-your-api-key",
   "baseURL": "https://api.deepseek.com",
-  "model": "deepseek-chat"
+  "model": "deepseek-v4-flash"
 }`,
   },
 ];
