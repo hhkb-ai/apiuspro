@@ -1,4 +1,4 @@
-const host = 'apiuspro.cn';
+const host = 'www.apiuspro.cn';
 const key = '7e0fb047ba114379b2991b59347c3b61';
 const keyLocation = `https://${host}/${key}.txt`;
 const sitemapUrl = `https://${host}/sitemap.xml`;
