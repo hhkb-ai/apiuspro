@@ -1,6 +1,8 @@
 import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
+  const sitemapUrl = 'https://www.apiuspro.cn/sitemap.xml';
+
   return {
     rules: [
       {
@@ -9,6 +11,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/preview-home'],
       },
     ],
-    sitemap: 'https://apiuspro.cn/sitemap.xml',
+    sitemap: sitemapUrl,
   };
 }
