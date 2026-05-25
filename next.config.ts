@@ -7,6 +7,12 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'apiuspro.cn' }],
+        destination: 'https://www.apiuspro.cn/:path*',
+        statusCode: 301,
+      },
+      {
         source: '/story',
         destination: '/use-case',
         statusCode: 301,
@@ -22,13 +28,8 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/:path*',
-        has: [{ type: 'host', value: 'www.apiuspro.cn' }],
-        destination: 'https://apiuspro.cn/:path*',
-      },
-      {
-        source: '/:path*',
         has: [{ type: 'host', value: '8.147.64.143' }],
-        destination: 'https://apiuspro.cn/:path*',
+        destination: 'https://www.apiuspro.cn/:path*',
       },
     ];
   },
