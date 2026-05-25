@@ -14,14 +14,14 @@ export function WebSiteSchema() {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: 'API知识站',
-    url: 'https://apiuspro.cn',
+    url: 'https://www.apiuspro.cn',
     description: '一站式 AI API 学习、选型、购买教程与本地部署指南',
     inLanguage: 'zh-CN',
     potentialAction: {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: 'https://apiuspro.cn/cloud-api?q={search_term_string}',
+        urlTemplate: 'https://www.apiuspro.cn/cloud-api?q={search_term_string}',
       },
       'query-input': 'required name=search_term_string',
     },
@@ -41,8 +41,8 @@ export function OrganizationSchema() {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'API知识站',
-    url: 'https://apiuspro.cn',
-    logo: 'https://apiuspro.cn/opengraph-image',
+    url: 'https://www.apiuspro.cn',
+    logo: 'https://www.apiuspro.cn/opengraph-image',
   };
 
   return (
