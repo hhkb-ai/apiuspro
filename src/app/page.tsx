@@ -13,7 +13,7 @@ export default function Home() {
         name="热门 AI API"
         items={apiList.slice(0, 8).map(api => ({
           name: api.name,
-          url: `https://apiuspro.cn/api/${api.id}`,
+          url: `https://www.apiuspro.cn/api/${api.id}`,
           description: api.desc,
         }))}
       />
@@ -21,7 +21,7 @@ export default function Home() {
         name="API 应用教程"
         items={appTutorials.map(tutorial => ({
           name: tutorial.name,
-          url: `https://apiuspro.cn/app/${tutorial.id}`,
+          url: `https://www.apiuspro.cn/app/${tutorial.id}`,
           description: tutorial.desc,
         }))}
       />
