@@ -1,5 +1,6 @@
 const aliasEntries: Array<[string, string[]]> = [
   ['openai', ['open ai', 'gpt', 'chatgpt', 'gtp', 'oai']],
+  ['codex', ['openai codex', 'codex cli', 'codex ide', 'ai 编程助手', '代码助手', '编程助手']],
   ['claude', ['克劳德', 'anthropic', 'claud', 'cloude']],
   ['deepseek', ['deep seek', '深度求索', 'ds', 'deepsek']],
   ['aliyun', ['阿里', '阿里云', '通义', '通义千问', 'qwen', 'dashscope', '百炼']],

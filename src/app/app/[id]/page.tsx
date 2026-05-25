@@ -14,6 +14,21 @@ import { OpenclawFeishuContentPage } from '@/components/content/OpenclawFeishuCo
 const ARTICLE_DATE_PUBLISHED = '2026-05-11';
 const ARTICLE_DATE_MODIFIED = '2026-05-11';
 const URL_PATTERN = /(`[^`]+`|【[^】]+】|https?:\/\/[^\s<>"'，。；、？！）)】]+)/g;
+const HIGHLIGHT_TERMS = [
+  { text: 'Base URL 不匹配', className: 'border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-200' },
+  { text: 'invalid_api_key', className: 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-800 dark:bg-rose-950/40 dark:text-rose-200' },
+  { text: 'Base URL', className: 'border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-200' },
+  { text: 'API Key', className: 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200' },
+  { text: 'Key 写错', className: 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-800 dark:bg-rose-950/40 dark:text-rose-200' },
+  { text: '模型名称', className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200' },
+  { text: '计费方式', className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200' },
+  { text: '余额', className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200' },
+  { text: '额度', className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200' },
+  { text: '429', className: 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-800 dark:bg-rose-950/40 dark:text-rose-200' },
+  { text: '401', className: 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-800 dark:bg-rose-950/40 dark:text-rose-200' },
+];
+const HIGHLIGHT_PATTERN = new RegExp(`(${HIGHLIGHT_TERMS.map(({ text }) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'gi');
+const HIGHLIGHT_CLASS_BY_TERM = new Map(HIGHLIGHT_TERMS.map(({ text, className }) => [text.toLowerCase(), className]));
 
 function isApiEndpointUrl(value: string) {
   try {
@@ -29,8 +44,24 @@ function isApiEndpointUrl(value: string) {
   }
 }
 
+function renderHighlightedText(text: string, keyPrefix: string) {
+  return text.split(HIGHLIGHT_PATTERN).filter(Boolean).map((part, index) => {
+    const className = HIGHLIGHT_CLASS_BY_TERM.get(part.toLowerCase());
+    if (!className) return <span key={`${keyPrefix}-${index}`}>{part}</span>;
+
+    return (
+      <mark
+        key={`${keyPrefix}-${index}`}
+        className={`rounded-md border px-1.5 py-0.5 font-semibold box-decoration-clone break-words ${className}`}
+      >
+        {part}
+      </mark>
+    );
+  });
+}
+
 /* ─── RichText: 解析 `code` 【重点】 标记 ─── */
-function RichText({ text, className = '' }: { text: string; className?: string }) {
+function RichText({ text, className = '', highlightKeywords = false }: { text: string; className?: string; highlightKeywords?: boolean }) {
   if (!text) return null;
   const parts = text.split(URL_PATTERN).filter(Boolean);
   return (
@@ -39,7 +70,7 @@ function RichText({ text, className = '' }: { text: string; className?: string }
         if (!part) return null;
         if (part.startsWith('`') && part.endsWith('`')) {
           return (
-            <code key={i} className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[13px] text-foreground">
+            <code key={i} className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[13px] text-foreground break-all">
               {part.slice(1, -1)}
             </code>
           );
@@ -54,14 +85,14 @@ function RichText({ text, className = '' }: { text: string; className?: string }
         if (part.startsWith('http://') || part.startsWith('https://')) {
           if (isApiEndpointUrl(part)) {
             return (
-              <code key={i} className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[13px] text-foreground">
+              <code key={i} className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[13px] text-foreground break-all">
                 {part}
               </code>
             );
           }
 
           return (
-            <a key={i} href={part} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-md bg-foreground/10 px-2.5 py-1 text-sm font-medium text-foreground transition-colors hover:bg-foreground/20">
+            <a key={i} href={part} target="_blank" rel="noopener noreferrer" className="inline-flex max-w-full flex-wrap items-center gap-1.5 break-all rounded-md bg-foreground/10 px-2.5 py-1 text-sm font-medium text-foreground transition-colors hover:bg-foreground/20">
               <svg className="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
               </svg>
@@ -69,7 +100,7 @@ function RichText({ text, className = '' }: { text: string; className?: string }
             </a>
           );
         }
-        return <span key={i}>{part}</span>;
+        return <span key={i}>{highlightKeywords ? renderHighlightedText(part, `highlight-${i}`) : part}</span>;
       })}
     </span>
   );
@@ -132,7 +163,7 @@ function CodeBlock({ code, lang = 'bash' }: { code: string; lang?: string }) {
   };
 
   return (
-    <div className="group relative my-3 overflow-hidden rounded-lg border border-border bg-muted/40">
+    <div className="group relative my-3 max-w-full overflow-hidden rounded-lg border border-border bg-muted/40">
       {/* 顶部标签栏 */}
       <div className="flex items-center justify-between border-b border-border bg-muted px-4 py-1.5">
         <span className="font-mono text-[11px] uppercase text-muted-foreground">{lang}</span>
@@ -144,7 +175,7 @@ function CodeBlock({ code, lang = 'bash' }: { code: string; lang?: string }) {
         </button>
       </div>
       {/* 代码内容 */}
-      <pre className="overflow-x-auto whitespace-pre px-4 py-3 font-mono text-[13px] leading-6 text-foreground">
+      <pre className="max-w-full overflow-x-auto whitespace-pre px-4 py-3 font-mono text-[13px] leading-6 text-foreground">
         {code.split('\n').map((line, i) => (
           <div key={i}>{line ? highlight(line) : '\u00A0'}</div>
         ))}
@@ -219,6 +250,20 @@ const troubleshootingTips = [
   '超时：先切换更快模型或国内直连 API，再缩短输入上下文测试',
 ];
 
+const codexSetupChecklist = [
+  '确认 Node.js、npm、Git 和终端 PATH 都能正常输出版本号',
+  '准备可登录的 OpenAI / ChatGPT 账号，或确认 API Key 项目和额度可用',
+  '先在测试目录或新分支启动 Codex，不要直接让它改生产项目',
+  '把 AGENTS.md、禁止事项和验证命令写清楚，再交给 Codex 执行任务',
+];
+
+const codexTroubleshootingTips = [
+  '安装失败：先查 npm 网络、权限和 Node.js LTS 版本，不要换来源不明脚本',
+  '命令不存在：检查 npm 全局 bin 是否加入 PATH，修改后重新打开终端',
+  '登录失败：确认账号、项目权限、额度和网络，不要把 API Key 写进项目文件',
+  '改错范围：回到正确目录，先看 git diff，再要求 Codex 只按计划修改',
+];
+
 /* ─── 主页面 ─── */
 export default function AppTutorialPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -251,6 +296,13 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
 
   const tutorial = appTutorials.find(t => t.id === id);
   if (!tutorial) notFound();
+
+  const isCodexTutorial = tutorial.id === 'codex';
+  const blufSummary = isCodexTutorial
+    ? '这篇教程解决 Codex 从安装到真实项目使用的问题，包含 CLI、IDE、云端任务、AGENTS.md、安全权限和排错流程；最终成功标准是能在正确项目目录启动 Codex，并让它按边界完成可验证的小任务。'
+    : `这篇教程说明如何配置 ${tutorial.name}，重点是先准备 API Key、Base URL 和模型名称，再按章节完成安装、配置、验证与排错。`;
+  const currentSetupChecklist = isCodexTutorial ? codexSetupChecklist : setupChecklist;
+  const currentTroubleshootingTips = isCodexTutorial ? codexTroubleshootingTips : troubleshootingTips;
 
   if (tutorial.id === 'ccswitch') {
     return <CcswitchContentPage />;
@@ -334,13 +386,13 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
             <section className="mt-5 hidden rounded-lg border border-sky-200 bg-sky-50 dark:border-sky-800 dark:bg-sky-950/30 px-4 py-3 text-sm leading-6 text-sky-900 dark:text-sky-200 sm:block">
               <p className="font-semibold">BLUF 摘要</p>
               <p className="mt-1">
-                这篇教程说明如何配置 {tutorial.name}，重点是先准备 API Key、Base URL 和模型名称，再按章节完成安装、配置、验证与排错。
+                <RichText text={blufSummary} highlightKeywords={isCodexTutorial} />
               </p>
             </section>
             <details className="mt-5 rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-900 dark:text-sky-200 sm:hidden">
               <summary className="cursor-pointer select-none px-4 py-3 text-sm font-bold">BLUF 摘要（点开查看）</summary>
               <p className="border-t border-sky-200 dark:border-sky-800 px-4 py-3 text-sm leading-7">
-                这篇教程说明如何配置 {tutorial.name}，重点是先准备 API Key、Base URL 和模型名称，再按章节完成安装、配置、验证与排错。
+                <RichText text={blufSummary} highlightKeywords={isCodexTutorial} />
               </p>
             </details>
           </div>
@@ -349,10 +401,12 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
             <div className="rounded-lg border border-border bg-muted/40 p-5">
               <h2 className="text-sm font-semibold text-foreground">配置前检查</h2>
               <ul className="mt-3 space-y-2">
-                {setupChecklist.map((item) => (
+                {currentSetupChecklist.map((item) => (
                   <li key={item} className="flex items-start gap-2 text-sm leading-6 text-muted-foreground">
                     <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-muted-foreground/50" />
-                    {item}
+                    <span className="min-w-0 break-words">
+                      <RichText text={item} highlightKeywords={isCodexTutorial} />
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -360,10 +414,12 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
             <div className="rounded-lg border border-border bg-muted/40 p-5">
               <h2 className="text-sm font-semibold text-foreground">常见排错</h2>
               <ul className="mt-3 space-y-2">
-                {troubleshootingTips.map((item) => (
+                {currentTroubleshootingTips.map((item) => (
                   <li key={item} className="flex items-start gap-2 text-sm leading-6 text-muted-foreground">
                     <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-muted-foreground/50" />
-                    {item}
+                    <span className="min-w-0 break-words">
+                      <RichText text={item} highlightKeywords={isCodexTutorial} />
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -405,7 +461,7 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
 
                 {/* 章节概述 */}
                 <div className="mb-5 text-[15px] leading-7 text-muted-foreground">
-                  <RichText text={section.content} />
+                  <RichText text={section.content} highlightKeywords={isCodexTutorial} />
                 </div>
 
                 {/* 步骤列表 */}
@@ -420,21 +476,21 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
 
                       {/* 步骤描述 */}
                       {step.description && (
-                        <p className="mb-3 pl-4 text-sm leading-6 text-muted-foreground">
-                          <RichText text={step.description} />
+                        <p className="mb-3 pl-4 text-sm leading-6 text-muted-foreground max-sm:pl-0">
+                          <RichText text={step.description} highlightKeywords={isCodexTutorial} />
                         </p>
                       )}
 
                       {/* 代码块 */}
                       {step.code && (
-                        <div className="pl-4">
+                        <div className="min-w-0 pl-4 max-sm:pl-0">
                           <CodeBlock code={step.code} />
                         </div>
                       )}
 
                       {/* 图片展示 */}
                       {step.image && (
-                        <div className="pl-4 my-3">
+                        <div className="my-3 min-w-0 pl-4 max-sm:pl-0">
                           <div className="overflow-hidden rounded-lg border border-border bg-muted/40">
                             <Image
                               src={step.image}
@@ -451,7 +507,7 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
 
                       {/* 要点列表 */}
                       {step.items && step.items.length > 0 && (
-                        <ul className="space-y-2 mb-2 pl-4">
+                        <ul className="space-y-2 mb-2 pl-4 max-sm:pl-0">
                           {step.items.map((item, itemIdx) => {
                             const colonIndexes = [item.indexOf('：'), item.indexOf(':')].filter(index => index > 0);
                             const colonIdx = colonIndexes.length > 0 ? Math.min(...colonIndexes) : -1;
@@ -460,14 +516,14 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
                             return (
                               <li key={itemIdx} className="flex items-start gap-2 text-sm text-muted-foreground">
                                 <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-muted-foreground/50" />
-                                <span className="leading-6">
+                                <span className="min-w-0 break-words leading-6">
                                   {hasColon ? (
                                     <>
                                       <strong className="font-semibold text-foreground">{item.substring(0, colonIdx + 1)}</strong>
-                                      <RichText text={item.substring(colonIdx + 1)} />
+                                      <RichText text={item.substring(colonIdx + 1)} highlightKeywords={isCodexTutorial} />
                                     </>
                                   ) : (
-                                    <RichText text={item} />
+                                    <RichText text={item} highlightKeywords={isCodexTutorial} />
                                   )}
                                 </span>
                               </li>
@@ -478,9 +534,9 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
 
                       {/* 警告 */}
                       {step.warning && (
-                        <div className="pl-4 my-3">
+                        <div className="my-3 pl-4 max-sm:pl-0">
                           <div className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 px-4 py-3 text-sm leading-6 text-amber-800">
-                            &#9888; {step.warning}
+                            &#9888; <RichText text={step.warning} highlightKeywords={isCodexTutorial} />
                           </div>
                         </div>
                       )}
@@ -493,8 +549,8 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
                   <div className="mt-6 space-y-2 rounded-lg border border-sky-200 bg-sky-50 dark:bg-sky-950/30 px-5 py-4">
                     <p className="mb-1 text-[13px] font-semibold text-sky-800">核心要点</p>
                     {section.tips.map((tip, tipIdx) => (
-                      <p key={tipIdx} className="pl-5 text-sm leading-6 text-sky-700">
-                        <RichText text={tip} />
+                    <p key={tipIdx} className="pl-5 text-sm leading-6 text-sky-700">
+                        <RichText text={tip} highlightKeywords={isCodexTutorial} />
                       </p>
                     ))}
                   </div>
@@ -506,7 +562,7 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
                     <p className="mb-1 text-[13px] font-semibold text-amber-800">注意事项</p>
                     {section.warnings.map((warning, warningIdx) => (
                       <p key={warningIdx} className="text-sm text-amber-700 leading-6 pl-5">
-                        <RichText text={warning} />
+                        <RichText text={warning} highlightKeywords={isCodexTutorial} />
                       </p>
                     ))}
                   </div>
