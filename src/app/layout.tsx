@@ -6,7 +6,7 @@ import { ReturnPositionRestorer } from '@/components/navigation/ReturnNavigation
 import './globals.css';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://apiuspro.cn'),
+  metadataBase: new URL('https://www.apiuspro.cn'),
   title: {
     default: 'API知识站',
     template: '%s | API知识站',
@@ -58,14 +58,14 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'API知识站',
     description: '一站式 AI API 学习、选型、购买教程与本地部署指南。',
-    images: ['https://apiuspro.cn/opengraph-image'],
+    images: ['https://www.apiuspro.cn/opengraph-image'],
   },
   robots: {
     index: true,
     follow: true,
   },
   alternates: {
-    canonical: 'https://apiuspro.cn',
+    canonical: 'https://www.apiuspro.cn',
   },
   other: {
     'msvalidate.01': 'BF3E423F579BD5F854833A4A587DFF93',
