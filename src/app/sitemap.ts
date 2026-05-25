@@ -13,7 +13,7 @@ import {
   toSitemapLastModified,
 } from '@/lib/content-updates';
 
-const BASE_URL = 'https://apiuspro.cn';
+const BASE_URL = 'https://www.apiuspro.cn';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const allAPIs = [...visibleAPIList, ...visibleProxyServices];
