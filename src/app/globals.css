@@ -249,6 +249,26 @@ body {
   border-radius: 4px;
 }
 
+/* 教程正文外部链接：避免浅色模式下显示成深色块 */
+.content-article main a[target="_blank"] {
+  border: 1px solid #bae6fd;
+  background: #f0f9ff;
+  color: #0369a1;
+}
+.content-article main a[target="_blank"]:hover {
+  background: #e0f2fe;
+  color: #075985;
+}
+.dark .content-article main a[target="_blank"] {
+  border-color: #075985;
+  background: rgb(8 47 73 / 0.3);
+  color: #7dd3fc;
+}
+.dark .content-article main a[target="_blank"]:hover {
+  background: rgb(12 74 110 / 0.4);
+  color: #bae6fd;
+}
+
 ::selection {
   background: color-mix(in oklab, var(--foreground) 14%, transparent);
 }
