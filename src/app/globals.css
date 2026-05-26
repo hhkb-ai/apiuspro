@@ -269,6 +269,58 @@ body {
   color: #bae6fd;
 }
 
+/* 应用教程页文字高亮兜底：让 Codex 安装教程中的 mark、行内代码和重点标签更明显 */
+.content-article main mark {
+  border: 1px solid #facc15;
+  background: #fef3c7;
+  color: #78350f;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.35);
+}
+.dark .content-article main mark {
+  border-color: rgb(250 204 21 / 0.72);
+  background: rgb(113 63 18 / 0.58);
+  color: #fef3c7;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.08);
+}
+.content-article main code:not(pre code) {
+  border-color: #c4b5fd;
+  background: #f5f3ff;
+  color: #5b21b6;
+  font-weight: 600;
+}
+.dark .content-article main code:not(pre code) {
+  border-color: rgb(167 139 250 / 0.58);
+  background: rgb(76 29 149 / 0.42);
+  color: #ddd6fe;
+}
+.content-article main strong[class*="bg-muted"] {
+  border: 1px solid #bae6fd;
+  background: #e0f2fe;
+  color: #075985;
+}
+.dark .content-article main strong[class*="bg-muted"] {
+  border-color: rgb(56 189 248 / 0.55);
+  background: rgb(7 89 133 / 0.38);
+  color: #bae6fd;
+}
+.dark .content-article main [class*="text-sky-700"],
+.dark .content-article main [class*="text-sky-800"],
+.dark .content-article main [class*="text-sky-900"] {
+  color: #bae6fd;
+}
+.dark .content-article main [class*="text-emerald-700"],
+.dark .content-article main [class*="text-emerald-800"] {
+  color: #a7f3d0;
+}
+.dark .content-article main [class*="text-amber-700"],
+.dark .content-article main [class*="text-amber-800"] {
+  color: #fde68a;
+}
+.dark .content-article main [class*="text-rose-700"],
+.dark .content-article main [class*="text-rose-800"] {
+  color: #fecdd3;
+}
+
 /* 首页使用场景卡片：修复深色模式下浅色卡片和低对比文字 */
 .dark a[href="/use-case/coding"],
 .dark a[href="/use-case/knowledge"],
