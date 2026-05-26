@@ -14,6 +14,33 @@ const ARTICLE_DATE_PUBLISHED = '2026-05-11';
 const ARTICLE_DATE_MODIFIED = '2026-05-11';
 
 const URL_PATTERN = /(https?:\/\/[^\s<>"'，。；、？！）)】]+)/g;
+const HIGHLIGHT_TERMS = [
+  { text: 'Create API Key', className: 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200' },
+  { text: 'Generate New Token', className: 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200' },
+  { text: 'DEEPSEEK_API_KEY', className: 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200' },
+  { text: 'OpenAI SDK', className: 'border-violet-200 bg-violet-50 text-violet-700 dark:border-violet-800 dark:bg-violet-950/40 dark:text-violet-200' },
+  { text: 'API Keys', className: 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200' },
+  { text: 'API Key', className: 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200' },
+  { text: 'Bearer Token', className: 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200' },
+  { text: 'Base URL', className: 'border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-200' },
+  { text: 'DeepSeek', className: 'border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-800 dark:bg-blue-950/40 dark:text-blue-200' },
+  { text: 'deepseek-v4-flash', className: 'border-violet-200 bg-violet-50 text-violet-700 dark:border-violet-800 dark:bg-violet-950/40 dark:text-violet-200' },
+  { text: 'deepseek-v4-pro', className: 'border-violet-200 bg-violet-50 text-violet-700 dark:border-violet-800 dark:bg-violet-950/40 dark:text-violet-200' },
+  { text: '模型名称', className: 'border-violet-200 bg-violet-50 text-violet-700 dark:border-violet-800 dark:bg-violet-950/40 dark:text-violet-200' },
+  { text: '实名认证', className: 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-800 dark:bg-rose-950/40 dark:text-rose-200' },
+  { text: '支付宝/微信', className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200' },
+  { text: '支付宝', className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200' },
+  { text: '微信', className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200' },
+  { text: '充值', className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200' },
+  { text: '余额', className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200' },
+  { text: '额度', className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200' },
+  { text: '控制台', className: 'border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-200' },
+  { text: '401', className: 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-800 dark:bg-rose-950/40 dark:text-rose-200' },
+  { text: '429', className: 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-800 dark:bg-rose-950/40 dark:text-rose-200' },
+  { text: '免费额度', className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200' },
+];
+const HIGHLIGHT_PATTERN = new RegExp(`(${HIGHLIGHT_TERMS.map(({ text }) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'gi');
+const HIGHLIGHT_CLASS_BY_TERM = new Map(HIGHLIGHT_TERMS.map(({ text, className }) => [text.toLowerCase(), className]));
 
 function isApiEndpointUrl(value: string) {
   try {
@@ -29,9 +56,25 @@ function isApiEndpointUrl(value: string) {
   }
 }
 
-// 将文本中的 URL 转换为可点击链接
-function LinkText({ text }: { text: string }) {
-  const parts = text.split(URL_PATTERN);
+function renderHighlightedText(text: string, keyPrefix: string) {
+  return text.split(HIGHLIGHT_PATTERN).filter(Boolean).map((part, index) => {
+    const className = HIGHLIGHT_CLASS_BY_TERM.get(part.toLowerCase());
+    if (!className) return <span key={`${keyPrefix}-${index}`}>{part}</span>;
+
+    return (
+      <mark
+        key={`${keyPrefix}-${index}`}
+        className={`rounded-md border px-1.5 py-0.5 font-semibold box-decoration-clone break-words ${className}`}
+      >
+        {part}
+      </mark>
+    );
+  });
+}
+
+// 将文本中的 URL 转换为可点击链接，并对重点词做高亮
+function LinkText({ text, highlightKeywords = true }: { text: string; highlightKeywords?: boolean }) {
+  const parts = text.split(URL_PATTERN).filter(Boolean);
   return (
     <>
       {parts.map((part, i) => {
@@ -53,7 +96,7 @@ function LinkText({ text }: { text: string }) {
             </a>
           );
         }
-        return <span key={i}>{part}</span>;
+        return <span key={i}>{highlightKeywords ? renderHighlightedText(part, `highlight-${i}`) : part}</span>;
       })}
     </>
   );
@@ -110,6 +153,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
   // 按proxy分组
   const noProxyAPIs = allTutorialAPIs.filter(a => !a.proxy);
   const needProxyAPIs = allTutorialAPIs.filter(a => a.proxy);
+  const blufText = `这篇教程用 ${tutorial.steps.length} 个步骤说明 ${api.name} API 如何注册、开通、获取 API Key 并完成首次接入；先确认${needProxy ? '代理访问、支付方式、额度限制' : '国内直连、免费额度、计费单位'}，再把 Key 安全保存到环境变量或工具配置中。`;
 
   return (
     <>
@@ -227,21 +271,15 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                 {needProxy ? '需要代理' : '无需代理'}
               </span>
             </div>
-            {tutorial.subtitle && <p className="mt-1 text-[15px] sm:text-sm text-foreground/80">{tutorial.subtitle}</p>}
+            {tutorial.subtitle && <p className="mt-1 text-[15px] sm:text-sm text-foreground/80"><LinkText text={tutorial.subtitle} /></p>}
 
             <section className="mt-5 hidden rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 text-[15px] sm:text-sm leading-7 sm:leading-6 text-sky-900 dark:border-sky-800 dark:bg-sky-950/20 dark:text-sky-200 sm:block">
               <p className="font-semibold">BLUF 摘要</p>
-              <p className="mt-1">
-                这篇教程用 {tutorial.steps.length} 个步骤说明 {api.name} API 如何注册、开通、获取 API Key 并完成首次接入；先确认
-                {needProxy ? '代理访问、支付方式、额度限制' : '国内直连、免费额度、计费单位'}，再把 Key 安全保存到环境变量或工具配置中。
-              </p>
+              <p className="mt-1"><LinkText text={blufText} /></p>
             </section>
             <details className="mt-5 rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/20 text-sky-900 dark:text-sky-200 sm:hidden">
               <summary className="cursor-pointer select-none px-4 py-3 text-sm font-bold">BLUF 摘要（点开查看）</summary>
-              <p className="border-t border-sky-200 dark:border-sky-800 px-4 py-3 text-sm leading-7">
-                这篇教程用 {tutorial.steps.length} 个步骤说明 {api.name} API 如何注册、开通、获取 API Key 并完成首次接入；先确认
-                {needProxy ? '代理访问、支付方式、额度限制' : '国内直连、免费额度、计费单位'}，再把 Key 安全保存到环境变量或工具配置中。
-              </p>
+              <p className="border-t border-sky-200 dark:border-sky-800 px-4 py-3 text-sm leading-7"><LinkText text={blufText} /></p>
             </details>
 
             {/* 优势标签 */}
@@ -249,7 +287,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
               <div className="flex flex-wrap gap-2 mt-4">
                 {tutorial.advantages.map((advantage, index) => (
                   <span key={index} className="rounded-full border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 px-2.5 py-1 text-[12px] text-emerald-700">
-                    &#10003; {advantage}
+                    &#10003; <LinkText text={advantage} />
                   </span>
                 ))}
               </div>
@@ -264,31 +302,31 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                 {tutorial.estimatedTime && (
                   <div className="flex items-start gap-2">
                     <span className="mt-0.5 shrink-0 text-sky-600 dark:text-sky-400">&#9201;</span>
-                    <span className="text-sky-900 dark:text-sky-200"><strong className="font-semibold">预计耗时：</strong>{tutorial.estimatedTime}</span>
+                    <span className="text-sky-900 dark:text-sky-200"><strong className="font-semibold">预计耗时：</strong><LinkText text={tutorial.estimatedTime} /></span>
                   </div>
                 )}
                 {tutorial.prerequisites && tutorial.prerequisites.length > 0 && (
                   <div className="flex items-start gap-2">
                     <span className="mt-0.5 shrink-0 text-sky-600 dark:text-sky-400">&#128230;</span>
-                    <span className="text-sky-900 dark:text-sky-200"><strong className="font-semibold">准备材料：</strong>{tutorial.prerequisites.join('、')}</span>
+                    <span className="text-sky-900 dark:text-sky-200"><strong className="font-semibold">准备材料：</strong><LinkText text={tutorial.prerequisites.join('、')} /></span>
                   </div>
                 )}
                 {tutorial.successSign && (
                   <div className="flex items-start gap-2">
                     <span className="mt-0.5 shrink-0 text-emerald-600 dark:text-emerald-400">&#9989;</span>
-                    <span className="text-emerald-800 dark:text-emerald-200"><strong className="font-semibold">成功标志：</strong>{tutorial.successSign}</span>
+                    <span className="text-emerald-800 dark:text-emerald-200"><strong className="font-semibold">成功标志：</strong><LinkText text={tutorial.successSign} /></span>
                   </div>
                 )}
                 {tutorial.commonPitfall && (
                   <div className="flex items-start gap-2">
                     <span className="mt-0.5 shrink-0 text-amber-600 dark:text-amber-400">&#9888;</span>
-                    <span className="text-amber-800 dark:text-amber-200"><strong className="font-semibold">最容易卡住：</strong>{tutorial.commonPitfall}</span>
+                    <span className="text-amber-800 dark:text-amber-200"><strong className="font-semibold">最容易卡住：</strong><LinkText text={tutorial.commonPitfall} /></span>
                   </div>
                 )}
                 {tutorial.securityReminder && (
                   <div className="flex items-start gap-2">
                     <span className="mt-0.5 shrink-0 text-red-600 dark:text-red-400">&#128274;</span>
-                    <span className="text-red-800 dark:text-red-200"><strong className="font-semibold">安全提醒：</strong>{tutorial.securityReminder}</span>
+                    <span className="text-red-800 dark:text-red-200"><strong className="font-semibold">安全提醒：</strong><LinkText text={tutorial.securityReminder} /></span>
                   </div>
                 )}
               </div>
@@ -336,24 +374,24 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
 
                 {/* 步骤描述 */}
                 {step.description && (
-                  <p className="mb-4 text-[15px] sm:text-base leading-7 sm:leading-8 text-foreground/85 min-w-0 break-words">{step.description}</p>
+                  <p className="mb-4 text-[15px] sm:text-base leading-7 sm:leading-8 text-foreground/85 min-w-0 break-words"><LinkText text={step.description} /></p>
                 )}
 
                 {/* 步骤实操指引 */}
                 {(step.whereToClick || step.expectedResult || (step.failureChecklist && step.failureChecklist.length > 0)) && (
                   <div className="mb-4 max-w-full min-w-0 rounded-md border border-border/70 bg-background/45 px-3 py-3 text-[13px] leading-6 sm:px-4 sm:text-sm dark:bg-background/35" style={{ overflowWrap: 'anywhere' }}>
                     {step.whereToClick && (
-                      <p className="text-muted-foreground break-words"><strong className="font-semibold text-foreground">点击位置：</strong>{step.whereToClick}</p>
+                      <p className="text-muted-foreground break-words"><strong className="font-semibold text-foreground">点击位置：</strong><LinkText text={step.whereToClick} /></p>
                     )}
                     {step.expectedResult && (
-                      <p className="text-emerald-700 dark:text-emerald-400 break-words"><strong className="font-semibold">完成后看到：</strong>{step.expectedResult}</p>
+                      <p className="text-emerald-700 dark:text-emerald-400 break-words"><strong className="font-semibold">完成后看到：</strong><LinkText text={step.expectedResult} /></p>
                     )}
                     {step.failureChecklist && step.failureChecklist.length > 0 && (
                       <div className="text-amber-700 dark:text-amber-400">
                         <strong className="font-semibold">失败检查：</strong>
                         <ul className="mt-1 space-y-0.5 pl-4">
                           {step.failureChecklist.map((item, fi) => (
-                            <li key={fi} className="list-disc break-words">{item}</li>
+                            <li key={fi} className="list-disc break-words"><LinkText text={item} /></li>
                           ))}
                         </ul>
                       </div>
@@ -416,7 +454,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                 {/* 警告 */}
                 {step.warning && (
                   <div className="my-4 rounded-lg border border-amber-500/30 bg-amber-500/[0.06] px-4 py-3 text-sm leading-6 text-amber-800 dark:text-amber-200">
-                    &#9888; {step.warning}
+                    &#9888; <LinkText text={step.warning} />
                   </div>
                 )}
               </section>
@@ -429,7 +467,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
               <div>
                 <p className="mb-1 text-[13px] font-semibold text-emerald-800">配置推荐：使用 CC Switch 接入 AI 工具</p>
                 <p className="text-[15px] sm:text-sm leading-7 sm:leading-6 text-emerald-700 dark:text-emerald-300">
-                  创建 API Key 后，建议用 CC Switch 统一填写 API Key、Base URL 和模型名称，再接入 Claude Code、Codex、Gemini CLI、OpenCode、OpenClaw 等工具，避免手动修改配置文件出错。
+                  <LinkText text="创建 API Key 后，建议用 CC Switch 统一填写 API Key、Base URL 和模型名称，再接入 Claude Code、Codex、Gemini CLI、OpenCode、OpenClaw 等工具，避免手动修改配置文件出错。" />
                 </p>
               </div>
               <Link
@@ -473,15 +511,15 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
             <div className="rounded-lg border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 px-4 py-3 sm:px-5 sm:py-4">
               <p className="mb-2 text-[13px] font-semibold text-emerald-800">适合谁</p>
               <ul className="space-y-1.5 text-[15px] sm:text-sm leading-7 sm:leading-6 text-emerald-700 dark:text-emerald-300">
-                <li>• {needProxy ? '有稳定代理环境和国际信用卡的开发者' : '国内用户，想快速接入 AI API'}</li>
-                <li>• 需要手把手指导完成注册、充值和获取 Key 的新手</li>
-                <li>• 想把 {api.name} 接入 Claude Code、Codex 等工具的用户</li>
+                <li>• <LinkText text={needProxy ? '有稳定代理环境和国际信用卡的开发者' : '国内用户，想快速接入 AI API'} /></li>
+                <li>• <LinkText text="需要手把手指导完成注册、充值和获取 Key 的新手" /></li>
+                <li>• <LinkText text={`想把 ${api.name} 接入 Claude Code、Codex 等工具的用户`} /></li>
               </ul>
             </div>
             <div className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 px-4 py-3 sm:px-5 sm:py-4">
               <p className="mb-2 text-[13px] font-semibold text-amber-800">不适合谁</p>
               <ul className="space-y-1.5 text-[15px] sm:text-sm leading-7 sm:leading-6 text-amber-700 dark:text-amber-300">
-                <li>• 已经熟悉接入流程，只需要查 Base URL 或模型名</li>
+                <li>• <LinkText text="已经熟悉接入流程，只需要查 Base URL 或模型名" /></li>
                 <li>• 不确定该用哪个 API（请看 <Link href="/use-case" className="text-foreground hover:underline">场景推荐</Link>）</li>
                 <li>• 想对比多个 API 的测评数据（请看 <Link href="/api-review" className="text-foreground hover:underline">API 测评</Link>）</li>
               </ul>
@@ -509,8 +547,8 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                 },
               ].map((faq) => (
                 <div key={faq.q} className="rounded-lg border border-border bg-card px-4 sm:px-5 py-4">
-                  <h4 className="text-[15px] sm:text-sm font-semibold text-foreground">{faq.q}</h4>
-                  <p className="mt-1.5 text-[15px] sm:text-sm leading-7 sm:leading-6 text-foreground/80">{faq.a}</p>
+                  <h4 className="text-[15px] sm:text-sm font-semibold text-foreground"><LinkText text={faq.q} /></h4>
+                  <p className="mt-1.5 text-[15px] sm:text-sm leading-7 sm:leading-6 text-foreground/80"><LinkText text={faq.a} /></p>
                 </div>
               ))}
             </div>
