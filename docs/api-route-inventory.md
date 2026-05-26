@@ -38,7 +38,7 @@
 | 路由 | 文件 | 说明 |
 | --- | --- | --- |
 | `/sitemap.xml` | `src/app/sitemap.ts` | 使用 `MetadataRoute.Sitemap` 生成 sitemap，包含静态页、API 详情页、教程详情页、测评详情页、应用教程页和场景页 |
-| `/robots.txt` | `src/app/robots.ts` | 允许全站抓取，并声明 `https://apiuspro.cn/sitemap.xml` |
+| `/robots.txt` | `src/app/robots.ts` | 允许全站抓取，并声明 `https://www.apiuspro.cn/sitemap.xml` |
 | `/opengraph-image` | `src/app/opengraph-image.tsx` | Open Graph 图片生成路由 |
 | `/favicon.ico` | `src/app/favicon.ico` | 站点图标 |
 
@@ -57,7 +57,7 @@
 | 脚本 | 外部请求 | 触发方式 | 说明 |
 | --- | --- | --- | --- |
 | `scripts/submit-indexnow.mjs` | `https://api.indexnow.org/indexnow` | 手动执行 `pnpm submit:indexnow` | 读取站点 sitemap 后向 IndexNow 提交 URL |
-| `scripts/submit-indexnow.mjs` | `https://apiuspro.cn/sitemap.xml` | 手动执行 `pnpm submit:indexnow` | 获取线上 sitemap |
+| `scripts/submit-indexnow.mjs` | `https://www.apiuspro.cn/sitemap.xml` | 手动执行 `pnpm submit:indexnow` | 获取线上 sitemap |
 | `scripts/seo-full-pipeline.mjs` | `process.env.CMS_API` | 手动执行 `pnpm seo:pipeline` | 读取或写入外部 CMS meta 数据 |
 | `scripts/seo-full-pipeline.mjs` | Slack webhook URL | 配置 `SLACK_WEBHOOK` 时 | 发送 SEO 告警 |
 | `scripts/seo-full-pipeline.mjs` | 待检测页面 URL | 脚本内部 SEO 检查 | 使用 fetch 检查页面响应、metadata 和内容质量 |

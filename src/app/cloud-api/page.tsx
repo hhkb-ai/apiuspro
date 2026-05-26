@@ -190,8 +190,8 @@ export default function CloudAPIPage() {
     <SidebarLayout>
       <BreadcrumbSchema
         items={[
-          { name: 'API知识站', url: 'https://apiuspro.cn' },
-          { name: 'API官网', url: 'https://apiuspro.cn/cloud-api' },
+          { name: 'API知识站', url: 'https://www.apiuspro.cn' },
+          { name: 'API官网', url: 'https://www.apiuspro.cn/cloud-api' },
         ]}
       />
       <div className="mx-auto max-w-6xl p-6 lg:p-8">

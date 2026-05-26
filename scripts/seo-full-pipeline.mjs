@@ -6,7 +6,7 @@ const DEFAULT_OUTPUT_DIR = 'outputs';
 const DEFAULT_INPUT_DIR = 'inputs';
 const SENSITIVE_PATTERN = /\b(?:token|api[_-]?key|secret|password|authorization|bearer)\b/i;
 const LOCAL_OR_RESTRICTED_HOSTS = new Set(['localhost', '127.0.0.1', '0.0.0.0', '::1', '8.147.64.143']);
-const USER_AGENT = 'apiuspro-seo-pipeline/1.0 (+https://apiuspro.cn)';
+const USER_AGENT = 'apiuspro-seo-pipeline/1.0 (+https://www.apiuspro.cn)';
 
 const args = parseArgs(process.argv.slice(2).filter(arg => arg !== '--'));
 const outputDir = args.outputDir || DEFAULT_OUTPUT_DIR;

@@ -112,15 +112,15 @@ export function CcswitchContentPage() {
     <div className="min-h-screen bg-background content-article">
       <BreadcrumbSchema
         items={[
-          { name: 'API知识站', url: 'https://apiuspro.cn' },
-          { name: 'API应用', url: 'https://apiuspro.cn/app' },
-          { name: tutorial.name, url: 'https://apiuspro.cn/app/ccswitch' },
+          { name: 'API知识站', url: 'https://www.apiuspro.cn' },
+          { name: 'API应用', url: 'https://www.apiuspro.cn/app' },
+          { name: tutorial.name, url: 'https://www.apiuspro.cn/app/ccswitch' },
         ]}
       />
       <ArticleSchema
         title="CC Switch 安装与多模型切换教程"
         description={tutorial.desc}
-        url="https://apiuspro.cn/app/ccswitch"
+        url="https://www.apiuspro.cn/app/ccswitch"
         datePublished={ARTICLE_DATE_PUBLISHED}
         dateModified={ARTICLE_DATE_MODIFIED}
       />
@@ -131,7 +131,7 @@ export function CcswitchContentPage() {
           (section.steps || []).map((step, stepIndex) => ({
             name: step.title,
             text: step.description || step.items?.join('；') || section.content,
-            url: `https://apiuspro.cn/app/ccswitch#section-${sectionIndex}-${stepIndex}`,
+            url: `https://www.apiuspro.cn/app/ccswitch#section-${sectionIndex}-${stepIndex}`,
           })),
         )}
         totalTime="PT15M"

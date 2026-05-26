@@ -45,7 +45,7 @@ const HIGHLIGHT_CLASS_BY_TERM = new Map(HIGHLIGHT_TERMS.map(({ text, className }
 function isApiEndpointUrl(value: string) {
   try {
     const url = new URL(value);
-    return url.hostname !== 'apiuspro.cn' && (
+    return !['apiuspro.cn', 'www.apiuspro.cn'].includes(url.hostname) && (
       url.hostname.startsWith('api.') ||
       url.pathname.startsWith('/v1') ||
       url.pathname.includes('/api/') ||
@@ -159,18 +159,18 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
     <>
       <BreadcrumbSchema
         items={[
-          { name: 'API知识站', url: 'https://apiuspro.cn' },
-          { name: '购买教程', url: 'https://apiuspro.cn/tutorial' },
-          { name: tutorial.title, url: `https://apiuspro.cn/tutorial/${id}` },
+          { name: 'API知识站', url: 'https://www.apiuspro.cn' },
+          { name: '购买教程', url: 'https://www.apiuspro.cn/tutorial' },
+          { name: tutorial.title, url: `https://www.apiuspro.cn/tutorial/${id}` },
         ]}
       />
       <TechArticleSchema
         title={tutorial.title}
         description={tutorial.subtitle || api.desc}
-        url={`https://apiuspro.cn/tutorial/${id}`}
+        url={`https://www.apiuspro.cn/tutorial/${id}`}
         imageUrl={
           tutorial.steps[0]?.image
-            ? `https://apiuspro.cn${tutorial.steps[0].image}`
+            ? `https://www.apiuspro.cn${tutorial.steps[0].image}`
             : undefined
         }
         datePublished={ARTICLE_DATE_PUBLISHED}
@@ -183,8 +183,8 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
         steps={tutorial.steps.map((step, index) => ({
           name: step.title,
           text: step.description || step.items?.join('；') || `${tutorial.title} 第 ${index + 1} 步`,
-          image: step.image ? `https://apiuspro.cn${step.image}` : undefined,
-          url: `https://apiuspro.cn/tutorial/${id}#step-${index}`,
+          image: step.image ? `https://www.apiuspro.cn${step.image}` : undefined,
+          url: `https://www.apiuspro.cn/tutorial/${id}#step-${index}`,
         }))}
         totalTime="PT20M"
         tool={['浏览器', 'API 控制台', 'CC Switch']}

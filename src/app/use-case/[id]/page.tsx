@@ -10,7 +10,7 @@ import { reviewSlugByApiId } from '@/lib/review-config';
 import { BreadcrumbSchema } from '@/components/seo/structured-data';
 import { generateMetadata as generateTdkMetadata } from '@/lib/tdk';
 
-const BASE_URL = 'https://apiuspro.cn';
+const BASE_URL = 'https://www.apiuspro.cn';
 
 export function generateStaticParams() {
   return getAllUseCaseIds().map((id) => ({ id }));

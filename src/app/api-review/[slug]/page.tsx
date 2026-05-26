@@ -60,15 +60,15 @@ export default async function ReviewDetailPage({ params }: { params: Promise<{ s
     <SidebarLayout>
       <BreadcrumbSchema
         items={[
-          { name: 'API知识站', url: 'https://apiuspro.cn' },
-          { name: 'API测评', url: 'https://apiuspro.cn/api-review' },
-          { name: review.name, url: `https://apiuspro.cn/api-review/${review.slug}` },
+          { name: 'API知识站', url: 'https://www.apiuspro.cn' },
+          { name: 'API测评', url: 'https://www.apiuspro.cn/api-review' },
+          { name: review.name, url: `https://www.apiuspro.cn/api-review/${review.slug}` },
         ]}
       />
       <ArticleSchema
         title={`${review.name} 完整测评`}
         description={review.tlDr}
-        url={`https://apiuspro.cn/api-review/${review.slug}`}
+        url={`https://www.apiuspro.cn/api-review/${review.slug}`}
         datePublished={ARTICLE_DATE_PUBLISHED}
         dateModified={ARTICLE_DATE_MODIFIED}
       />

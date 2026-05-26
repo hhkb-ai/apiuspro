@@ -32,12 +32,12 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     title: `${solution.shortTitle} 怎么解决 | API知识站`,
     description: solution.summary,
     alternates: {
-      canonical: `https://apiuspro.cn/error/${solution.id}`,
+      canonical: `https://www.apiuspro.cn/error/${solution.id}`,
     },
     openGraph: {
       title: solution.title,
       description: solution.summary,
-      url: `https://apiuspro.cn/error/${solution.id}`,
+      url: `https://www.apiuspro.cn/error/${solution.id}`,
       siteName: 'API知识站',
       locale: 'zh_CN',
       type: 'article',
@@ -102,15 +102,15 @@ export default async function ErrorSolutionDetailPage({ params }: { params: Prom
     <SidebarLayout>
       <BreadcrumbSchema
         items={[
-          { name: 'API知识站', url: 'https://apiuspro.cn' },
-          { name: '错误解决', url: 'https://apiuspro.cn/error' },
-          { name: solution.shortTitle, url: `https://apiuspro.cn/error/${solution.id}` },
+          { name: 'API知识站', url: 'https://www.apiuspro.cn' },
+          { name: '错误解决', url: 'https://www.apiuspro.cn/error' },
+          { name: solution.shortTitle, url: `https://www.apiuspro.cn/error/${solution.id}` },
         ]}
       />
       <TechArticleSchema
         title={solution.title}
         description={solution.summary}
-        url={`https://apiuspro.cn/error/${solution.id}`}
+        url={`https://www.apiuspro.cn/error/${solution.id}`}
         datePublished={ARTICLE_DATE_PUBLISHED}
         dateModified={ARTICLE_DATE_MODIFIED}
         proficiencyLevel="Beginner"

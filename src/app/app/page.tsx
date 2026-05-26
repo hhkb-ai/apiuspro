@@ -65,8 +65,8 @@ export default function AppListPage() {
     <SidebarLayout>
       <BreadcrumbSchema
         items={[
-          { name: 'API知识站', url: 'https://apiuspro.cn' },
-          { name: 'API应用', url: 'https://apiuspro.cn/app' },
+          { name: 'API知识站', url: 'https://www.apiuspro.cn' },
+          { name: 'API应用', url: 'https://www.apiuspro.cn/app' },
         ]}
       />
       <div className="mx-auto max-w-6xl p-6 lg:p-8">

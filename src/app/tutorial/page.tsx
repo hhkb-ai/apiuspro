@@ -115,8 +115,8 @@ export default function TutorialPage() {
     <SidebarLayout>
       <BreadcrumbSchema
         items={[
-          { name: 'API知识站', url: 'https://apiuspro.cn' },
-          { name: '购买教程', url: 'https://apiuspro.cn/tutorial' },
+          { name: 'API知识站', url: 'https://www.apiuspro.cn' },
+          { name: '购买教程', url: 'https://www.apiuspro.cn/tutorial' },
         ]}
       />
       <div className="mx-auto max-w-6xl p-6 lg:p-8">

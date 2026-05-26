@@ -109,15 +109,15 @@ export default async function APIDetailPage({ params }: { params: Promise<{ id: 
     <SidebarLayout>
       <BreadcrumbSchema
         items={[
-          { name: 'API知识站', url: 'https://apiuspro.cn' },
-          { name: 'API官网', url: 'https://apiuspro.cn/cloud-api' },
-          { name: api.name, url: `https://apiuspro.cn/api/${api.id}` },
+          { name: 'API知识站', url: 'https://www.apiuspro.cn' },
+          { name: 'API官网', url: 'https://www.apiuspro.cn/cloud-api' },
+          { name: api.name, url: `https://www.apiuspro.cn/api/${api.id}` },
         ]}
       />
       <ArticleSchema
         title={`${api.name} API 官网入口、购买教程与接入指南`}
         description={api.desc}
-        url={`https://apiuspro.cn/api/${api.id}`}
+        url={`https://www.apiuspro.cn/api/${api.id}`}
         datePublished={SITE_PUBLISHED_AT}
         dateModified={getApiUpdatedAt(api.id)}
       />

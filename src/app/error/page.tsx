@@ -12,12 +12,12 @@ export const metadata: Metadata = {
   title: 'API 错误解决指南 | API知识站',
   description: '覆盖 401、403、404 model not found、429、timeout、insufficient quota、invalid API key 和 Base URL 配置错误，按认证、权限、模型、限流、额度与网络链路拆解原因，并提供可复制的 curl、Python 和 SDK 修复示例。',
   alternates: {
-    canonical: 'https://apiuspro.cn/error',
+    canonical: 'https://www.apiuspro.cn/error',
   },
   openGraph: {
     title: 'API 错误解决指南',
     description: 'AI API 常见错误排查指南，整理 401、403、404、429、timeout、额度不足、Key 无效和 Base URL 配置错误的真实症状、检查顺序、平台差异和可复制修复示例。',
-    url: 'https://apiuspro.cn/error',
+    url: 'https://www.apiuspro.cn/error',
     siteName: 'API知识站',
     locale: 'zh_CN',
     type: 'website',
@@ -39,15 +39,15 @@ export default function ErrorSolutionPage() {
     <SidebarLayout>
       <BreadcrumbSchema
         items={[
-          { name: 'API知识站', url: 'https://apiuspro.cn' },
-          { name: '错误解决', url: 'https://apiuspro.cn/error' },
+          { name: 'API知识站', url: 'https://www.apiuspro.cn' },
+          { name: '错误解决', url: 'https://www.apiuspro.cn/error' },
         ]}
       />
       <ItemListSchema
         name="API 错误解决指南"
         items={errorSolutions.map(solution => ({
           name: solution.shortTitle,
-          url: `https://apiuspro.cn/error/${solution.id}`,
+          url: `https://www.apiuspro.cn/error/${solution.id}`,
           description: solution.summary,
         }))}
       />

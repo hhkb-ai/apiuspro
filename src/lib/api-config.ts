@@ -2600,7 +2600,7 @@ export const appTutorials: AppTutorial[] = [
         ],
         tips: [
           'CC Switch GitHub 地址：https://github.com/farion1231/cc-switch',
-          '如果需要更完整的图文说明，可查看本站 CC Switch 详细教程：https://apiuspro.cn/app/ccswitch'
+          '如果需要更完整的图文说明，可查看本站 CC Switch 详细教程：https://www.apiuspro.cn/app/ccswitch'
         ],
         warnings: [
           '只从官方 GitHub 项目或可信发布页下载安装包',
@@ -2674,7 +2674,7 @@ export const appTutorials: AppTutorial[] = [
               '点击测试按钮',
               '确认状态正常',
               '如果失败，优先检查 API Key、余额和模型名称',
-              '配置细节可参考：https://apiuspro.cn/app/ccswitch'
+              '配置细节可参考：https://www.apiuspro.cn/app/ccswitch'
             ]
           }
         ],
@@ -2726,7 +2726,7 @@ export const appTutorials: AppTutorial[] = [
             title: '查看 CC Switch 详细教程',
             description: '如果你还需要配置其他模型、MCP、Skills 或多个 AI 工具，建议继续阅读本站 CC Switch 独立教程。',
             items: [
-              '详细教程入口：https://apiuspro.cn/app/ccswitch',
+              '详细教程入口：https://www.apiuspro.cn/app/ccswitch',
               '适合继续配置 Codex、Gemini CLI、OpenCode、OpenClaw',
               '适合统一管理多个 API Key 和模型供应商'
             ]
@@ -2745,7 +2745,7 @@ export const appTutorials: AppTutorial[] = [
             title: '接入 Obsidian 插件',
             description: '如果你使用 Obsidian 管理笔记，可以继续安装 Claudian Obsidian 插件，在知识库中调用 AI。',
             items: [
-              '插件教程入口：https://apiuspro.cn/app/claudian-obsidian',
+              '插件教程入口：https://www.apiuspro.cn/app/claudian-obsidian',
               '适合把 Claude Code 工作流延伸到笔记和知识库场景',
               '建议在 Claude Code 基础环境稳定后再配置'
             ]
@@ -2754,7 +2754,7 @@ export const appTutorials: AppTutorial[] = [
         tips: [
           'VS Code 扩展和命令行 Claude Code 共享同一套本地配置',
           'Obsidian 插件是进阶工作流，不影响 Claude Code 基础使用',
-          '需要更强配置管理时优先查看 `https://apiuspro.cn/app/ccswitch`'
+          '需要更强配置管理时优先查看 `https://www.apiuspro.cn/app/ccswitch`'
         ]
       }
     ]

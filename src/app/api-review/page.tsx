@@ -139,8 +139,8 @@ export default function APIReviewPage() {
     <SidebarLayout>
       <BreadcrumbSchema
         items={[
-          { name: 'API知识站', url: 'https://apiuspro.cn' },
-          { name: 'API测评', url: 'https://apiuspro.cn/api-review' },
+          { name: 'API知识站', url: 'https://www.apiuspro.cn' },
+          { name: 'API测评', url: 'https://www.apiuspro.cn/api-review' },
         ]}
       />
       <div className="mx-auto max-w-5xl p-6 lg:p-8">

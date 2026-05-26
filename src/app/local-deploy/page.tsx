@@ -8,7 +8,7 @@ const URL_PATTERN = /(https?:\/\/[^\s<>"'，。；、？！）)】]+)/g;
 function isApiEndpointUrl(value: string) {
   try {
     const url = new URL(value);
-    return url.hostname !== 'apiuspro.cn' && (
+    return !['apiuspro.cn', 'www.apiuspro.cn'].includes(url.hostname) && (
       url.hostname.startsWith('api.') ||
       url.pathname.startsWith('/v1') ||
       url.pathname.includes('/api/') ||
@@ -317,14 +317,14 @@ export default function LocalDeployPage() {
     <>
       <BreadcrumbSchema
         items={[
-          { name: 'API知识站', url: 'https://apiuspro.cn' },
-          { name: '本地部署', url: 'https://apiuspro.cn/local-deploy' },
+          { name: 'API知识站', url: 'https://www.apiuspro.cn' },
+          { name: '本地部署', url: 'https://www.apiuspro.cn/local-deploy' },
         ]}
       />
       <ArticleSchema
         title="AI大模型本地部署教程 2026"
         description="面向初学者的AI大模型本地部署教程：使用Ollama在笔记本电脑上部署Gemma 4等开源模型"
-        url="https://apiuspro.cn/local-deploy"
+        url="https://www.apiuspro.cn/local-deploy"
         datePublished="2026-05-07"
         dateModified="2026-05-07"
       />

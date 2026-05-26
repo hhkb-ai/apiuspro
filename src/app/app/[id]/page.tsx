@@ -33,7 +33,7 @@ const HIGHLIGHT_CLASS_BY_TERM = new Map(HIGHLIGHT_TERMS.map(({ text, className }
 function isApiEndpointUrl(value: string) {
   try {
     const url = new URL(value);
-    return url.hostname !== 'apiuspro.cn' && (
+    return !['apiuspro.cn', 'www.apiuspro.cn'].includes(url.hostname) && (
       url.hostname.startsWith('api.') ||
       url.pathname.startsWith('/v1') ||
       url.pathname.includes('/api/') ||
@@ -316,15 +316,15 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
     <div className="min-h-screen bg-background content-article">
       <BreadcrumbSchema
         items={[
-          { name: 'API知识站', url: 'https://apiuspro.cn' },
-          { name: 'API应用', url: 'https://apiuspro.cn/app' },
-          { name: tutorial.name, url: `https://apiuspro.cn/app/${tutorial.id}` },
+          { name: 'API知识站', url: 'https://www.apiuspro.cn' },
+          { name: 'API应用', url: 'https://www.apiuspro.cn/app' },
+          { name: tutorial.name, url: `https://www.apiuspro.cn/app/${tutorial.id}` },
         ]}
       />
       <ArticleSchema
         title={`${tutorial.name} 使用教程`}
         description={tutorial.desc}
-        url={`https://apiuspro.cn/app/${tutorial.id}`}
+        url={`https://www.apiuspro.cn/app/${tutorial.id}`}
         datePublished={ARTICLE_DATE_PUBLISHED}
         dateModified={ARTICLE_DATE_MODIFIED}
       />
@@ -335,8 +335,8 @@ export default function AppTutorialPage({ params }: { params: Promise<{ id: stri
           (section.steps || []).map((step, stepIdx) => ({
             name: step.title,
             text: step.description || step.items?.join('；') || section.content,
-            image: step.image ? `https://apiuspro.cn${step.image}` : undefined,
-            url: `https://apiuspro.cn/app/${tutorial.id}#section-${sectionIdx}-${stepIdx}`,
+            image: step.image ? `https://www.apiuspro.cn${step.image}` : undefined,
+            url: `https://www.apiuspro.cn/app/${tutorial.id}#section-${sectionIdx}-${stepIdx}`,
           })),
         )}
         totalTime="PT30M"

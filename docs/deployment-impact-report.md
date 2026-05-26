@@ -56,7 +56,7 @@
 
 - `userAgent: "*"`
 - `allow: "/"`
-- `sitemap: "https://apiuspro.cn/sitemap.xml"`
+- `sitemap: "https://www.apiuspro.cn/sitemap.xml"`
 
 本次没有修改 robots。`outputs/tokens.html` 不在 `public/`，也不在 `src/app`，因此 robots 是否 allow 不会导致它被线上访问或索引。
 
@@ -80,13 +80,13 @@
 
 根布局 `src/app/layout.tsx` 定义站点级 metadata，包括：
 
-- `metadataBase: https://apiuspro.cn`
+- `metadataBase: https://www.apiuspro.cn`
 - 默认 title 和 title template
 - description、keywords
 - Open Graph
 - Twitter card
 - robots index/follow
-- 根 canonical `https://apiuspro.cn`
+- 根 canonical `https://www.apiuspro.cn`
 - 百度自动推送脚本和 51.la 统计脚本
 
 页面级 TDK 来自 `src/lib/tdk.ts` 和 `src/lib/tdk.json`，覆盖 `/`、`/cloud-api`、`/api/:id`、`/tutorial`、`/tutorial/:id`、`/api-review`、`/api-review/:slug`、`/app`、`/app/:id`、`/use-case`、`/use-case/:id`、`/local-deploy`、`/faq`。
@@ -99,8 +99,8 @@
 
 - `/story` -> `/use-case` 301
 - `/story/:path*` -> `/use-case` 301
-- `www.apiuspro.cn` host rewrite 到 `https://apiuspro.cn/:path*`
-- `8.147.64.143` host rewrite 到 `https://apiuspro.cn/:path*`
+- `www.apiuspro.cn` host rewrite 到 `https://www.apiuspro.cn/:path*`
+- `8.147.64.143` host rewrite 到 `https://www.apiuspro.cn/:path*`
 - `images.remotePatterns` 允许 https 任意 hostname
 
 本次没有修改 `next.config.ts`。因此重定向、rewrite、图片远程域名规则不受影响。

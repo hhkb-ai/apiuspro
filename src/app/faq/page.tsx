@@ -12,7 +12,7 @@ const URL_PATTERN = /(https?:\/\/[^\s<>"'，。；、？！）)】]+)/g;
 function isApiEndpointUrl(value: string) {
   try {
     const url = new URL(value);
-    return url.hostname !== 'apiuspro.cn' && (
+    return !['apiuspro.cn', 'www.apiuspro.cn'].includes(url.hostname) && (
       url.hostname.startsWith('api.') ||
       url.pathname.startsWith('/v1') ||
       url.pathname.includes('/api/') ||
@@ -62,8 +62,8 @@ export default function FAQPage() {
     <>
       <BreadcrumbSchema
         items={[
-          { name: 'API知识站', url: 'https://apiuspro.cn' },
-          { name: '常见问题 FAQ', url: 'https://apiuspro.cn/faq' },
+          { name: 'API知识站', url: 'https://www.apiuspro.cn' },
+          { name: '常见问题 FAQ', url: 'https://www.apiuspro.cn/faq' },
         ]}
       />
       <FAQSchema items={allFAQItems} />

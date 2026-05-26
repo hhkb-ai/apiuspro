@@ -29,8 +29,8 @@ export default function UseCaseListPage() {
     <SidebarLayout>
       <BreadcrumbSchema
         items={[
-          { name: 'API知识站', url: 'https://apiuspro.cn' },
-          { name: '场景推荐', url: 'https://apiuspro.cn/use-case' },
+          { name: 'API知识站', url: 'https://www.apiuspro.cn' },
+          { name: '场景推荐', url: 'https://www.apiuspro.cn/use-case' },
         ]}
       />
       <div className="mx-auto max-w-6xl p-6 lg:p-8">
