@@ -269,6 +269,96 @@ body {
   color: #bae6fd;
 }
 
+/* 首页使用场景卡片：修复深色模式下浅色卡片和低对比文字 */
+.dark a[href="/use-case/coding"],
+.dark a[href="/use-case/knowledge"],
+.dark a[href="/use-case/content-creation"],
+.dark a[href="/use-case/translation"],
+.dark a[href="/use-case/chatbot"],
+.dark a[href="/use-case/education"] {
+  opacity: 1;
+}
+.dark a[href="/use-case/coding"] {
+  border-color: rgb(244 63 94 / 0.65);
+  background: rgb(136 19 55 / 0.42);
+  color: #fff1f2;
+}
+.dark a[href="/use-case/knowledge"] {
+  border-color: rgb(52 211 153 / 0.65);
+  background: rgb(6 95 70 / 0.42);
+  color: #ecfdf5;
+}
+.dark a[href="/use-case/content-creation"] {
+  border-color: rgb(167 139 250 / 0.68);
+  background: rgb(91 33 182 / 0.42);
+  color: #f5f3ff;
+}
+.dark a[href="/use-case/translation"] {
+  border-color: rgb(56 189 248 / 0.68);
+  background: rgb(7 89 133 / 0.42);
+  color: #f0f9ff;
+}
+.dark a[href="/use-case/chatbot"] {
+  border-color: rgb(251 191 36 / 0.68);
+  background: rgb(146 64 14 / 0.42);
+  color: #fffbeb;
+}
+.dark a[href="/use-case/education"] {
+  border-color: rgb(251 146 60 / 0.68);
+  background: rgb(154 52 18 / 0.42);
+  color: #fff7ed;
+}
+.dark a[href="/use-case/coding"]:hover,
+.dark a[href="/use-case/knowledge"]:hover,
+.dark a[href="/use-case/content-creation"]:hover,
+.dark a[href="/use-case/translation"]:hover,
+.dark a[href="/use-case/chatbot"]:hover,
+.dark a[href="/use-case/education"]:hover {
+  filter: brightness(1.14);
+}
+.dark a[href="/use-case/coding"] p,
+.dark a[href="/use-case/knowledge"] p,
+.dark a[href="/use-case/content-creation"] p,
+.dark a[href="/use-case/translation"] p,
+.dark a[href="/use-case/chatbot"] p,
+.dark a[href="/use-case/education"] p {
+  color: currentColor;
+  opacity: 0.88;
+}
+.dark a[href="/use-case/coding"] svg,
+.dark a[href="/use-case/knowledge"] svg,
+.dark a[href="/use-case/content-creation"] svg,
+.dark a[href="/use-case/translation"] svg,
+.dark a[href="/use-case/chatbot"] svg,
+.dark a[href="/use-case/education"] svg {
+  color: currentColor;
+  opacity: 0.95;
+}
+.dark a[href="/use-case/coding"] span:first-child {
+  background: rgb(244 63 94 / 0.2);
+  color: #ffe4e6;
+}
+.dark a[href="/use-case/knowledge"] span:first-child {
+  background: rgb(52 211 153 / 0.2);
+  color: #d1fae5;
+}
+.dark a[href="/use-case/content-creation"] span:first-child {
+  background: rgb(167 139 250 / 0.22);
+  color: #ede9fe;
+}
+.dark a[href="/use-case/translation"] span:first-child {
+  background: rgb(56 189 248 / 0.22);
+  color: #e0f2fe;
+}
+.dark a[href="/use-case/chatbot"] span:first-child {
+  background: rgb(251 191 36 / 0.22);
+  color: #fef3c7;
+}
+.dark a[href="/use-case/education"] span:first-child {
+  background: rgb(251 146 60 / 0.22);
+  color: #ffedd5;
+}
+
 ::selection {
   background: color-mix(in oklab, var(--foreground) 14%, transparent);
 }
