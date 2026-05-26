@@ -368,3 +368,32 @@ SEO/deployment impact:
 
 - Existing route structure, sitemap, robots, and structured data behavior were not changed.
 - This update changes page copy and freshness dates only, focused on model names, pricing caveats, and unsupported-claim cleanup.
+
+### 2026-05-26 www domain and verification deployment
+
+Commit scope:
+
+- Add Google site verification metadata to the global layout.
+- Finish replacing active internal SEO URLs from `https://apiuspro.cn` to `https://www.apiuspro.cn`.
+- Update canonical, OpenGraph, Twitter image, breadcrumb, article, how-to, API tutorial, app tutorial, error, FAQ, use-case, and TDK URL references that still used the non-www domain.
+- Treat both `apiuspro.cn` and `www.apiuspro.cn` as internal domains in URL rendering helpers, so www links are not marked as external API endpoint links.
+
+Explicitly excluded from this commit:
+
+- Stashed DeepSeek/API content edits: `stash@{0}` / `pre-deploy-keep-uncommitted-deepseek`.
+- Untracked preview, backup, test, Claude/Codex, and local helper files.
+- New untracked components not part of the domain or verification deployment.
+
+Verification completed:
+
+```bash
+pnpm ts-check  # passed
+pnpm lint  # passed
+pnpm build  # passed
+```
+
+SEO/deployment impact:
+
+- Main site domain remains `https://www.apiuspro.cn`.
+- Non-www URLs are intended to redirect to www through `next.config.ts`.
+- Sitemap, robots, JSON-LD, canonical, OpenGraph, Twitter image, and internal absolute links now target the www domain in active tracked files.
