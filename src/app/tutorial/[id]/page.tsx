@@ -18,27 +18,18 @@ const HIGHLIGHT_TERMS = [
   { text: 'Create API Key', className: 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200' },
   { text: 'Generate New Token', className: 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200' },
   { text: 'DEEPSEEK_API_KEY', className: 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200' },
-  { text: 'OpenAI SDK', className: 'border-violet-200 bg-violet-50 text-violet-700 dark:border-violet-800 dark:bg-violet-950/40 dark:text-violet-200' },
+  { text: 'MIMO_API_KEY', className: 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200' },
   { text: 'API Keys', className: 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200' },
   { text: 'API Key', className: 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200' },
   { text: 'Bearer Token', className: 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200' },
   { text: 'Base URL', className: 'border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-200' },
-  { text: 'DeepSeek', className: 'border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-800 dark:bg-blue-950/40 dark:text-blue-200' },
+  { text: 'OpenAI SDK', className: 'border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-200' },
   { text: 'deepseek-v4-flash', className: 'border-violet-200 bg-violet-50 text-violet-700 dark:border-violet-800 dark:bg-violet-950/40 dark:text-violet-200' },
   { text: 'deepseek-v4-pro', className: 'border-violet-200 bg-violet-50 text-violet-700 dark:border-violet-800 dark:bg-violet-950/40 dark:text-violet-200' },
-  { text: '模型名称', className: 'border-violet-200 bg-violet-50 text-violet-700 dark:border-violet-800 dark:bg-violet-950/40 dark:text-violet-200' },
-  { text: '实名认证', className: 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-800 dark:bg-rose-950/40 dark:text-rose-200' },
-  { text: '支付宝/微信', className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200' },
-  { text: '支付宝', className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200' },
-  { text: '微信', className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200' },
-  { text: '充值', className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200' },
-  { text: '余额', className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200' },
-  { text: '额度', className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200' },
-  { text: '控制台', className: 'border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-200' },
-  { text: '401', className: 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-800 dark:bg-rose-950/40 dark:text-rose-200' },
-  { text: '429', className: 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-800 dark:bg-rose-950/40 dark:text-rose-200' },
-  { text: '免费额度', className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200' },
+  { text: 'mimo-v2.5-pro', className: 'border-violet-200 bg-violet-50 text-violet-700 dark:border-violet-800 dark:bg-violet-950/40 dark:text-violet-200' },
+  { text: 'mimo-v2.5', className: 'border-violet-200 bg-violet-50 text-violet-700 dark:border-violet-800 dark:bg-violet-950/40 dark:text-violet-200' },
 ];
+const MAX_HIGHLIGHTS_PER_TEXT = 2;
 const HIGHLIGHT_PATTERN = new RegExp(`(${HIGHLIGHT_TERMS.map(({ text }) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'gi');
 const HIGHLIGHT_CLASS_BY_TERM = new Map(HIGHLIGHT_TERMS.map(({ text, className }) => [text.toLowerCase(), className]));
 
@@ -57,9 +48,13 @@ function isApiEndpointUrl(value: string) {
 }
 
 function renderHighlightedText(text: string, keyPrefix: string) {
+  let highlightCount = 0;
+
   return text.split(HIGHLIGHT_PATTERN).filter(Boolean).map((part, index) => {
     const className = HIGHLIGHT_CLASS_BY_TERM.get(part.toLowerCase());
-    if (!className) return <span key={`${keyPrefix}-${index}`}>{part}</span>;
+    if (!className || highlightCount >= MAX_HIGHLIGHTS_PER_TEXT) return <span key={`${keyPrefix}-${index}`}>{part}</span>;
+
+    highlightCount += 1;
 
     return (
       <mark
@@ -73,7 +68,7 @@ function renderHighlightedText(text: string, keyPrefix: string) {
 }
 
 // 将文本中的 URL 转换为可点击链接，并对重点词做高亮
-function LinkText({ text, highlightKeywords = true }: { text: string; highlightKeywords?: boolean }) {
+function LinkText({ text, highlightKeywords = false }: { text: string; highlightKeywords?: boolean }) {
   const parts = text.split(URL_PATTERN).filter(Boolean);
   return (
     <>
@@ -314,7 +309,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                 {tutorial.successSign && (
                   <div className="flex items-start gap-2">
                     <span className="mt-0.5 shrink-0 text-emerald-600 dark:text-emerald-400">&#9989;</span>
-                    <span className="text-emerald-800 dark:text-emerald-200"><strong className="font-semibold">成功标志：</strong><LinkText text={tutorial.successSign} /></span>
+                    <span className="text-emerald-800 dark:text-emerald-200"><strong className="font-semibold">成功标志：</strong><LinkText text={tutorial.successSign} highlightKeywords /></span>
                   </div>
                 )}
                 {tutorial.commonPitfall && (
@@ -326,7 +321,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                 {tutorial.securityReminder && (
                   <div className="flex items-start gap-2">
                     <span className="mt-0.5 shrink-0 text-red-600 dark:text-red-400">&#128274;</span>
-                    <span className="text-red-800 dark:text-red-200"><strong className="font-semibold">安全提醒：</strong><LinkText text={tutorial.securityReminder} /></span>
+                    <span className="text-red-800 dark:text-red-200"><strong className="font-semibold">安全提醒：</strong><LinkText text={tutorial.securityReminder} highlightKeywords /></span>
                   </div>
                 )}
               </div>
@@ -384,7 +379,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                       <p className="text-muted-foreground break-words"><strong className="font-semibold text-foreground">点击位置：</strong><LinkText text={step.whereToClick} /></p>
                     )}
                     {step.expectedResult && (
-                      <p className="text-emerald-700 dark:text-emerald-400 break-words"><strong className="font-semibold">完成后看到：</strong><LinkText text={step.expectedResult} /></p>
+                      <p className="text-emerald-700 dark:text-emerald-400 break-words"><strong className="font-semibold">完成后看到：</strong><LinkText text={step.expectedResult} highlightKeywords /></p>
                     )}
                     {step.failureChecklist && step.failureChecklist.length > 0 && (
                       <div className="text-amber-700 dark:text-amber-400">
@@ -454,7 +449,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                 {/* 警告 */}
                 {step.warning && (
                   <div className="my-4 rounded-lg border border-amber-500/30 bg-amber-500/[0.06] px-4 py-3 text-sm leading-6 text-amber-800 dark:text-amber-200">
-                    &#9888; <LinkText text={step.warning} />
+                    &#9888; <LinkText text={step.warning} highlightKeywords />
                   </div>
                 )}
               </section>
@@ -548,7 +543,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
               ].map((faq) => (
                 <div key={faq.q} className="rounded-lg border border-border bg-card px-4 sm:px-5 py-4">
                   <h4 className="text-[15px] sm:text-sm font-semibold text-foreground"><LinkText text={faq.q} /></h4>
-                  <p className="mt-1.5 text-[15px] sm:text-sm leading-7 sm:leading-6 text-foreground/80"><LinkText text={faq.a} /></p>
+                  <p className="mt-1.5 text-[15px] sm:text-sm leading-7 sm:leading-6 text-foreground/80"><LinkText text={faq.a} highlightKeywords={faq.q.includes('API Key')} /></p>
                 </div>
               ))}
             </div>
