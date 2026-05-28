@@ -480,7 +480,7 @@ function DeepSeekConfigQuickCheck({ updatedAt }: { updatedAt: string }) {
 
   return (
     <section className="mb-8">
-      <div className="mb-3">
+      <div className="mb-3 hidden md:block">
         <SectionTitle>DeepSeek API 配置速查</SectionTitle>
         <p className="text-sm leading-7 text-muted-foreground">
           这部分用于查配置，不作为正文阅读开头。移动端默认折叠，避免用户刚进入页面就看到大面积参数卡片。
@@ -517,14 +517,14 @@ function AccessStepCards({ steps }: { steps: AccessStep[] }) {
 function DeepSeekAccessFlow() {
   return (
     <section className="mb-8">
-      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mb-4 hidden gap-3 md:flex md:flex-col sm:items-start lg:flex-row lg:items-center lg:justify-between">
         <div>
           <SectionTitle>接入流程摘要</SectionTitle>
           <p className="text-sm leading-7 text-muted-foreground">
             这里只做流程速览。需要截图和完整代码说明时，继续查看完整教程。
           </p>
         </div>
-        <Link href="/tutorial/deepseek" className="self-start sm:self-auto">
+        <Link href="/tutorial/deepseek" className="self-start lg:self-auto">
           <Button variant="outline" size="sm">查看完整 DeepSeek 购买教程</Button>
         </Link>
       </div>
@@ -555,7 +555,7 @@ function ErrorCards() {
 function DeepSeekErrorsSection() {
   return (
     <section className="mb-8">
-      <div className="mb-4">
+      <div className="mb-4 hidden md:block">
         <SectionTitle>常见错误排查</SectionTitle>
         <p className="text-sm leading-7 text-muted-foreground">
           接入失败时，优先判断是 <Highlight tone="emerald">API Key</Highlight>、<Highlight tone="sky">Base URL</Highlight>、
@@ -595,7 +595,7 @@ function AlternativeCards() {
 function DeepSeekAlternativesSection() {
   return (
     <section className="mb-8">
-      <div className="mb-4">
+      <div className="mb-4 hidden md:block">
         <SectionTitle>替代方案对比</SectionTitle>
         <p className="text-sm leading-7 text-muted-foreground">
           选择 API 时不要只看模型名称。更实际的判断方式是：能否稳定访问、能否支付、能否接受成本，以及模型是否适合你的任务。
@@ -631,7 +631,9 @@ function FaqCards({ faqItems }: { faqItems: FAQItem[] }) {
 function DeepSeekFaqSection({ faqItems }: { faqItems: FAQItem[] }) {
   return (
     <section className="mb-8">
-      <SectionTitle>常见问题</SectionTitle>
+      <div className="hidden md:block">
+        <SectionTitle>常见问题</SectionTitle>
+      </div>
       <div className="hidden md:block">
         <FaqCards faqItems={faqItems} />
       </div>
@@ -717,7 +719,9 @@ function ReadingJudgmentContent({ api, reviewSlug }: { api: APIConfig; reviewSlu
 function DeepSeekReadingJudgment({ api, reviewSlug }: { api: APIConfig; reviewSlug?: string | null }) {
   return (
     <section className="mb-8">
-      <SectionTitle>阅读后判断</SectionTitle>
+      <div className="hidden md:block">
+        <SectionTitle>阅读后判断</SectionTitle>
+      </div>
       <div className="hidden md:block">
         <ReadingJudgmentContent api={api} reviewSlug={reviewSlug} />
       </div>
@@ -728,27 +732,40 @@ function DeepSeekReadingJudgment({ api, reviewSlug }: { api: APIConfig; reviewSl
   );
 }
 
+function RelatedApiCards({ relatedAPIs }: { relatedAPIs: APIConfig[] }) {
+  return (
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+      {relatedAPIs.map((related) => (
+        <Link key={related.id} href={`/api/${related.id}`} className="block">
+          <Card className="h-full transition-colors hover:border-foreground/30">
+            <CardContent className="p-5">
+              <div className="mb-3 flex items-start justify-between gap-3">
+                <h3 className="font-semibold">{related.name}</h3>
+                <Badge variant="outline" className={badgeClass(related.badge.type)}>{related.badge.text}</Badge>
+              </div>
+              <p className="line-clamp-2 text-sm leading-6 text-muted-foreground">{related.desc}</p>
+            </CardContent>
+          </Card>
+        </Link>
+      ))}
+    </div>
+  );
+}
+
 function RelatedApiSection({ relatedAPIs }: { relatedAPIs: APIConfig[] }) {
   if (relatedAPIs.length === 0) return null;
 
   return (
     <section className="mb-8">
-      <SectionTitle>相关 API 推荐</SectionTitle>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        {relatedAPIs.map((related) => (
-          <Link key={related.id} href={`/api/${related.id}`} className="block">
-            <Card className="h-full transition-colors hover:border-foreground/30">
-              <CardContent className="p-5">
-                <div className="mb-3 flex items-start justify-between gap-3">
-                  <h3 className="font-semibold">{related.name}</h3>
-                  <Badge variant="outline" className={badgeClass(related.badge.type)}>{related.badge.text}</Badge>
-                </div>
-                <p className="line-clamp-2 text-sm leading-6 text-muted-foreground">{related.desc}</p>
-              </CardContent>
-            </Card>
-          </Link>
-        ))}
+      <div className="hidden md:block">
+        <SectionTitle>相关 API 推荐</SectionTitle>
       </div>
+      <div className="hidden md:block">
+        <RelatedApiCards relatedAPIs={relatedAPIs} />
+      </div>
+      <MobileCollapsed title="相关 API 推荐（点开查看）">
+        <RelatedApiCards relatedAPIs={relatedAPIs} />
+      </MobileCollapsed>
     </section>
   );
 }
