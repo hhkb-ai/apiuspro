@@ -397,3 +397,29 @@ SEO/deployment impact:
 - Main site domain remains `https://www.apiuspro.cn`.
 - Non-www URLs are intended to redirect to www through `next.config.ts`.
 - Sitemap, robots, JSON-LD, canonical, OpenGraph, Twitter image, and internal absolute links now target the www domain in active tracked files.
+
+### 2026-05-29 Google verification token refresh
+
+Commit scope:
+
+- Add the new Google Search Console verification token to the global Next.js metadata in `src/app/layout.tsx`.
+- Preserve the existing Google verification token by rendering both values through `metadata.verification.google`.
+
+Explicitly excluded from this commit:
+
+- Existing generated `next-env.d.ts` local reference change.
+- Existing homepage and tutorial learning-center edits in `src/app/home-client.tsx`, `src/app/tutorial/page.tsx`, `src/app/learn/`, `src/components/learn/`, `src/lib/learn-config.ts`, and `public/images/learn/`.
+- Existing untracked local preview, backup, test, Claude/Codex, helper, and unrelated component files.
+
+Verification planned:
+
+```bash
+corepack pnpm ts-check
+corepack pnpm lint
+corepack pnpm build
+```
+
+SEO/deployment impact:
+
+- Adds a new `google-site-verification` meta tag for Search Console ownership verification.
+- No route, sitemap, robots, canonical, or structured-data behavior is changed.
