@@ -3,6 +3,7 @@ import { appTutorials, visibleAPIList, visibleProxyServices } from '@/lib/api-co
 import { reviewDetails } from '@/lib/review-config';
 import { getAllUseCaseIds } from '@/lib/use-case-config';
 import { getAllErrorSolutionIds } from '@/lib/error-solution-config';
+import { learnTutorials } from '@/lib/learn-tutorials';
 import {
   getApiUpdatedAt,
   getAppTutorialUpdatedAt,
@@ -28,11 +29,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/cloud-api`, lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/cloud-api')), changeFrequency: 'weekly', priority: 0.9 },
     { url: `${BASE_URL}/tutorial`, lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/tutorial')), changeFrequency: 'weekly', priority: 0.9 },
     { url: `${BASE_URL}/api-review`, lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/api-review')), changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${BASE_URL}/learn`, lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/learn')), changeFrequency: 'weekly', priority: 0.9 },
     { url: `${BASE_URL}/app`, lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/app')), changeFrequency: 'weekly', priority: 0.8 },
     { url: `${BASE_URL}/error`, lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/error')), changeFrequency: 'weekly', priority: 0.8 },
     { url: `${BASE_URL}/local-deploy`, lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/local-deploy')), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE_URL}/faq`, lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/faq')), changeFrequency: 'monthly', priority: 0.7 },
   ];
+
+  // AI 新手学习页
+  const learnPages: MetadataRoute.Sitemap = learnTutorials.map(article => ({
+    url: `${BASE_URL}${article.path}`,
+    lastModified: toSitemapLastModified(getStaticPageUpdatedAt(article.path)),
+    changeFrequency: 'monthly' as const,
+    priority: 0.8,
+  }));
 
   // API 详情页
   const apiPages: MetadataRoute.Sitemap = allAPIs.map(api => ({
@@ -85,5 +95,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...staticPages, ...apiPages, ...tutorialPages, ...reviewPages, ...appPages, ...errorPages, ...useCaseListPage, ...useCaseDetailPages];
+  return [...staticPages, ...learnPages, ...apiPages, ...tutorialPages, ...reviewPages, ...appPages, ...errorPages, ...useCaseListPage, ...useCaseDetailPages];
 }
