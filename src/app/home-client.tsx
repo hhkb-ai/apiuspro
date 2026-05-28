@@ -2,6 +2,7 @@
 
 import { useDeferredValue, useMemo, useState, useCallback, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { BeianLinks } from '@/components/layout/BeianLinks';
@@ -64,6 +65,15 @@ const integrationSteps = [
   { step: 3, title: '接入工具', desc: '填写 Base URL、模型名和 API Key', links: [{ name: 'API 应用', href: '/app' }, { name: '本地部署', href: '/local-deploy' }] },
 ];
 
+const beginnerLearningSteps = [
+  { step: '01', title: '认识 API', desc: '理解 API 如何连接应用和 AI 服务。' },
+  { step: '02', title: '获取 API Key', desc: '创建访问凭证，并学习安全保存。' },
+  { step: '03', title: '发出第一次请求', desc: '看懂 URL、Headers、Body。' },
+  { step: '04', title: '处理返回与报错', desc: '阅读 JSON 返回，排查 401、403、429。' },
+];
+
+const beginnerFlow = ['你的应用', 'API Key', '请求 API', 'JSON 返回'];
+
 const tutorialsList = apiList.filter(api => api.tutorial);
 const tutorialPriority = ['deepseek', 'openai', 'claude', 'gemini', 'aliyun', 'kimi', 'doubao', 'zhipu', 'tencent', 'mimo'];
 const hotTutorials = [...tutorialsList].sort((a, b) => {
@@ -86,6 +96,17 @@ const desktopNavLinks = [
   { name: 'API应用', href: '/app' },
   { name: '本地部署', href: '/local-deploy' },
 ];
+
+const brandIconById: Record<string, { src: string; alt: string; fallback: string }> = {
+  deepseek: { src: '/images/brands/deepseek.ico', alt: 'DeepSeek', fallback: 'DS' },
+  openai: { src: '/images/brands/openai.svg', alt: 'OpenAI', fallback: 'OAI' },
+  claude: { src: '/images/brands/claude.png', alt: 'Claude', fallback: 'C' },
+  gemini: { src: '/images/brands/gemini.svg', alt: 'Gemini', fallback: 'G' },
+  aliyun: { src: '/images/brands/aliyun.svg', alt: '阿里云通义千问', fallback: '通' },
+  kimi: { src: '/images/brands/kimi.ico', alt: 'Kimi', fallback: 'K' },
+  doubao: { src: '/images/brands/doubao.png', alt: '豆包', fallback: '豆' },
+  zhipu: { src: '/images/brands/zhipu.png', alt: '智谱 GLM', fallback: 'GLM' },
+};
 
 function accessText(proxy?: boolean) {
   return proxy ? '需要代理' : '无需代理';
@@ -234,6 +255,70 @@ function SearchBar({ query, setQuery, onSubmit, suggestions, showSuggestions, se
   );
 }
 
+function BeginnerLearningRoute({ variant = 'desktop' }: { variant?: 'desktop' | 'mobile' }) {
+  const isMobile = variant === 'mobile';
+
+  return (
+    <section className={isMobile ? 'mt-4 rounded-lg border border-border bg-background p-3' : 'mt-6 rounded-lg border border-border bg-card p-4 shadow-sm'}>
+      <div className={isMobile ? 'mb-3' : 'mb-4'}>
+        <p className="text-xs font-medium text-muted-foreground">新手路线</p>
+        <h2 className={isMobile ? 'mt-1 text-base font-semibold' : 'mt-1 text-xl font-semibold tracking-tight'}>AI 与 API 新手学习路线</h2>
+        <p className={isMobile ? 'mt-1 text-xs leading-5 text-muted-foreground' : 'mt-2 text-sm leading-6 text-muted-foreground'}>只保留最关键的步骤，让第一次学习 API 不绕路。</p>
+      </div>
+      <div className={isMobile ? 'grid grid-cols-2 gap-2' : 'grid gap-3 sm:grid-cols-2 lg:grid-cols-4'}>
+        {beginnerLearningSteps.map(item => (
+          <div key={item.step} className={isMobile ? 'rounded-lg border border-border bg-card p-3' : 'rounded-lg border border-border bg-background p-3'}>
+            <span className="text-[11px] font-semibold text-muted-foreground">{item.step}</span>
+            <h3 className="mt-1 text-sm font-semibold text-foreground">{item.title}</h3>
+            <p className={isMobile ? 'mt-1 text-xs leading-5 text-muted-foreground' : 'mt-2 text-xs leading-5 text-muted-foreground'}>{item.desc}</p>
+          </div>
+        ))}
+      </div>
+      <div className={isMobile ? 'mt-3 flex flex-wrap items-center gap-1.5 text-[11px] text-muted-foreground' : 'mt-4 flex flex-wrap items-center gap-2 text-xs text-muted-foreground'}>
+        {beginnerFlow.map((item, index) => (
+          <span key={item} className="inline-flex items-center gap-1.5">
+            <span className="rounded-full border border-border bg-muted px-2 py-1">{item}</span>
+            {index < beginnerFlow.length - 1 && <span aria-hidden="true">→</span>}
+          </span>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function TutorialBrandIcon({ apiId }: { apiId: string }) {
+  const icon = brandIconById[apiId];
+
+  return (
+    <span
+      aria-label={icon ? `${icon.alt} 图标` : undefined}
+      className="flex size-12 shrink-0 items-center justify-center rounded-md border border-border bg-background"
+      title={icon?.alt}
+    >
+      {icon ? (
+        <>
+          <Image
+            src={icon.src}
+            alt=""
+            width={32}
+            height={32}
+            className="size-8 object-contain"
+            loading="lazy"
+            unoptimized
+            onError={(event) => {
+              event.currentTarget.classList.add('hidden');
+              event.currentTarget.nextElementSibling?.classList.remove('hidden');
+            }}
+          />
+          <span className="hidden text-xs font-bold leading-none text-foreground">{icon.fallback}</span>
+        </>
+      ) : (
+        <BookOpen className="size-5 text-muted-foreground" />
+      )}
+    </span>
+  );
+}
+
 function SectionEntries() {
   return (
     <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-[repeat(auto-fit,minmax(150px,1fr))]">
@@ -285,6 +370,7 @@ function MobileHome() {
             <div className="mt-4">
               <SearchBar query={query} setQuery={setQuery} onSubmit={submitSearch} suggestions={suggestions} showSuggestions={showSuggestions} setShowSuggestions={setShowSuggestions} variant="mobile" />
             </div>
+            <BeginnerLearningRoute variant="mobile" />
             <SectionEntries />
           </div>
         </section>
@@ -297,7 +383,7 @@ function MobileHome() {
           <div className="mt-3 grid gap-3">
             {featuredHotTutorials.map(api => (
               <Link key={api.id} href={`/tutorial/${api.id}`} className="flex min-h-24 items-center gap-3 rounded-lg border bg-card p-4 active:bg-muted">
-                <span className="flex size-12 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground"><BookOpen className="size-5" /></span>
+                <TutorialBrandIcon apiId={api.id} />
                 <span className="min-w-0 flex-1"><span className="block truncate text-base font-semibold">{api.name} 购买教程</span><span className="mt-1 block truncate text-sm text-muted-foreground">{api.tutorial?.steps.length} 个步骤 · {api.badge.text}</span></span>
                 <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
               </Link>
@@ -412,6 +498,9 @@ function DesktopHome() {
             <div className="mt-6 lg:mt-8 max-w-3xl">
               <SearchBar query={query} setQuery={setQuery} onSubmit={submitSearch} suggestions={suggestions} showSuggestions={showSuggestions} setShowSuggestions={setShowSuggestions} variant="desktop" />
             </div>
+            <div className="max-w-5xl">
+              <BeginnerLearningRoute />
+            </div>
           </div>
         </section>
 
@@ -452,7 +541,7 @@ function DesktopHome() {
                   <div className="grid flex-1 gap-4 p-4 sm:grid-cols-2 sm:p-5">
                     {featuredHotTutorials.map(api => (
                       <Link key={api.id} href={`/tutorial/${api.id}`} className="flex min-h-32 items-center gap-4 rounded-lg border border-border bg-background p-5 transition-colors hover:border-foreground/30 hover:bg-muted/30">
-                        <span className="flex size-12 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground"><BookOpen className="size-5" /></span>
+                        <TutorialBrandIcon apiId={api.id} />
                         <span className="min-w-0 flex-1">
                           <span className="block truncate text-base font-semibold">{api.name} 购买教程</span>
                           <span className="mt-1 block truncate text-sm text-muted-foreground">{api.tutorial?.steps.length || 0} 个步骤 · {api.badge.text}</span>
