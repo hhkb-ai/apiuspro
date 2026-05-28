@@ -9,20 +9,38 @@ import { getLearnArticle, learnTutorials, LearnArticle, LearnSection } from '@/l
 const ARTICLE_DATE = '2026-05-29';
 
 const highlightTerms = [
+  { text: 'AI 编程工具', className: 'border-slate-200 bg-slate-100 text-slate-800 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100' },
+  { text: 'Claude Code', className: 'border-orange-200 bg-orange-50 text-orange-700 dark:border-orange-800 dark:bg-orange-950/40 dark:text-orange-200' },
+  { text: 'CC Switch', className: 'border-cyan-200 bg-cyan-50 text-cyan-700 dark:border-cyan-800 dark:bg-cyan-950/40 dark:text-cyan-200' },
   { text: 'API Key', className: 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200' },
   { text: 'Base URL', className: 'border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-200' },
   { text: '模型名称', className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200' },
+  { text: '网页聊天', className: 'border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-200' },
+  { text: 'API 接入', className: 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200' },
+  { text: 'AI 工具', className: 'border-slate-200 bg-slate-100 text-slate-800 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100' },
+  { text: '学习辅导', className: 'border-fuchsia-200 bg-fuchsia-50 text-fuchsia-700 dark:border-fuchsia-800 dark:bg-fuchsia-950/40 dark:text-fuchsia-200' },
+  { text: '长上下文', className: 'border-violet-200 bg-violet-50 text-violet-700 dark:border-violet-800 dark:bg-violet-950/40 dark:text-violet-200' },
+  { text: '多模态', className: 'border-violet-200 bg-violet-50 text-violet-700 dark:border-violet-800 dark:bg-violet-950/40 dark:text-violet-200' },
   { text: 'Token', className: 'border-violet-200 bg-violet-50 text-violet-700 dark:border-violet-800 dark:bg-violet-950/40 dark:text-violet-200' },
   { text: '上下文', className: 'border-violet-200 bg-violet-50 text-violet-700 dark:border-violet-800 dark:bg-violet-950/40 dark:text-violet-200' },
   { text: '提示词', className: 'border-fuchsia-200 bg-fuchsia-50 text-fuchsia-700 dark:border-fuchsia-800 dark:bg-fuchsia-950/40 dark:text-fuchsia-200' },
   { text: 'Codex', className: 'border-slate-200 bg-slate-100 text-slate-800 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100' },
-  { text: 'Claude Code', className: 'border-orange-200 bg-orange-50 text-orange-700 dark:border-orange-800 dark:bg-orange-950/40 dark:text-orange-200' },
-  { text: 'CC Switch', className: 'border-cyan-200 bg-cyan-50 text-cyan-700 dark:border-cyan-800 dark:bg-cyan-950/40 dark:text-cyan-200' },
+  { text: 'curl', className: 'border-slate-200 bg-slate-100 text-slate-800 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100' },
+  { text: '请求', className: 'border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-200' },
+  { text: '响应', className: 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200' },
+  { text: '问答', className: 'border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-200' },
+  { text: '写作', className: 'border-fuchsia-200 bg-fuchsia-50 text-fuchsia-700 dark:border-fuchsia-800 dark:bg-fuchsia-950/40 dark:text-fuchsia-200' },
+  { text: '总结', className: 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200' },
+  { text: '翻译', className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200' },
+  { text: '编程', className: 'border-slate-200 bg-slate-100 text-slate-800 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100' },
+  { text: '模型', className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200' },
+  { text: 'AI', className: 'border-indigo-200 bg-indigo-50 text-indigo-700 dark:border-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-200' },
   { text: '401', className: 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-800 dark:bg-rose-950/40 dark:text-rose-200' },
   { text: '429', className: 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-800 dark:bg-rose-950/40 dark:text-rose-200' },
 ];
 
-const highlightPattern = new RegExp(`(${highlightTerms.map(({ text }) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'gi');
+const sortedHighlightTerms = [...highlightTerms].sort((a, b) => b.text.length - a.text.length);
+const highlightPattern = new RegExp(`(${sortedHighlightTerms.map(({ text }) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'gi');
 const highlightClassByTerm = new Map(highlightTerms.map(({ text, className }) => [text.toLowerCase(), className]));
 const richTextPattern = /(`[^`]+`|【[^】]+】)/g;
 
@@ -75,7 +93,7 @@ function RichText({ text, className = '' }: { text: string; className?: string }
 
         if (part.startsWith('【') && part.endsWith('】')) {
           return (
-            <strong key={index} className="rounded-md bg-muted px-1.5 py-0.5 font-semibold text-foreground">
+            <strong key={index} className="rounded-md border border-rose-200 bg-rose-50 px-1.5 py-0.5 font-semibold text-rose-700 dark:border-rose-800 dark:bg-rose-950/40 dark:text-rose-200">
               {part.slice(1, -1)}
             </strong>
           );
@@ -111,7 +129,7 @@ function DataTable({ section }: { section: LearnSection }) {
           <tr>
             {section.table.headers.map((header) => (
               <th key={header} className="border-b px-4 py-3 text-left font-semibold text-foreground">
-                {header}
+                <RichText text={header} />
               </th>
             ))}
           </tr>
@@ -155,7 +173,7 @@ function ArticleSection({ section, index }: { section: LearnSection; index: numb
         <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-foreground text-sm font-bold text-background">
           {index + 1}
         </span>
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">{section.title}</h2>
+        <h2 className="text-xl font-semibold tracking-tight text-foreground"><RichText text={section.title} /></h2>
       </div>
 
       {section.intro && <p className="mb-4 text-[15px] leading-7 text-muted-foreground"><RichText text={section.intro} /></p>}
@@ -238,8 +256,8 @@ export default async function LearnArticlePage({ params }: { params: Promise<{ s
                 <span className="rounded-full border bg-muted px-2.5 py-1 text-xs font-semibold text-muted-foreground">第 {article.order} 篇</span>
                 <span className="rounded-full border bg-muted px-2.5 py-1 text-xs font-semibold text-muted-foreground">{article.readingTime}</span>
               </div>
-              <h1 className="mt-4 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">{article.title}</h1>
-              <p className="mt-4 text-base leading-7 text-muted-foreground">{article.description}</p>
+              <h1 className="mt-4 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl"><RichText text={article.title} /></h1>
+              <p className="mt-4 text-base leading-7 text-muted-foreground"><RichText text={article.description} /></p>
 
               <section className="mt-6 rounded-xl border border-sky-200 bg-sky-50 p-5 dark:border-sky-800 dark:bg-sky-950/30">
                 <p className="text-sm font-semibold text-sky-800 dark:text-sky-200">你会学到什么</p>
