@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">AI 基础学习路径</title>
+  <desc id="desc">从网页聊天到 API 接入再到 AI 工具使用的三步路径。</desc>
+  <rect width="960" height="540" rx="32" fill="#f8fafc"/>
+  <rect x="72" y="96" width="816" height="348" rx="24" fill="#ffffff" stroke="#d9e2ec" stroke-width="2"/>
+  <g font-family="Arial, sans-serif" text-anchor="middle">
+    <text x="480" y="72" font-size="30" font-weight="700" fill="#111827">AI 新手学习路径</text>
+    <g>
+      <rect x="118" y="202" width="188" height="110" rx="18" fill="#eef6ff" stroke="#b6d8ff"/>
+      <text x="212" y="248" font-size="22" font-weight="700" fill="#0f172a">网页聊天</text>
+      <text x="212" y="282" font-size="15" fill="#475569">直接提问和改写</text>
+    </g>
+    <path d="M328 257h96" stroke="#64748b" stroke-width="4" stroke-linecap="round"/>
+    <path d="m424 257-16-10v20z" fill="#64748b"/>
+    <g>
+      <rect x="386" y="202" width="188" height="110" rx="18" fill="#ecfdf5" stroke="#a7f3d0"/>
+      <text x="480" y="248" font-size="22" font-weight="700" fill="#0f172a">API 接入</text>
+      <text x="480" y="282" font-size="15" fill="#475569">Key、URL、模型名</text>
+    </g>
+    <path d="M596 257h96" stroke="#64748b" stroke-width="4" stroke-linecap="round"/>
+    <path d="m692 257-16-10v20z" fill="#64748b"/>
+    <g>
+      <rect x="654" y="202" width="188" height="110" rx="18" fill="#f5f3ff" stroke="#c4b5fd"/>
+      <text x="748" y="248" font-size="22" font-weight="700" fill="#0f172a">AI 工具</text>
+      <text x="748" y="282" font-size="15" fill="#475569">Codex / Claude Code</text>
+    </g>
+  </g>
+</svg>

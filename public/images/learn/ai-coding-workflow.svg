@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">AI 编程工作流</title>
+  <desc id="desc">Codex 和 Claude Code 辅助读项目、修改代码、运行测试和查看差异。</desc>
+  <rect width="960" height="540" rx="32" fill="#f8fafc"/>
+  <text x="480" y="78" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#111827">AI 编程工作流</text>
+  <g font-family="Arial, sans-serif" text-anchor="middle">
+    <rect x="96" y="198" width="154" height="100" rx="18" fill="#eef6ff" stroke="#b6d8ff"/>
+    <text x="173" y="240" font-size="20" font-weight="700" fill="#0f172a">读项目</text>
+    <text x="173" y="268" font-size="14" fill="#475569">理解上下文</text>
+    <rect x="306" y="198" width="154" height="100" rx="18" fill="#ecfdf5" stroke="#a7f3d0"/>
+    <text x="383" y="240" font-size="20" font-weight="700" fill="#0f172a">改代码</text>
+    <text x="383" y="268" font-size="14" fill="#475569">小范围修改</text>
+    <rect x="516" y="198" width="154" height="100" rx="18" fill="#fff7ed" stroke="#fed7aa"/>
+    <text x="593" y="240" font-size="20" font-weight="700" fill="#0f172a">跑测试</text>
+    <text x="593" y="268" font-size="14" fill="#475569">看失败日志</text>
+    <rect x="726" y="198" width="154" height="100" rx="18" fill="#f5f3ff" stroke="#c4b5fd"/>
+    <text x="803" y="240" font-size="20" font-weight="700" fill="#0f172a">看 diff</text>
+    <text x="803" y="268" font-size="14" fill="#475569">确认范围</text>
+    <path d="M250 248h56M460 248h56M670 248h56" stroke="#64748b" stroke-width="4" stroke-linecap="round"/>
+  </g>
+</svg>
