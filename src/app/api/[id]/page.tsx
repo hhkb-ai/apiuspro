@@ -22,6 +22,16 @@ type FAQItem = {
 
 type HighlightTone = 'emerald' | 'sky' | 'amber' | 'rose';
 
+type OverviewItem = {
+  label: string;
+  value: ReactNode;
+};
+
+type AccessStep = {
+  title: string;
+  desc: ReactNode;
+};
+
 function getVisibleAPIs() {
   return [...visibleAPIList, ...visibleProxyServices];
 }
@@ -83,6 +93,19 @@ function highlightClass(tone: HighlightTone) {
 
 function Highlight({ tone, children }: { tone: HighlightTone; children: ReactNode }) {
   return <span className={highlightClass(tone)}>{children}</span>;
+}
+
+function SectionTitle({ children }: { children: ReactNode }) {
+  return <h2 className="mb-4 text-xl font-semibold tracking-tight">{children}</h2>;
+}
+
+function MobileCollapsed({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <details className="rounded-lg border border-border bg-card md:hidden">
+      <summary className="cursor-pointer select-none px-4 py-3 text-sm font-bold">{title}</summary>
+      <div className="border-t border-border p-3">{children}</div>
+    </details>
+  );
 }
 
 function getAudienceText(api: APIConfig) {
@@ -157,7 +180,7 @@ function getApiFaqItems(api: APIConfig): FAQItem[] {
   ];
 }
 
-function getDeepSeekApiOverview(updatedAt: string) {
+function getDeepSeekApiOverview(updatedAt: string): OverviewItem[] {
   return [
     {
       label: '官网入口',
@@ -198,7 +221,7 @@ function getDeepSeekApiOverview(updatedAt: string) {
   ];
 }
 
-const deepSeekAccessSteps = [
+const deepSeekAccessSteps: AccessStep[] = [
   {
     title: '注册账号',
     desc: '进入 DeepSeek 开放平台，使用手机号、邮箱或平台支持的登录方式完成注册。',
@@ -326,10 +349,6 @@ const alternativeApis = [
   },
 ];
 
-function SectionTitle({ children }: { children: ReactNode }) {
-  return <h2 className="mb-4 text-xl font-semibold tracking-tight">{children}</h2>;
-}
-
 function DeepSeekHero({ api }: { api: APIConfig }) {
   return (
     <div className="mb-8 border-b border-border pb-8">
@@ -359,78 +378,16 @@ function DeepSeekHero({ api }: { api: APIConfig }) {
   );
 }
 
-function DeepSeekCoreSummary() {
-  return (
-    <section className="mb-8 rounded-xl border border-border bg-card p-5 sm:p-6">
-      <SectionTitle>核心摘要</SectionTitle>
-      <div className="space-y-3 text-sm leading-7 text-muted-foreground sm:text-base">
-        <p>
-          DeepSeek API 更适合已经准备把模型接入项目、脚本或 AI 工具的用户。你需要重点确认三件事：
-          <Highlight tone="emerald">API Key</Highlight> 是否有效、<Highlight tone="sky">Base URL</Highlight> 是否填写为官方接口地址、
-          <Highlight tone="amber">模型名称</Highlight> 是否与控制台和文档一致。
-        </p>
-        <p>
-          如果只是网页聊天，不一定需要 API；如果要让网站、知识库、自动化脚本或开发工具调用模型，API 页面就应该先帮你判断接入条件、调用流程和常见失败原因。
-        </p>
-      </div>
-    </section>
-  );
-}
-
-function DeepSeekInfoOverview({ updatedAt }: { updatedAt: string }) {
-  const items = getDeepSeekApiOverview(updatedAt);
-  const visibleMobileItems = items.slice(0, 5);
-  const collapsedMobileItems = items.slice(5);
-
-  const cardList = (list: typeof items) => (
-    <div className="grid grid-cols-1 gap-3">
-      {list.map((item) => (
-        <div key={item.label} className="min-w-0 rounded-lg border border-border bg-background p-4">
-          <p className="mb-1 text-xs font-medium text-muted-foreground">{item.label}</p>
-          <div className="break-words text-sm leading-6 text-foreground">{item.value}</div>
-        </div>
-      ))}
-    </div>
-  );
-
-  return (
-    <section className="mb-8">
-      <SectionTitle>API 信息总览</SectionTitle>
-      <div className="hidden overflow-hidden rounded-xl border border-border md:block">
-        <table className="w-full table-fixed text-left text-sm">
-          <tbody>
-            {items.map((item) => (
-              <tr key={item.label} className="border-b border-border last:border-b-0">
-                <th className="w-48 bg-muted/40 px-5 py-4 font-medium text-foreground">{item.label}</th>
-                <td className="px-5 py-4 leading-7 text-muted-foreground">{item.value}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <div className="md:hidden">
-        {cardList(visibleMobileItems)}
-        <details className="mt-3 rounded-lg border border-border bg-card">
-          <summary className="cursor-pointer select-none px-4 py-3 text-sm font-bold">更多 API 信息（点开查看）</summary>
-          <div className="border-t border-border p-3">
-            {cardList(collapsedMobileItems)}
-          </div>
-        </details>
-      </div>
-    </section>
-  );
-}
-
-function DeepSeekBodySections() {
+function DeepSeekIntroArticle() {
   return (
     <section className="mb-8 space-y-6">
       <Card>
         <CardHeader>
           <CardTitle>DeepSeek API 适合什么用户</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3 text-sm leading-7 text-muted-foreground">
+        <CardContent className="space-y-3 text-sm leading-7 text-muted-foreground sm:text-base">
           <p>
-            DeepSeek API 适合国内开发者、API 新手、AI 工具用户和低成本测试用户。它的主要优势是国内访问门槛较低，并且可以通过 OpenAI 兼容方式接入已有代码，减少从零学习 SDK 的成本。
+            DeepSeek API 更适合已经准备把模型接入项目、脚本或 AI 工具的用户。它对国内开发者比较友好，接入时可以使用 OpenAI 兼容方式，降低从零学习 SDK 的成本。
           </p>
           <p>
             如果你正在做网站功能、知识库问答、自动化脚本或编程辅助工具，可以先用 <Highlight tone="amber">deepseek-v4-flash</Highlight> 跑通基础流程，再根据任务复杂度切换到更强的模型。
@@ -442,21 +399,27 @@ function DeepSeekBodySections() {
         <CardHeader>
           <CardTitle>DeepSeek API 适合哪些场景</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3 text-sm leading-7 text-muted-foreground">
+        <CardContent className="space-y-3 text-sm leading-7 text-muted-foreground sm:text-base">
           <p>
-            DeepSeek API 常见场景包括编程开发、智能问答、知识库、客服机器人、自动化脚本和内容生成。对新手来说，最稳妥的方式不是一开始就做复杂产品，而是先完成一次最小调用，确认输入、输出、错误处理和成本记录都可控。
+            常见场景包括编程开发、智能问答、知识库、客服机器人、自动化脚本和内容生成。对新手来说，最稳妥的方式不是一开始就做复杂产品，而是先完成一次最小调用，确认输入、输出、错误处理和成本记录都可控。
           </p>
           <p>
             在项目中接入时，建议把 <Highlight tone="emerald">API Key</Highlight> 放在服务器端或环境变量中，把模型名、超时时间和重试逻辑写成配置项，方便后续替换模型或调整成本。
           </p>
         </CardContent>
       </Card>
+    </section>
+  );
+}
 
+function DeepSeekPreparationArticle() {
+  return (
+    <section className="mb-8 space-y-6">
       <Card>
         <CardHeader>
           <CardTitle>新手接入前需要准备什么</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3 text-sm leading-7 text-muted-foreground">
+        <CardContent className="space-y-3 text-sm leading-7 text-muted-foreground sm:text-base">
           <p>
             接入前至少准备账号、实名认证、<Highlight tone="emerald">API Key</Highlight>、账户<Highlight tone="amber">余额</Highlight>或活动<Highlight tone="amber">额度</Highlight>、
             <Highlight tone="sky">Base URL</Highlight>、<Highlight tone="amber">模型名称</Highlight>，以及一个可以运行测试代码的 Python、Node.js 或 cURL 环境。
@@ -471,7 +434,7 @@ function DeepSeekBodySections() {
         <CardHeader>
           <CardTitle>和其他 API 的区别</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3 text-sm leading-7 text-muted-foreground">
+        <CardContent className="space-y-3 text-sm leading-7 text-muted-foreground sm:text-base">
           <p>
             DeepSeek 的优势集中在性价比、国内可访问和 OpenAI 兼容接入；OpenAI 的优势是综合模型能力和生态；Claude 更适合长文本、文档整理和高质量写作；通义千问适合阿里云和国内企业生态；Kimi 对长文档阅读和资料整理更友好。
           </p>
@@ -485,7 +448,7 @@ function DeepSeekBodySections() {
         <CardHeader>
           <CardTitle>长期使用前要注意什么</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3 text-sm leading-7 text-muted-foreground">
+        <CardContent className="space-y-3 text-sm leading-7 text-muted-foreground sm:text-base">
           <p>
             长期使用前要重点关注<Highlight tone="amber">计费</Highlight>、<Highlight tone="amber">余额</Highlight>、限速、模型名变化、
             <Highlight tone="emerald">API Key</Highlight> 安全和错误排查。不要只看单次调用是否成功，还要记录每次请求的失败原因、耗时、输入输出长度和重试次数。
@@ -499,106 +462,122 @@ function DeepSeekBodySections() {
   );
 }
 
-function DeepSeekAccessFlow() {
-  const visibleMobileSteps = deepSeekAccessSteps.slice(0, 4);
-  const collapsedMobileSteps = deepSeekAccessSteps.slice(4);
+function OverviewCards({ items }: { items: OverviewItem[] }) {
+  return (
+    <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
+      {items.map((item) => (
+        <div key={item.label} className="min-w-0 rounded-lg border border-border bg-background p-4">
+          <p className="mb-1 text-xs font-medium text-muted-foreground">{item.label}</p>
+          <div className="break-words text-sm leading-6 text-foreground">{item.value}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
-  const stepCards = (steps: typeof deepSeekAccessSteps, offset = 0) => (
-    <div className="grid grid-cols-1 gap-3 lg:grid-cols-7">
+function DeepSeekConfigQuickCheck({ updatedAt }: { updatedAt: string }) {
+  const items = getDeepSeekApiOverview(updatedAt);
+
+  return (
+    <section className="mb-8">
+      <div className="mb-3">
+        <SectionTitle>DeepSeek API 配置速查</SectionTitle>
+        <p className="text-sm leading-7 text-muted-foreground">
+          这部分用于查配置，不作为正文阅读开头。移动端默认折叠，避免用户刚进入页面就看到大面积参数卡片。
+        </p>
+      </div>
+      <div className="hidden md:block">
+        <Card>
+          <CardContent className="p-5">
+            <OverviewCards items={items} />
+          </CardContent>
+        </Card>
+      </div>
+      <MobileCollapsed title="配置速查（点开查看）">
+        <OverviewCards items={items} />
+      </MobileCollapsed>
+    </section>
+  );
+}
+
+function AccessStepCards({ steps }: { steps: AccessStep[] }) {
+  return (
+    <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
       {steps.map((step, index) => (
         <div key={step.title} className="min-w-0 rounded-lg border border-border bg-card p-4">
-          <p className="mb-2 text-xs font-semibold text-muted-foreground">步骤 {offset + index + 1}</p>
+          <p className="mb-2 text-xs font-semibold text-muted-foreground">步骤 {index + 1}</p>
           <h3 className="mb-2 font-semibold leading-6">{step.title}</h3>
           <p className="text-sm leading-6 text-muted-foreground">{step.desc}</p>
         </div>
       ))}
     </div>
   );
+}
 
+function DeepSeekAccessFlow() {
   return (
     <section className="mb-8">
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <SectionTitle>接入流程摘要</SectionTitle>
+        <div>
+          <SectionTitle>接入流程摘要</SectionTitle>
+          <p className="text-sm leading-7 text-muted-foreground">
+            这里只做流程速览。需要截图和完整代码说明时，继续查看完整教程。
+          </p>
+        </div>
         <Link href="/tutorial/deepseek" className="self-start sm:self-auto">
           <Button variant="outline" size="sm">查看完整 DeepSeek 购买教程</Button>
         </Link>
       </div>
-      <div className="hidden lg:block">{stepCards(deepSeekAccessSteps)}</div>
-      <div className="lg:hidden">
-        {stepCards(visibleMobileSteps)}
-        <details className="mt-3 rounded-lg border border-border bg-card">
-          <summary className="cursor-pointer select-none px-4 py-3 text-sm font-bold">更多接入步骤（点开查看）</summary>
-          <div className="border-t border-border p-3">
-            {stepCards(collapsedMobileSteps, visibleMobileSteps.length)}
-          </div>
-        </details>
+      <div className="hidden md:block">
+        <AccessStepCards steps={deepSeekAccessSteps} />
       </div>
-      <p className="mt-4 text-sm leading-6 text-muted-foreground">
-        这里是流程摘要，不替代完整图文教程。需要逐步截图和代码说明时，继续查看 <Link className="font-medium text-sky-700 underline-offset-4 hover:underline dark:text-sky-300" href="/tutorial/deepseek">/tutorial/deepseek</Link>。
-      </p>
+      <MobileCollapsed title="接入流程（点开查看）">
+        <AccessStepCards steps={deepSeekAccessSteps} />
+      </MobileCollapsed>
     </section>
+  );
+}
+
+function ErrorCards() {
+  return (
+    <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+      {deepSeekErrors.map((item) => (
+        <Link key={item.code} href={item.href} className="block rounded-lg border border-border bg-card p-4 transition-colors hover:border-foreground/30">
+          <h3 className="mb-2 font-semibold text-rose-700 dark:text-rose-300">{item.code}</h3>
+          <p className="text-sm leading-6 text-muted-foreground"><span className="font-medium text-foreground">原因：</span>{item.reason}</p>
+          <p className="text-sm leading-6 text-muted-foreground"><span className="font-medium text-foreground">解决：</span>{item.solution}</p>
+        </Link>
+      ))}
+    </div>
   );
 }
 
 function DeepSeekErrorsSection() {
-  const errorContent = (
-    <>
-      <div className="hidden overflow-hidden rounded-xl border border-border md:block">
-        <table className="w-full table-fixed text-left text-sm">
-          <thead className="bg-muted/40 text-foreground">
-            <tr>
-              <th className="w-48 px-5 py-4 font-medium">错误</th>
-              <th className="px-5 py-4 font-medium">常见原因</th>
-              <th className="px-5 py-4 font-medium">处理方式</th>
-            </tr>
-          </thead>
-          <tbody>
-            {deepSeekErrors.map((item) => (
-              <tr key={item.code} className="border-t border-border">
-                <td className="px-5 py-4 align-top font-semibold text-rose-700 dark:text-rose-300">
-                  <Link href={item.href} className="underline-offset-4 hover:underline">{item.code}</Link>
-                </td>
-                <td className="px-5 py-4 align-top leading-6 text-muted-foreground">{item.reason}</td>
-                <td className="px-5 py-4 align-top leading-6 text-muted-foreground">{item.solution}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <div className="grid grid-cols-1 gap-3 md:hidden">
-        {deepSeekErrors.map((item) => (
-          <Link key={item.code} href={item.href} className="block rounded-lg border border-border bg-card p-4">
-            <h3 className="mb-2 font-semibold text-rose-700 dark:text-rose-300">{item.code}</h3>
-            <p className="text-sm leading-6 text-muted-foreground"><span className="font-medium text-foreground">原因：</span>{item.reason}</p>
-            <p className="text-sm leading-6 text-muted-foreground"><span className="font-medium text-foreground">解决：</span>{item.solution}</p>
-          </Link>
-        ))}
-      </div>
-    </>
-  );
-
   return (
     <section className="mb-8">
-      <SectionTitle>常见错误排查</SectionTitle>
-      <p className="mb-4 text-sm leading-7 text-muted-foreground">
-        DeepSeek 接入失败时，不要先重写代码。优先根据错误码判断是 <Highlight tone="emerald">API Key</Highlight>、
-        <Highlight tone="sky">Base URL</Highlight>、<Highlight tone="amber">模型名称</Highlight>、限速还是<Highlight tone="amber">余额 / 额度</Highlight>问题。
-      </p>
-      <div className="hidden md:block">{errorContent}</div>
-      <details className="rounded-lg border border-border bg-card md:hidden">
-        <summary className="cursor-pointer select-none px-4 py-3 text-sm font-bold">常见错误详情（点开查看）</summary>
-        <div className="border-t border-border p-3">{errorContent}</div>
-      </details>
+      <div className="mb-4">
+        <SectionTitle>常见错误排查</SectionTitle>
+        <p className="text-sm leading-7 text-muted-foreground">
+          接入失败时，优先判断是 <Highlight tone="emerald">API Key</Highlight>、<Highlight tone="sky">Base URL</Highlight>、
+          <Highlight tone="amber">模型名称</Highlight>、限速还是<Highlight tone="amber">余额 / 额度</Highlight>问题。
+        </p>
+      </div>
+      <div className="hidden md:block">
+        <ErrorCards />
+      </div>
+      <MobileCollapsed title="常见错误排查（点开查看）">
+        <ErrorCards />
+      </MobileCollapsed>
     </section>
   );
 }
 
-function DeepSeekAlternativesSection() {
-  const mobileCards = (
-    <div className="grid grid-cols-1 gap-3">
+function AlternativeCards() {
+  return (
+    <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
       {alternativeApis.map((item) => (
         <Card key={item.name}>
-          <CardHeader>
+          <CardHeader className="pb-3">
             <CardTitle className="text-base">{item.name}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2 text-sm leading-6 text-muted-foreground">
@@ -611,51 +590,33 @@ function DeepSeekAlternativesSection() {
       ))}
     </div>
   );
+}
 
+function DeepSeekAlternativesSection() {
   return (
     <section className="mb-8">
-      <SectionTitle>替代方案对比</SectionTitle>
-      <p className="mb-4 text-sm leading-7 text-muted-foreground">
-        选择 API 时不要只看模型名称。更实际的判断方式是：你能否稳定访问、能否支付、能否接受成本、能否处理报错，以及模型是否适合你的具体任务。
-      </p>
-      <div className="hidden overflow-hidden rounded-xl border border-border lg:block">
-        <table className="w-full table-fixed text-left text-sm">
-          <thead className="bg-muted/40 text-foreground">
-            <tr>
-              <th className="w-32 px-4 py-4 font-medium">API</th>
-              <th className="px-4 py-4 font-medium">适合人群</th>
-              <th className="px-4 py-4 font-medium">核心优势</th>
-              <th className="px-4 py-4 font-medium">使用限制</th>
-              <th className="px-4 py-4 font-medium">推荐场景</th>
-            </tr>
-          </thead>
-          <tbody>
-            {alternativeApis.map((item) => (
-              <tr key={item.name} className="border-t border-border">
-                <td className="px-4 py-4 align-top font-semibold">{item.name}</td>
-                <td className="px-4 py-4 align-top leading-6 text-muted-foreground">{item.audience}</td>
-                <td className="px-4 py-4 align-top leading-6 text-muted-foreground">{item.advantage}</td>
-                <td className="px-4 py-4 align-top leading-6 text-muted-foreground">{item.limit}</td>
-                <td className="px-4 py-4 align-top leading-6 text-muted-foreground">{item.scene}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="mb-4">
+        <SectionTitle>替代方案对比</SectionTitle>
+        <p className="text-sm leading-7 text-muted-foreground">
+          选择 API 时不要只看模型名称。更实际的判断方式是：能否稳定访问、能否支付、能否接受成本，以及模型是否适合你的任务。
+        </p>
       </div>
-      <details className="rounded-lg border border-border bg-card lg:hidden">
-        <summary className="cursor-pointer select-none px-4 py-3 text-sm font-bold">替代方案对比（点开查看）</summary>
-        <div className="border-t border-border p-3">{mobileCards}</div>
-      </details>
+      <div className="hidden md:block">
+        <AlternativeCards />
+      </div>
+      <MobileCollapsed title="替代方案对比（点开查看）">
+        <AlternativeCards />
+      </MobileCollapsed>
     </section>
   );
 }
 
-function DeepSeekFaqSection({ faqItems }: { faqItems: FAQItem[] }) {
-  const faqCards = (
+function FaqCards({ faqItems }: { faqItems: FAQItem[] }) {
+  return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
       {faqItems.map((item) => (
         <Card key={item.question}>
-          <CardHeader>
+          <CardHeader className="pb-3">
             <CardTitle className="text-base">{item.question}</CardTitle>
           </CardHeader>
           <CardContent>
@@ -665,23 +626,25 @@ function DeepSeekFaqSection({ faqItems }: { faqItems: FAQItem[] }) {
       ))}
     </div>
   );
+}
 
+function DeepSeekFaqSection({ faqItems }: { faqItems: FAQItem[] }) {
   return (
     <section className="mb-8">
       <SectionTitle>常见问题</SectionTitle>
-      <div className="hidden md:block">{faqCards}</div>
-      <details className="rounded-lg border border-border bg-card md:hidden">
-        <summary className="cursor-pointer select-none px-4 py-3 text-sm font-bold">FAQ（点开查看）</summary>
-        <div className="border-t border-border p-3">{faqCards}</div>
-      </details>
+      <div className="hidden md:block">
+        <FaqCards faqItems={faqItems} />
+      </div>
+      <MobileCollapsed title="常见问题（点开查看）">
+        <FaqCards faqItems={faqItems} />
+      </MobileCollapsed>
     </section>
   );
 }
 
-function DeepSeekReadingJudgment({ api, reviewSlug }: { api: APIConfig; reviewSlug?: string | null }) {
+function ReadingJudgmentContent({ api, reviewSlug }: { api: APIConfig; reviewSlug?: string | null }) {
   return (
-    <section className="mb-8">
-      <SectionTitle>阅读后判断</SectionTitle>
+    <div className="space-y-6">
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <Card className="lg:col-span-2">
           <CardHeader>
@@ -728,23 +691,11 @@ function DeepSeekReadingJudgment({ api, reviewSlug }: { api: APIConfig; reviewSl
         </Card>
       </div>
 
-      <div className="mt-6 hidden sm:block">
+      <div className="hidden md:block">
         <QuickConclusionCard api={api} reviewSlug={reviewSlug} />
       </div>
 
-      <details className="mt-6 rounded-lg border border-border bg-card sm:hidden">
-        <summary className="cursor-pointer select-none px-4 py-3 text-sm font-bold">结论先行（点开查看）</summary>
-        <div className="space-y-4 border-t border-border px-4 py-3 text-sm leading-6 text-muted-foreground">
-          <p><span className="font-semibold text-foreground">推荐指数：</span>9/10</p>
-          <p className="rounded-md border border-sky-200 bg-sky-50 px-3 py-2 text-sky-900 dark:border-sky-800 dark:bg-sky-950/30 dark:text-sky-100">
-            国内直连 + 有购买教程 + OpenAI 兼容，推荐优先尝试。
-          </p>
-          <p><span className="font-semibold text-foreground">适合谁：</span>国内开发者、API 新手、AI 工具用户和低成本测试项目。</p>
-          <p><span className="font-semibold text-foreground">不适合谁：</span>只想网页聊天、不想处理 API Key、Base URL 和模型名配置的用户。</p>
-        </div>
-      </details>
-
-      <Card className="mt-6">
+      <Card>
         <CardHeader>
           <CardTitle>下一步链接</CardTitle>
         </CardHeader>
@@ -759,6 +710,20 @@ function DeepSeekReadingJudgment({ api, reviewSlug }: { api: APIConfig; reviewSl
           </div>
         </CardContent>
       </Card>
+    </div>
+  );
+}
+
+function DeepSeekReadingJudgment({ api, reviewSlug }: { api: APIConfig; reviewSlug?: string | null }) {
+  return (
+    <section className="mb-8">
+      <SectionTitle>阅读后判断</SectionTitle>
+      <div className="hidden md:block">
+        <ReadingJudgmentContent api={api} reviewSlug={reviewSlug} />
+      </div>
+      <MobileCollapsed title="阅读后判断（点开查看）">
+        <ReadingJudgmentContent api={api} reviewSlug={reviewSlug} />
+      </MobileCollapsed>
     </section>
   );
 }
@@ -888,18 +853,7 @@ function GenericApiDetailContent({ api, relatedAPIs, reviewSlug, faqItems }: { a
 
       <section className="mb-8">
         <SectionTitle>常见问题</SectionTitle>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          {faqItems.map((item) => (
-            <Card key={item.question}>
-              <CardHeader>
-                <CardTitle className="text-base">{item.question}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm leading-6 text-muted-foreground">{item.answer}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        <FaqCards faqItems={faqItems} />
       </section>
     </>
   );
@@ -911,10 +865,10 @@ function DeepSeekApiDetailContent({ api, relatedAPIs, reviewSlug, faqItems }: { 
   return (
     <>
       <DeepSeekHero api={api} />
-      <DeepSeekCoreSummary />
-      <DeepSeekInfoOverview updatedAt={updatedAt} />
+      <DeepSeekIntroArticle />
+      <DeepSeekConfigQuickCheck updatedAt={updatedAt} />
       <DeepSeekAccessFlow />
-      <DeepSeekBodySections />
+      <DeepSeekPreparationArticle />
       {api.tutorial && (
         <div className="mb-8">
           <SectionTitle>购买教程</SectionTitle>
