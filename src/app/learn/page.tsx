@@ -158,6 +158,37 @@ export default function LearnPage() {
           </div>
         </section>
 
+        <section className="mb-10 rounded-lg border bg-card p-5">
+          <h2 className="text-xl font-semibold tracking-tight">继续探索</h2>
+          <p className="mt-1 text-sm leading-6 text-muted-foreground">学完基础概念后，可以按需求进入以下方向。</p>
+          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <Link href="/cloud-api" className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
+              <p className="text-sm font-semibold">API 官网入口</p>
+              <p className="mt-1 text-xs text-muted-foreground">查找各平台 API 官网、API Key、Base URL 和模型名称</p>
+            </Link>
+            <Link href="/tutorial" className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
+              <p className="text-sm font-semibold">购买教程</p>
+              <p className="mt-1 text-xs text-muted-foreground">查看主流 AI API 的开通、购买和配置教程</p>
+            </Link>
+            <Link href="/app" className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
+              <p className="text-sm font-semibold">AI 工具教程</p>
+              <p className="mt-1 text-xs text-muted-foreground">学习 Codex、Claude Code、CC Switch 等工具接入</p>
+            </Link>
+            <Link href="/local-deploy" className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
+              <p className="text-sm font-semibold">本地部署</p>
+              <p className="mt-1 text-xs text-muted-foreground">了解本地部署开源模型和 Ollama 工具</p>
+            </Link>
+            <Link href="/use-case" className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
+              <p className="text-sm font-semibold">场景推荐</p>
+              <p className="mt-1 text-xs text-muted-foreground">按编程、写作、翻译、知识库等场景选 API</p>
+            </Link>
+            <Link href="/api-review" className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
+              <p className="text-sm font-semibold">API 测评</p>
+              <p className="mt-1 text-xs text-muted-foreground">查看不同模型和 API 的测评对比</p>
+            </Link>
+          </div>
+        </section>
+
         <section className="rounded-lg border bg-card p-5">
           <h2 className="text-xl font-semibold tracking-tight">FAQ</h2>
           <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">

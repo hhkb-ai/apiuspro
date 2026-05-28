@@ -696,6 +696,29 @@ export default function LocalDeployPage() {
             </div>
           </section>
 
+          {/* 下一步推荐 */}
+          <section className="mt-12 pt-8 border-t border-border">
+            <h2 className="text-xl font-semibold tracking-tight mb-4">下一步推荐</h2>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <Link href="/learn" className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
+                <p className="text-sm font-semibold">AI 新手学习</p>
+                <p className="mt-1 text-xs text-muted-foreground">还不了解 AI、Token、API Key？先从基础学起</p>
+              </Link>
+              <Link href="/app" className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
+                <p className="text-sm font-semibold">AI 工具教程</p>
+                <p className="mt-1 text-xs text-muted-foreground">想把模型接入 Codex、Claude Code、CC Switch</p>
+              </Link>
+              <Link href="/tutorial" className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
+                <p className="text-sm font-semibold">购买教程</p>
+                <p className="mt-1 text-xs text-muted-foreground">需要开通线上 API，查看注册和购买教程</p>
+              </Link>
+              <Link href="/cloud-api" className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
+                <p className="text-sm font-semibold">API 官网入口</p>
+                <p className="mt-1 text-xs text-muted-foreground">查找 API 官网、Base URL 和模型名称</p>
+              </Link>
+            </div>
+          </section>
+
           {/* 底部引导 */}
           <section className="mt-12 pt-8 border-t border-border text-center">
             <p className="text-sm text-muted-foreground mb-4">
