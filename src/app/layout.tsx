@@ -68,7 +68,10 @@ export const metadata: Metadata = {
     canonical: 'https://www.apiuspro.cn',
   },
   verification: {
-    google: 'gJvidOQsRtz4K7Ce8O6kVZLJjakAJJBHzoZuwYSBQSw',
+    google: [
+      'gJvidOQsRtz4K7Ce8O6kVZLJjakAJJBHzoZuwYSBQSw',
+      '0zYeQjZii9m76gyCCJ_fLdwgZKXl28Ymlr80m-sjY3Y',
+    ],
   },
   other: {
     'msvalidate.01': 'BF3E423F579BD5F854833A4A587DFF93',
