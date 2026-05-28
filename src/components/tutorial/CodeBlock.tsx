@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 
 interface CodeBlockProps {
@@ -12,17 +12,19 @@ interface CodeBlockProps {
 export function CodeBlock({ code, language, explanation }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
   const [copyFailed, setCopyFailed] = useState(false);
+  const timeoutRef = useRef<number>(undefined);
+  useEffect(() => () => window.clearTimeout(timeoutRef.current), []);
 
   const handleCopy = useCallback(async () => {
     try {
       await navigator.clipboard.writeText(code);
       setCopied(true);
       setCopyFailed(false);
-      setTimeout(() => setCopied(false), 2000);
+      timeoutRef.current = window.setTimeout(() => setCopied(false), 2000);
     } catch {
       setCopied(false);
       setCopyFailed(true);
-      setTimeout(() => setCopyFailed(false), 2000);
+      timeoutRef.current = window.setTimeout(() => setCopyFailed(false), 2000);
     }
   }, [code]);
 

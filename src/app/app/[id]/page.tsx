@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useState, useEffect, useCallback } from 'react';
+import { use, useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
@@ -109,11 +109,13 @@ function RichText({ text, className = '', highlightKeywords = false }: { text: s
 /* ─── 代码块：浅蓝灰底 + 语法高亮 ─── */
 function CodeBlock({ code, lang = 'bash' }: { code: string; lang?: string }) {
   const [copied, setCopied] = useState(false);
+  const timeoutRef = useRef<number>(undefined);
+  useEffect(() => () => window.clearTimeout(timeoutRef.current), []);
 
   const handleCopy = useCallback(() => {
     navigator.clipboard.writeText(code).then(() => {
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      timeoutRef.current = window.setTimeout(() => setCopied(false), 2000);
     });
   }, [code]);
 

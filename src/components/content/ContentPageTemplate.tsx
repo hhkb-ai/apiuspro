@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -88,11 +88,13 @@ const toneTextClass = {
 
 function CopyableCodeBlock({ code, language = 'bash' }: { code: string; language?: string }) {
   const [copied, setCopied] = useState(false);
+  const timeoutRef = useRef<number>(undefined);
+  useEffect(() => () => window.clearTimeout(timeoutRef.current), []);
 
   const copy = useCallback(async () => {
     await navigator.clipboard.writeText(code);
     setCopied(true);
-    window.setTimeout(() => setCopied(false), 1600);
+    timeoutRef.current = window.setTimeout(() => setCopied(false), 1600);
   }, [code]);
 
   return (

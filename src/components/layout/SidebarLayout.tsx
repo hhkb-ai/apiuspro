@@ -17,7 +17,6 @@ const navigation = [
   { name: 'API 错误解决', href: '/error' },
   { name: '按场景选 API', href: '/use-case' },
   { name: '本地部署教程', href: '/local-deploy' },
-  { name: 'AI 学习', href: '/learn' },
 ];
 
 export function SidebarLayout({ children }: { children: React.ReactNode }) {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { BeianLinks } from '@/components/layout/BeianLinks';
@@ -21,11 +21,13 @@ function badgeClass(type: string) {
 
 function CodeBlock({ code }: { code: string }) {
   const [copied, setCopied] = useState(false);
+  const timeoutRef = useRef<number>(undefined);
+  useEffect(() => () => window.clearTimeout(timeoutRef.current), []);
 
   const copyCode = useCallback(() => {
     navigator.clipboard.writeText(code).then(() => {
       setCopied(true);
-      window.setTimeout(() => setCopied(false), 1800);
+      timeoutRef.current = window.setTimeout(() => setCopied(false), 1800);
     });
   }, [code]);
 
