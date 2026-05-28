@@ -3,6 +3,7 @@ import { appTutorials, visibleAPIList, visibleProxyServices } from '@/lib/api-co
 import { reviewDetails } from '@/lib/review-config';
 import { getAllUseCaseIds } from '@/lib/use-case-config';
 import { getAllErrorSolutionIds } from '@/lib/error-solution-config';
+import { getAllLearnArticles } from '@/lib/learn-config';
 import {
   getApiUpdatedAt,
   getAppTutorialUpdatedAt,
@@ -85,5 +86,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...staticPages, ...apiPages, ...tutorialPages, ...reviewPages, ...appPages, ...errorPages, ...useCaseListPage, ...useCaseDetailPages];
+    // Learn
+  const learnArticles = getAllLearnArticles();
+  const learnListPage = [{ url: BASE_URL + '/learn', lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/learn')), changeFrequency: 'weekly', priority: 0.8 }];
+  const learnDetailPages = learnArticles.map(a => ({ url: BASE_URL + '/learn/' + a.slug, lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/learn')), changeFrequency: 'monthly', priority: 0.7 }));
+
+  return [...staticPages, ...apiPages, ...tutorialPages, ...reviewPages, ...appPages, ...errorPages, ...useCaseListPage, ...useCaseDetailPages, ...learnListPage, ...learnDetailPages];
 }

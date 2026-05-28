@@ -66,13 +66,13 @@ const integrationSteps = [
 ];
 
 const beginnerLearningSteps = [
-  { step: '01', title: '认识 API', desc: '理解 API 如何连接应用和 AI 服务。' },
-  { step: '02', title: '获取 API Key', desc: '创建访问凭证，并学习安全保存。' },
-  { step: '03', title: '发出第一次请求', desc: '看懂 URL、Headers、Body。' },
-  { step: '04', title: '处理返回与报错', desc: '阅读 JSON 返回，排查 401、403、429。' },
+  { step: '01', title: 'AI、模型和使用方式', desc: '先搞懂 AI 是什么、模型是什么，以及网页聊天和 API 的区别。', href: '/learn/ai-basics' },
+  { step: '02', title: 'Token 和上下文', desc: '理解 Token、上下文，以及为什么 AI 会忘记。', href: '/learn/token-context-api-key' },
+  { step: '03', title: '提示词基础', desc: '学会把问题问清楚，让 AI 输出更稳定。', href: '/learn/prompting' },
+  { step: '04', title: 'API 三件套', desc: '搞懂 API Key、Base URL、模型名称。', href: '/learn/api-config-basics' },
 ];
 
-const beginnerFlow = ['你的应用', 'API Key', '请求 API', 'JSON 返回'];
+const beginnerFlow = ['AI 基础', 'Token 上下文', '提示词', 'API 配置'];
 
 const tutorialsList = apiList.filter(api => api.tutorial);
 const tutorialPriority = ['deepseek', 'openai', 'claude', 'gemini', 'aliyun', 'kimi', 'doubao', 'zhipu', 'tencent', 'mimo'];
@@ -94,6 +94,7 @@ const desktopNavLinks = [
   { name: 'API测评', href: '/api-review' },
   { name: '购买教程', href: '/tutorial' },
   { name: 'API应用', href: '/app' },
+  { name: 'AI学习', href: '/learn' },
   { name: '本地部署', href: '/local-deploy' },
 ];
 

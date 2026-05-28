@@ -11,6 +11,7 @@ export const staticPageUpdatedAt: Record<string, string> = {
   '/local-deploy': '2026-05-11',
   '/faq': '2026-05-11',
   '/use-case': '2026-05-11',
+  '/learn': '2026-05-11',
 };
 
 export const apiUpdatedAtById: Record<string, string> = {
