@@ -9,6 +9,7 @@ import { BeianLinks } from '@/components/layout/BeianLinks';
 
 const navigation = [
   { name: '返回首页', href: '/' },
+  { name: 'AI 新手教程', href: '/learn' },
   { name: 'API 官网入口', href: '/cloud-api' },
   { name: 'API 测评对比', href: '/api-review' },
   { name: 'API 购买教程', href: '/tutorial' },
@@ -56,7 +57,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
 
         <nav className="flex-1 px-3 py-4 space-y-1.5">
           {navigation.map((item) => {
-            const isActive = pathname === item.href;
+            const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(`${item.href}/`));
             return (
               <Link
                 key={item.name}
@@ -109,7 +110,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
         >
           <nav className="p-4 space-y-1.5" onClick={(event) => event.stopPropagation()}>
             {navigation.map((item) => {
-              const isActive = pathname === item.href;
+              const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(`${item.href}/`));
               return (
                 <Link
                   key={item.name}

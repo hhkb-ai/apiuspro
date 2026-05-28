@@ -1,4 +1,4 @@
-import { MetadataRoute } from 'next';
+import type { MetadataRoute } from 'next';
 import { appTutorials, visibleAPIList, visibleProxyServices } from '@/lib/api-config';
 import { reviewDetails } from '@/lib/review-config';
 import { getAllUseCaseIds } from '@/lib/use-case-config';
@@ -29,6 +29,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/cloud-api`, lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/cloud-api')), changeFrequency: 'weekly', priority: 0.9 },
     { url: `${BASE_URL}/tutorial`, lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/tutorial')), changeFrequency: 'weekly', priority: 0.9 },
     { url: `${BASE_URL}/api-review`, lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/api-review')), changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${BASE_URL}/learn`, lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/learn')), changeFrequency: 'weekly', priority: 0.9 },
     { url: `${BASE_URL}/app`, lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/app')), changeFrequency: 'weekly', priority: 0.8 },
     { url: `${BASE_URL}/error`, lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/error')), changeFrequency: 'weekly', priority: 0.8 },
     { url: `${BASE_URL}/local-deploy`, lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/local-deploy')), changeFrequency: 'monthly', priority: 0.7 },
@@ -86,10 +87,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-    // Learn
+  // Learn 学习页
   const learnArticles = getAllLearnArticles();
-  const learnListPage = [{ url: BASE_URL + '/learn', lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/learn')), changeFrequency: 'weekly', priority: 0.8 }];
-  const learnDetailPages = learnArticles.map(a => ({ url: BASE_URL + '/learn/' + a.slug, lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/learn')), changeFrequency: 'monthly', priority: 0.7 }));
+  const learnListPage: MetadataRoute.Sitemap = [
+    { url: `${BASE_URL}/learn`, lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/learn')), changeFrequency: 'weekly', priority: 0.8 },
+  ];
+  const learnDetailPages: MetadataRoute.Sitemap = learnArticles.map((article: { slug: string }) => ({
+    url: `${BASE_URL}/learn/${article.slug}`,
+    lastModified: toSitemapLastModified(getStaticPageUpdatedAt('/learn')),
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
 
   return [...staticPages, ...apiPages, ...tutorialPages, ...reviewPages, ...appPages, ...errorPages, ...useCaseListPage, ...useCaseDetailPages, ...learnListPage, ...learnDetailPages];
 }
