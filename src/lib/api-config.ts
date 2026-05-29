@@ -1119,10 +1119,10 @@ print(response.output_text)`,
   {
     id: 'claude',
     name: 'Anthropic Claude',
-    desc: 'Claude 国内怎么订阅？覆盖 Opus 4.7、Sonnet 4.6、Haiku 4.5 与 1M 上下文',
+    desc: 'Claude 国内怎么订阅？覆盖 Opus 4.8、Sonnet 4.6、Haiku 4.5 与 1M 上下文',
     url: 'https://www.anthropic.com/',
     proxy: true,
-    features: ['Opus 4.7', 'Sonnet 4.6', '1M上下文', '安全可靠'],
+    features: ['Opus 4.8', 'Sonnet 4.6', '1M上下文', '安全可靠'],
     icon: '🟠',
     badge: { text: '需代理', type: 'warning' },
     tutorial: {
@@ -1148,9 +1148,9 @@ print(response.output_text)`,
           title: '了解 Claude 三档订阅套餐',
           description: 'Claude 提供三档个人订阅，先了解区别再决定。',
           items: [
-            'Claude Pro · $20/月（约¥145） — 可用 Opus 4.7，有月度用量上限，适合轻度使用',
-            'Claude Max 5x · $100/月（约¥725） — 可用 Opus 4.7，使用额度约为 Pro 的 5 倍，适合重度依赖 AI 的专业人士',
-            'Claude Max 20x · $200/月（约¥1,450） — 可用 Opus 4.7，使用额度约为 Pro 的 20 倍，适合团队或核心生产力'
+            'Claude Pro · $20/月（约¥145） — 可用 Opus 4.8，有月度用量上限，适合轻度使用',
+            'Claude Max 5x · $100/月（约¥725） — 可用 Opus 4.8，使用额度约为 Pro 的 5 倍，适合重度依赖 AI 的专业人士',
+            'Claude Max 20x · $200/月（约¥1,450） — 可用 Opus 4.8，使用额度约为 Pro 的 20 倍，适合团队或核心生产力'
           ],
           whereToClick: '浏览器访问 claude.ai → 登录 → 左下角头像 → Plans',
           expectedResult: '页面显示 Pro($20/¥145)、Max 5x($100/¥725)、Max 20x($200/¥1,450) 三档套餐',
@@ -1202,10 +1202,10 @@ print(response.output_text)`,
             '左下角头像 → Upgrade to Pro 或 Plans → 对比三档套餐 → Subscribe',
             '输入卡号、有效期、CVV 和账单地址',
             '关键：账单地址必须与 IP 所在国家一致，否则大概率被封',
-            '验证通过后账号立即升级，在对话界面即可选择 Opus 4.7 模型'
+            '验证通过后账号立即升级，在对话界面即可选择 Opus 4.8 模型'
           ],
           whereToClick: 'claude.ai → Log in → Continue with Google → 左下角头像 → Plans → Subscribe',
-          expectedResult: '验证通过后账号立即升级，对话界面可选 Opus 4.7 模型',
+          expectedResult: '验证通过后账号立即升级，对话界面可选 Opus 4.8 模型',
           failureChecklist: ['账单地址必须与 IP 所在国家一致（最关键）', '确认卡号、有效期和 CVV 填写正确', '如支付被拒，不要重试，换方案']
         },
         {
@@ -1217,15 +1217,15 @@ print(response.output_text)`,
             '注意：App Store 订阅价格通常比官网贵约 30%（苹果渠道费）'
           ],
           whereToClick: 'App Store 搜索 Claude → 下载 → 谷歌账号登录 → 左上角菜单 → Upgrade to Claude Pro',
-          expectedResult: 'App 内显示已升级为 Pro，可选择 Opus 4.7 模型',
+          expectedResult: 'App 内显示已升级为 Pro，可选择 Opus 4.8 模型',
           failureChecklist: ['确认 Apple ID 为美区且有足够余额', 'App Store 订阅价格通常比官网贵约 30%']
         },
         {
           title: '路线三：API 按量购买（仅限开发者）',
           description: '不是程序员或没打算把 AI 嵌入到自己做的软件里，可以跳过本节。普通用户用订阅套餐就全包含了。',
           items: [
-            'API = 程序向 Claude Opus 4.7 提问的"后门"，适合把 AI 嵌入自己的软件中',
-            '按 Token 计费：Opus 4.7 输入 $5/百万 Token、输出 $25/百万 Token（约 ¥36/¥181）',
+            'API = 程序向 Claude Opus 4.8 提问的"后门"，适合把 AI 嵌入自己的软件中',
+            '按 Token 计费：Opus 4.8 常规调用输入 $5/百万 Token、输出 $25/百万 Token（约 ¥36/¥181）',
             'https://console.anthropic.com → 登录 → API Keys → 创建新密钥 → 立刻复制保存'
           ],
           whereToClick: 'console.anthropic.com → 登录 → API Keys → 创建新密钥',
@@ -1238,14 +1238,14 @@ import anthropic
 client = anthropic.Anthropic(api_key="YOUR_API_KEY")
 
 message = client.messages.create(
-    model="claude-opus-4-7-20250416",
+    model="claude-opus-4-8",
     max_tokens=1024,
     messages=[
         {"role": "user", "content": "请为我创作一个科幻小说的开头。"}
     ]
 )
 print(message.content)`,
-          codeExplanation: '使用 Anthropic 官方 Python SDK 调用 Claude Opus 4.7 模型，让它创作一个科幻小说开头并打印结果。替换 YOUR_API_KEY 为真实密钥后即可运行。',
+          codeExplanation: '使用 Anthropic 官方 Python SDK 调用 Claude Opus 4.8 模型，让它创作一个科幻小说开头并打印结果。替换 YOUR_API_KEY 为真实密钥后即可运行。',
           warning: 'API Key 创建后仅显示一次，必须立刻复制保存。API 计费与 Claude 订阅是两套独立的计费系统。'
         },
         {
@@ -1259,13 +1259,13 @@ print(message.content)`,
             'Pro（$20/月，约¥145）适合大多数人，先买一个月试试，随时可取消续费'
           ],
           whereToClick: '选择合规的第三方代充平台或中转平台，确认有"封号包退款"承诺',
-          expectedResult: '支付完成，Claude 账号已升级，可使用 Opus 4.7',
+          expectedResult: '支付完成，Claude 账号已升级，可使用 Opus 4.8',
           failureChecklist: ['代充平台是否承诺封号退款', '下单前是否搜索了平台评价', 'Pro($20/月，约¥145) 适合大多数人，先买一个月试试'],
           warning: 'Claude 封号是全球性问题，没有任何渠道能 100% 避免。保护资金的最佳方式是选择承诺封号退款的代充平台。'
         }
       ],
       tips: [
-        'Claude Opus 4.7 输入 $5/百万 token、输出 $25/百万 token，成本可控',
+        'Claude Opus 4.8 常规调用输入 $5/百万 token、输出 $25/百万 token；fast mode 另按 $10/$50 计费',
         '官网直充用户务必确保 IP、账单地址所属国家一致，这是避免封号的关键',
         '第三方代充平台是当前国内用户风险最低的方式，前提是选择有"封号包退款"承诺的正规商家',
         '先买一个月 Pro（$20）试试，合适再升级 Max，切莫一上来就买年付'
@@ -1279,7 +1279,7 @@ print(message.content)`,
       advantages: ['200K 超长上下文', '代码能力业界领先', '安全可靠', 'iOS App 体验优秀'],
       estimatedTime: '约 15 分钟',
       prerequisites: ['Google 账号（Claude 使用 Google 一键登录）', '合适的网络环境（需能访问 claude.ai）', 'Visa/Mastercard 国际信用卡或代充平台'],
-      successSign: 'Claude 对话界面可选择 Opus 4.7 模型，或 API Key 创建成功并能完成代码调用',
+      successSign: 'Claude 对话界面可选择 Opus 4.8 模型，或 API Key 创建成功并能完成代码调用',
       commonPitfall: 'IP 地址与账单地址国家不一致导致封号（最常见原因）；使用虚拟信用卡被拒付率极高；新用户操作稍有不慎刚付款就被封',
       securityReminder: 'API Key 创建后仅显示一次，必须立刻复制保存。不要提交到公开仓库或前端代码。Claude 风控全球最严，2025 下半年封禁 145 万账号'
     }
@@ -1571,7 +1571,7 @@ export const faqCategories = [
     items: [
       {
         question: '这么多 AI 模型，到底该选哪个？',
-        answer: '根据使用场景选择：①编程开发和 Agent 任务优先测试通义千问 Qwen3.7-Max、Claude、DeepSeek V4 Pro/Flash 或 OpenAI；②内容创作和中文场景优先看通义千问 Qwen3.6-Plus / Flash、Kimi K2.6 和豆包；③长文档/多模态看 Gemini 3.5 Flash、Gemini 3.1 Pro Preview、Claude Opus 4.7；④预算有限先测 DeepSeek V4 Flash、Qwen3.6-Flash、豆包和国产免费额度；⑤企业级应用按云生态选阿里云百炼、火山方舟、腾讯云/TokenHub。建议先用各平台免费额度跑真实任务，再做最终决定。详见本站 API 测评页面。'
+        answer: '根据使用场景选择：①编程开发和 Agent 任务优先测试通义千问 Qwen3.7-Max、Claude、DeepSeek V4 Pro/Flash 或 OpenAI；②内容创作和中文场景优先看通义千问 Qwen3.6-Plus / Flash、Kimi K2.6 和豆包；③长文档/多模态看 Gemini 3.5 Flash、Gemini 3.1 Pro Preview、Claude Opus 4.8；④预算有限先测 DeepSeek V4 Flash、Qwen3.6-Flash、豆包和国产免费额度；⑤企业级应用按云生态选阿里云百炼、火山方舟、腾讯云/TokenHub。建议先用各平台免费额度跑真实任务，再做最终决定。详见本站 API 测评页面。'
       },
       {
         question: 'GPT-5.5、Claude Opus、DeepSeek V4 之间怎么选？',

@@ -124,7 +124,7 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       '支持多轮对话、函数调用、JSON 模式，并可在百炼模型广场切换 Qwen、DeepSeek、Kimi、GLM、MiMo 等模型',
     ],
     cons: [
-      '复杂 Agent 任务建议优先测试 Qwen3.7-Max，同时对比 DeepSeek V4 Pro、Claude Opus 4.7 或 GPT-5.5',
+      '复杂 Agent 任务建议优先测试 Qwen3.7-Max，同时对比 DeepSeek V4 Pro、Claude Opus 4.8 或 GPT-5.5',
       'Qwen3.7-Max 成本高于 Qwen3.6-Plus / Flash，不适合所有轻量高频任务',
       '英文和跨语言场景表现不如原生英文模型',
       '开源版本与商业版本有一定差距',
@@ -163,7 +163,7 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       { label: '付费' },
     ],
     tlDr:
-      '长文本处理、安全性和代码协作能力突出。当前重点看 Claude Opus 4.7、Sonnet 4.6 和 Haiku 4.5；Opus/Sonnet 支持 1M 上下文，适合长文档和复杂代码任务。',
+      '长文本处理、安全性和代码协作能力突出。当前重点看 Claude Opus 4.8、Sonnet 4.6 和 Haiku 4.5；Opus/Sonnet 支持 1M 上下文，适合长文档和复杂代码任务。',
     ratings: [
       { label: '质量', score: 4.8, detail: '文本理解和生成长文本方向顶尖，安全对齐做得最好的模型。' },
       { label: '速度', score: 4.0, detail: '推理速度中规中矩，长文本处理时延迟有所增加。' },
@@ -171,7 +171,7 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       { label: '稳定性', score: 4.9, detail: 'Anthropic 服务成熟，API 可用性极高，企业级可靠。' },
     ],
     pros: [
-      'Opus 4.7 / Sonnet 4.6 支持 1M 上下文，适合长文档分析、合同审查和代码仓库理解',
+      'Opus 4.8 / Sonnet 4.6 支持 1M 上下文，适合长文档分析、合同审查和代码仓库理解',
       '安全对齐做得最好，Constitutional AI 确保输出安全可靠',
       '代码能力强劲，Claude Code 是顶级 AI 编程助手',
       '对复杂指令遵循度高，思维严谨细致',
@@ -185,7 +185,7 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       '中文能力不如国内模型自然流畅',
     ],
     pricing: [
-      { model: 'Claude Opus 4.7', input: '$5/百万', output: '$25/百万' },
+      { model: 'Claude Opus 4.8', input: '$5/百万', output: '$25/百万' },
       { model: 'Claude Sonnet 4.6', input: '$3/百万', output: '$15/百万' },
       { model: 'Claude Haiku 4.5', input: '$1/百万', output: '$5/百万' },
     ],
@@ -399,7 +399,7 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       '高峰期算力紧张：热门时段 Pro 响应可能变慢或需排队',
       '审美与前端偏弱：能写好逻辑代码，但生成的网页界面不美观，需人工润色',
       '暂无原生多模态：纯文本模型，不能直接识别图片和视频（可配合外部工具）',
-      '中文写作美感：在极难的文学性创作上，Claude Opus 4.7 仍稍强',
+      '中文写作美感：在极难的文学性创作上，Claude Opus 4.8 仍稍强',
     ],
     pricing: [
       { model: 'deepseek-v4-flash', input: '¥1/百万；缓存命中 ¥0.02/百万', output: '¥2/百万' },

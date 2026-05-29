@@ -411,7 +411,7 @@ Explicitly excluded from this commit:
 - Existing homepage and tutorial learning-center edits in `src/app/home-client.tsx`, `src/app/tutorial/page.tsx`, `src/app/learn/`, `src/components/learn/`, `src/lib/learn-config.ts`, and `public/images/learn/`.
 - Existing untracked local preview, backup, test, Claude/Codex, helper, and unrelated component files.
 
-Verification planned:
+Verification completed:
 
 ```bash
 corepack pnpm ts-check
@@ -477,3 +477,31 @@ SEO/deployment impact:
 
 - Homepage internal links now surface `/tutorial/deepseek`, `/tutorial/mimo`, `/learn/token-context-api-key`, `/learn/api-config-basics`, `/app/codex`, and `/app/ccswitch` in the hero quick links.
 - No sitemap, robots, canonical, structured-data, API config, or tutorial detail content changed.
+
+### 2026-05-29 Claude Opus 4.8 content refresh
+
+Commit scope:
+
+- Update Claude tutorial and API configuration copy from Claude Opus 4.7 to Claude Opus 4.8 in `src/lib/api-config.ts`.
+- Update Claude review, cross-model recommendations, API review summary, and use-case picks to reference Claude Opus 4.8.
+- Update content freshness dates for the Claude API page, Claude review, API review page, and affected use-case pages.
+
+Explicitly excluded from this commit:
+
+- Existing untracked local preview, backup, test, Claude/Codex, helper, and unrelated component files.
+- Existing generated screenshots, scratch HTML files, and SEO draft documents.
+- Homepage layout, search logic, deployment scripts, route structure, and non-Claude model data not directly referencing Claude Opus 4.7.
+
+Verification planned:
+
+```bash
+corepack pnpm exec tsc -p tsconfig.json --noEmit
+corepack pnpm exec eslint
+corepack pnpm exec next build
+corepack pnpm exec tsup src/server.ts --format cjs --platform node --target node20 --outDir dist --no-splitting --no-minify
+```
+
+SEO/deployment impact:
+
+- Updates visible Claude content and API review copy to the latest Anthropic Claude Opus 4.8 announcement.
+- Keeps existing route URLs, sitemap generation, canonical configuration, robots behavior, and structured-data components unchanged.

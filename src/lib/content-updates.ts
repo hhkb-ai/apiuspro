@@ -5,7 +5,7 @@ export const staticPageUpdatedAt: Record<string, string> = {
   '/': '2026-05-11',
   '/cloud-api': '2026-05-11',
   '/tutorial': '2026-05-11',
-  '/api-review': '2026-05-24',
+  '/api-review': '2026-05-29',
   '/app': '2026-05-11',
   '/error': '2026-05-15',
   '/local-deploy': '2026-05-11',
@@ -23,14 +23,14 @@ export const apiUpdatedAtById: Record<string, string> = {
   tencent: '2026-05-22',
   doubao: '2026-05-22',
   openai: '2026-05-24',
-  claude: '2026-05-22',
+  claude: '2026-05-29',
   gemini: '2026-05-22',
 };
 
 export const reviewUpdatedAtBySlug: Record<string, string> = {
   'gpt-5.5': '2026-05-24',
   tongyi: '2026-05-24',
-  claude: '2026-05-22',
+  claude: '2026-05-29',
   zhipu: '2026-05-22',
   kimi: '2026-05-22',
   tencent: '2026-05-22',
@@ -62,12 +62,12 @@ export const errorSolutionUpdatedAtById: Record<string, string> = {
 };
 
 export const useCaseUpdatedAtById: Record<string, string> = {
-  coding: '2026-05-11',
-  knowledge: '2026-05-11',
-  'content-creation': '2026-05-11',
+  coding: '2026-05-29',
+  knowledge: '2026-05-29',
+  'content-creation': '2026-05-29',
   chatbot: '2026-05-11',
-  translation: '2026-05-11',
-  education: '2026-05-11',
+  translation: '2026-05-29',
+  education: '2026-05-29',
 };
 
 export function getStaticPageUpdatedAt(path: string) {
