@@ -74,6 +74,15 @@ const beginnerLearningSteps = [
 
 const beginnerFlow = ['AI 基础', 'Token 上下文', '提示词', 'API 配置'];
 
+const heroQuickLinks = [
+  { label: 'DeepSeek 购买教程', href: '/tutorial/deepseek' },
+  { label: 'MiMo API 教程', href: '/tutorial/mimo' },
+  { label: 'API Key 入门', href: '/learn/token-context-api-key' },
+  { label: 'Base URL 配置', href: '/learn/api-config-basics' },
+  { label: 'Codex 工具', href: '/app/codex' },
+  { label: 'CC Switch', href: '/app/ccswitch' },
+];
+
 const tutorialsList = apiList.filter(api => api.tutorial);
 const tutorialPriority = ['deepseek', 'openai', 'claude', 'gemini', 'aliyun', 'kimi', 'doubao', 'zhipu', 'tencent', 'mimo'];
 const hotTutorials = [...tutorialsList].sort((a, b) => {
@@ -199,7 +208,7 @@ function SearchBar({ query, setQuery, onSubmit, suggestions, showSuggestions, se
       }}
     >
       <form
-        className={isMobile ? 'grid gap-2 rounded-lg border bg-background p-1.5' : 'flex items-center gap-3 rounded-lg border border-border bg-card p-2 shadow-sm'}
+        className={isMobile ? 'grid gap-2 rounded-lg border bg-background p-1.5' : 'flex items-center gap-3 rounded-lg border border-border bg-background p-2.5'}
         onSubmit={onSubmit}
         role="search"
       >
@@ -212,14 +221,14 @@ function SearchBar({ query, setQuery, onSubmit, suggestions, showSuggestions, se
             onFocus={() => setShowSuggestions(true)}
             placeholder="搜索 DeepSeek、OpenAI、Claude..."
             aria-label="搜索 API、教程或工具"
-            className={isMobile ? 'h-11 w-full rounded-md border-0 bg-transparent pl-9 pr-3 text-base outline-none placeholder:text-muted-foreground' : 'h-12 w-full bg-transparent pl-11 pr-4 text-base outline-none placeholder:text-muted-foreground'}
+            className={isMobile ? 'h-11 w-full rounded-md border-0 bg-transparent pl-9 pr-3 text-base outline-none placeholder:text-muted-foreground' : 'h-14 w-full bg-transparent pl-11 pr-4 text-base outline-none placeholder:text-muted-foreground'}
           />
         </div>
         <button
           type="submit"
           className={isMobile
             ? 'inline-flex h-10 items-center justify-center gap-2 rounded-md bg-foreground px-4 text-sm font-medium text-background transition-colors hover:bg-foreground/90 disabled:bg-muted disabled:text-muted-foreground'
-            : 'inline-flex h-12 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground'}
+            : 'inline-flex h-14 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground'}
           disabled={!query.trim() || suggestions.length === 0}
         >
           <Search className="size-4" />
@@ -260,22 +269,22 @@ function BeginnerLearningRoute({ variant = 'desktop' }: { variant?: 'desktop' | 
   const isMobile = variant === 'mobile';
 
   return (
-    <section className={isMobile ? 'mt-4 rounded-lg border border-border bg-background p-3' : 'mt-6 rounded-lg border border-border bg-card p-4 shadow-sm'}>
-      <div className={isMobile ? 'mb-3' : 'mb-4'}>
+    <section className={isMobile ? 'mt-4 rounded-lg border border-border bg-background p-3' : 'h-full rounded-lg border border-border bg-card p-5 shadow-sm'}>
+      <div className={isMobile ? 'mb-3' : 'mb-5'}>
         <p className="text-xs font-medium text-muted-foreground">新手路线</p>
         <h2 className={isMobile ? 'mt-1 text-base font-semibold' : 'mt-1 text-xl font-semibold tracking-tight'}>AI 与 API 新手学习路线</h2>
         <p className={isMobile ? 'mt-1 text-xs leading-5 text-muted-foreground' : 'mt-2 text-sm leading-6 text-muted-foreground'}>只保留最关键的步骤，让第一次学习 API 不绕路。</p>
       </div>
-      <div className={isMobile ? 'grid grid-cols-2 gap-2' : 'grid gap-3 sm:grid-cols-2 lg:grid-cols-4'}>
+      <div className={isMobile ? 'grid grid-cols-2 gap-2' : 'grid grid-cols-2 gap-3'}>
         {beginnerLearningSteps.map(item => (
-          <div key={item.step} className={isMobile ? 'rounded-lg border border-border bg-card p-3' : 'rounded-lg border border-border bg-background p-3'}>
+          <Link key={item.step} href={item.href} className={isMobile ? 'rounded-lg border border-border bg-card p-3 active:bg-muted' : 'min-h-[8.25rem] rounded-lg border border-border bg-background p-4 transition-colors hover:border-foreground/30 hover:bg-muted/30'}>
             <span className="text-[11px] font-semibold text-muted-foreground">{item.step}</span>
-            <h3 className="mt-1 text-sm font-semibold text-foreground">{item.title}</h3>
-            <p className={isMobile ? 'mt-1 text-xs leading-5 text-muted-foreground' : 'mt-2 text-xs leading-5 text-muted-foreground'}>{item.desc}</p>
-          </div>
+            <h3 className={isMobile ? 'mt-1 text-sm font-semibold text-foreground' : 'mt-2 text-base font-semibold text-foreground'}>{item.title}</h3>
+            <p className={isMobile ? 'mt-1 text-xs leading-5 text-muted-foreground' : 'mt-2 text-sm leading-6 text-muted-foreground'}>{item.desc}</p>
+          </Link>
         ))}
       </div>
-      <div className={isMobile ? 'mt-3 flex flex-wrap items-center gap-1.5 text-[11px] text-muted-foreground' : 'mt-4 flex flex-wrap items-center gap-2 text-xs text-muted-foreground'}>
+      <div className={isMobile ? 'mt-3 flex flex-wrap items-center gap-1.5 text-[11px] text-muted-foreground' : 'mt-5 flex flex-wrap items-center gap-2 text-xs text-muted-foreground'}>
         {beginnerFlow.map((item, index) => (
           <span key={item} className="inline-flex items-center gap-1.5">
             <span className="rounded-full border border-border bg-muted px-2 py-1">{item}</span>
@@ -284,6 +293,69 @@ function BeginnerLearningRoute({ variant = 'desktop' }: { variant?: 'desktop' | 
         ))}
       </div>
     </section>
+  );
+}
+
+function HeroQuickLinks({ variant = 'desktop', compact = false }: { variant?: 'desktop' | 'mobile'; compact?: boolean }) {
+  const isMobile = variant === 'mobile';
+
+  return (
+    <div className={compact ? 'mt-3' : isMobile ? 'mt-4' : 'mt-5'}>
+      {!compact && <p className="text-xs font-medium text-muted-foreground">热门直达</p>}
+      <div className={compact ? 'flex flex-wrap gap-2' : isMobile ? 'mt-2 flex flex-wrap gap-2' : 'mt-3 flex flex-wrap gap-2'}>
+        {heroQuickLinks.map(item => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className="rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:border-foreground/30 hover:bg-muted"
+          >
+            {item.label}
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function HeroSearchPanel({
+  query,
+  setQuery,
+  onSubmit,
+  suggestions,
+  showSuggestions,
+  setShowSuggestions,
+  variant = 'desktop',
+}: {
+  query: string;
+  setQuery: (q: string) => void;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  suggestions: Suggestion[];
+  showSuggestions: boolean;
+  setShowSuggestions: (s: boolean) => void;
+  variant?: 'desktop' | 'mobile';
+}) {
+  const isMobile = variant === 'mobile';
+
+  return (
+    <div className={isMobile ? 'mt-4 rounded-lg border border-border bg-card p-3' : 'mt-6 w-full rounded-lg border border-border bg-card p-5 shadow-sm xl:mt-auto'}>
+      <div className={isMobile ? 'mb-3' : 'mb-4 flex items-end justify-between gap-4'}>
+        <div>
+          <p className="text-xs font-medium text-muted-foreground">快速查找</p>
+          <h2 className={isMobile ? 'mt-1 text-sm font-semibold' : 'mt-1 text-base font-semibold'}>搜索平台、教程或工具</h2>
+        </div>
+        {!isMobile && <span className="shrink-0 rounded-full border border-border bg-muted px-2.5 py-1 text-xs text-muted-foreground">6 个热门入口</span>}
+      </div>
+      <SearchBar
+        query={query}
+        setQuery={setQuery}
+        onSubmit={onSubmit}
+        suggestions={suggestions}
+        showSuggestions={showSuggestions}
+        setShowSuggestions={setShowSuggestions}
+        variant={variant}
+      />
+      {!isMobile && <HeroQuickLinks variant={variant} compact />}
+    </div>
   );
 }
 
@@ -366,11 +438,9 @@ function MobileHome() {
       <main className="pb-10">
         <section className="px-4 pb-5 pt-4">
           <div className="rounded-lg border bg-card p-4 shadow-sm">
-            <p className="text-xl font-semibold leading-tight tracking-tight">DeepSeek API 怎么购买和首次调用？</p>
-            <p className="mt-2 text-sm leading-6 text-muted-foreground">国内直连、支持支付宝/微信、代码与推理能力突出。</p>
-            <div className="mt-4">
-              <SearchBar query={query} setQuery={setQuery} onSubmit={submitSearch} suggestions={suggestions} showSuggestions={showSuggestions} setShowSuggestions={setShowSuggestions} variant="mobile" />
-            </div>
+            <p className="text-xl font-semibold leading-tight tracking-tight">AI API 怎么选、怎么买、怎么首次调用？</p>
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">从官网入口、购买教程到 API Key，按步骤完成首次调用。</p>
+            <HeroSearchPanel query={query} setQuery={setQuery} onSubmit={submitSearch} suggestions={suggestions} showSuggestions={showSuggestions} setShowSuggestions={setShowSuggestions} variant="mobile" />
             <BeginnerLearningRoute variant="mobile" />
             <SectionEntries />
           </div>
@@ -492,14 +562,14 @@ function DesktopHome() {
         {/* Hero + Search Section */}
         <section className="border-b border-border px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
           <div className="mx-auto max-w-7xl">
-            <div className="max-w-3xl">
-              <h1 className="text-3xl sm:text-4xl font-semibold leading-tight tracking-tight text-foreground">DeepSeek API 怎么购买和首次调用？</h1>
-              <p className="mt-4 text-base leading-8 text-muted-foreground">国内直连、支持支付宝/微信支付、代码与推理能力突出，按步骤完成首次调用。</p>
-            </div>
-            <div className="mt-6 lg:mt-8 max-w-3xl">
-              <SearchBar query={query} setQuery={setQuery} onSubmit={submitSearch} suggestions={suggestions} showSuggestions={showSuggestions} setShowSuggestions={setShowSuggestions} variant="desktop" />
-            </div>
-            <div className="max-w-5xl">
+            <div className="grid items-stretch gap-6 xl:grid-cols-[minmax(0,0.72fr)_minmax(460px,0.58fr)] xl:gap-10">
+              <div className="min-w-0 xl:flex xl:h-full xl:flex-col">
+                <div className="max-w-xl">
+                  <h1 className="text-3xl sm:text-4xl font-semibold leading-tight tracking-tight text-foreground">AI API 怎么选、怎么买、怎么首次调用？</h1>
+                  <p className="mt-4 text-base leading-8 text-muted-foreground">从官网入口、购买教程到 API Key，按步骤完成首次调用。</p>
+                </div>
+                <HeroSearchPanel query={query} setQuery={setQuery} onSubmit={submitSearch} suggestions={suggestions} showSuggestions={showSuggestions} setShowSuggestions={setShowSuggestions} />
+              </div>
               <BeginnerLearningRoute />
             </div>
           </div>

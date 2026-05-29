@@ -450,3 +450,30 @@ SEO/deployment impact:
 
 - BaiduSpider-style raw HTML checks confirmed `/tutorial`, `/cloud-api`, `/app`, and `/app/codex` return server HTML containing page body text, JSON-LD, and `https://www.apiuspro.cn` canonical URLs.
 - This reduces reliance on browser-side JavaScript for search engine crawling on the main tutorial, API listing, and app tutorial pages.
+
+### 2026-05-29 Homepage hero search and beginner route layout
+
+Commit scope:
+
+- Update the homepage hero from a single DeepSeek-focused prompt to a broader AI API selection and first-call entry.
+- Add a compact hero search panel with desktop-only quick links and keep mobile focused on the search input.
+- Move the beginner learning route into the hero on wide screens, enlarge the route cards, and align the search panel with the route card layout across responsive widths.
+
+Explicitly excluded from this commit:
+
+- Existing untracked local preview, backup, test, Claude/Codex, helper, and unrelated component files.
+- Generated `test-artifacts/` screenshots and logs.
+- API tutorial data, detail pages, SEO configuration, and deployment scripts.
+
+Verification completed:
+
+```bash
+corepack pnpm run ts-check  # passed
+corepack pnpm run lint  # passed
+corepack pnpm run build  # passed
+```
+
+SEO/deployment impact:
+
+- Homepage internal links now surface `/tutorial/deepseek`, `/tutorial/mimo`, `/learn/token-context-api-key`, `/learn/api-config-basics`, `/app/codex`, and `/app/ccswitch` in the hero quick links.
+- No sitemap, robots, canonical, structured-data, API config, or tutorial detail content changed.
