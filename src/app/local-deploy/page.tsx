@@ -493,8 +493,8 @@ export default function LocalDeployPage() {
                     <div className="px-4 py-2 bg-muted/50 border-b border-border">
                       <span className="text-xs font-medium text-muted-foreground">命令</span>
                     </div>
-                    <pre className="p-4 overflow-x-auto">
-                      <code className="text-sm font-mono leading-7 text-foreground">{step.code}</code>
+                    <pre className="max-w-full overflow-x-auto p-4">
+                      <code className="whitespace-pre text-sm font-mono leading-7 text-foreground">{step.code}</code>
                     </pre>
                     {step.codeExplanation && (
                       <div className="px-4 py-3 bg-muted/30 border-t border-border">
@@ -546,7 +546,7 @@ export default function LocalDeployPage() {
               以下是适合笔记本电脑运行的小模型，按配置要求从低到高排列：
             </p>
 
-            <div className="overflow-x-auto">
+            <div className="max-w-full overflow-x-auto">
               <table className="w-full text-sm border-collapse">
                 <thead>
                   <tr className="border-b border-border">

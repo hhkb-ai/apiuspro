@@ -423,7 +423,7 @@ export function AppTutorialContent({ id }: AppTutorialContentProps) {
                 </div>
 
                 {/* 章节概述 */}
-                <div className="mb-5 text-[15px] leading-7 text-muted-foreground">
+                <div className="mb-5 overflow-hidden break-words text-[15px] leading-7 text-muted-foreground">
                   <RichText text={section.content} highlightKeywords={isCodexTutorial} />
                 </div>
 
@@ -439,7 +439,7 @@ export function AppTutorialContent({ id }: AppTutorialContentProps) {
 
                       {/* 步骤描述 */}
                       {step.description && (
-                        <p className="mb-3 pl-4 text-sm leading-6 text-muted-foreground max-sm:pl-0">
+                        <p className="mb-3 overflow-hidden break-words pl-4 text-sm leading-6 text-muted-foreground max-sm:pl-0">
                           <RichText text={step.description} highlightKeywords={isCodexTutorial} />
                         </p>
                       )}
