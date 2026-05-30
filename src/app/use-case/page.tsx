@@ -86,9 +86,9 @@ export default function UseCaseListPage() {
               <p className="flex-1 text-sm leading-6 text-muted-foreground">
                 {uc.description}
               </p>
-              <div className="mt-3 rounded-md border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 px-3 py-2 text-xs text-emerald-800">
+              <div className="mt-3 rounded-md border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 px-3 py-2 text-xs text-emerald-800 dark:text-emerald-200">
                 <span className="font-semibold">首选：</span>{uc.primaryPick}
-                <span className="mx-1.5 text-emerald-400">|</span>
+                <span className="mx-1.5 text-emerald-400 dark:text-emerald-500">|</span>
                 <span className="font-semibold">备选：</span>{uc.altPick}
               </div>
               <div className="mt-3 flex flex-wrap gap-1.5">
@@ -160,7 +160,7 @@ export default function UseCaseListPage() {
         {/* 适合谁 / 不适合谁 */}
         <section className="order-5 mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
           <div className="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 p-5">
-            <p className="text-sm font-semibold text-emerald-800">适合谁</p>
+            <p className="text-sm font-semibold text-emerald-800 dark:text-emerald-200">适合谁</p>
             <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700 dark:text-emerald-300">
               <li>• 不确定哪个 API 适合自己的业务场景</li>
               <li>• 想对比不同场景下的首选和备选方案</li>
@@ -168,7 +168,7 @@ export default function UseCaseListPage() {
             </ul>
           </div>
           <div className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-5">
-            <p className="text-sm font-semibold text-amber-800">不适合谁</p>
+            <p className="text-sm font-semibold text-amber-800 dark:text-amber-200">不适合谁</p>
             <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700 dark:text-amber-300">
               <li>• 已经确定要用哪个 API，需要购买教程（请看 <Link href="/tutorial" className="text-foreground hover:underline">购买教程</Link>）</li>
               <li>• 想看详细的基准测试和评分数据（请看 <Link href="/api-review" className="text-foreground hover:underline">API 测评</Link>）</li>

@@ -18,10 +18,10 @@ function getNotSuitableFor(api: APIConfig): string {
 }
 
 function getAccessInfo(api: APIConfig): { label: string; desc: string; color: string } {
-  if (!api.proxy && api.tutorial) return { label: '简单', desc: '国内直连，有教程指引', color: 'text-emerald-600' };
-  if (!api.proxy) return { label: '中等', desc: '国内直连，需自行探索', color: 'text-amber-600' };
-  if (api.tutorial) return { label: '中等', desc: '需代理，有教程指引', color: 'text-amber-600' };
-  return { label: '较高', desc: '需代理，需自行探索', color: 'text-red-600' };
+  if (!api.proxy && api.tutorial) return { label: '简单', desc: '国内直连，有教程指引', color: 'text-emerald-700 dark:text-emerald-300' };
+  if (!api.proxy) return { label: '中等', desc: '国内直连，需自行探索', color: 'text-amber-700 dark:text-amber-300' };
+  if (api.tutorial) return { label: '中等', desc: '需代理，有教程指引', color: 'text-amber-700 dark:text-amber-300' };
+  return { label: '较高', desc: '需代理，需自行探索', color: 'text-rose-700 dark:text-rose-300' };
 }
 
 function getRating(api: APIConfig): number {
@@ -86,45 +86,45 @@ export function QuickConclusionCard({ api, reviewSlug }: QuickConclusionCardProp
   const actionLinks = (
     <div className="flex flex-wrap gap-2 border-t border-border pt-4">
       <a href={api.url} target="_blank" rel="noopener noreferrer">
-        <Button variant="outline" size="sm">官网入口</Button>
+        <Button variant="outline" size="sm" className="border-border bg-background text-foreground hover:bg-muted">官网入口</Button>
       </a>
       {api.tutorial && (
         <Link href={`/tutorial/${api.id}`}>
-          <Button variant="outline" size="sm">购买教程</Button>
+          <Button variant="outline" size="sm" className="border-border bg-background text-foreground hover:bg-muted">购买教程</Button>
         </Link>
       )}
       {reviewSlug && (
         <Link href={`/api-review/${reviewSlug}`}>
-          <Button variant="outline" size="sm">完整测评</Button>
+          <Button variant="outline" size="sm" className="border-border bg-background text-foreground hover:bg-muted">完整测评</Button>
         </Link>
       )}
       <Link href="/use-case/coding">
-        <Button variant="outline" size="sm">场景推荐</Button>
+        <Button variant="outline" size="sm" className="border-border bg-background text-foreground hover:bg-muted">场景推荐</Button>
       </Link>
     </div>
   );
 
   return (
     <>
-      <Card className="mb-8 hidden border-border bg-card shadow-sm sm:block">
+      <Card className="mb-8 hidden border-border bg-card shadow-sm sm:block rounded-2xl">
         <CardHeader>
-          <CardTitle className="flex flex-wrap items-center gap-3">
+          <CardTitle className="flex flex-wrap items-center gap-3 text-foreground">
             快速结论
-            <span className="rounded-md bg-amber-100 px-2 py-0.5 text-sm font-semibold text-amber-700 dark:text-amber-300">推荐指数 {rating}/10</span>
+            <span className="rounded-xl border border-amber-200 bg-amber-50 px-2 py-0.5 text-sm font-semibold text-amber-800 dark:border-amber-700/70 dark:bg-amber-950/50 dark:text-amber-200">推荐指数 {rating}/10</span>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4 text-sm text-foreground">
-          <p className="rounded-md border border-sky-200 bg-sky-50 px-3 py-2 text-sky-900 dark:border-sky-800 dark:bg-sky-950/30 dark:text-sky-100">{getConclusion(api)}</p>
+          <p className="rounded-xl border border-sky-200 bg-sky-50 px-3 py-2 text-sky-900 dark:border-sky-700/70 dark:bg-sky-950/40 dark:text-sky-100">{getConclusion(api)}</p>
           {detailGrid}
           {actionLinks}
           <p className="text-xs text-muted-foreground">* 价格、额度、模型名等信息以官网为准</p>
         </CardContent>
       </Card>
-      <details className="mb-8 rounded-lg border border-border bg-card text-foreground sm:hidden">
+      <details className="mb-8 rounded-2xl border border-border bg-card text-foreground sm:hidden">
         <summary className="cursor-pointer select-none px-4 py-3 text-sm font-bold">快速结论（点开查看）</summary>
         <div className="border-t border-border px-4 py-3 space-y-4 text-sm">
           <p><span className="font-semibold">推荐指数：</span>{rating}/10</p>
-          <p className="rounded-md border border-sky-200 bg-sky-50 px-3 py-2 text-sky-900 dark:border-sky-800 dark:bg-sky-950/30 dark:text-sky-100">{getConclusion(api)}</p>
+          <p className="rounded-xl border border-sky-200 bg-sky-50 px-3 py-2 text-sky-900 dark:border-sky-700/70 dark:bg-sky-950/40 dark:text-sky-100">{getConclusion(api)}</p>
           {detailGrid}
           {actionLinks}
           <p className="text-xs text-muted-foreground">* 价格、额度、模型名等信息以官网为准</p>

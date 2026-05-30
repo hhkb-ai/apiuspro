@@ -513,7 +513,7 @@ export default function LocalDeployPage() {
 
                 {/* 提示 */}
                 {step.tip && (
-                  <div className="my-4 rounded-lg border border-blue-200 bg-blue-50 px-5 py-3 text-sm leading-6 text-blue-800">
+                  <div className="my-4 rounded-lg border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/30 px-5 py-3 text-sm leading-6 text-blue-800 dark:text-blue-200">
                     提示：<LinkText text={step.tip} />
                   </div>
                 )}

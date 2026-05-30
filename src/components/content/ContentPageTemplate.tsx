@@ -58,9 +58,9 @@ export interface ContentPageData {
 const toneClass = {
   default: 'border-border bg-card',
   blue: 'border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-950',
-  amber: 'border-amber-200 bg-amber-50 text-amber-950',
+  amber: 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-950 dark:text-amber-100',
   emerald: 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-950',
-  rose: 'border-rose-200 bg-rose-50 text-rose-950',
+  rose: 'border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/30 text-rose-950 dark:text-rose-100',
 };
 
 const toneTextClass = {
@@ -73,16 +73,16 @@ const toneTextClass = {
     body: 'text-sky-800 dark:text-sky-300',
   },
   amber: {
-    heading: 'text-amber-950',
-    body: 'text-amber-800',
+    heading: 'text-amber-950 dark:text-amber-100',
+    body: 'text-amber-800 dark:text-amber-200',
   },
   emerald: {
     heading: 'text-emerald-950',
     body: 'text-emerald-800 dark:text-emerald-200',
   },
   rose: {
-    heading: 'text-rose-950',
-    body: 'text-rose-800',
+    heading: 'text-rose-950 dark:text-rose-100',
+    body: 'text-rose-800 dark:text-rose-200',
   },
 };
 

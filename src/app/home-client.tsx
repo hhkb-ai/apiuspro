@@ -2,85 +2,46 @@
 
 import { useDeferredValue, useMemo, useState, useCallback, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { BeianLinks } from '@/components/layout/BeianLinks';
+import { BrandIcon } from '@/components/api/BrandIcon';
 import { apiList, appTutorials } from '@/lib/api-config';
 import { fuzzyScore, sortByFuzzyScore } from '@/lib/fuzzy-search';
-import {
-  BookOpen,
-  ChevronRight,
-  Compass,
-  Code2,
-  Database,
-  GraduationCap,
-  Languages,
-  MessageCircle,
-  PenLine,
-  Search,
-  Server,
-  Star,
-  Target,
-  Wrench,
-} from 'lucide-react';
+import { ChevronRight, Search } from 'lucide-react';
 
 const pages = [
   { id: 'cloud-api', name: 'API 列表', desc: '先看官网入口、代理要求和免费额度', url: '/cloud-api', tag: '优先查看' },
   { id: 'tutorial', name: '购买教程', desc: '按步骤完成注册、支付与 API Key 创建', url: '/tutorial', tag: '新手推荐' },
-  { id: 'local-deploy', name: '本地部署', desc: '笔记本也能跑！Ollama 一键部署 Gemma 4、Qwen3.6 最新模型', url: '/local-deploy', tag: '进阶路线' },
-];
-
-const quickLinks = [
-  { name: 'DeepSeek', id: 'deepseek' },
-  { name: 'OpenAI', id: 'openai' },
-  { name: '通义千问', id: 'aliyun' },
-  { name: 'Claude', id: 'claude' },
-  { name: 'Gemini', id: 'gemini' },
-  { name: '智谱 GLM', id: 'zhipu' },
-  { name: 'Kimi', id: 'kimi' },
-];
-
-const sectionEntries = [
-  { title: 'API 列表', desc: '对比官网入口、代理要求和免费额度', href: '/cloud-api', icon: Compass, className: 'border-emerald-200 dark:border-emerald-700/80 bg-emerald-50 dark:bg-emerald-950/45 text-emerald-900 dark:text-emerald-100' },
-  { title: '购买教程', desc: '按步骤完成注册、支付与 API Key 创建', href: '/tutorial', icon: BookOpen, className: 'border-sky-200 dark:border-sky-700/80 bg-sky-50 dark:bg-sky-950/45 text-sky-900 dark:text-sky-100' },
-  { title: 'API 测评', desc: '查看模型能力、价格和使用体验对比', href: '/api-review', icon: Star, className: 'border-amber-200 dark:border-amber-700/80 bg-amber-50 dark:bg-amber-950/45 text-amber-900 dark:text-amber-100' },
-  { title: '场景推荐', desc: '按编程、知识库、翻译等场景选择', href: '/use-case', icon: Target, className: 'border-violet-200 dark:border-violet-700/80 bg-violet-50 dark:bg-violet-950/45 text-violet-900 dark:text-violet-100' },
-  { title: 'API 应用', desc: 'Claude Code、CC Switch 等工具接入', href: '/app', icon: Wrench, className: 'border-rose-200 dark:border-rose-700/80 bg-rose-50 dark:bg-rose-950/45 text-rose-900 dark:text-rose-100' },
-  { title: '本地部署', desc: 'Ollama 一键部署开源模型', href: '/local-deploy', icon: Server, className: 'border-orange-200 dark:border-orange-700/80 bg-orange-50 dark:bg-orange-950/45 text-orange-900 dark:text-orange-100' },
-];
-
-const scenarioCards = [
-  { title: '编程开发', desc: '代码生成、调试、仓库理解和自动化脚本。', href: '/use-case/coding', icon: Code2, className: 'border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/30 text-rose-950', iconClassName: 'bg-rose-100 text-rose-700' },
-  { title: '知识库', desc: '长文档解析、资料检索和个人知识沉淀。', href: '/use-case/knowledge', icon: Database, className: 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-950', iconClassName: 'bg-emerald-100 text-emerald-700' },
-  { title: '内容创作', desc: '选题、改写、脚本、营销文案和图文草稿。', href: '/use-case/content-creation', icon: PenLine, className: 'border-violet-200 bg-violet-50 text-violet-950', iconClassName: 'bg-violet-100 text-violet-700' },
-  { title: '翻译', desc: '多语种翻译、术语一致性和风格改写。', href: '/use-case/translation', icon: Languages, className: 'border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-950', iconClassName: 'bg-sky-100 text-sky-700' },
-  { title: '智能客服', desc: '问答机器人、意图识别和工单摘要。', href: '/use-case/chatbot', icon: MessageCircle, className: 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-950', iconClassName: 'bg-amber-100 text-amber-700' },
-  { title: '教育辅导', desc: '分步讲解、练习反馈和学习路径规划。', href: '/use-case/education', icon: GraduationCap, className: 'border-orange-200 bg-orange-50 text-orange-950', iconClassName: 'bg-orange-100 text-orange-700' },
-];
-
-const integrationSteps = [
-  { step: 1, title: '浏览 API', desc: '比较访问方式、免费额度和适用场景', links: [{ name: 'API 列表', href: '/cloud-api' }, { name: 'API 测评', href: '/api-review' }, { name: '场景推荐', href: '/use-case' }] },
-  { step: 2, title: '查看教程', desc: '完成注册、充值、API Key 创建', links: [{ name: '购买教程', href: '/tutorial' }, { name: '常见问题', href: '/faq' }] },
-  { step: 3, title: '接入工具', desc: '填写 Base URL、模型名和 API Key', links: [{ name: 'API 应用', href: '/app' }, { name: '本地部署', href: '/local-deploy' }] },
+  { id: 'local-deploy', name: '本地部署', desc: '笔记本也能跑！Ollama 一键部署开源模型', url: '/local-deploy', tag: '进阶路线' },
 ];
 
 const beginnerLearningSteps = [
-  { step: '01', title: 'AI、模型和使用方式', desc: '先搞懂 AI 是什么、模型是什么，以及网页聊天和 API 的区别。', href: '/learn/ai-basics' },
-  { step: '02', title: 'Token 和上下文', desc: '理解 Token、上下文，以及为什么 AI 会忘记。', href: '/learn/token-context-api-key' },
-  { step: '03', title: '提示词基础', desc: '学会把问题问清楚，让 AI 输出更稳定。', href: '/learn/prompting' },
-  { step: '04', title: 'API 三件套', desc: '搞懂 API Key、Base URL、模型名称。', href: '/learn/api-config-basics' },
+  { step: '01', title: 'AI 常识', desc: '看懂模型、Token、上下文', href: '/learn/ai-basics' },
+  { step: '02', title: '提示词', desc: '把需求说清楚', href: '/learn/prompting' },
+  { step: '03', title: 'API 基础', desc: '理解 Key、Base URL、JSON', href: '/learn/api-config-basics' },
+  { step: '04', title: '第一次调用', desc: '选平台并跑通示例', href: '/learn/first-api-call' },
 ];
 
-const beginnerFlow = ['AI 基础', 'Token 上下文', '提示词', 'API 配置'];
-
-const heroQuickLinks = [
-  { label: 'DeepSeek 购买教程', href: '/tutorial/deepseek' },
-  { label: 'MiMo API 教程', href: '/tutorial/mimo' },
-  { label: 'API Key 入门', href: '/learn/token-context-api-key' },
-  { label: 'Base URL 配置', href: '/learn/api-config-basics' },
-  { label: 'Codex 工具', href: '/app/codex' },
-  { label: 'CC Switch', href: '/app/ccswitch' },
+const userEntryCards = [
+  {
+    title: '完全不懂 AI',
+    desc: '先看懂 AI、模型、Token、上下文和提示词。',
+    href: '/learn',
+    action: 'AI 入门',
+  },
+  {
+    title: '准备购买 API',
+    desc: '对比平台、价格、代理要求和支付方式。',
+    href: '/tutorial',
+    action: '购买教程',
+  },
+  {
+    title: '已经开始接入',
+    desc: '排查 API Key、Base URL、模型名和常见报错。',
+    href: '/error',
+    action: '接入与报错',
+  },
 ];
 
 const tutorialsList = apiList.filter(api => api.tutorial);
@@ -90,33 +51,14 @@ const hotTutorials = [...tutorialsList].sort((a, b) => {
   const bPriority = tutorialPriority.indexOf(b.id);
   return (aPriority === -1 ? 999 : aPriority) - (bPriority === -1 ? 999 : bPriority);
 });
-const featuredHotTutorials = hotTutorials.slice(0, 8);
-
-const faqItems = [
-  { q: '国内可以访问哪些 API？', a: 'DeepSeek、通义千问、智谱 GLM、Kimi 等支持国内直连，无需代理。', href: '/faq' },
-  { q: 'API Key 在哪里创建？', a: '进入各平台控制台的 API Key 管理页面创建，详见购买教程。', href: '/faq' },
-  { q: '免费额度用完了怎么办？', a: '可以充值继续使用，或切换到其他有免费额度的 API。', href: '/faq' },
-];
+const featuredHotTutorials = hotTutorials.slice(0, 4);
 
 const desktopNavLinks = [
-  { name: 'API官网', href: '/cloud-api' },
-  { name: 'API测评', href: '/api-review' },
+  { name: 'AI 入门', href: '/learn' },
   { name: '购买教程', href: '/tutorial' },
-  { name: 'API应用', href: '/app' },
-  { name: 'AI学习', href: '/learn' },
-  { name: '本地部署', href: '/local-deploy' },
+  { name: '模型测评', href: '/api-review' },
+  { name: 'API 应用', href: '/app' },
 ];
-
-const brandIconById: Record<string, { src: string; alt: string; fallback: string }> = {
-  deepseek: { src: '/images/brands/deepseek.ico', alt: 'DeepSeek', fallback: 'DS' },
-  openai: { src: '/images/brands/openai.svg', alt: 'OpenAI', fallback: 'OAI' },
-  claude: { src: '/images/brands/claude.png', alt: 'Claude', fallback: 'C' },
-  gemini: { src: '/images/brands/gemini.svg', alt: 'Gemini', fallback: 'G' },
-  aliyun: { src: '/images/brands/aliyun.svg', alt: '阿里云通义千问', fallback: '通' },
-  kimi: { src: '/images/brands/kimi.ico', alt: 'Kimi', fallback: 'K' },
-  doubao: { src: '/images/brands/doubao.png', alt: '豆包', fallback: '豆' },
-  zhipu: { src: '/images/brands/zhipu.png', alt: '智谱 GLM', fallback: 'GLM' },
-};
 
 function accessText(proxy?: boolean) {
   return proxy ? '需要代理' : '无需代理';
@@ -162,7 +104,7 @@ function useSearch(rawQuery: string, maxResults: number) {
   return result;
 }
 
-function SearchBar({ query, setQuery, onSubmit, suggestions, showSuggestions, setShowSuggestions, variant }: {
+function SearchBar({ query, setQuery, onSubmit, suggestions, showSuggestions, setShowSuggestions, variant, searchId }: {
   query: string;
   setQuery: (q: string) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -170,6 +112,7 @@ function SearchBar({ query, setQuery, onSubmit, suggestions, showSuggestions, se
   showSuggestions: boolean;
   setShowSuggestions: (s: boolean) => void;
   variant: 'mobile' | 'desktop';
+  searchId: string;
 }) {
   const isMobile = variant === 'mobile';
   const searchRef = useRef<HTMLDivElement>(null);
@@ -208,45 +151,43 @@ function SearchBar({ query, setQuery, onSubmit, suggestions, showSuggestions, se
       }}
     >
       <form
-        className={isMobile ? 'grid gap-2 rounded-lg border bg-background p-1.5' : 'flex items-center gap-3 rounded-lg border border-border bg-background p-2.5'}
+        id={searchId}
+        className={isMobile ? 'flex items-center gap-2 rounded-xl border border-border bg-card shadow-sm px-3' : 'flex items-center gap-2 rounded-[14px] border border-border bg-card shadow-sm px-4 h-14'}
         onSubmit={onSubmit}
         role="search"
       >
         <div className="relative min-w-0 flex-1">
-          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 text-muted-foreground" style={{ width: isMobile ? 14 : 16, height: isMobile ? 14 : 16 }} />
           <input
             type="search"
             value={query}
             onChange={(e) => { setQuery(e.target.value); setShowSuggestions(true); }}
             onFocus={() => setShowSuggestions(true)}
-            placeholder="搜索 DeepSeek、OpenAI、Claude..."
+            placeholder={isMobile ? '搜索 DeepSeek、Claude...' : '搜索 DeepSeek、Claude、API Key、提示词、429 报错...'}
             aria-label="搜索 API、教程或工具"
-            className={isMobile ? 'h-11 w-full rounded-md border-0 bg-transparent pl-9 pr-3 text-base outline-none placeholder:text-muted-foreground' : 'h-14 w-full bg-transparent pl-11 pr-4 text-base outline-none placeholder:text-muted-foreground'}
+            className={isMobile ? 'h-12 w-full border-0 bg-transparent pl-5 pr-3 text-[13px] outline-none placeholder:text-gray-400' : 'h-full w-full border-0 bg-transparent pl-5 pr-4 text-sm outline-none placeholder:text-gray-400'}
           />
         </div>
         <button
           type="submit"
-          className={isMobile
-            ? 'inline-flex h-10 items-center justify-center gap-2 rounded-md bg-foreground px-4 text-sm font-medium text-background transition-colors hover:bg-foreground/90 disabled:bg-muted disabled:text-muted-foreground'
-            : 'inline-flex h-14 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground'}
+          className="hidden"
           disabled={!query.trim() || suggestions.length === 0}
         >
-          <Search className="size-4" />
-          搜索
+          <Search className="w-4 h-4" />
         </button>
       </form>
 
       {showSuggestions && query.trim() && (
-        <div className="absolute left-0 right-0 top-full z-20 mt-2 max-h-[58vh] overflow-y-auto overscroll-contain rounded-lg border bg-card shadow-lg">
+        <div className="absolute left-0 right-0 top-full z-20 mt-2 max-h-[58vh] overflow-y-auto overscroll-contain rounded-lg border border-border bg-card shadow-sm">
           {suggestions.length > 0 ? (
             suggestions.map(item => (
               <Link
                 key={item.id}
                 href={item.href}
                 onClick={() => setShowSuggestions(false)}
-                className="flex items-center gap-3 border-b px-3 py-3 last:border-b-0 active:bg-muted"
+                className="flex items-center gap-3 border-b border-border px-3 py-3 last:border-b-0 hover:bg-muted/50 active:bg-muted"
               >
-                <span className="rounded-md bg-muted px-2 py-1 text-[11px] font-medium text-muted-foreground">{item.type}</span>
+                <span className="rounded-md border border-border bg-muted px-2 py-1 text-[11px] font-medium text-muted-foreground">{item.type}</span>
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-sm font-medium">{item.name}</span>
                   <span className="mt-0.5 block truncate text-xs text-muted-foreground">{item.desc}</span>
@@ -256,7 +197,7 @@ function SearchBar({ query, setQuery, onSubmit, suggestions, showSuggestions, se
             ))
           ) : (
             <div className="px-4 py-5 text-center text-sm text-muted-foreground">
-              没找到结果，试试通义千问、Kimi、Gemini。
+              没找到结果，试试 DeepSeek、Claude、API Key。
             </div>
           )}
         </div>
@@ -265,66 +206,81 @@ function SearchBar({ query, setQuery, onSubmit, suggestions, showSuggestions, se
   );
 }
 
-function BeginnerLearningRoute({ variant = 'desktop' }: { variant?: 'desktop' | 'mobile' }) {
-  const isMobile = variant === 'mobile';
+function Header({ variant }: { variant: 'desktop' | 'mobile' }) {
+  const searchId = `home-search-${variant}`;
 
   return (
-    <section className={isMobile ? 'mt-4 rounded-lg border border-border bg-background p-3' : 'h-full rounded-lg border border-border bg-card p-5 shadow-sm'}>
-      <div className={isMobile ? 'mb-3' : 'mb-5'}>
-        <p className="text-xs font-medium text-muted-foreground">新手路线</p>
-        <h2 className={isMobile ? 'mt-1 text-base font-semibold' : 'mt-1 text-xl font-semibold tracking-tight'}>AI 与 API 新手学习路线</h2>
-        <p className={isMobile ? 'mt-1 text-xs leading-5 text-muted-foreground' : 'mt-2 text-sm leading-6 text-muted-foreground'}>只保留最关键的步骤，让第一次学习 API 不绕路。</p>
+    <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
+      <div className="mx-auto flex h-12 max-w-7xl items-center justify-between px-4 md:h-16 lg:px-8">
+        <Link href="/" className="shrink-0">
+          <span className="block text-lg font-bold tracking-tight">ApiUsPro</span>
+        </Link>
+        <nav className="hidden items-center gap-6 md:flex">
+          {desktopNavLinks.map(link => (
+            <Link key={link.href} href={link.href} className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+              {link.name}
+            </Link>
+          ))}
+        </nav>
+        <div className="flex shrink-0 items-center gap-3">
+          <a href={`#${searchId}`} aria-label="跳转到搜索" className="inline-flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground md:h-10 md:w-10">
+            <Search className="w-5 h-5" />
+          </a>
+          <ThemeToggle />
+          <Link href="/learn" className="hidden h-10 items-center justify-center rounded-xl bg-primary px-5 text-sm font-medium text-primary-foreground transition-colors hover:opacity-90 md:inline-flex">
+            开始学习
+          </Link>
+          <Link href="/learn" className="inline-flex h-9 items-center justify-center rounded-xl border border-border bg-card px-3 text-sm font-medium transition-colors hover:bg-muted md:hidden">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-[18px] h-[18px]"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </Link>
+        </div>
       </div>
-      <div className={isMobile ? 'grid grid-cols-2 gap-2' : 'grid grid-cols-2 gap-3'}>
-        {beginnerLearningSteps.map(item => (
-          <Link key={item.step} href={item.href} className={isMobile ? 'rounded-lg border border-border bg-card p-3 active:bg-muted' : 'min-h-[8.25rem] rounded-lg border border-border bg-background p-4 transition-colors hover:border-foreground/30 hover:bg-muted/30'}>
-            <span className="text-[11px] font-semibold text-muted-foreground">{item.step}</span>
-            <h3 className={isMobile ? 'mt-1 text-sm font-semibold text-foreground' : 'mt-2 text-base font-semibold text-foreground'}>{item.title}</h3>
-            <p className={isMobile ? 'mt-1 text-xs leading-5 text-muted-foreground' : 'mt-2 text-sm leading-6 text-muted-foreground'}>{item.desc}</p>
+    </header>
+  );
+}
+
+function BeginnerRoutePanel({ compact = false, sectionId }: { compact?: boolean; sectionId: string }) {
+  return (
+    <section id={sectionId} className={compact ? 'mt-6 rounded-2xl border border-border bg-card p-4' : 'flex h-full flex-col rounded-[20px] border border-border bg-card p-6'}>
+      <div className="mb-5">
+        <h2 className={compact ? 'text-[17px] font-semibold' : 'text-xl font-semibold'}>4 步开始</h2>
+      </div>
+      <div className={compact ? 'relative flex-1 pl-11' : 'relative flex-1 pl-[52px]'}>
+        <div className={compact ? 'absolute left-4 top-4 bottom-4 w-[1.5px] bg-border' : 'absolute left-[19px] top-5 bottom-5 w-0.5 bg-border'} />
+        {beginnerLearningSteps.map((item, index) => (
+          <Link
+            key={item.step}
+            href={item.href}
+            className={compact ? 'relative mb-2.5 flex items-center gap-3 last:mb-0' : 'relative mb-3 flex items-center gap-3 last:mb-0'}
+          >
+            <span className={compact ? 'absolute -left-11 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border-2 border-background bg-muted text-[12px] font-medium text-muted-foreground z-10' : 'absolute -left-[52px] top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border-2 border-background bg-muted text-[13px] font-medium text-muted-foreground z-10'}>
+              {item.step}
+            </span>
+            <div>
+              <h3 className={compact ? 'text-[13px] font-semibold' : 'text-sm font-semibold'}>{item.title}</h3>
+              <p className={compact ? 'mt-0.5 text-[11px] text-muted-foreground' : 'mt-0.5 text-xs text-muted-foreground'}>{item.desc}</p>
+            </div>
           </Link>
         ))}
       </div>
-      <div className={isMobile ? 'mt-3 flex flex-wrap items-center gap-1.5 text-[11px] text-muted-foreground' : 'mt-5 flex flex-wrap items-center gap-2 text-xs text-muted-foreground'}>
-        {beginnerFlow.map((item, index) => (
-          <span key={item} className="inline-flex items-center gap-1.5">
-            <span className="rounded-full border border-border bg-muted px-2 py-1">{item}</span>
-            {index < beginnerFlow.length - 1 && <span aria-hidden="true">→</span>}
-          </span>
-        ))}
-      </div>
+      <Link href="/learn" className={compact ? 'mt-4 flex h-10 w-full items-center justify-center rounded-[10px] border border-border text-[13px] font-medium text-foreground transition-colors hover:bg-muted' : 'mt-5 flex h-12 w-full items-center justify-center rounded-xl border border-border text-sm font-medium text-foreground transition-colors hover:bg-muted'}>
+        进入学习路线
+      </Link>
     </section>
   );
 }
 
-function HeroQuickLinks({ variant = 'desktop', compact = false }: { variant?: 'desktop' | 'mobile'; compact?: boolean }) {
-  const isMobile = variant === 'mobile';
-
-  return (
-    <div className={compact ? 'mt-3' : isMobile ? 'mt-4' : 'mt-5'}>
-      {!compact && <p className="text-xs font-medium text-muted-foreground">热门直达</p>}
-      <div className={compact ? 'flex flex-wrap gap-2' : isMobile ? 'mt-2 flex flex-wrap gap-2' : 'mt-3 flex flex-wrap gap-2'}>
-        {heroQuickLinks.map(item => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className="rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:border-foreground/30 hover:bg-muted"
-          >
-            {item.label}
-          </Link>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function HeroSearchPanel({
+function Hero({
   query,
   setQuery,
   onSubmit,
   suggestions,
   showSuggestions,
   setShowSuggestions,
-  variant = 'desktop',
+  variant,
+  searchId,
+  beginnerId,
+  purchaseId,
 }: {
   query: string;
   setQuery: (q: string) => void;
@@ -332,88 +288,174 @@ function HeroSearchPanel({
   suggestions: Suggestion[];
   showSuggestions: boolean;
   setShowSuggestions: (s: boolean) => void;
-  variant?: 'desktop' | 'mobile';
+  variant: 'desktop' | 'mobile';
+  searchId: string;
+  beginnerId: string;
+  purchaseId: string;
 }) {
   const isMobile = variant === 'mobile';
 
   return (
-    <div className={isMobile ? 'mt-4 rounded-lg border border-border bg-card p-3' : 'mt-6 w-full rounded-lg border border-border bg-card p-5 shadow-sm xl:mt-auto'}>
-      <div className={isMobile ? 'mb-3' : 'mb-4 flex items-end justify-between gap-4'}>
-        <div>
-          <p className="text-xs font-medium text-muted-foreground">快速查找</p>
-          <h2 className={isMobile ? 'mt-1 text-sm font-semibold' : 'mt-1 text-base font-semibold'}>搜索平台、教程或工具</h2>
+    <section className={isMobile ? 'px-4 py-8' : 'py-16'}>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className={isMobile ? 'space-y-6' : 'grid items-start gap-8 lg:grid-cols-[7fr_5fr]'}>
+          <div className="flex min-w-0 flex-col">
+            <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">AI 与 API 学习导航</p>
+            <div className="w-12 h-0.5 bg-primary mb-6" />
+            {isMobile ? (
+              <p className="text-[28px] font-bold leading-tight tracking-tight mb-3">
+                先看懂 AI，<br />再把 API 用起来
+              </p>
+            ) : (
+              <h1 className="text-4xl font-bold leading-tight tracking-tight mb-4">
+                先看懂 AI，<br />再把 API 用起来
+              </h1>
+            )}
+            <p className={isMobile ? 'text-[13px] text-muted-foreground leading-relaxed mb-5' : 'text-sm text-muted-foreground leading-relaxed max-w-xl mb-6'}>
+              从基础词汇、提示词、API Key 到模型购买与首次调用，把新手真正需要的路径整理成一条清晰路线。
+            </p>
+            <div className={isMobile ? 'mb-4' : 'mb-5 max-w-2xl'}>
+              <SearchBar
+                query={query}
+                setQuery={setQuery}
+                onSubmit={onSubmit}
+                suggestions={suggestions}
+                showSuggestions={showSuggestions}
+                setShowSuggestions={setShowSuggestions}
+                variant={variant}
+                searchId={searchId}
+              />
+            </div>
+            <div className={isMobile ? 'flex gap-2 mb-3' : 'flex gap-3 mb-4'}>
+              <Link href={`#${beginnerId}`} className={isMobile ? 'flex flex-1 h-[44px] items-center justify-center rounded-[10px] bg-primary text-primary-foreground text-[13px] font-medium' : 'inline-flex h-12 px-6 items-center justify-center rounded-xl bg-primary text-primary-foreground text-sm font-medium'}>
+                从新手路线开始
+              </Link>
+              <Link href={`#${purchaseId}`} className={isMobile ? 'flex flex-1 h-[44px] items-center justify-center rounded-[10px] border border-border text-foreground text-[13px] font-medium' : 'inline-flex h-12 px-6 items-center justify-center rounded-xl border border-border text-foreground text-sm font-medium'}>
+                查看购买教程
+              </Link>
+            </div>
+            <p className={isMobile ? 'text-[11px] text-muted-foreground flex items-center gap-1' : 'text-xs text-muted-foreground flex items-center gap-1.5'}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3.5 h-3.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              适合零基础用户、AI 使用者和开发者
+            </p>
+          </div>
+          <BeginnerRoutePanel compact={isMobile} sectionId={beginnerId} />
         </div>
-        {!isMobile && <span className="shrink-0 rounded-full border border-border bg-muted px-2.5 py-1 text-xs text-muted-foreground">6 个热门入口</span>}
       </div>
-      <SearchBar
-        query={query}
-        setQuery={setQuery}
-        onSubmit={onSubmit}
-        suggestions={suggestions}
-        showSuggestions={showSuggestions}
-        setShowSuggestions={setShowSuggestions}
-        variant={variant}
-      />
-      {!isMobile && <HeroQuickLinks variant={variant} compact />}
-    </div>
+    </section>
   );
 }
 
-function TutorialBrandIcon({ apiId }: { apiId: string }) {
-  const icon = brandIconById[apiId];
+function PurchaseTutorials({ sectionId }: { sectionId: string }) {
+  return (
+    <section id={sectionId} className="border-t border-border py-12">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-6">
+          <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">购买前先看</p>
+          <h2 className="text-2xl font-semibold mb-2">热门 AI 购买教程</h2>
+          <p className="text-sm text-muted-foreground">先选平台，再看注册、支付、API Key 和额度说明。</p>
+        </div>
+        <div className="grid gap-4 md:grid-cols-4">
+          {featuredHotTutorials.map(api => (
+            <Link
+              key={api.id}
+              href={`/tutorial/${api.id}`}
+              className="flex h-[120px] items-center gap-4 rounded-2xl border border-border bg-card p-5 transition-colors hover:bg-muted duration-150"
+            >
+              <BrandIcon id={api.id} alt={api.name} size="lg" className="rounded-xl" />
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-sm font-semibold">{api.name} 购买教程</span>
+                <span className="mt-1 block truncate text-xs text-muted-foreground">{api.tutorial?.steps.length || 0} 个步骤 · {api.badge.text}</span>
+              </span>
+              <ChevronRight className="w-4 h-4 shrink-0 text-muted-foreground" />
+            </Link>
+          ))}
+        </div>
+        <div className="text-right mt-4">
+          <Link href="/tutorial" className="text-sm text-muted-foreground hover:text-foreground transition-colors">全部购买教程 →</Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function UserEntrySection() {
+  const icons = [
+    <svg key="book" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-[18px] h-[18px]"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>,
+    <svg key="cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-[18px] h-[18px]"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>,
+    <svg key="code" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-[18px] h-[18px]"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>,
+  ];
 
   return (
-    <span
-      aria-label={icon ? `${icon.alt} 图标` : undefined}
-      className="flex size-12 shrink-0 items-center justify-center rounded-md border border-border bg-background"
-      title={icon?.alt}
-    >
-      {icon ? (
-        <>
-          <Image
-            src={icon.src}
-            alt=""
-            width={32}
-            height={32}
-            className="size-8 object-contain"
-            loading="lazy"
-            unoptimized
-            onError={(event) => {
-              event.currentTarget.classList.add('hidden');
-              event.currentTarget.nextElementSibling?.classList.remove('hidden');
-            }}
-          />
-          <span className="hidden text-xs font-bold leading-none text-foreground">{icon.fallback}</span>
-        </>
-      ) : (
-        <BookOpen className="size-5 text-muted-foreground" />
-      )}
-    </span>
+    <section className="py-12">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <h2 className="text-2xl font-semibold mb-6">你现在要解决什么？</h2>
+        <div className="grid gap-5 md:grid-cols-3">
+          {userEntryCards.map((card, index) => (
+            <Link
+              key={card.href}
+              href={card.href}
+              className="flex min-h-[220px] flex-col rounded-2xl border border-border bg-muted/30 p-6 transition-colors hover:bg-muted/40 duration-150"
+            >
+              <div className="w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center mb-4 text-muted-foreground">
+                {icons[index]}
+              </div>
+              <h3 className="text-base font-semibold mb-2">{card.title}</h3>
+              <p className="flex-1 text-sm text-muted-foreground leading-relaxed mb-4">{card.desc}</p>
+              <span className="mt-auto inline-flex h-12 w-fit items-center justify-center rounded-xl border border-border px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted">
+                {card.action}
+              </span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
-function SectionEntries() {
+function Footer() {
   return (
-    <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-[repeat(auto-fit,minmax(150px,1fr))]">
-      {sectionEntries.map(item => {
-        const Icon = item.icon;
-        return (
-          <Link key={item.href} href={item.href} className={`min-w-0 rounded-lg border p-3 transition-colors active:scale-[0.99] ${item.className}`}>
-            <Icon className="mb-1.5 size-4" />
-            <span className="block whitespace-nowrap text-xs font-semibold">{item.title}</span>
-            <span className="mt-0.5 block text-[10px] leading-4 opacity-70 line-clamp-2">{item.desc}</span>
-          </Link>
-        );
-      })}
-    </div>
+    <footer className="border-t border-border bg-muted/30 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        <div className="flex flex-col justify-between gap-8 md:flex-row md:items-start mb-8">
+          <div className="max-w-xs">
+            <p className="text-lg font-bold mb-2">ApiUsPro</p>
+            <p className="text-sm text-muted-foreground">专注于 AI 与 API 学习的技术教程平台。</p>
+          </div>
+          <div className="flex gap-3">
+            {[
+              { label: 'AI 入门', href: '/learn' },
+              { label: '购买教程', href: '/tutorial' },
+              { label: '模型测评', href: '/api-review' },
+              { label: 'API 应用', href: '/app' },
+              { label: '报错解决', href: '/error' },
+            ].map(link => (
+              <Link key={link.href} href={link.href} className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+        <div className="flex flex-col justify-between gap-3 border-t border-border pt-6 sm:flex-row sm:items-center">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3.5 h-3.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            hello@apiuspro.com
+          </div>
+          <p className="text-xs text-muted-foreground">&copy; 2026 ApiUsPro. 保留所有权利。</p>
+        </div>
+      </div>
+    </footer>
   );
 }
 
-function MobileHome() {
+function HomeShell({ variant }: { variant: 'desktop' | 'mobile' }) {
   const router = useRouter();
   const [query, setQuery] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const { suggestions, exactMatch, appExactMatch } = useSearch(query, 6);
+  const { suggestions, exactMatch, appExactMatch } = useSearch(query, variant === 'mobile' ? 6 : 8);
+  const searchId = `home-search-${variant}`;
+  const beginnerId = `beginner-route-${variant}`;
+  const purchaseId = `purchase-tutorials-${variant}`;
 
   const submitSearch = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -425,266 +467,24 @@ function MobileHome() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
-        <div className="flex h-14 items-center justify-between px-4">
-          <Link href="/" className="min-w-0">
-            <span className="block truncate text-base font-semibold">API知识站</span>
-            <span className="block truncate text-[11px] text-muted-foreground">AI API 资料站</span>
-          </Link>
-          <ThemeToggle />
-        </div>
-      </header>
-
-      <main className="pb-10">
-        <section className="px-4 pb-5 pt-4">
-          <div className="rounded-lg border bg-card p-4 shadow-sm">
-            <p className="text-xl font-semibold leading-tight tracking-tight">AI API 怎么选、怎么买、怎么首次调用？</p>
-            <p className="mt-2 text-sm leading-6 text-muted-foreground">从官网入口、购买教程到 API Key，按步骤完成首次调用。</p>
-            <HeroSearchPanel query={query} setQuery={setQuery} onSubmit={submitSearch} suggestions={suggestions} showSuggestions={showSuggestions} setShowSuggestions={setShowSuggestions} variant="mobile" />
-            <BeginnerLearningRoute variant="mobile" />
-            <SectionEntries />
-          </div>
-        </section>
-
-        <section className="px-4 py-4">
-          <div className="flex items-end justify-between gap-3">
-            <div><p className="text-xs font-medium text-muted-foreground">学习资源</p><h2 className="mt-1 text-lg font-semibold">热门购买教程</h2></div>
-            <Link href="/tutorial" className="shrink-0 text-sm font-medium text-foreground">全部购买教程</Link>
-          </div>
-          <div className="mt-3 grid gap-3">
-            {featuredHotTutorials.map(api => (
-              <Link key={api.id} href={`/tutorial/${api.id}`} className="flex min-h-24 items-center gap-3 rounded-lg border bg-card p-4 active:bg-muted">
-                <TutorialBrandIcon apiId={api.id} />
-                <span className="min-w-0 flex-1"><span className="block truncate text-base font-semibold">{api.name} 购买教程</span><span className="mt-1 block truncate text-sm text-muted-foreground">{api.tutorial?.steps.length} 个步骤 · {api.badge.text}</span></span>
-                <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
-              </Link>
-            ))}
-          </div>
-        </section>
-
-        <section className="px-4 py-4">
-          <div className="flex items-end justify-between gap-3">
-            <div><p className="text-xs font-medium text-muted-foreground">按场景选择</p><h2 className="mt-1 text-lg font-semibold">按使用场景浏览</h2></div>
-            <Link href="/use-case" className="text-sm font-medium text-foreground">全部使用场景推荐</Link>
-          </div>
-          <div className="mt-3 grid grid-cols-2 gap-2">
-            {scenarioCards.map(card => {
-              const Icon = card.icon;
-              return (
-                <Link key={card.href} href={card.href} className={`rounded-lg border p-3 transition-colors active:bg-muted ${card.className}`}>
-                  <Icon className="mb-2 size-5 opacity-70" />
-                  <h3 className="text-sm font-semibold">{card.title}</h3>
-                  <p className="mt-1 text-xs leading-4 opacity-70 line-clamp-2">{card.desc}</p>
-                </Link>
-              );
-            })}
-          </div>
-        </section>
-
-        <section className="px-4 py-4">
-          <div><p className="text-xs font-medium text-muted-foreground">参考路径</p><h2 className="mt-1 text-lg font-semibold">常见接入路径</h2><p className="mt-1 text-xs leading-5 text-muted-foreground">第一次使用 AI API 时，通常会先了解可用平台，再创建 API Key，最后接入到代码或工具里。</p></div>
-          <div className="mt-3 space-y-2">
-            {integrationSteps.map(step => (
-              <div key={step.step} className="rounded-lg border bg-card p-3">
-                <div className="flex items-center gap-2.5">
-                  <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-foreground text-xs font-semibold text-background">{step.step}</span>
-                  <div><p className="text-sm font-semibold">{step.title}</p><p className="text-xs text-muted-foreground">{step.desc}</p></div>
-                </div>
-                <div className="mt-2.5 flex flex-wrap gap-1.5" style={{ paddingLeft: '2.375rem' }}>
-                  {step.links.map(link => <Link key={link.href} href={link.href} className="rounded-full border bg-background px-3 py-1.5 text-xs text-muted-foreground active:bg-muted">{link.name}</Link>)}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="px-4 py-4">
-          <div className="flex items-end justify-between gap-3">
-            <div><p className="text-xs font-medium text-muted-foreground">帮助中心</p><h2 className="mt-1 text-lg font-semibold">常见问题</h2></div>
-            <Link href="/faq" className="text-sm font-medium text-foreground">全部常见问题</Link>
-          </div>
-          <div className="mt-3 space-y-2">
-            {faqItems.map(item => (
-              <Link key={item.q} href={item.href} className="block rounded-lg border bg-card p-3 active:bg-muted">
-                <p className="text-sm font-semibold">{item.q}</p>
-                <p className="mt-1 text-xs leading-5 text-muted-foreground">{item.a}</p>
-              </Link>
-            ))}
-          </div>
-        </section>
-
-        <section className="px-4 py-4">
-          <div className="rounded-lg border bg-card p-4">
-            <p className="text-sm font-semibold">常用 API</p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {quickLinks.map(link => <Link key={link.id} href={link.id === 'openai' ? `/tutorial/${link.id}` : `/api/${link.id}`} className="rounded-full border bg-background px-3 py-1.5 text-sm text-muted-foreground active:bg-muted">{link.name}</Link>)}
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <footer className="border-t border-border px-4 py-6 text-center text-xs text-muted-foreground">
-        <p>API知识站 - AI API 资料站</p>
-        <div className="mt-3"><BeianLinks /></div>
-      </footer>
-    </div>
-  );
-}
-
-function DesktopHome() {
-  const router = useRouter();
-  const [query, setQuery] = useState('');
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const { suggestions, exactMatch, appExactMatch } = useSearch(query, 8);
-
-  const submitSearch = useCallback((e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const href = appExactMatch ? `/app/${appExactMatch.id}` : exactMatch ? `/api/${exactMatch.id}` : suggestions[0]?.href;
-    if (href) router.push(href);
-  }, [appExactMatch, exactMatch, suggestions, router]);
-
-  return (
-    <div className="min-h-screen bg-background text-foreground">
-      <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-8 px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="shrink-0">
-            <span className="block text-base font-semibold tracking-tight">API知识站</span>
-            <span className="block text-xs text-muted-foreground">AI API 资料站</span>
-          </Link>
-          <nav className="hidden md:flex items-center gap-1 text-sm">
-            {desktopNavLinks.map(link => <Link key={link.href} href={link.href} className="rounded-md px-3 py-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">{link.name}</Link>)}
-          </nav>
-          <ThemeToggle />
-        </div>
-      </header>
-
+      <Header variant={variant} />
       <main>
-        {/* Hero + Search Section */}
-        <section className="border-b border-border px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-          <div className="mx-auto max-w-7xl">
-            <div className="grid items-stretch gap-6 xl:grid-cols-[minmax(0,0.72fr)_minmax(460px,0.58fr)] xl:gap-10">
-              <div className="min-w-0 xl:flex xl:h-full xl:flex-col">
-                <div className="max-w-xl">
-                  <h1 className="text-3xl sm:text-4xl font-semibold leading-tight tracking-tight text-foreground">AI API 怎么选、怎么买、怎么首次调用？</h1>
-                  <p className="mt-4 text-base leading-8 text-muted-foreground">从官网入口、购买教程到 API Key，按步骤完成首次调用。</p>
-                </div>
-                <HeroSearchPanel query={query} setQuery={setQuery} onSubmit={submitSearch} suggestions={suggestions} showSuggestions={showSuggestions} setShowSuggestions={setShowSuggestions} />
-              </div>
-              <BeginnerLearningRoute />
-            </div>
-          </div>
-        </section>
-
-        {/* Main Content: Sidebar + Table */}
-        <section className="px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-          <div className="mx-auto max-w-7xl">
-            <div className="grid gap-6 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-8 lg:items-stretch">
-              {/* Left Sidebar: Section Entries */}
-              <aside className="w-full h-full">
-                <nav className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:h-full lg:grid-cols-1 lg:grid-rows-6 lg:gap-3" aria-label="首页栏目入口">
-                  {sectionEntries.map(item => {
-                    const Icon = item.icon;
-                    return (
-                      <Link key={item.href} href={item.href} className={`flex h-full min-h-[76px] min-w-0 items-center gap-2.5 rounded-lg border px-3 py-2.5 transition-all hover:-translate-y-px hover:shadow-md lg:min-h-0 lg:gap-3 lg:px-4 lg:py-3.5 ${item.className}`}>
-                        <Icon className="size-4 shrink-0 lg:size-5" />
-                        <div className="min-w-0">
-                          <span className="block truncate text-sm font-semibold lg:text-base">{item.title}</span>
-                          <span className="block truncate text-[11px] leading-tight opacity-70 dark:opacity-85 lg:mt-1 lg:text-xs">{item.desc}</span>
-                        </div>
-                      </Link>
-                    );
-                  })}
-                </nav>
-              </aside>
-
-              {/* Right Main: API Table */}
-              <div className="flex-1 min-w-0 h-full">
-                <section className="rounded-lg border border-border bg-card shadow-sm h-full flex flex-col">
-                  <div className="p-4 sm:p-5 border-b border-border">
-                    <div className="flex items-center justify-between gap-4">
-                      <div>
-                        <p className="text-sm font-medium text-muted-foreground">学习资源</p>
-                        <h2 className="mt-1 text-xl font-semibold tracking-tight">热门购买教程</h2>
-                      </div>
-                      <Link href="/tutorial" className="text-sm font-medium text-foreground hover:underline whitespace-nowrap">全部购买教程</Link>
-                    </div>
-                  </div>
-                  <div className="grid flex-1 gap-4 p-4 sm:grid-cols-2 sm:p-5">
-                    {featuredHotTutorials.map(api => (
-                      <Link key={api.id} href={`/tutorial/${api.id}`} className="flex min-h-32 items-center gap-4 rounded-lg border border-border bg-background p-5 transition-colors hover:border-foreground/30 hover:bg-muted/30">
-                        <TutorialBrandIcon apiId={api.id} />
-                        <span className="min-w-0 flex-1">
-                          <span className="block truncate text-base font-semibold">{api.name} 购买教程</span>
-                          <span className="mt-1 block truncate text-sm text-muted-foreground">{api.tutorial?.steps.length || 0} 个步骤 · {api.badge.text}</span>
-                        </span>
-                        <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
-                      </Link>
-                    ))}
-                  </div>
-                </section>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-6 flex items-end justify-between gap-4">
-              <div><p className="text-sm font-medium text-muted-foreground">按场景选择</p><h2 className="mt-1 text-2xl font-semibold tracking-tight">按使用场景浏览</h2><p className="mt-2 text-sm text-muted-foreground">根据具体任务找到合适的 API</p></div>
-              <Link href="/use-case" className="text-sm font-medium text-foreground hover:underline">全部使用场景推荐</Link>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {scenarioCards.map(card => {
-                const Icon = card.icon;
-                return (
-                  <Link key={card.href} href={card.href} className={`rounded-lg border p-5 transition-transform hover:-translate-y-0.5 ${card.className}`}>
-                    <div className="mb-4 flex items-center justify-between gap-3"><span className={`flex size-10 items-center justify-center rounded-md ${card.iconClassName}`}><Icon className="size-5" /></span><ChevronRight className="size-4 opacity-60" /></div>
-                    <h3 className="font-semibold">{card.title}</h3>
-                    <p className="mt-2 text-sm leading-6 opacity-80">{card.desc}</p>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        <section className="border-y border-border bg-muted/35 px-4 sm:px-6 lg:px-8 py-8">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-6"><p className="text-sm font-medium text-muted-foreground">参考路径</p><h2 className="mt-1 text-2xl font-semibold tracking-tight">常见接入路径</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">第一次使用 AI API 时，通常会先了解可用平台，再创建 API Key，最后接入到代码或工具里。</p></div>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {integrationSteps.map(step => (
-                <div key={step.step} className="rounded-lg border border-border bg-card p-5">
-                  <div className="mb-3 flex items-center gap-3"><span className="flex size-8 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">{step.step}</span><h3 className="font-semibold">{step.title}</h3></div>
-                  <p className="mb-3 text-sm leading-6 text-muted-foreground">{step.desc}</p>
-                  <div className="flex flex-wrap gap-2">{step.links.map(link => <Link key={link.href} href={link.href} className="rounded-full border border-border bg-background px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground">{link.name}</Link>)}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="border-t border-border px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-6 flex items-end justify-between gap-4">
-              <div><p className="text-sm font-medium text-muted-foreground">帮助中心</p><h2 className="mt-1 text-2xl font-semibold tracking-tight">常见问题</h2></div>
-              <Link href="/faq" className="text-sm font-medium text-foreground hover:underline">全部常见问题</Link>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {faqItems.map(item => (
-                <Link key={item.q} href={item.href} className="rounded-lg border border-border bg-card p-5 transition-colors hover:border-foreground/30">
-                  <h3 className="font-semibold">{item.q}</h3>
-                  <p className="mt-2 text-sm leading-6 text-muted-foreground">{item.a}</p>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
+        <Hero
+          query={query}
+          setQuery={setQuery}
+          onSubmit={submitSearch}
+          suggestions={suggestions}
+          showSuggestions={showSuggestions}
+          setShowSuggestions={setShowSuggestions}
+          variant={variant}
+          searchId={searchId}
+          beginnerId={beginnerId}
+          purchaseId={purchaseId}
+        />
+        <PurchaseTutorials sectionId={purchaseId} />
+        <UserEntrySection />
       </main>
-
-      <footer className="border-t border-border px-4 sm:px-6 lg:px-8 py-8 text-center text-sm text-muted-foreground">
-        <p>API知识站 - AI API 资料站</p>
-        <div className="mt-3"><BeianLinks /></div>
-      </footer>
+      <Footer />
     </div>
   );
 }
@@ -692,8 +492,8 @@ function DesktopHome() {
 export default function HomeClient() {
   return (
     <div className="min-h-screen bg-background">
-      <div className="md:hidden"><MobileHome /></div>
-      <div className="hidden md:block"><DesktopHome /></div>
+      <div className="md:hidden"><HomeShell variant="mobile" /></div>
+      <div className="hidden md:block"><HomeShell variant="desktop" /></div>
     </div>
   );
 }

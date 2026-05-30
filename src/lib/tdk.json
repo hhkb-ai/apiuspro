@@ -86,12 +86,12 @@
     },
     "/api-review/:slug": {
       "title": "{{name}} 完整测评 | 性能对比、价格与购买建议",
-      "description": "{{name}} 深度测评：{{tlDr}}。包含基准测试数据、Token 定价对比、代码能力评分、稳定性观察、优缺点分析、适用场景和购买建议，方便横向比较后再决策。",
+      "description": "{{name}} 深度测评：{{tlDr}}。含基准测试、定价对比、优缺点和选购建议。",
       "keywords": ["{{name}}测评", "{{name}}怎么样", "{{name}}价格", "{{name}}对比"],
       "canonical": "https://www.apiuspro.cn/api-review/{{slug}}",
       "openGraph": {
         "title": "{{name}} 完整测评",
-        "description": "{{name}} 深度测评：{{tlDr}}。整理基准测试、定价对比、代码能力、稳定性、优缺点和选购建议，帮助你判断是否适合自己的实际任务。",
+        "description": "{{name}} 深度测评：{{tlDr}}。含基准测试、定价对比、优缺点和选购建议。",
         "url": "https://www.apiuspro.cn/api-review/{{slug}}",
         "siteName": "API知识站",
         "locale": "zh_CN",

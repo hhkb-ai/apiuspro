@@ -5,6 +5,7 @@ import { SidebarLayout } from '@/components/layout/SidebarLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { BrandIcon } from '@/components/api/BrandIcon';
 import { getReviewDetail, getAllReviewSlugs } from '@/lib/review-config';
 import { BreadcrumbSchema, ArticleSchema } from '@/components/seo/structured-data';
 import { DetailBackNav } from '@/components/navigation/ReturnNavigation';
@@ -78,9 +79,7 @@ export default async function ReviewDetailPage({ params }: { params: Promise<{ s
         {/* 标题 */}
         <div className="mb-8 border-b pb-8">
           <div className="mb-4 flex items-start gap-4">
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md border bg-card text-3xl shadow-sm">
-              {review.icon}
-            </span>
+            <BrandIcon id={review.slug} alt={review.name} size="lg" className="shadow-sm" />
             <div className="min-w-0">
               <h1 className="text-3xl font-semibold tracking-tight">{review.name}</h1>
               <div className="mt-3 flex flex-wrap gap-2">

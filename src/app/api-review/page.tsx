@@ -4,6 +4,7 @@ import { SidebarLayout } from '@/components/layout/SidebarLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { BrandIcon } from '@/components/api/BrandIcon';
 import { getReviewScore, reviewDetails, reviewRatingWeightDescription } from '@/lib/review-config';
 import type { ReviewDetail } from '@/lib/review-config';
 import { BreadcrumbSchema } from '@/components/seo/structured-data';
@@ -43,14 +44,12 @@ function ReviewCard({ review }: { review: ReviewDetail }) {
   const score = getReviewScore(review);
 
   return (
-    <Card className="overflow-hidden border-border/80 shadow-sm">
+    <Card className="overflow-hidden border-border/80 shadow-sm rounded-2xl">
       <CardHeader className="border-b bg-muted/25 px-5 py-5 sm:px-6">
         <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-start">
           <div className="min-w-0">
             <CardTitle className="flex items-center gap-3 text-xl leading-tight">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border bg-card text-2xl">
-                {review.icon}
-              </span>
+              <BrandIcon id={review.slug} alt={review.name} size="md" className="rounded-xl" />
               <span className="min-w-0">{review.name}</span>
             </CardTitle>
             <CardDescription className="mt-3 max-w-3xl text-[15px] leading-7">
@@ -58,7 +57,7 @@ function ReviewCard({ review }: { review: ReviewDetail }) {
             </CardDescription>
           </div>
           <div className="flex shrink-0 flex-col gap-3 lg:items-end">
-            <div className="rounded-md border bg-card px-3 py-2 text-sm">
+            <div className="rounded-xl border bg-card px-3 py-2 text-sm">
               <span className="text-muted-foreground">综合评分</span>
               <span className="ml-2 font-semibold text-foreground">{score.toFixed(1)}</span>
             </div>

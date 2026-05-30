@@ -14,9 +14,9 @@ const ARTICLE_DATE_PUBLISHED = '2026-05-11';
 const ARTICLE_DATE_MODIFIED = '2026-05-19';
 
 function badgeClass(type: string) {
-  if (type === 'warning') return 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700';
-  if (type === 'success') return 'border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700';
-  return 'border-sky-200 bg-sky-50 dark:bg-sky-950/30 text-sky-700';
+  if (type === 'warning') return 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300';
+  if (type === 'success') return 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300';
+  return 'border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-700 dark:text-sky-300';
 }
 
 function CodeBlock({ code }: { code: string }) {
@@ -302,7 +302,7 @@ export function CcswitchContentPage() {
                     )}
 
                     {step.warning && (
-                      <div className="mt-4 rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 px-4 py-3 text-sm leading-6 text-amber-800">
+                      <div className="mt-4 rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 px-4 py-3 text-sm leading-6 text-amber-800 dark:text-amber-200">
                         ⚠️ {step.warning}
                       </div>
                     )}
@@ -312,10 +312,10 @@ export function CcswitchContentPage() {
 
               {section.tips && section.tips.length > 0 && (
                 <div className="mt-6 rounded-lg border border-sky-200 bg-sky-50 dark:bg-sky-950/30 px-5 py-4">
-                  <p className="mb-2 text-sm font-semibold text-sky-800">核心要点</p>
+                  <p className="mb-2 text-sm font-semibold text-sky-800 dark:text-sky-200">核心要点</p>
                   <ul className="space-y-2">
                     {section.tips.map((tip) => (
-                      <li key={tip} className="text-sm leading-6 text-sky-700">
+                      <li key={tip} className="text-sm leading-6 text-sky-700 dark:text-sky-300">
                         <RichText text={tip} />
                       </li>
                     ))}
@@ -325,10 +325,10 @@ export function CcswitchContentPage() {
 
               {section.warnings && section.warnings.length > 0 && (
                 <div className="mt-6 rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 px-5 py-4">
-                  <p className="mb-2 text-sm font-semibold text-amber-800">注意事项</p>
+                  <p className="mb-2 text-sm font-semibold text-amber-800 dark:text-amber-200">注意事项</p>
                   <ul className="space-y-2">
                     {section.warnings.map((warning) => (
-                      <li key={warning} className="text-sm leading-6 text-amber-700">
+                      <li key={warning} className="text-sm leading-6 text-amber-700 dark:text-amber-300">
                         <RichText text={warning} />
                       </li>
                     ))}
@@ -343,7 +343,7 @@ export function CcswitchContentPage() {
           <p className="mb-3 text-sm font-semibold text-muted-foreground">关键词</p>
           <div className="flex flex-wrap gap-2">
             {['多工具配置', 'API Key', 'Base URL', '模型切换'].map((tag) => (
-              <span key={tag} className="rounded-full border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 px-3 py-1 text-xs font-medium text-emerald-700">
+              <span key={tag} className="rounded-full border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 px-3 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-300">
                 {tag}
               </span>
             ))}

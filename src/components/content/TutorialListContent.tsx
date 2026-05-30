@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { BrandIcon } from '@/components/api/BrandIcon';
 import { apiList, appTutorials, APIConfig, AppTutorial } from '@/lib/api-config';
 import { RememberListLink } from '@/components/navigation/ReturnNavigation';
 import { sortByFuzzyScore } from '@/lib/fuzzy-search';
@@ -73,25 +74,28 @@ const toolEntrances = [
 
 function badgeClass(type: string) {
   if (type === 'success') {
-    return 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700';
+    return 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300';
   }
   if (type === 'warning') {
-    return 'border-amber-200 bg-amber-50 dark:bg-amber-950/30 text-amber-700';
+    return 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300';
   }
-  return 'border-sky-200 bg-sky-50 dark:bg-sky-950/30 text-sky-700';
+  return 'border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-700 dark:text-sky-300';
 }
 
 function TutorialCard({ api }: { api: APIConfig }) {
   return (
-    <article className="flex min-h-44 flex-col rounded-lg border bg-card p-5 transition-colors hover:border-foreground/30">
+    <article className="flex min-h-44 flex-col rounded-2xl border bg-card p-5 transition-colors hover:border-foreground/30">
       <div className="mb-3 flex items-start justify-between gap-3">
-        <h3 className="font-semibold">{api.name}</h3>
+        <div className="flex min-w-0 items-center gap-3">
+          <BrandIcon id={api.id} alt={api.name} size="md" className="rounded-xl" />
+          <h3 className="truncate font-semibold">{api.name}</h3>
+        </div>
         <Badge variant="outline" className={badgeClass(api.badge.type)}>{api.badge.text}</Badge>
       </div>
       <p className="flex-1 text-sm leading-6 text-muted-foreground">{api.desc}</p>
       <p className="mt-3 text-xs text-muted-foreground">{api.tutorial?.steps?.length || 0} 个步骤</p>
       <RememberListLink href={`/tutorial/${api.id}`} listLabel="教程列表" className="mt-5">
-        <Button variant="outline" className="w-full min-h-[44px]" size="sm">查看教程</Button>
+        <Button variant="outline" className="w-full min-h-[44px] rounded-xl" size="sm">查看教程</Button>
       </RememberListLink>
     </article>
   );
@@ -122,14 +126,14 @@ function SectionCard({ title, desc, apis, emptyText }: { title: string; desc: st
 
 function AppTutorialCard({ app }: { app: AppTutorial }) {
   return (
-    <article className="flex min-h-44 flex-col rounded-lg border bg-card p-5 transition-colors hover:border-foreground/30">
+    <article className="flex min-h-44 flex-col rounded-2xl border bg-card p-5 transition-colors hover:border-foreground/30">
       <div className="mb-3 flex items-start justify-between gap-3">
         <h3 className="font-semibold">{app.name}</h3>
         <Badge variant="outline" className={badgeClass(app.badge.type)}>{app.badge.text}</Badge>
       </div>
       <p className="flex-1 text-sm leading-6 text-muted-foreground">{app.desc}</p>
       <Link href={`/app/${app.id}`} className="mt-5">
-        <Button variant="outline" className="w-full min-h-[44px]" size="sm">查看教程</Button>
+        <Button variant="outline" className="w-full min-h-[44px] rounded-xl" size="sm">查看教程</Button>
       </Link>
     </article>
   );
@@ -137,7 +141,7 @@ function AppTutorialCard({ app }: { app: AppTutorial }) {
 
 function BeginnerRouteSection() {
   return (
-    <section className="order-2 mb-8 rounded-lg border bg-card p-5">
+    <section className="order-2 mb-8 rounded-2xl border bg-card p-5">
       <div className="mb-4">
         <p className="text-sm font-medium text-muted-foreground">新手路线</p>
         <h2 className="mt-1 text-xl font-semibold tracking-tight">从 AI 基础到第一次 API 调用</h2>
@@ -147,7 +151,7 @@ function BeginnerRouteSection() {
       </div>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {beginnerSteps.map((item) => (
-          <article key={item.step} className="rounded-lg border border-border bg-background p-4">
+          <article key={item.step} className="rounded-xl border border-border bg-background p-4">
             <span className="text-xs font-semibold text-muted-foreground">{item.step}</span>
             <h3 className="mt-1 text-base font-semibold text-foreground">{item.title}</h3>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">{item.desc}</p>
@@ -175,13 +179,13 @@ function BeginnerGuideSection() {
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         {beginnerGuides.map((guide) => (
-          <article key={guide.path} className="flex min-h-44 flex-col rounded-lg border bg-card p-5">
+          <article key={guide.path} className="flex min-h-44 flex-col rounded-2xl border bg-card p-5">
             <div className="mb-3 flex items-start justify-between gap-3">
               <h3 className="text-base font-semibold leading-6">{guide.title}</h3>
               <Badge variant="outline" className="shrink-0 border-border bg-muted text-muted-foreground">即将上线</Badge>
             </div>
             <p className="flex-1 text-sm leading-6 text-muted-foreground">{guide.desc}</p>
-            <a href="#beginner-guides" className="mt-5 inline-flex min-h-[44px] items-center justify-center rounded-md border border-border px-3 text-sm font-medium text-muted-foreground">
+            <a href="#beginner-guides" className="mt-5 inline-flex min-h-[44px] items-center justify-center rounded-xl border border-border px-3 text-sm font-medium text-muted-foreground">
               暂不跳转
             </a>
           </article>
@@ -200,10 +204,10 @@ function ToolEntranceSection() {
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         {toolEntrances.map((tool) => (
-          <Link key={tool.href} href={tool.href} className="flex min-h-44 flex-col rounded-lg border bg-card p-5 transition-colors hover:border-foreground/30">
+          <Link key={tool.href} href={tool.href} className="flex min-h-44 flex-col rounded-2xl border bg-card p-5 transition-colors hover:border-foreground/30">
             <h3 className="text-base font-semibold">{tool.title}</h3>
             <p className="mt-2 flex-1 text-sm leading-6 text-muted-foreground">{tool.desc}</p>
-            <span className="mt-5 inline-flex min-h-[44px] items-center justify-center rounded-md border border-border px-3 text-sm font-medium">
+            <span className="mt-5 inline-flex min-h-[44px] items-center justify-center rounded-xl border border-border px-3 text-sm font-medium">
               查看教程
             </span>
           </Link>
@@ -242,6 +246,7 @@ export function TutorialListContent() {
 
   return (
     <div className="flex flex-col">
+      <h1 className="sr-only">AI 与 API 新手学习中心</h1>
       <form className="order-1 mb-8 max-w-xl" role="search" onSubmit={(event) => event.preventDefault()}>
         <div className="relative">
           <Input
@@ -366,8 +371,8 @@ export function TutorialListContent() {
       {/* 适合谁 / 不适合谁 */}
       <section className="order-9 mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
         <div className="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 p-5">
-          <p className="text-sm font-semibold text-emerald-800">适合谁</p>
-          <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">
+          <p className="text-sm font-semibold text-emerald-800 dark:text-emerald-200">适合谁</p>
+          <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700 dark:text-emerald-300">
             <li>• 第一次接触 AI API，需要手把手指导注册和配置</li>
             <li>• 想快速接入 Claude Code、Codex、OpenCode 等 AI 工具</li>
             <li>• 需要对比不同 API 的注册门槛、支付方式和免费额度</li>
@@ -375,11 +380,12 @@ export function TutorialListContent() {
           </ul>
         </div>
         <div className="rounded-lg border border-amber-200 bg-amber-50 dark:bg-amber-950/30 p-5">
-          <p className="text-sm font-semibold text-amber-800">不适合谁</p>
-          <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700">
+          <p className="text-sm font-semibold text-amber-800 dark:text-amber-200">不适合谁</p>
+          <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700 dark:text-amber-300">
             <li>• 已经熟悉 API 接入流程，只需要查 Base URL 或模型名</li>
             <li>• 想了解模型能力对比和场景推荐（请看 <Link href="/use-case" className="text-foreground hover:underline">按使用场景选 API</Link>）</li>
-            <li>• 想看详细测评数据和基准测试（请看 <Link href="/api-review" className="text-foreground hover:underline">API 测评对比</Link>）</li>
+            <li>• 想看详细测评数据和基
+准测试（请看 <Link href="/api-review" className="text-foreground hover:underline">API 测评对比</Link>）</li>
           </ul>
         </div>
       </section>

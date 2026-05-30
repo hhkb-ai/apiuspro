@@ -157,7 +157,7 @@ export default function FAQPage() {
           {/* 适合谁 / 不适合谁 */}
           <section className="order-3 mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 p-5">
-              <p className="text-sm font-semibold text-emerald-800">适合谁</p>
+              <p className="text-sm font-semibold text-emerald-800 dark:text-emerald-200">适合谁</p>
               <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700 dark:text-emerald-300">
                 <li>• 第一次接触 AI API，遇到注册或配置问题</li>
                 <li>• 已有 API Key 但调用报错，需要排查原因</li>
@@ -165,7 +165,7 @@ export default function FAQPage() {
               </ul>
             </div>
             <div className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-5">
-              <p className="text-sm font-semibold text-amber-800">不适合谁</p>
+              <p className="text-sm font-semibold text-amber-800 dark:text-amber-200">不适合谁</p>
               <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700 dark:text-amber-300">
                 <li>• 还没选好用哪个 API（请看 <Link href="/use-case" className="text-foreground hover:underline">场景推荐</Link>）</li>
                 <li>• 需要手把手注册和购买指导（请看 <Link href="/tutorial" className="text-foreground hover:underline">购买教程</Link>）</li>

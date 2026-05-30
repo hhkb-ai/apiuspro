@@ -338,9 +338,9 @@ export function AppTutorialContent({ id }: AppTutorialContentProps) {
                 <h1 className="text-2xl font-semibold tracking-tight text-foreground">{tutorial.name}</h1>
               </div>
               <span className={`ml-2 text-[11px] font-semibold px-2 py-0.5 rounded-full ${
-                tutorial.badge.type === 'warning' ? 'border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700' :
-                tutorial.badge.type === 'success' ? 'border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700' :
-                'border border-sky-200 bg-sky-50 dark:bg-sky-950/30 text-sky-700'
+                tutorial.badge.type === 'warning' ? 'border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300' :
+                tutorial.badge.type === 'success' ? 'border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300' :
+                'border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-700 dark:text-sky-300'
               }`}>
                 {tutorial.badge.text}
               </span>
@@ -498,7 +498,7 @@ export function AppTutorialContent({ id }: AppTutorialContentProps) {
                       {/* 警告 */}
                       {step.warning && (
                         <div className="my-3 pl-4 max-sm:pl-0">
-                          <div className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 px-4 py-3 text-sm leading-6 text-amber-800">
+                          <div className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 px-4 py-3 text-sm leading-6 text-amber-800 dark:text-amber-200">
                             &#9888; <RichText text={step.warning} highlightKeywords={isCodexTutorial} />
                           </div>
                         </div>
@@ -510,9 +510,9 @@ export function AppTutorialContent({ id }: AppTutorialContentProps) {
                 {/* 核心要点卡片 */}
                 {section.tips && section.tips.length > 0 && (
                   <div className="mt-6 space-y-2 rounded-lg border border-sky-200 bg-sky-50 dark:bg-sky-950/30 px-5 py-4">
-                    <p className="mb-1 text-[13px] font-semibold text-sky-800">核心要点</p>
+                    <p className="mb-1 text-[13px] font-semibold text-sky-800 dark:text-sky-200">核心要点</p>
                     {section.tips.map((tip, tipIdx) => (
-                    <p key={tipIdx} className="pl-5 text-sm leading-6 text-sky-700">
+                    <p key={tipIdx} className="pl-5 text-sm leading-6 text-sky-700 dark:text-sky-300">
                         <RichText text={tip} highlightKeywords={isCodexTutorial} />
                       </p>
                     ))}
@@ -522,9 +522,9 @@ export function AppTutorialContent({ id }: AppTutorialContentProps) {
                 {/* 注意事项卡片 */}
                 {section.warnings && section.warnings.length > 0 && (
                   <div className="mt-6 space-y-2 rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 px-5 py-4">
-                    <p className="mb-1 text-[13px] font-semibold text-amber-800">注意事项</p>
+                    <p className="mb-1 text-[13px] font-semibold text-amber-800 dark:text-amber-200">注意事项</p>
                     {section.warnings.map((warning, warningIdx) => (
-                      <p key={warningIdx} className="text-sm text-amber-700 leading-6 pl-5">
+                      <p key={warningIdx} className="text-sm text-amber-700 dark:text-amber-300 leading-6 pl-5">
                         <RichText text={warning} highlightKeywords={isCodexTutorial} />
                       </p>
                     ))}
@@ -562,9 +562,9 @@ export function AppTutorialContent({ id }: AppTutorialContentProps) {
                     <div className="flex items-center gap-2 mb-1">
                       <h4 className="text-sm font-semibold text-foreground">{t.name}</h4>
                       <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${
-                        t.badge.type === 'warning' ? 'border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700' :
-                        t.badge.type === 'success' ? 'border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700' :
-                        'border border-sky-200 bg-sky-50 dark:bg-sky-950/30 text-sky-700'
+                        t.badge.type === 'warning' ? 'border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300' :
+                        t.badge.type === 'success' ? 'border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300' :
+                        'border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-700 dark:text-sky-300'
                       }`}>
                         {t.badge.text}
                       </span>

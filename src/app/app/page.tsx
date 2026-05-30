@@ -55,9 +55,9 @@ const pageAnchors = [
 export const metadata: Metadata = generateTdkMetadata('/app');
 
 function badgeClass(type: string) {
-  if (type === 'success') return 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700';
+  if (type === 'success') return 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300';
   if (type === 'warning') return 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300';
-  return 'border-sky-200 bg-sky-50 dark:bg-sky-950/30 text-sky-700';
+  return 'border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-700 dark:text-sky-300';
 }
 
 export default function AppListPage() {
@@ -247,8 +247,8 @@ export default function AppListPage() {
         {/* 适合谁 / 不适合谁 */}
         <section id="fit-section" className="order-5 mt-10 grid scroll-mt-24 grid-cols-1 gap-4 md:grid-cols-2">
           <div className="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 p-5">
-            <p className="text-sm font-semibold text-emerald-800">适合谁</p>
-            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">
+            <p className="text-sm font-semibold text-emerald-800 dark:text-emerald-200">适合谁</p>
+            <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700 dark:text-emerald-300">
               <li>• 想用 AI 工具提升开发效率的程序员</li>
               <li>• 需要管理多个 API Key 和模型配置的用户</li>
               <li>• 想搭建个人知识库或文档工作流的人</li>

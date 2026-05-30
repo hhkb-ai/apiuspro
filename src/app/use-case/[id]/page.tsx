@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { SidebarLayout } from '@/components/layout/SidebarLayout';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { BrandIcon } from '@/components/api/BrandIcon';
 import { getUseCaseById, getAllUseCaseIds } from '@/lib/use-case-config';
 import { apiList } from '@/lib/api-config';
 import { reviewSlugByApiId } from '@/lib/review-config';
@@ -38,7 +39,7 @@ export function generateMetadata({ params }: { params: Promise<{ id: string }> }
 
 function StarRating({ score }: { score: number }) {
   return (
-    <span className="text-amber-500" aria-label={`推荐指数 ${score} 星`}>
+    <span className="text-amber-500 dark:text-amber-400" aria-label={`推荐指数 ${score} 星`}>
       {'★'.repeat(score)}
       {'☆'.repeat(5 - score)}
     </span>
@@ -89,15 +90,15 @@ export default async function UseCaseDetailPage({ params }: { params: Promise<{ 
         <section className="mb-8 hidden space-y-3 sm:block">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <div className="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 p-4">
-              <p className="text-xs font-semibold uppercase tracking-wider text-emerald-600">首选 API</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">首选 API</p>
               <p className="mt-1 text-lg font-bold text-emerald-900 dark:text-emerald-200">{uc.primaryPick}</p>
             </div>
             <div className="rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 p-4">
-              <p className="text-xs font-semibold uppercase tracking-wider text-sky-600">备选 API</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-sky-600 dark:text-sky-400">备选 API</p>
               <p className="mt-1 text-lg font-bold text-sky-900 dark:text-sky-200">{uc.altPick}</p>
             </div>
             <div className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-4">
-              <p className="text-xs font-semibold uppercase tracking-wider text-amber-600">不建议选择</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400">不建议选择</p>
               <p className="mt-1 text-sm leading-5 text-amber-800 dark:text-amber-200">{uc.notRecommended}</p>
             </div>
           </div>
@@ -110,15 +111,15 @@ export default async function UseCaseDetailPage({ params }: { params: Promise<{ 
           <summary className="cursor-pointer select-none px-4 py-3 text-sm font-bold">选型结论（点开查看）</summary>
           <div className="border-t border-border px-4 py-3 space-y-3 text-sm">
             <div className="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 p-3">
-              <p className="text-xs font-semibold uppercase tracking-wider text-emerald-600">首选 API</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">首选 API</p>
               <p className="mt-1 font-bold text-emerald-900 dark:text-emerald-200">{uc.primaryPick}</p>
             </div>
             <div className="rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 p-3">
-              <p className="text-xs font-semibold uppercase tracking-wider text-sky-600">备选 API</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-sky-600 dark:text-sky-400">备选 API</p>
               <p className="mt-1 font-bold text-sky-900 dark:text-sky-200">{uc.altPick}</p>
             </div>
             <div className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-3">
-              <p className="text-xs font-semibold uppercase tracking-wider text-amber-600">不建议选择</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400">不建议选择</p>
               <p className="mt-1 text-amber-800 dark:text-amber-200">{uc.notRecommended}</p>
             </div>
             <p className="text-muted-foreground"><span className="font-semibold">新手快速选择：</span>{uc.quickPick}</p>
@@ -172,6 +173,7 @@ export default async function UseCaseDetailPage({ params }: { params: Promise<{ 
                     <span className="flex h-7 w-7 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">
                       {idx + 1}
                     </span>
+                    <BrandIcon id={rec.apiId} alt={rec.api!.name} size="md" />
                     <div>
                       <h3 className="font-semibold">{rec.api!.name}</h3>
                       <div className="mt-0.5 flex items-center gap-2">
@@ -184,12 +186,12 @@ export default async function UseCaseDetailPage({ params }: { params: Promise<{ 
                   </div>
                   <div className="flex gap-2">
                     {rec.api!.proxy === true && (
-                      <Badge variant="outline" className="border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700">
+                      <Badge variant="outline" className="border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300">
                         需代理
                       </Badge>
                     )}
                     {rec.api!.free && (
-                      <Badge variant="outline" className="border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700">
+                      <Badge variant="outline" className="border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300">
                         {rec.api!.free}
                       </Badge>
                     )}
@@ -203,7 +205,7 @@ export default async function UseCaseDetailPage({ params }: { params: Promise<{ 
                 <ul className="mt-3 space-y-1">
                   {rec.strengths.map((s) => (
                     <li key={s} className="flex items-start gap-2 text-sm text-muted-foreground">
-                      <span className="mt-0.5 text-emerald-500">+</span>
+                      <span className="mt-0.5 text-emerald-500 dark:text-emerald-400">+</span>
                       {s}
                     </li>
                   ))}
@@ -211,7 +213,7 @@ export default async function UseCaseDetailPage({ params }: { params: Promise<{ 
                 {rec.risks.length > 0 && (
                   <ul className="mt-2 space-y-1">
                     {rec.risks.map((r) => (
-                      <li key={r} className="flex items-start gap-2 text-sm text-amber-600">
+                      <li key={r} className="flex items-start gap-2 text-sm text-amber-600 dark:text-amber-400">
                         <span className="mt-0.5">!</span>
                         {r}
                       </li>

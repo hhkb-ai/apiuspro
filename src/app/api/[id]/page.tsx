@@ -5,6 +5,7 @@ import { SidebarLayout } from '@/components/layout/SidebarLayout';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { BrandIcon } from '@/components/api/BrandIcon';
 import { TutorialCard } from '@/components/tutorial/TutorialCard';
 import { APIConfig, visibleAPIList, visibleProxyServices } from '@/lib/api-config';
 import { QuickConclusionCard } from '@/components/api/QuickConclusionCard';
@@ -54,12 +55,12 @@ function getRelatedAPIs(currentId: string, type: string): APIConfig[] {
 
 function badgeClass(type: string) {
   if (type === 'success') {
-    return 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700';
+    return 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300';
   }
   if (type === 'warning') {
-    return 'border-amber-200 bg-amber-50 dark:bg-amber-950/30 text-amber-700';
+    return 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300';
   }
-  return 'border-sky-200 bg-sky-50 dark:bg-sky-950/30 text-sky-700';
+  return 'border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-700 dark:text-sky-300';
 }
 
 function getAudienceText(api: APIConfig) {
@@ -128,6 +129,7 @@ export default async function APIDetailPage({ params }: { params: Promise<{ id: 
         <div className="mb-8 flex flex-col justify-between gap-5 border-b border-border pb-8 lg:flex-row lg:items-start">
           <div>
             <div className="mb-3 flex flex-wrap items-center gap-3">
+              <BrandIcon id={api.id} alt={api.name} size="lg" />
               <h1 className="text-3xl font-semibold tracking-tight">{api.name}</h1>
               <Badge variant="outline" className={badgeClass(api.badge.type)}>{api.badge.text}</Badge>
             </div>
@@ -210,7 +212,10 @@ export default async function APIDetailPage({ params }: { params: Promise<{ id: 
                   <Card className="h-full transition-colors hover:border-foreground/30">
                     <CardContent className="p-5">
                       <div className="mb-3 flex items-start justify-between gap-3">
-                        <h3 className="font-semibold">{related.name}</h3>
+                        <div className="flex min-w-0 items-center gap-3">
+                          <BrandIcon id={related.id} alt={related.name} size="sm" />
+                          <h3 className="truncate font-semibold">{related.name}</h3>
+                        </div>
                         <Badge variant="outline" className={badgeClass(related.badge.type)}>{related.badge.text}</Badge>
                       </div>
                       <p className="line-clamp-2 text-sm leading-6 text-muted-foreground">{related.desc}</p>

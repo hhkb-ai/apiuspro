@@ -5,6 +5,7 @@ import { SidebarLayout } from '@/components/layout/SidebarLayout';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { BrandIcon } from '@/components/api/BrandIcon';
 import { BreadcrumbSchema, TechArticleSchema } from '@/components/seo/structured-data';
 import { DetailBackNav, RememberListLink } from '@/components/navigation/ReturnNavigation';
 import { CodeBlock } from '@/components/tutorial/CodeBlock';
@@ -47,12 +48,12 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 function statusClass(statusLabel: string) {
   if (statusLabel.includes('认证') || statusLabel.includes('Key')) {
-    return 'border-red-200 bg-red-50 text-red-700';
+    return 'border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-200';
   }
   if (statusLabel.includes('限流') || statusLabel.includes('额度')) {
-    return 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700';
+    return 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300';
   }
-  return 'border-sky-200 bg-sky-50 dark:bg-sky-950/30 text-sky-700';
+  return 'border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-700 dark:text-sky-300';
 }
 
 function getRelatedTutorials(solution: ErrorSolution): APIConfig[] {
@@ -226,8 +227,11 @@ export default async function ErrorSolutionDetailPage({ params }: { params: Prom
                     <Card key={api.id} className="border-border/80 shadow-sm transition-colors hover:border-foreground/30">
                       <CardContent className="p-5">
                         <div className="mb-3 flex items-start justify-between gap-3">
-                          <h3 className="font-semibold">{api.name} 购买教程</h3>
-                          <Badge variant="outline" className={api.proxy ? 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700' : 'border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700'}>
+                          <div className="flex min-w-0 items-center gap-3">
+                            <BrandIcon id={api.id} alt={api.name} size="sm" />
+                            <h3 className="truncate font-semibold">{api.name} 购买教程</h3>
+                          </div>
+                          <Badge variant="outline" className={api.proxy ? 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300' : 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300'}>
                             {api.proxy ? '需代理' : '国内直连'}
                           </Badge>
                         </div>

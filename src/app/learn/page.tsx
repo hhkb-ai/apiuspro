@@ -76,14 +76,14 @@ export default function LearnPage() {
           </div>
         </section>
 
-        <section className="mb-10 rounded-lg border bg-card p-5">
+        <section className="mb-10 rounded-2xl border bg-card p-5">
           <div className="mb-4">
             <h2 className="text-xl font-semibold tracking-tight">学习路线</h2>
             <p className="mt-1 text-sm text-muted-foreground">按顺序建立概念，再进入 API 和 AI 工具实操。</p>
           </div>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {learningSteps.map((step, index) => (
-              <div key={step} className="rounded-lg border border-border bg-background p-4">
+              <div key={step} className="rounded-xl border border-border bg-background p-4">
                 <span className="text-xs font-semibold text-muted-foreground">{String(index + 1).padStart(2, '0')}</span>
                 <p className="mt-1 text-base font-semibold">{step}</p>
               </div>
@@ -98,7 +98,7 @@ export default function LearnPage() {
           </div>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
             {articles.map((article) => (
-              <article key={article.slug} className="flex min-h-80 flex-col overflow-hidden rounded-lg border bg-card transition-colors hover:border-foreground/30">
+              <article key={article.slug} className="flex min-h-80 flex-col overflow-hidden rounded-2xl border bg-card transition-colors hover:border-foreground/30">
                 {article.cover?.src && (
                   <div className="border-b border-border bg-background p-4">
                     <Image
@@ -106,7 +106,7 @@ export default function LearnPage() {
                       alt={article.cover.alt}
                       width={640}
                       height={360}
-                      className="h-auto w-full rounded-md"
+                      className="h-auto w-full rounded-xl"
                     />
                   </div>
                 )}
@@ -122,7 +122,7 @@ export default function LearnPage() {
                       <span key={tag} className="rounded-full border border-border bg-muted px-2 py-1 text-xs text-muted-foreground">{tag}</span>
                     ))}
                   </div>
-                  <Button asChild variant="outline" size="sm" className="mt-5 min-h-[44px] w-full">
+                  <Button asChild variant="outline" size="sm" className="mt-5 min-h-[44px] w-full rounded-xl">
                     <Link href={`/learn/${article.slug}`}>开始阅读</Link>
                   </Button>
                 </div>
@@ -132,24 +132,24 @@ export default function LearnPage() {
         </section>
 
         <section className="mb-10 grid grid-cols-1 gap-4 lg:grid-cols-2">
-          <div className="rounded-lg border bg-card p-5">
+          <div className="rounded-2xl border bg-card p-5">
             <h2 className="text-xl font-semibold tracking-tight">API 实操入口</h2>
             <p className="mt-1 text-sm leading-6 text-muted-foreground">学完基础概念后，选择一个平台完成注册、配置和首次调用。</p>
             <div className="mt-4 grid gap-3">
               {practiceLinks.slice(0, 2).map((item) => (
-                <Link key={item.href} href={item.href} className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
+                <Link key={item.href} href={item.href} className="rounded-xl border border-border p-4 transition-colors hover:border-foreground/30">
                   <p className="text-sm font-semibold">{item.title}</p>
                   <p className="mt-1 text-sm leading-6 text-muted-foreground">{item.desc}</p>
                 </Link>
               ))}
             </div>
           </div>
-          <div className="rounded-lg border bg-card p-5">
+          <div className="rounded-2xl border bg-card p-5">
             <h2 className="text-xl font-semibold tracking-tight">AI 工具入口</h2>
             <p className="mt-1 text-sm leading-6 text-muted-foreground">把 API Key、Base URL 和模型名称接入真实开发工具。</p>
             <div className="mt-4 grid gap-3">
               {practiceLinks.slice(2).map((item) => (
-                <Link key={item.href} href={item.href} className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
+                <Link key={item.href} href={item.href} className="rounded-xl border border-border p-4 transition-colors hover:border-foreground/30">
                   <p className="text-sm font-semibold">{item.title}</p>
                   <p className="mt-1 text-sm leading-6 text-muted-foreground">{item.desc}</p>
                 </Link>
@@ -158,42 +158,42 @@ export default function LearnPage() {
           </div>
         </section>
 
-        <section className="mb-10 rounded-lg border bg-card p-5">
+        <section className="mb-10 rounded-2xl border bg-card p-5">
           <h2 className="text-xl font-semibold tracking-tight">继续探索</h2>
           <p className="mt-1 text-sm leading-6 text-muted-foreground">学完基础概念后，可以按需求进入以下方向。</p>
           <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            <Link href="/cloud-api" className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
+            <Link href="/cloud-api" className="rounded-xl border border-border p-4 transition-colors hover:border-foreground/30">
               <p className="text-sm font-semibold">API 官网入口</p>
               <p className="mt-1 text-xs text-muted-foreground">查找各平台 API 官网、API Key、Base URL 和模型名称</p>
             </Link>
-            <Link href="/tutorial" className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
+            <Link href="/tutorial" className="rounded-xl border border-border p-4 transition-colors hover:border-foreground/30">
               <p className="text-sm font-semibold">购买教程</p>
               <p className="mt-1 text-xs text-muted-foreground">查看主流 AI API 的开通、购买和配置教程</p>
             </Link>
-            <Link href="/app" className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
+            <Link href="/app" className="rounded-xl border border-border p-4 transition-colors hover:border-foreground/30">
               <p className="text-sm font-semibold">AI 工具教程</p>
               <p className="mt-1 text-xs text-muted-foreground">学习 Codex、Claude Code、CC Switch 等工具接入</p>
             </Link>
-            <Link href="/local-deploy" className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
+            <Link href="/local-deploy" className="rounded-xl border border-border p-4 transition-colors hover:border-foreground/30">
               <p className="text-sm font-semibold">本地部署</p>
               <p className="mt-1 text-xs text-muted-foreground">了解本地部署开源模型和 Ollama 工具</p>
             </Link>
-            <Link href="/use-case" className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
+            <Link href="/use-case" className="rounded-xl border border-border p-4 transition-colors hover:border-foreground/30">
               <p className="text-sm font-semibold">场景推荐</p>
               <p className="mt-1 text-xs text-muted-foreground">按编程、写作、翻译、知识库等场景选 API</p>
             </Link>
-            <Link href="/api-review" className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/30">
+            <Link href="/api-review" className="rounded-xl border border-border p-4 transition-colors hover:border-foreground/30">
               <p className="text-sm font-semibold">API 测评</p>
               <p className="mt-1 text-xs text-muted-foreground">查看不同模型和 API 的测评对比</p>
             </Link>
           </div>
         </section>
 
-        <section className="rounded-lg border bg-card p-5">
+        <section className="rounded-2xl border bg-card p-5">
           <h2 className="text-xl font-semibold tracking-tight">FAQ</h2>
           <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
             {faqItems.map((item) => (
-              <div key={item.q} className="rounded-lg border border-border bg-background p-4">
+              <div key={item.q} className="rounded-xl border border-border bg-background p-4">
                 <h3 className="text-sm font-semibold">{item.q}</h3>
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">{item.a}</p>
               </div>

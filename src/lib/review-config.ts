@@ -57,7 +57,7 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       { label: '官方快照 2026-04-23' },
     ],
     tlDr:
-      'OpenAI 官方文档确认的最新旗舰模型，模型 ID 为 gpt-5.5，当前快照 gpt-5.5-2026-04-23。适合复杂专业工作、编码、工具型 Agent、长上下文检索和生产级助手；标准价为 $5 输入 / $30 输出每百万 token（<272K 上下文）。',
+      'OpenAI 最新旗舰模型 gpt-5.5（快照 2026-04-23），适合复杂编码、Agent、长上下文检索和生产级助手；标准价 $5 输入 / $30 输出每百万 token。',
     ratings: [
       { label: '质量', score: 4.9, detail: '官方定位为 newest frontier model，适合复杂专业工作、编码、推理和 Agent 工作流。' },
       { label: '速度', score: 4.4, detail: '默认 reasoning.effort 为 medium，可按任务调低到 low 或 none 来平衡质量、延迟和成本。' },

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { BrandIcon } from '@/components/api/BrandIcon';
 import { apiList, APIConfig } from '@/lib/api-config';
 import { RememberListLink } from '@/components/navigation/ReturnNavigation';
 import { fuzzyScore, sortByFuzzyScore } from '@/lib/fuzzy-search';
@@ -33,12 +34,12 @@ const decisionGuides = [
 
 function badgeClass(type: string) {
   if (type === 'success') {
-    return 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700';
+    return 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300';
   }
   if (type === 'warning') {
-    return 'border-amber-200 bg-amber-50 dark:bg-amber-950/30 text-amber-700';
+    return 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300';
   }
-  return 'border-sky-200 bg-sky-50 dark:bg-sky-950/30 text-sky-700';
+  return 'border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-700 dark:text-sky-300';
 }
 
 function APICard({ api }: { api: APIConfig }) {
@@ -48,9 +49,12 @@ function APICard({ api }: { api: APIConfig }) {
   const targetUsers = api.proxy ? '企业/研究' : '初学者/开发者';
 
   return (
-    <article className="flex min-h-52 flex-col rounded-lg border bg-card p-5 transition-colors hover:border-foreground/30">
+    <article className="flex min-h-52 flex-col rounded-2xl border bg-card p-5 transition-colors hover:border-foreground/30">
       <div className="mb-3 flex items-start justify-between gap-3">
-        <h3 className="font-semibold">{api.name}</h3>
+        <div className="flex min-w-0 items-center gap-3">
+          <BrandIcon id={api.id} alt={api.name} size="md" className="rounded-xl" />
+          <h3 className="truncate font-semibold">{api.name}</h3>
+        </div>
         <Badge variant="outline" className={badgeClass(api.badge.type)}>{api.badge.text}</Badge>
       </div>
 
@@ -73,10 +77,10 @@ function APICard({ api }: { api: APIConfig }) {
       <p className="flex-1 text-sm leading-6 text-muted-foreground">{api.desc}</p>
       <div className="mt-5 flex gap-2">
         <a href={api.url} target="_blank" rel="noopener noreferrer" className="flex-1">
-          <Button className="w-full" size="sm">官网入口</Button>
+          <Button className="w-full rounded-xl" size="sm">官网入口</Button>
         </a>
         <RememberListLink href={`/api/${api.id}`} listLabel="API 列表" className="flex-1">
-          <Button variant="outline" className="w-full" size="sm">详细说明</Button>
+          <Button variant="outline" className="w-full rounded-xl" size="sm">详细说明</Button>
         </RememberListLink>
       </div>
     </article>
@@ -186,6 +190,7 @@ export function CloudApiContent() {
 
   return (
     <div className="flex flex-col">
+      <h1 className="sr-only">AI API 官网入口与对比</h1>
       <section className="order-3 mb-4 grid grid-cols-1 gap-4 md:order-1 md:grid-cols-3">
         {decisionGuides.map((guide) => (
           <Link
@@ -248,11 +253,14 @@ export function CloudApiContent() {
               <Link
                 key={api.id}
                 href={`/api/${api.id}`}
-                className="block px-4 py-3 transition-colors hover:bg-muted/70"
+                className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-muted/70"
                 onClick={() => setSearchQuery('')}
               >
-                <p className="font-medium">{api.name}</p>
-                <p className="truncate text-sm text-muted-foreground">{api.desc}</p>
+                <BrandIcon id={api.id} alt={api.name} size="sm" />
+                <span className="min-w-0">
+                  <span className="block truncate font-medium">{api.name}</span>
+                  <span className="block truncate text-sm text-muted-foreground">{api.desc}</span>
+                </span>
               </Link>
             ))}
           </div>
@@ -342,18 +350,19 @@ export function CloudApiContent() {
     {/* 适合谁 / 不适合谁 */}
     <section className="order-7 mt-10 grid grid-cols-1 gap-4 md:order-9 md:grid-cols-2">
       <div className="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 p-5">
-        <p className="text-sm font-semibold text-emerald-800">适合谁</p>
-        <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700">
+        <p className="text-sm font-semibold text-emerald-800 dark:text-emerald-200">适合谁</p>
+        <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700 dark:text-emerald-300">
           <li>• 已经确定要用哪个 API，需要快速找到官网和控制台</li>
           <li>• 想按「无需代理 / 需要代理」分类浏览所有可用 API</li>
           <li>• 需要对比不同 API 的功能特性和免费额度</li>
         </ul>
       </div>
       <div className="rounded-lg border border-amber-200 bg-amber-50 dark:bg-amber-950/30 p-5">
-        <p className="text-sm font-semibold text-amber-800">不适合谁</p>
-        <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700">
+        <p className="text-sm font-semibold text-amber-800 dark:text-amber-200">不适合谁</p>
+        <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700 dark:text-amber-300">
           <li>• 不确定该用哪个 API（请看 <Link href="/use-case" className="text-foreground hover:underline">场景推荐</Link>）</li>
-          <li>• 第一次买 API，需要注册指导（请看 <Link href="/tutorial" className="text-foreground hover:underline">购买教程</Link>）</li>
+          <li
+>• 第一次买 API，需要注册指导（请看 <Link href="/tutorial" className="text-foreground hover:underline">购买教程</Link>）</li>
           <li>• 想看详细测评和基准数据（请看 <Link href="/api-review" className="text-foreground hover:underline">API 测评</Link>）</li>
         </ul>
       </div>

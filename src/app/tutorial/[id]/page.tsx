@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
+import { BrandIcon } from '@/components/api/BrandIcon';
 import { BeianLinks } from '@/components/layout/BeianLinks';
 import { apiList, getAPIById, SHOW_PROXY_CONTENT, type APIConfig } from '@/lib/api-config';
 import { BreadcrumbSchema, HowToSchema, TechArticleSchema } from '@/components/seo/structured-data';
@@ -240,9 +241,10 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center gap-y-2">
           <DetailBackNav listHref="/tutorial" listLabel="教程列表" className="mb-0" />
           <span className="mx-3 text-border">|</span>
+          <BrandIcon id={api.id} alt={api.name} size="sm" />
           <span className="truncate text-sm font-semibold text-foreground">{api.name} 购买教程</span>
           <span className={`ml-2 text-[11px] font-semibold px-2 py-0.5 rounded-full ${
-            needProxy ? 'border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700' : 'border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700'
+            needProxy ? 'border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300' : 'border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700'
           }`}>
             {needProxy ? '需要代理' : '无需代理'}
           </span>
@@ -272,13 +274,14 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                 <Link
                   key={a.id}
                   href={`/tutorial/${a.id}`}
-                  className={`block text-[13px] px-3 py-2 rounded-md transition-colors truncate ${
+                  className={`flex items-center gap-2 text-[13px] px-3 py-2 rounded-md transition-colors ${
                     a.id === id
                       ? 'border-l-2 border-foreground bg-muted text-foreground font-semibold'
                       : 'text-muted-foreground hover:bg-muted/70 hover:text-foreground'
                   }`}
                 >
-                  {a.name}
+                  <BrandIcon id={a.id} alt={a.name} size="sm" />
+                  <span className="truncate">{a.name}</span>
                 </Link>
               ))}
               {/* 需要代理分组 */}
@@ -289,13 +292,14 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                 <Link
                   key={a.id}
                   href={`/tutorial/${a.id}`}
-                  className={`block text-[13px] px-3 py-2 rounded-md transition-colors truncate ${
+                  className={`flex items-center gap-2 text-[13px] px-3 py-2 rounded-md transition-colors ${
                     a.id === id
                       ? 'border-l-2 border-foreground bg-muted text-foreground font-semibold'
                       : 'text-muted-foreground hover:bg-muted/70 hover:text-foreground'
                   }`}
                 >
-                  {a.name}
+                  <BrandIcon id={a.id} alt={a.name} size="sm" />
+                  <span className="truncate">{a.name}</span>
                 </Link>
               ))}
             </nav>
@@ -307,11 +311,12 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
           {/* 文档头部 */}
           <div className="border-b border-border px-4 sm:px-8 pb-5 sm:pb-6 pt-6 sm:pt-8">
             <div className="flex items-center gap-2 sm:gap-3 mb-2">
+              <BrandIcon id={api.id} alt={api.name} size="lg" />
               <div>
                 <h1 className="text-[1.45rem] sm:text-2xl font-semibold tracking-tight leading-[1.2] text-foreground">{tutorial.title}</h1>
               </div>
               <span className={`ml-2 text-[11px] font-semibold px-2 py-0.5 rounded-full ${
-                needProxy ? 'border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700' : 'border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700'
+                needProxy ? 'border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300' : 'border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700'
               }`}>
                 {needProxy ? '需要代理' : '无需代理'}
               </span>
@@ -331,7 +336,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
             {tutorial.advantages && tutorial.advantages.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-4">
                 {tutorial.advantages.map((advantage, index) => (
-                  <span key={index} className="rounded-full border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 px-2.5 py-1 text-[12px] text-emerald-700">
+                  <span key={index} className="rounded-full border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 px-2.5 py-1 text-[12px] text-emerald-700 dark:text-emerald-300">
                     &#10003; <LinkText text={advantage} />
                   </span>
                 ))}
@@ -511,7 +516,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
           <div id="ccswitch-section" className="mx-4 sm:mx-8 mb-8 rounded-lg border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 px-4 py-3 sm:px-5 sm:py-4">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div>
-                <p className="mb-1 text-[13px] font-semibold text-emerald-800">配置推荐：使用 CC Switch 接入 AI 工具</p>
+                <p className="mb-1 text-[13px] font-semibold text-emerald-800 dark:text-emerald-200">配置推荐：使用 CC Switch 接入 AI 工具</p>
                 <p className="text-[15px] sm:text-sm leading-7 sm:leading-6 text-emerald-700 dark:text-emerald-300">
                   <LinkText text="创建 API Key 后，建议用 CC Switch 统一填写 API Key、Base URL 和模型名称，再接入 Claude Code、Codex、Gemini CLI、OpenCode、OpenClaw 等工具，避免手动修改配置文件出错。" highlightTerms={shouldHighlightDeepSeek ? highlightTerms : []} />
                 </p>
@@ -530,7 +535,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
             <div className="mx-4 sm:mx-8 mb-8 grid grid-cols-1 md:grid-cols-2 gap-4">
               {tutorial.tips && tutorial.tips.length > 0 && (
                 <div id="tips-section" className="scroll-mt-[68px] space-y-2 rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 px-4 py-3 sm:px-5 sm:py-4">
-                  <p className="mb-1 text-[13px] font-semibold text-sky-800">使用提示</p>
+                  <p className="mb-1 text-[13px] font-semibold text-sky-800 dark:text-sky-200">使用提示</p>
                   {tutorial.tips.map((tip, index) => (
                     <p key={index} className="pl-4 sm:pl-5 text-[15px] sm:text-sm leading-7 sm:leading-6 text-sky-700 dark:text-sky-300">
                       <LinkText text={tip} />
@@ -541,7 +546,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
 
               {tutorial.warnings && tutorial.warnings.length > 0 && (
                 <div id="warnings-section" className="scroll-mt-[68px] space-y-2 rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 px-4 py-3 sm:px-5 sm:py-4">
-                  <p className="mb-1 text-[13px] font-semibold text-amber-800">注意事项</p>
+                  <p className="mb-1 text-[13px] font-semibold text-amber-800 dark:text-amber-200">注意事项</p>
                   {tutorial.warnings.map((warning, index) => (
                     <p key={index} className="text-[15px] sm:text-sm text-amber-700 dark:text-amber-300 leading-7 sm:leading-6 pl-4 sm:pl-5">
                       <LinkText text={warning} />
@@ -555,7 +560,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
           {/* 适合谁 / 不适合谁 */}
           <div className="mx-4 sm:mx-8 mb-8 grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="rounded-lg border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 px-4 py-3 sm:px-5 sm:py-4">
-              <p className="mb-2 text-[13px] font-semibold text-emerald-800">适合谁</p>
+              <p className="mb-2 text-[13px] font-semibold text-emerald-800 dark:text-emerald-200">适合谁</p>
               <ul className="space-y-1.5 text-[15px] sm:text-sm leading-7 sm:leading-6 text-emerald-700 dark:text-emerald-300">
                 <li>• <LinkText text={needProxy ? '有稳定代理环境和国际信用卡的开发者' : '国内用户，想快速接入 AI API'} /></li>
                 <li>• <LinkText text="需要手把手指导完成注册、充值和获取 Key 的新手" /></li>
@@ -563,7 +568,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
               </ul>
             </div>
             <div className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 px-4 py-3 sm:px-5 sm:py-4">
-              <p className="mb-2 text-[13px] font-semibold text-amber-800">不适合谁</p>
+              <p className="mb-2 text-[13px] font-semibold text-amber-800 dark:text-amber-200">不适合谁</p>
               <ul className="space-y-1.5 text-[15px] sm:text-sm leading-7 sm:leading-6 text-amber-700 dark:text-amber-300">
                 <li>• <LinkText text="已经熟悉接入流程，只需要查 Base URL 或模型名" /></li>
                 <li>• 不确定该用哪个 API（请看 <Link href="/use-case" className="text-foreground hover:underline">场景推荐</Link>）</li>
@@ -682,7 +687,8 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                   href="#warnings-section"
                   className="block truncate py-1.5 pl-3 text-[12px] text-muted-foreground transition-colors hover:text-foreground"
                 >
-                  注意事项
+                  注意事
+项
                 </a>
               )}
             </nav>
