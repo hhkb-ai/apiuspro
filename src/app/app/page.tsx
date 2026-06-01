@@ -130,12 +130,12 @@ export default function AppListPage() {
           </div>
           <div className="grid gap-4 lg:grid-cols-2">
             {configExamples.map((example) => (
-              <div key={example.title} className="min-w-0 overflow-hidden rounded-lg border border-border bg-background/45 dark:bg-background/50">
-                <div className="flex items-center justify-between border-b border-border px-4 py-2">
-                  <span className="text-xs font-semibold text-foreground">{example.title}</span>
-                  <span className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">{example.language}</span>
+              <div key={example.title} className="min-w-0 overflow-hidden rounded-lg border border-slate-200 bg-slate-50 shadow-sm dark:border-zinc-800 dark:bg-zinc-950">
+                <div className="flex items-center justify-between border-b border-slate-200 bg-slate-100 px-4 py-2 dark:border-zinc-800 dark:bg-zinc-900">
+                  <span className="text-xs font-semibold text-slate-900 dark:text-zinc-100">{example.title}</span>
+                  <span className="text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">{example.language}</span>
                 </div>
-                <pre className="max-w-full overflow-x-auto whitespace-pre p-3 font-mono text-[13px] leading-6 text-foreground sm:p-4 sm:text-sm">
+                <pre className="max-w-full overflow-x-auto whitespace-pre p-3 font-mono text-[13px] leading-6 text-slate-900 dark:text-zinc-100 sm:p-4 sm:text-sm">
                   <code className="block min-w-max">{example.code}</code>
                 </pre>
               </div>
