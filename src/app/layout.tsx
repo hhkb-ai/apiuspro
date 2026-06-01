@@ -97,6 +97,17 @@ export default function RootLayout({
             })();
           `}
         </Script>
+        <Script id="baidu-analytics" strategy="afterInteractive">
+          {`
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?6f89f211fef6ae8ad990792cb14c63a1";
+              var s = document.getElementsByTagName("script")[0];
+              s.parentNode.insertBefore(hm, s);
+            })();
+          `}
+        </Script>
         <Script charSet="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js" strategy="beforeInteractive" />
         <Script id="la-collect-init" strategy="beforeInteractive">
           {`
