@@ -104,7 +104,7 @@ export default function RootLayout({
               var _hmt = _hmt || [];
               (function() {
                 var hm = document.createElement("script");
-                hm.src = "https://hm.baidu.com/hm.js?6f89f211fef6ae8ad990792cb14c63a1";
+                hm.src = "https://hm.baidu.com/hm.js?cf2ce3bbd6754443f7265ee16dc77313";
                 var s = document.getElementsByTagName("script")[0];
                 s.parentNode.insertBefore(hm, s);
               })();
