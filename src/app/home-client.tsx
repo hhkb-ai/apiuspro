@@ -82,6 +82,16 @@ interface Suggestion {
   type: string;
 }
 
+type SearchBarProps = {
+  query: string;
+  setQuery: (q: string) => void;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  suggestions: Suggestion[];
+  showSuggestions: boolean;
+  setShowSuggestions: (s: boolean) => void;
+  searchId: string;
+};
+
 function useSearch(rawQuery: string, maxResults: number) {
   const normalizedQuery = useDeferredValue(rawQuery.toLowerCase().trim());
 
@@ -113,17 +123,99 @@ function useSearch(rawQuery: string, maxResults: number) {
   return result;
 }
 
-function SearchBar({ query, setQuery, onSubmit, suggestions, showSuggestions, setShowSuggestions, variant, searchId }: {
-  query: string;
-  setQuery: (q: string) => void;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  suggestions: Suggestion[];
-  showSuggestions: boolean;
-  setShowSuggestions: (s: boolean) => void;
-  variant: 'mobile' | 'desktop';
-  searchId: string;
-}) {
-  const isMobile = variant === 'mobile';
+function DesktopSearchBar({ query, setQuery, onSubmit, suggestions, showSuggestions, setShowSuggestions, searchId }: SearchBarProps) {
+  const searchRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!showSuggestions) return;
+
+    function handlePointerDown(event: PointerEvent) {
+      if (!searchRef.current?.contains(event.target as Node)) {
+        setShowSuggestions(false);
+      }
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setShowSuggestions(false);
+      }
+    }
+
+    document.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [setShowSuggestions, showSuggestions]);
+
+  return (
+    <div
+      ref={searchRef}
+      className="relative"
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          setShowSuggestions(false);
+        }
+      }}
+    >
+      <form
+        id={searchId}
+        className="flex h-14 items-center gap-2 rounded-[14px] border border-border bg-card px-4 shadow-sm"
+        onSubmit={onSubmit}
+        role="search"
+      >
+        <div className="relative min-w-0 flex-1">
+          <Search className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 text-muted-foreground" style={{ width: 16, height: 16 }} />
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => { setQuery(e.target.value); setShowSuggestions(true); }}
+            onFocus={() => setShowSuggestions(true)}
+            placeholder="搜索 DeepSeek、Claude、API Key、提示词、429 报错..."
+            aria-label="搜索 API、教程或工具"
+            className="h-full w-full border-0 bg-transparent pl-5 pr-4 text-sm outline-none placeholder:text-gray-400"
+          />
+        </div>
+        <button
+          type="submit"
+          className="hidden"
+          disabled={!query.trim() || suggestions.length === 0}
+        >
+          <Search className="w-4 h-4" />
+        </button>
+      </form>
+
+      {showSuggestions && query.trim() && (
+        <div className="absolute left-0 right-0 top-full z-20 mt-2 max-h-[58vh] overflow-y-auto overscroll-contain rounded-lg border border-border bg-card shadow-sm">
+          {suggestions.length > 0 ? (
+            suggestions.map(item => (
+              <Link
+                key={item.id}
+                href={item.href}
+                onClick={() => setShowSuggestions(false)}
+                className="flex items-center gap-3 border-b border-border px-3 py-3 last:border-b-0 hover:bg-muted/50 active:bg-muted"
+              >
+                <span className="rounded-md border border-border bg-muted px-2 py-1 text-[11px] font-medium text-muted-foreground">{item.type}</span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-sm font-medium">{item.name}</span>
+                  <span className="mt-0.5 block truncate text-xs text-muted-foreground">{item.desc}</span>
+                </span>
+                <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
+              </Link>
+            ))
+          ) : (
+            <div className="px-4 py-5 text-center text-sm text-muted-foreground">
+              没找到结果，试试 DeepSeek、Claude、API Key。
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function MobileSearchBar({ query, setQuery, onSubmit, suggestions, showSuggestions, setShowSuggestions, searchId }: SearchBarProps) {
   const searchRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -168,23 +260,23 @@ function SearchBar({ query, setQuery, onSubmit, suggestions, showSuggestions, se
     >
       <form
         id={searchId}
-        className={isMobile ? 'flex items-center gap-2 rounded-xl border border-border bg-card shadow-sm px-3' : 'flex items-center gap-2 rounded-[14px] border border-border bg-card shadow-sm px-4 h-14'}
+        className="flex items-center gap-2 rounded-xl border border-border bg-card shadow-sm px-3"
         onSubmit={onSubmit}
         role="search"
       >
         <div className="relative min-w-0 flex-1">
-          <Search className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 text-muted-foreground" style={{ width: isMobile ? 14 : 16, height: isMobile ? 14 : 16 }} />
+          <Search className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 text-muted-foreground" style={{ width: 14, height: 14 }} />
           <input
             ref={inputRef}
             type="search"
             value={query}
             onChange={(e) => { setQuery(e.target.value); setShowSuggestions(true); }}
             onFocus={() => setShowSuggestions(true)}
-            placeholder={isMobile ? '搜索 DeepSeek、Claude...' : '搜索 DeepSeek、Claude、API Key、提示词、429 报错...'}
+            placeholder="搜索 DeepSeek、Claude..."
             aria-label="搜索 API、教程或工具"
-            className={isMobile ? 'h-12 w-full border-0 bg-transparent pl-5 pr-11 text-[13px] outline-none placeholder:text-gray-400' : 'h-full w-full border-0 bg-transparent pl-5 pr-4 text-sm outline-none placeholder:text-gray-400'}
+            className="h-12 w-full border-0 bg-transparent pl-5 pr-11 text-[13px] outline-none placeholder:text-gray-400"
           />
-          {isMobile && query.trim() && (
+          {query.trim() && (
             <button
               type="button"
               aria-label="清除搜索内容"
@@ -205,8 +297,8 @@ function SearchBar({ query, setQuery, onSubmit, suggestions, showSuggestions, se
       </form>
 
       {showSuggestions && query.trim() && (
-        <div className={isMobile ? 'absolute left-0 right-0 top-full z-20 mt-2 max-h-[50vh] overflow-y-auto overscroll-contain rounded-lg border border-border bg-card shadow-sm' : 'absolute left-0 right-0 top-full z-20 mt-2 max-h-[58vh] overflow-y-auto overscroll-contain rounded-lg border border-border bg-card shadow-sm'}>
-          {isMobile && suggestions.length > 0 && (
+        <div className="absolute left-0 right-0 top-full z-20 mt-2 max-h-[50vh] overflow-y-auto overscroll-contain rounded-lg border border-border bg-card shadow-sm">
+          {suggestions.length > 0 && (
             <div className="border-b border-border px-3 py-2 text-[11px] font-medium text-muted-foreground">
               搜索建议
             </div>
@@ -217,7 +309,7 @@ function SearchBar({ query, setQuery, onSubmit, suggestions, showSuggestions, se
                 key={item.id}
                 href={item.href}
                 onClick={() => setShowSuggestions(false)}
-                className={isMobile ? 'flex min-h-[56px] items-center gap-3 border-b border-border px-3 py-3 last:border-b-0 active:bg-muted' : 'flex items-center gap-3 border-b border-border px-3 py-3 last:border-b-0 hover:bg-muted/50 active:bg-muted'}
+                className="flex min-h-[56px] items-center gap-3 border-b border-border px-3 py-3 last:border-b-0 active:bg-muted"
               >
                 <span className="rounded-md border border-border bg-muted px-2 py-1 text-[11px] font-medium text-muted-foreground">{item.type}</span>
                 <span className="min-w-0 flex-1">
@@ -238,9 +330,7 @@ function SearchBar({ query, setQuery, onSubmit, suggestions, showSuggestions, se
   );
 }
 
-function Header({ variant, onMenuOpen }: { variant: 'desktop' | 'mobile'; onMenuOpen?: () => void }) {
-  const searchId = `home-search-${variant}`;
-
+function DesktopHeader({ searchId }: { searchId: string }) {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
       <div className="mx-auto flex h-12 max-w-7xl items-center justify-between px-4 md:h-16 lg:px-8">
@@ -262,6 +352,24 @@ function Header({ variant, onMenuOpen }: { variant: 'desktop' | 'mobile'; onMenu
           <Link href="/learn" className="hidden h-10 items-center justify-center rounded-xl bg-primary px-5 text-sm font-medium text-primary-foreground transition-colors hover:opacity-90 md:inline-flex">
             开始学习
           </Link>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+function MobileHeader({ searchId, onMenuOpen }: { searchId: string; onMenuOpen: () => void }) {
+  return (
+    <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
+      <div className="mx-auto flex h-12 max-w-7xl items-center justify-between px-4 md:h-16 lg:px-8">
+        <Link href="/" className="shrink-0">
+          <span className="block text-lg font-bold tracking-tight">ApiUsPro</span>
+        </Link>
+        <div className="flex shrink-0 items-center gap-3">
+          <a href={`#${searchId}`} aria-label="跳转到搜索" className="inline-flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground md:h-10 md:w-10">
+            <Search className="w-5 h-5" />
+          </a>
+          <ThemeToggle />
           <button type="button" aria-label="打开栏目菜单" onClick={onMenuOpen} className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-card text-foreground transition-colors duration-100 active:bg-muted md:hidden">
             <Menu className="size-[18px]" />
           </button>
@@ -302,14 +410,13 @@ function BeginnerRoutePanel({ compact = false, sectionId }: { compact?: boolean;
   );
 }
 
-function Hero({
+function DesktopHero({
   query,
   setQuery,
   onSubmit,
   suggestions,
   showSuggestions,
   setShowSuggestions,
-  variant,
   searchId,
   beginnerId,
   purchaseId,
@@ -320,66 +427,119 @@ function Hero({
   suggestions: Suggestion[];
   showSuggestions: boolean;
   setShowSuggestions: (s: boolean) => void;
-  variant: 'desktop' | 'mobile';
   searchId: string;
   beginnerId: string;
   purchaseId: string;
 }) {
-  const isMobile = variant === 'mobile';
-
   return (
-    <section className={isMobile ? 'px-0 py-6' : 'py-16'}>
+    <section className="py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className={isMobile ? 'space-y-4' : 'grid items-start gap-8 lg:grid-cols-[7fr_5fr]'}>
+        <div className="grid items-start gap-8 lg:grid-cols-[7fr_5fr]">
           <div className="flex min-w-0 flex-col">
-            {!isMobile && (
-              <>
-                <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">AI 与 API 学习导航</p>
-                <div className="w-12 h-0.5 bg-primary mb-6" />
-              </>
-            )}
-            {isMobile ? (
-              <p className="text-[26px] font-bold leading-tight tracking-tight mb-2">
-                先看懂 AI，<br />再把 API 用起来
-              </p>
-            ) : (
-              <h1 className="text-4xl font-bold leading-tight tracking-tight mb-4">
-                先看懂 AI，<br />再把 API 用起来
-              </h1>
-            )}
-            <p className={isMobile ? 'text-[13px] text-muted-foreground leading-relaxed mb-5' : 'text-sm text-muted-foreground leading-relaxed max-w-xl mb-6'}>
-              {isMobile ? '从 AI 入门到 API 调用，先找到你现在该看的内容。' : '从基础词汇、提示词、API Key 到模型购买与首次调用，把新手真正需要的路径整理成一条清晰路线。'}
+            <p className="mb-2 text-xs uppercase tracking-widest text-muted-foreground">AI 与 API 学习导航</p>
+            <div className="mb-6 h-0.5 w-12 bg-primary" />
+            <h1 className="mb-4 text-4xl font-bold leading-tight tracking-tight">
+              先看懂 AI，<br />再把 API 用起来
+            </h1>
+            <p className="mb-6 max-w-xl text-sm leading-relaxed text-muted-foreground">
+              从基础词汇、提示词、API Key 到模型购买与首次调用，把新手真正需要的路径整理成一条清晰路线。
             </p>
-            <div className={isMobile ? 'mb-3' : 'mb-5 max-w-2xl'}>
-              <SearchBar
+            <div className="mb-5 max-w-2xl">
+              <DesktopSearchBar
                 query={query}
                 setQuery={setQuery}
                 onSubmit={onSubmit}
                 suggestions={suggestions}
                 showSuggestions={showSuggestions}
                 setShowSuggestions={setShowSuggestions}
-                variant={variant}
                 searchId={searchId}
               />
             </div>
-            <div className={isMobile ? 'flex gap-2 mb-2' : 'flex gap-3 mb-4'}>
-              <Link href={`#${beginnerId}`} className={isMobile ? 'flex flex-1 h-[44px] items-center justify-center rounded-[10px] bg-primary text-primary-foreground text-[13px] font-medium' : 'inline-flex h-12 px-6 items-center justify-center rounded-xl bg-primary text-primary-foreground text-sm font-medium'}>
+            <div className="mb-4 flex gap-3">
+              <Link href={`#${beginnerId}`} className="inline-flex h-12 items-center justify-center rounded-xl bg-primary px-6 text-sm font-medium text-primary-foreground">
                 从新手路线开始
               </Link>
-              <Link href={`#${purchaseId}`} className={isMobile ? 'flex flex-1 h-[44px] items-center justify-center rounded-[10px] border border-border text-foreground text-[13px] font-medium' : 'inline-flex h-12 px-6 items-center justify-center rounded-xl border border-border text-foreground text-sm font-medium'}>
+              <Link href={`#${purchaseId}`} className="inline-flex h-12 items-center justify-center rounded-xl border border-border px-6 text-sm font-medium text-foreground">
                 查看购买教程
               </Link>
             </div>
-            <p className={isMobile ? 'text-[11px] text-muted-foreground flex items-center gap-1' : 'text-xs text-muted-foreground flex items-center gap-1.5'}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3.5 h-3.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
               适合零基础用户、AI 使用者和开发者
             </p>
           </div>
-          <BeginnerRoutePanel compact={isMobile} sectionId={beginnerId} />
+          <BeginnerRoutePanel sectionId={beginnerId} />
         </div>
       </div>
     </section>
   );
+}
+
+function MobileHero({
+  query,
+  setQuery,
+  onSubmit,
+  suggestions,
+  showSuggestions,
+  setShowSuggestions,
+  searchId,
+  beginnerId,
+  purchaseId,
+}: {
+  query: string;
+  setQuery: (q: string) => void;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  suggestions: Suggestion[];
+  showSuggestions: boolean;
+  setShowSuggestions: (s: boolean) => void;
+  searchId: string;
+  beginnerId: string;
+  purchaseId: string;
+}) {
+  return (
+    <section className="px-0 py-6">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="space-y-4">
+          <div className="flex min-w-0 flex-col">
+            <p className="mb-2 text-[26px] font-bold leading-tight tracking-tight">
+              先看懂 AI，<br />再把 API 用起来
+            </p>
+            <p className="mb-5 text-[13px] leading-relaxed text-muted-foreground">
+              从 AI 入门到 API 调用，先找到你现在该看的内容。
+            </p>
+            <div className="mb-3">
+              <MobileSearchBar
+                query={query}
+                setQuery={setQuery}
+                onSubmit={onSubmit}
+                suggestions={suggestions}
+                showSuggestions={showSuggestions}
+                setShowSuggestions={setShowSuggestions}
+                searchId={searchId}
+              />
+            </div>
+            <div className="mb-2 flex gap-2">
+              <Link href={`#${beginnerId}`} className="flex h-[44px] flex-1 items-center justify-center rounded-[10px] bg-primary text-[13px] font-medium text-primary-foreground">
+                从新手路线开始
+              </Link>
+              <Link href={`#${purchaseId}`} className="flex h-[44px] flex-1 items-center justify-center rounded-[10px] border border-border text-[13px] font-medium text-foreground">
+                查看购买教程
+              </Link>
+            </div>
+            <p className="flex items-center gap-1 text-[11px] text-muted-foreground">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              适合零基础用户、AI 使用者和开发者
+            </p>
+          </div>
+          <MobileBeginnerRoute sectionId={beginnerId} />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MobileBeginnerRoute({ sectionId }: { sectionId: string }) {
+  return <BeginnerRoutePanel compact sectionId={sectionId} />;
 }
 
 function MobilePurchaseTutorials({ sectionId }: { sectionId: string }) {
@@ -398,7 +558,7 @@ function MobilePurchaseTutorials({ sectionId }: { sectionId: string }) {
               href={`/tutorial/${api.id}`}
               className="grid h-[112px] w-[calc(100vw-48px)] max-w-[328px] shrink-0 grid-cols-[56px_minmax(0,1fr)_18px] items-center gap-3 rounded-2xl border border-border bg-card p-4 transition-colors duration-100 active:bg-muted"
             >
-              <BrandIcon id={api.id} alt={api.name} size="lg" className="justify-self-center rounded-xl" />
+              <BrandIcon id={api.id} alt={api.name} size="lg" className="justify-self-center" />
               <span className="flex min-h-16 min-w-0 flex-col justify-center">
                 <span className="block truncate text-[15px] font-semibold leading-5">{api.name} 购买教程</span>
                 <span className="mt-1 block truncate text-xs leading-4 text-muted-foreground">{api.tutorial?.steps.length || 0} 个步骤 · {api.badge.text}</span>
@@ -449,8 +609,7 @@ function DesktopPurchaseTutorials({ sectionId }: { sectionId: string }) {
   );
 }
 
-function UserEntrySection({ variant }: { variant: 'desktop' | 'mobile' }) {
-  const isMobile = variant === 'mobile';
+function DesktopUserEntrySection() {
   const icons = [
     <svg key="book" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-[18px] h-[18px]"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>,
     <svg key="cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-[18px] h-[18px]"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>,
@@ -458,22 +617,56 @@ function UserEntrySection({ variant }: { variant: 'desktop' | 'mobile' }) {
   ];
 
   return (
-    <section className={isMobile ? 'py-8' : 'py-12'}>
+    <section className="py-12">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 className={isMobile ? 'mb-4 text-xl font-semibold' : 'text-2xl font-semibold mb-6'}>你现在要解决什么？</h2>
-        <div className={isMobile ? 'grid gap-3' : 'grid gap-5 md:grid-cols-3'}>
+        <h2 className="mb-6 text-2xl font-semibold">你现在要解决什么？</h2>
+        <div className="grid gap-5 md:grid-cols-3">
           {userEntryCards.map((card, index) => (
             <Link
               key={card.href}
               href={card.href}
-              className={isMobile ? 'flex min-h-[156px] flex-col rounded-2xl border border-border bg-muted/30 p-4 transition-colors duration-100 active:bg-muted/60' : 'flex min-h-[220px] flex-col rounded-2xl border border-border bg-muted/30 p-6 transition-colors hover:bg-muted/40 duration-150'}
+              className="flex min-h-[220px] flex-col rounded-2xl border border-border bg-muted/30 p-6 transition-colors duration-150 hover:bg-muted/40"
             >
-              <div className={isMobile ? 'mb-3 flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-muted-foreground' : 'w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center mb-4 text-muted-foreground'}>
+              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-muted-foreground">
                 {icons[index]}
               </div>
-              <h3 className="text-base font-semibold mb-2">{card.title}</h3>
-              <p className={isMobile ? 'mb-3 line-clamp-2 flex-1 text-sm leading-6 text-muted-foreground' : 'flex-1 text-sm text-muted-foreground leading-relaxed mb-4'}>{card.desc}</p>
-              <span className={isMobile ? 'mt-auto inline-flex h-11 w-fit items-center justify-center rounded-xl border border-border px-4 text-sm font-medium text-foreground' : 'mt-auto inline-flex h-12 w-fit items-center justify-center rounded-xl border border-border px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted'}>
+              <h3 className="mb-2 text-base font-semibold">{card.title}</h3>
+              <p className="mb-4 flex-1 text-sm leading-relaxed text-muted-foreground">{card.desc}</p>
+              <span className="mt-auto inline-flex h-12 w-fit items-center justify-center rounded-xl border border-border px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted">
+                {card.action}
+              </span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MobileUserEntrySection() {
+  const icons = [
+    <svg key="book" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-[18px] h-[18px]"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>,
+    <svg key="cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-[18px] h-[18px]"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>,
+    <svg key="code" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-[18px] h-[18px]"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>,
+  ];
+
+  return (
+    <section className="py-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <h2 className="mb-4 text-xl font-semibold">你现在要解决什么？</h2>
+        <div className="grid gap-3">
+          {userEntryCards.map((card, index) => (
+            <Link
+              key={card.href}
+              href={card.href}
+              className="flex min-h-[156px] flex-col rounded-2xl border border-border bg-muted/30 p-4 transition-colors duration-100 active:bg-muted/60"
+            >
+              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-muted-foreground">
+                {icons[index]}
+              </div>
+              <h3 className="mb-2 text-base font-semibold">{card.title}</h3>
+              <p className="mb-3 line-clamp-2 flex-1 text-sm leading-6 text-muted-foreground">{card.desc}</p>
+              <span className="mt-auto inline-flex h-11 w-fit items-center justify-center rounded-xl border border-border px-4 text-sm font-medium text-foreground">
                 {card.action}
               </span>
             </Link>
@@ -590,19 +783,17 @@ function MobileBottomNav({ onMenuOpen }: { onMenuOpen: () => void }) {
   );
 }
 
-function HomeShell({ variant }: { variant: 'desktop' | 'mobile' }) {
+function DesktopHome() {
   const router = useRouter();
   const [query, setQuery] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { suggestions, exactMatch, appExactMatch } = useSearch(query, variant === 'mobile' ? 6 : 8);
-  const searchId = `home-search-${variant}`;
-  const beginnerId = `beginner-route-${variant}`;
-  const purchaseId = `purchase-tutorials-${variant}`;
+  const { suggestions, exactMatch } = useSearch(query, 8);
+  const searchId = 'home-search-desktop';
+  const beginnerId = 'beginner-route-desktop';
+  const purchaseId = 'purchase-tutorials-desktop';
 
   const submitSearch = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // exactMatch 现在是 href 字符串，直接使用
     const href = exactMatch?.href || suggestions[0]?.href;
     if (!href) return;
     router.push(href);
@@ -610,35 +801,67 @@ function HomeShell({ variant }: { variant: 'desktop' | 'mobile' }) {
   }, [exactMatch, suggestions, router]);
 
   return (
-    <div className={variant === 'mobile' ? 'min-h-screen bg-background pb-[calc(86px+env(safe-area-inset-bottom))] text-foreground' : 'min-h-screen bg-background text-foreground'}>
-      <Header variant={variant} onMenuOpen={() => setMobileMenuOpen(true)} />
+    <div className="min-h-screen bg-background text-foreground">
+      <DesktopHeader searchId={searchId} />
       <main>
-        <Hero
+        <DesktopHero
           query={query}
           setQuery={setQuery}
           onSubmit={submitSearch}
           suggestions={suggestions}
           showSuggestions={showSuggestions}
           setShowSuggestions={setShowSuggestions}
-          variant={variant}
           searchId={searchId}
           beginnerId={beginnerId}
           purchaseId={purchaseId}
         />
-        {variant === 'mobile' ? (
-          <MobilePurchaseTutorials sectionId={purchaseId} />
-        ) : (
-          <DesktopPurchaseTutorials sectionId={purchaseId} />
-        )}
-        <UserEntrySection variant={variant} />
+        <DesktopPurchaseTutorials sectionId={purchaseId} />
+        <DesktopUserEntrySection />
       </main>
       <Footer />
-      {variant === 'mobile' && (
-        <>
-          <MobileBottomNav onMenuOpen={() => setMobileMenuOpen(true)} />
-          <MobileMenuSheet open={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
-        </>
-      )}
+    </div>
+  );
+}
+
+function MobileHome() {
+  const router = useRouter();
+  const [query, setQuery] = useState('');
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { suggestions, exactMatch } = useSearch(query, 6);
+  const searchId = 'home-search-mobile';
+  const beginnerId = 'beginner-route-mobile';
+  const purchaseId = 'purchase-tutorials-mobile';
+
+  const submitSearch = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const href = exactMatch?.href || suggestions[0]?.href;
+    if (!href) return;
+    router.push(href);
+    setShowSuggestions(false);
+  }, [exactMatch, suggestions, router]);
+
+  return (
+    <div className="min-h-screen bg-background pb-[calc(86px+env(safe-area-inset-bottom))] text-foreground">
+      <MobileHeader searchId={searchId} onMenuOpen={() => setMobileMenuOpen(true)} />
+      <main>
+        <MobileHero
+          query={query}
+          setQuery={setQuery}
+          onSubmit={submitSearch}
+          suggestions={suggestions}
+          showSuggestions={showSuggestions}
+          setShowSuggestions={setShowSuggestions}
+          searchId={searchId}
+          beginnerId={beginnerId}
+          purchaseId={purchaseId}
+        />
+        <MobilePurchaseTutorials sectionId={purchaseId} />
+        <MobileUserEntrySection />
+      </main>
+      <Footer />
+      <MobileBottomNav onMenuOpen={() => setMobileMenuOpen(true)} />
+      <MobileMenuSheet open={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
     </div>
   );
 }
@@ -646,8 +869,8 @@ function HomeShell({ variant }: { variant: 'desktop' | 'mobile' }) {
 export default function HomeClient() {
   return (
     <div className="min-h-screen bg-background">
-      <div className="md:hidden"><HomeShell variant="mobile" /></div>
-      <div className="hidden md:block"><HomeShell variant="desktop" /></div>
+      <div className="md:hidden"><MobileHome /></div>
+      <div className="hidden md:block"><DesktopHome /></div>
     </div>
   );
 }

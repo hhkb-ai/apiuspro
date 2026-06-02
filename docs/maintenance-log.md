@@ -587,3 +587,40 @@ SEO/deployment impact:
 
 - Enables Baidu traffic verification and analytics collection across all pages after client hydration.
 - Does not change canonical URLs, Open Graph/Twitter metadata, JSON-LD, sitemap, robots, or page content.
+
+### 2026-06-02 Homepage mobile/desktop isolation and search-index build fix
+
+Commit scope:
+
+- Split the homepage client UI in `src/app/home-client.tsx` into separate desktop and mobile component entry points while keeping shared homepage data and `useSearch` in one place.
+- Keep desktop header, hero, search bar, purchase tutorial grid, and user-entry card behavior isolated in desktop components.
+- Keep mobile header, hero, search bar, beginner route, horizontal purchase tutorial cards, bottom navigation, and menu sheet isolated in mobile components.
+- Fix the existing `src/lib/search-index.ts` TypeScript blockers by filtering optional search fields and using the current FAQ `question` / `answer` fields.
+
+Explicitly excluded from this commit:
+
+- Existing unrelated dirty files: `src/app/api-review/page.tsx`, `src/app/tutorial/page.tsx`, `src/lib/review-config.ts`.
+- Existing untracked local test artifacts: `test-artifacts/mobile-home-test/`.
+- No changes to base UI components, route structure, sitemap, robots, metadata, API data, tutorial data, or review content.
+
+Verification completed:
+
+```bash
+corepack pnpm ts-check  # passed
+corepack pnpm exec eslint src/app/home-client.tsx src/lib/search-index.ts  # passed, 7 existing home-client warnings
+corepack pnpm exec eslint  # passed, 10 warnings in existing files/scripts
+corepack pnpm exec next build  # passed (76 static pages)
+corepack pnpm exec tsup src/server.ts --format cjs --platform node --target node20 --outDir dist --no-splitting --no-minify  # passed
+```
+
+Browser verification completed on local preview `http://127.0.0.1:5000/`:
+
+- 375px, 390px, 430px, 760px: no horizontal page overflow, mobile bottom navigation works, menu opens/closes, search clear button works, and footer content is not hidden behind the bottom nav.
+- 390px and 430px: first DeepSeek mobile tutorial card is centered.
+- 760px: first DeepSeek mobile tutorial card is left aligned.
+- 1440px: desktop navigation, hero layout, 4-column purchase tutorial grid, hover behavior, and user-entry cards remain desktop-only; mobile bottom nav, mobile menu, and mobile horizontal tutorial cards are not rendered.
+
+SEO/deployment impact:
+
+- Homepage component organization changed, but URLs, canonical behavior, structured data, sitemap, robots, and page content data remain unchanged.
+- `src/lib/search-index.ts` now builds successfully without changing the search ranking algorithm or route targets.

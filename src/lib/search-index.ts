@@ -1,4 +1,4 @@
-import { apiList, appTutorials } from '@/lib/api-config';
+import { apiList, appTutorials, faqCategories } from '@/lib/api-config';
 import { learnArticles } from '@/lib/learn-config';
 import { reviewDetails } from '@/lib/review-config';
 import { errorSolutions } from '@/lib/error-solution-config';
@@ -25,7 +25,7 @@ const apiSearchItems: SearchItem[] = apiList.map(api => ({
   desc: `${accessText(api.proxy)} · ${api.features.slice(0, 2).join('、')}`,
   href: `/api/${api.id}`,
   type: 'API',
-  searchFields: [api.id, api.name, api.desc, api.free, ...api.features],
+  searchFields: [api.id, api.name, api.desc, api.free, ...api.features].filter((field): field is string => Boolean(field)),
 }));
 
 // 购买教程
@@ -36,7 +36,7 @@ const tutorialSearchItems: SearchItem[] = tutorialsList.map(api => ({
   desc: '注册、支付、API Key 创建',
   href: `/tutorial/${api.id}`,
   type: '教程',
-  searchFields: [api.id, api.name, api.tutorial?.title, api.tutorial?.subtitle, ...api.features],
+  searchFields: [api.id, api.name, api.tutorial?.title, api.tutorial?.subtitle, ...api.features].filter((field): field is string => Boolean(field)),
 }));
 
 // 应用教程
@@ -90,18 +90,17 @@ const useCaseSearchItems: SearchItem[] = useCases.map(useCase => ({
 }));
 
 // FAQ (从 api-config 的 faqCategories 提取)
-import { faqCategories } from '@/lib/api-config';
 const faqSearchItems: SearchItem[] = [];
 if (faqCategories) {
   faqCategories.forEach(category => {
     category.items.forEach(item => {
       faqSearchItems.push({
-        id: `faq-${category.title}-${item.q}`,
-        name: item.q,
-        desc: item.a,
+        id: `faq-${category.title}-${item.question}`,
+        name: item.question,
+        desc: item.answer,
         href: '/faq',
         type: 'FAQ',
-        searchFields: [item.q, item.a, category.title],
+        searchFields: [item.question, item.answer, category.title],
       });
     });
   });
