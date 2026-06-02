@@ -104,10 +104,11 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
       {mobileMenuOpen && (
         <div
           id="mobile-navigation"
-          className="lg:hidden fixed inset-0 top-16 bg-background/95 z-40 backdrop-blur"
+          className="lg:hidden fixed inset-0 top-16 z-40 mobile-sheet-fade"
           onClick={() => setMobileMenuOpen(false)}
         >
-          <nav className="p-4 space-y-1.5" onClick={(event) => event.stopPropagation()}>
+          <div className="absolute inset-0 bg-background/95 backdrop-blur" />
+          <nav className="relative p-4 space-y-1.5 mobile-sheet-panel" onClick={(event) => event.stopPropagation()}>
             {navigation.map((item) => {
               const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(`${item.href}/`));
               return (

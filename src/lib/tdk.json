@@ -1,12 +1,12 @@
 {
   "routes": {
     "/": {
-      "title": "API知识站 - AI API 选型、购买、接入一站式指南",
+      "title": "AI API 购买教程、价格对比与接入指南",
       "description": "API知识站覆盖 DeepSeek、OpenAI、Claude、通义千问、Gemini、Kimi 等 10+ 主流 AI API 的官网入口、价格对比、免费额度、购买教程与本地部署指南，适合零基础初学者快速完成选型、注册和首次调用。",
       "keywords": ["API知识站", "AI API", "API购买教程", "API测评", "本地部署", "OpenAI", "Claude", "Gemini", "DeepSeek", "通义千问", "API怎么买", "API免费额度", "API注册教程", "AI编程助手", "AI API对比", "API代充", "API订阅", "国内AI API"],
       "canonical": "https://www.apiuspro.cn",
       "openGraph": {
-        "title": "API知识站 - AI API 选型、购买、接入一站式指南",
+        "title": "AI API 购买教程、价格对比与接入指南",
         "description": "API知识站覆盖 DeepSeek、OpenAI、Claude、通义千问、Gemini 等 10+ 主流 AI API，提供官网入口、价格对比、免费额度、购买教程与本地部署指南，适合零基础用户快速上手。",
         "url": "https://www.apiuspro.cn",
         "siteName": "API知识站",

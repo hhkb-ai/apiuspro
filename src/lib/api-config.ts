@@ -180,6 +180,153 @@ print(response.choices[0].message.content)`,
     }
   },
   {
+    id: 'minimax',
+    name: 'MiniMax M3',
+    desc: 'MiniMax M3 API 与 Token Plan 怎么买？2026 最新订阅、Credits、API Key 和 1M 上下文接入教程',
+    url: 'https://platform.minimax.io/',
+    free: 'Token Plan / Credits / Pay-as-you-go 以官方控制台为准',
+    proxy: false,
+    features: ['MiniMax-M3', '1M 上下文', 'Agent 编程', '原生多模态'],
+    icon: '⚡',
+    badge: { text: 'M3最新', type: 'warning' },
+    tutorial: {
+      title: 'MiniMax M3 订阅购买与 API Key 接入教程（2026最新）',
+      subtitle: '从 Token Plan 订阅、Credits 充值、API Key 区分到 MiniMax-M3 首次调用的完整流程',
+      steps: [
+        {
+          title: '确认 MiniMax M3 的购买方式',
+          description: 'MiniMax 现在同时提供 Token Plan 订阅、Credits 预付余额和 Pay-as-you-go 按量计费。购买前先决定你要用哪一种 Key，避免把不同计费体系混在一起。',
+          items: [
+            'Token Plan：适合个人开发者、小团队和 AI Coding 工具，按月获得共享额度',
+            'Credits：预付余额，和 Token Plan 使用同一类 Subscription Key，可覆盖额度溢出',
+            'Pay-as-you-go：标准 Open Platform API Key，按实际 token 或调用扣账户余额',
+            'Token Plan Key 和 Pay-as-you-go API Key 不是同一个体系，不能混用'
+          ],
+          whereToClick: '先阅读官方 Pricing / Token Plan 页面，再决定订阅还是按量计费',
+          expectedResult: '能分清 Subscription Key 与 Pay-as-you-go API Key 的用途',
+          failureChecklist: ['如果工具提示鉴权失败，先检查当前填的是 Token Plan Key 还是 Pay-as-you-go API Key', '如果没有可用额度，确认 Token Plan 是否已购买或 Credits 是否已到账'],
+          warning: 'MiniMax 的订阅、Credits 和 Pay-as-you-go 会随账号地区、活动和控制台展示变化，正式购买前以官方控制台为准。'
+        },
+        {
+          title: '注册并登录 MiniMax 开放平台',
+          description: '进入 MiniMax 开放平台后完成登录。中国大陆用户通常可使用手机号或微信登录，国际用户可使用邮箱登录。',
+          items: [
+            '访问 MiniMax 开放平台：https://platform.minimax.io/',
+            '点击登录入口，选择手机号、邮箱或微信扫码登录',
+            '登录后进入控制台，确认账号状态正常',
+            '如页面语言或价格口径与你预期不同，先检查账号地区和控制台页面'
+          ],
+          whereToClick: '浏览器访问 platform.minimax.io → 登录',
+          expectedResult: '进入 MiniMax 控制台，能看到 API、Billing 或 Token Plan 相关入口',
+          failureChecklist: ['验证码是否能正常接收', '微信扫码是否完成确认', '登录后看不到控制台时尝试刷新或更换 Chrome/Edge']
+        },
+        {
+          title: '订阅 Token Plan 或充值 Credits',
+          description: '如果你主要用 M3 做编程 Agent、长上下文或多模态任务，优先看 Token Plan；如果只是临时补额度，可以看 Credits。',
+          important: true,
+          items: [
+            'Token Plan 入口：https://platform.minimax.io/subscribe/token-plan',
+            '官方 M3 发布页给出的 2026-06-01 口径：Plus $20/月约 1.7B M3 tokens，Max $50/月约 5.1B，Ultra $120/月约 9.8B',
+            '你提供的订阅教程里还记录了人民币区域口径：Plus 约 49 元/月、Max 约 119 元/月、Ultra 约 469 元/月',
+            '订阅或充值后在 Billing / Token Plan 页面查看额度条、到期时间和可用资源',
+            'MiniMax 官方文档说明，Token Plan 的文本、图像、语音、音乐等资源共享同一额度池'
+          ],
+          whereToClick: '控制台 → Billing / Token Plan → 选择 Plus、Max 或 Ultra → Subscribe / Purchase',
+          expectedResult: '订阅状态显示为 active，控制台能看到可用额度或 Credits 余额',
+          failureChecklist: ['支付失败时更换支付方式或检查网络', '支付后未生效可刷新页面或重新登录', '如 5-10 分钟仍未到账，保留支付凭证联系官方客服'],
+          warning: '美元价格、人民币价格、token 额度和活动折扣可能因地区和时间不同而变化，页面写作时必须保留“以官方控制台为准”。'
+        },
+        {
+          title: '获取正确的 Key',
+          description: 'MiniMax 官方文档把 Pay-as-you-go API Key 和 Token Plan Subscription Key 分开。接入前先确认你的工具要用哪一种。',
+          important: true,
+          items: [
+            'Pay-as-you-go：进入 API Keys 页面，点击 Create new secret key',
+            'Token Plan：进入 Billing / Token Plan 页面，查看或复制 Subscription Key',
+            'Token Plan Key 通常用于 OpenClaw、Claude Code、Cline、Codex 等 AI Coding 工具',
+            'Pay-as-you-go API Key 用于标准 Open Platform API，按实际用量扣账户余额',
+            '复制后立即保存到密码管理器或 .env 文件，不要发到聊天窗口或提交到 GitHub'
+          ],
+          whereToClick: 'Pay-as-you-go：API Keys → Create new secret key；Token Plan：Billing → Token Plan → Get API Key',
+          expectedResult: '得到一串可复制的 Key，并明确它属于 Token Plan 还是 Pay-as-you-go',
+          failureChecklist: ['Key 复制后是否保存', '工具里的 Base URL 是否和 Key 类型匹配', '如果调用 401/403，先换正确的 Key 类型再排查余额']
+        },
+        {
+          title: '配置 MiniMax-M3 并首次调用',
+          description: 'MiniMax 官方推荐 Anthropic SDK，同时也支持 OpenAI 兼容接入。M3 的官方模型名为 MiniMax-M3。',
+          items: [
+            'Anthropic 兼容 Base URL：https://api.minimax.io/anthropic',
+            'OpenAI / Responses 兼容 Base URL：https://api.minimax.io/v1',
+            '模型名填写 MiniMax-M3',
+            'M3 支持最高 1,000,000 token 上下文，官方建议把 512K 以内作为常规长上下文区间',
+            'M3 支持 thinking、工具调用、图像和视频输入；M2.7/M2.5/M2.1 主要支持文本和工具调用'
+          ],
+          whereToClick: '终端安装 anthropic，设置 ANTHROPIC_BASE_URL 和 ANTHROPIC_API_KEY 后运行测试脚本',
+          expectedResult: '终端成功打印 MiniMax-M3 的文本回复，无鉴权或模型名错误',
+          failureChecklist: ['确认模型名是 MiniMax-M3', '确认 ANTHROPIC_BASE_URL 为 https://api.minimax.io/anthropic', '确认 Key 仍有效且有额度', '如超过上下文或请求体限制，先缩短输入再试'],
+          codeLanguage: 'python',
+          code: `# pip install anthropic
+# macOS/Linux:
+# export ANTHROPIC_BASE_URL=https://api.minimax.io/anthropic
+# export ANTHROPIC_API_KEY=你的_MINIMAX_KEY
+
+import anthropic
+
+client = anthropic.Anthropic()
+
+message = client.messages.create(
+    model="MiniMax-M3",
+    max_tokens=1000,
+    system="You are a helpful assistant.",
+    messages=[
+        {
+            "role": "user",
+            "content": [{"type": "text", "text": "你好，请用一句话介绍 MiniMax M3。"}],
+        }
+    ],
+)
+
+for block in message.content:
+    if block.type == "text":
+        print(block.text)`,
+          codeExplanation: '使用 MiniMax 官方 Anthropic 兼容接口调用 MiniMax-M3。成功输出文本说明 Base URL、Key 和模型名配置正确。'
+        },
+        {
+          title: '按 M3 价格和上下文长度控制成本',
+          description: 'M3 的 API 价格会根据输入长度和服务等级变化。普通对话和大部分编程任务优先控制在 512K 输入以内。',
+          items: [
+            'Pay-as-you-go 标准通道：≤512K 输入 token 官方标价为 $0.60/百万输入、$2.40/百万输出；发布初期 7 天 50% off 为 $0.30/$1.20',
+            '>512K 输入 token 会进入更高长上下文价格，官方标准通道标价为 $1.20/百万输入、$4.80/百万输出',
+            'Priority 通道可通过 service_tier=priority 获得更稳定调度，价格高于标准通道，官方说明早期需联系销售或等待开放',
+            'M3 可切换 thinking 开关；复杂 Agent/推理任务开启 thinking，低延迟对话和补全可关闭 thinking',
+            '用量统计页面定期查看 token 消耗、额度条和 Credits 余额'
+          ],
+          whereToClick: '控制台 → Usage / Billing / Token Plan',
+          expectedResult: '能看到本月用量、剩余额度和是否触发 Credits 或 Pay-as-you-go 扣费',
+          failureChecklist: ['大仓库/长视频/超长文档是否触发 >512K 长上下文价格', '是否误用 Priority 通道', '是否把 Token Plan 额度用完后开始扣 Credits 或 PAYG 余额'],
+          warning: 'M3 刚发布，价格、折扣期、Priority 开放状态和长上下文额度可能变化，请以 MiniMax 官方 Pricing 页面为准。'
+        }
+      ],
+      tips: [
+        '购买前先决定：Token Plan 用于个人/小团队固定额度，Pay-as-you-go 用于企业或按量接入',
+        'MiniMax-M3 适合代码、Agent、长上下文、多模态输入和 AI Coding 工具',
+        'Token Plan Key 和 Pay-as-you-go API Key 不要混用，出错时先检查 Key 类型',
+        'M3 的 1M 上下文很适合仓库级分析，但超过 512K 输入可能触发更高价格',
+        '如果你要接入 Codex、Claude Code、Cline、OpenClaw 等工具，优先看 MiniMax 官方的 AI Coding Tools 文档'
+      ],
+      warnings: [
+        '不要在前端、公开仓库、截图或聊天记录中暴露 MiniMax Key',
+        'MiniMax M3 发布初期价格、折扣、Key 类型和工具适配变化很快，正式采购前必须复查官方控制台'
+      ],
+      advantages: ['1M 上下文', 'Agent 编程能力强', '原生多模态', 'Token Plan 额度高'],
+      estimatedTime: '约 10-15 分钟',
+      prerequisites: ['MiniMax 账号', '邮箱/手机号/微信登录方式', '可用支付方式或企业账单方式'],
+      successSign: '控制台显示 Token Plan / Credits / Pay-as-you-go 可用额度，MiniMax-M3 测试脚本成功输出回复',
+      commonPitfall: '把 Token Plan Subscription Key 当作 Pay-as-you-go API Key，或把 PAYG Key 填进只支持 Token Plan 的 AI Coding 工具；另一个常见问题是超长输入超过 512K 后成本明显上升',
+      securityReminder: 'Key 复制后只保存到密码管理器、环境变量或 .env 文件，不要写进前端代码、公开仓库或截图'
+    }
+  },
+  {
     id: 'deepseek',
     name: 'DeepSeek',
     desc: 'DeepSeek API 怎么买？2026 国内支付/充值教程，覆盖 deepseek-v4-flash、deepseek-v4-pro、1M 上下文与旧别名退役',

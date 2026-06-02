@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>预览 — DeepSeek API 页面（新版文章风格）</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwindcss.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        border: 'hsl(240 3.7% 15.9%)',
+        background: 'hsl(240 10% 3.9%)',
+        foreground: 'hsl(0 0% 98%)',
+        card: { DEFAULT: 'hsl(240 10% 3.9%)', foreground: 'hsl(0 0% 98%)' },
+        muted: { DEFAULT: 'hsl(240 3.7% 15.9%)', foreground: 'hsl(240 5% 64.9%)' },
+        primary: { DEFAULT: 'hsl(0 0% 98%)', foreground: 'hsl(240 5.9% 10%)' },
+      }
+    }
+  }
+}
+</script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; }
+</style>
+</head>
+<body class="bg-background text-foreground">
+
+<!-- 模拟左侧边栏 -->
+<aside class="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 lg:border-r lg:border-border lg:bg-card">
+  <div class="h-16 px-6 border-b border-border flex flex-col justify-center">
+    <a href="#" class="font-semibold tracking-tight">API知识站</a>
+    <span class="text-xs text-muted-foreground">学习、对比与使用指南</span>
+  </div>
+  <nav class="flex-1 px-3 py-4 space-y-1.5">
+    <a href="#" class="flex items-center px-3 py-2.5 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/70">返回首页</a>
+    <a href="#" class="flex items-center px-3 py-2.5 rounded-md text-sm font-medium bg-primary text-primary-foreground shadow-sm">API 官网入口</a>
+    <a href="#" class="flex items-center px-3 py-2.5 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/70">API 测评对比</a>
+    <a href="#" class="flex items-center px-3 py-2.5 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/70">API 购买教程</a>
+    <a href="#" class="flex items-center px-3 py-2.5 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/70">API 应用教程</a>
+    <a href="#" class="flex items-center px-3 py-2.5 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/70">按场景选 API</a>
+  </nav>
+</aside>
+
+<!-- 移动端顶部栏 -->
+<div class="lg:hidden fixed top-0 left-0 right-0 h-16 bg-background/95 border-b border-border z-50 flex items-center justify-between px-4 backdrop-blur">
+  <div>
+    <a href="#" class="font-semibold tracking-tight">API知识站</a>
+    <span class="block text-xs text-muted-foreground">学习、对比与使用指南</span>
+  </div>
+  <button class="border border-border rounded-md px-3 py-2 text-sm">菜单</button>
+</div>
+
+<!-- 主内容 -->
+<main class="min-w-0 flex-1 lg:ml-64 min-h-screen pt-16 lg:pt-0">
+<div class="mx-auto max-w-6xl p-6 lg:p-8">
+
+  <!-- 返回导航 -->
+  <div class="flex flex-wrap gap-2 mb-6">
+    <button class="border border-border rounded-md px-3 py-1.5 text-sm min-h-[44px]">&larr; 返回上一页</button>
+    <button class="border border-border rounded-md px-3 py-1.5 text-sm min-h-[44px]">回到 API 列表</button>
+  </div>
+
+  <!-- ==================== 首屏 ==================== -->
+  <div class="mb-8 flex flex-col justify-between gap-5 border-b border-border pb-8 lg:flex-row lg:items-start">
+    <div>
+      <div class="mb-3 flex flex-wrap items-center gap-3">
+        <h1 class="text-3xl font-semibold tracking-tight">DeepSeek</h1>
+        <span class="border border-amber-200 bg-amber-50 dark:border-amber-800/50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-sm font-medium">热门</span>
+      </div>
+      <p class="max-w-2xl text-lg leading-8 text-muted-foreground">DeepSeek API 怎么买？2026 国内支付/充值教程，覆盖 deepseek-v4-flash、deepseek-v4-pro、1M 上下文与旧别名退役</p>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <button class="border border-border rounded-md px-4 py-2 text-sm">DeepSeek 购买教程</button>
+      <button class="border border-border rounded-md px-4 py-2 text-sm">DeepSeek 完整测评</button>
+      <button class="bg-foreground text-background rounded-md px-4 py-2 text-sm font-medium">访问官网</button>
+    </div>
+  </div>
+
+  <!-- ==================== 功能特性 ==================== -->
+  <div class="border border-border rounded-lg mb-8 bg-card">
+    <div class="px-6 py-4 border-b border-border">
+      <h2 class="font-semibold">功能特性</h2>
+    </div>
+    <div class="px-6 py-4">
+      <div class="flex flex-wrap gap-2">
+        <span class="border border-border bg-card text-muted-foreground px-2.5 py-1 rounded-md text-sm">高性价比</span>
+        <span class="border border-border bg-card text-muted-foreground px-2.5 py-1 rounded-md text-sm">代码能力强</span>
+        <span class="border border-border bg-card text-muted-foreground px-2.5 py-1 rounded-md text-sm">推理模型</span>
+        <span class="border border-border bg-card text-muted-foreground px-2.5 py-1 rounded-md text-sm">开源</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== API 信息总览 ==================== -->
+  <section class="mb-8">
+    <h2 class="mb-4 text-xl font-semibold tracking-tight">API 信息总览</h2>
+    <!-- 桌面端表格 -->
+    <div class="hidden md:block rounded-lg border border-border bg-card overflow-hidden">
+      <table class="w-full text-sm">
+        <tbody>
+          <tr class="border-b border-border">
+            <td class="w-40 shrink-0 bg-muted/40 px-4 py-3 font-medium whitespace-nowrap">官网入口</td>
+            <td class="px-4 py-3 text-muted-foreground"><a href="#" class="underline underline-offset-2">https://platform.deepseek.com/</a></td>
+          </tr>
+          <tr class="border-b border-border">
+            <td class="bg-muted/40 px-4 py-3 font-medium">API Base URL</td>
+            <td class="px-4 py-3 text-muted-foreground"><code class="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[13px] text-foreground">https://api.deepseek.com</code></td>
+          </tr>
+          <tr class="border-b border-border">
+            <td class="bg-muted/40 px-4 py-3 font-medium">常用模型</td>
+            <td class="px-4 py-3 text-muted-foreground">
+              <ul class="space-y-1">
+                <li>deepseek-v4-flash（推荐，1M 上下文）</li>
+                <li>deepseek-v4-pro（复杂推理，1M 上下文）</li>
+                <li>deepseek-chat（兼容别名，2026-07 退役）</li>
+                <li>deepseek-reasoner（兼容别名，2026-07 退役）</li>
+              </ul>
+            </td>
+          </tr>
+          <tr class="border-b border-border">
+            <td class="bg-muted/40 px-4 py-3 font-medium">国内访问</td>
+            <td class="px-4 py-3"><span class="text-emerald-400">无需代理，国内直连</span></td>
+          </tr>
+          <tr class="border-b border-border">
+            <td class="bg-muted/40 px-4 py-3 font-medium">支付方式</td>
+            <td class="px-4 py-3 text-muted-foreground">支付宝、微信（国内直充）</td>
+          </tr>
+          <tr class="border-b border-border">
+            <td class="bg-muted/40 px-4 py-3 font-medium">免费额度</td>
+            <td class="px-4 py-3 text-muted-foreground">新用户/活动额度以控制台为准 <span class="text-xs text-muted-foreground">（以官网为准）</span></td>
+          </tr>
+          <tr class="border-b border-border">
+            <td class="bg-muted/40 px-4 py-3 font-medium">OpenAI 兼容</td>
+            <td class="px-4 py-3"><span class="text-emerald-400">兼容，可直接用 OpenAI SDK 调用</span></td>
+          </tr>
+          <tr class="border-b border-border">
+            <td class="bg-muted/40 px-4 py-3 font-medium">适合场景</td>
+            <td class="px-4 py-3 text-muted-foreground">代码生成与调试、数学与逻辑推理、长文档处理、Agent 工作流、技术问答</td>
+          </tr>
+          <tr>
+            <td class="bg-muted/40 px-4 py-3 font-medium">更新时间</td>
+            <td class="px-4 py-3 text-muted-foreground">2026-05-24</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ==================== 接入步骤 ==================== -->
+  <section class="mb-8">
+    <h2 class="mb-4 text-xl font-semibold tracking-tight">接入步骤</h2>
+    <p class="mb-6 text-sm leading-6 text-muted-foreground">以下是接入 DeepSeek API 的完整流程，从注册到首次调用。每一步都标注了操作位置和成功标志，新手按顺序操作即可。</p>
+    <div class="space-y-8">
+      <!-- Step 1 -->
+      <div class="relative pl-8">
+        <div class="absolute left-0 top-0 flex h-6 w-6 items-center justify-center rounded-full bg-foreground text-xs font-bold text-background">1</div>
+        <h3 class="mb-2 text-base font-semibold">注册并完成实名认证</h3>
+        <p class="mb-3 text-sm leading-6 text-muted-foreground">先进入 DeepSeek 开放平台（platform.deepseek.com），用手机号或邮箱注册账号。完成注册后，在账号设置中进行实名认证——个人开发者提交身份证信息，企业用户提交营业执照。认证通过后才能创建 API Key 和充值。</p>
+      </div>
+      <!-- Step 2 -->
+      <div class="relative pl-8">
+        <div class="absolute left-0 top-0 flex h-6 w-6 items-center justify-center rounded-full bg-foreground text-xs font-bold text-background">2</div>
+        <h3 class="mb-2 text-base font-semibold">创建并保存 API Key</h3>
+        <p class="mb-3 text-sm leading-6 text-muted-foreground">登录 DeepSeek 控制台，进入 API Keys 管理页面，点击 "Create API Key" 创建密钥。创建后立即复制保存——API Key 通常只完整显示一次。</p>
+        <div class="mb-3 rounded-md border border-amber-500/30 bg-amber-500/[0.06] px-3 py-2 text-sm leading-6 text-amber-200">不要把 API Key 写入前端代码、公开仓库、截图或聊天记录中。建议存储在 .env 文件或环境变量管理工具中。</div>
+      </div>
+      <!-- Step 3 -->
+      <div class="relative pl-8">
+        <div class="absolute left-0 top-0 flex h-6 w-6 items-center justify-center rounded-full bg-foreground text-xs font-bold text-background">3</div>
+        <h3 class="mb-2 text-base font-semibold">充值并确认余额</h3>
+        <p class="mb-3 text-sm leading-6 text-muted-foreground">进入账单或 Usage 页面，选择合适的充值档位（10、20、50 或 100 元），使用支付宝或微信完成支付。支付成功后确认账户余额大于 0。</p>
+      </div>
+      <!-- Step 4 -->
+      <div class="relative pl-8">
+        <div class="absolute left-0 top-0 flex h-6 w-6 items-center justify-center rounded-full bg-foreground text-xs font-bold text-background">4</div>
+        <h3 class="mb-2 text-base font-semibold">选择模型并跑通测试</h3>
+        <p class="mb-3 text-sm leading-6 text-muted-foreground">DeepSeek 推荐优先使用 deepseek-v4-flash（实时对话、高频调用）或 deepseek-v4-pro（复杂推理、长文档）。旧别名 deepseek-chat 和 deepseek-reasoner 将在 2026 年 7 月退役，新项目不要继续使用。</p>
+        <!-- Code Block -->
+        <div class="my-4 w-full rounded-lg border border-border bg-background/45 overflow-hidden">
+          <div class="flex items-center justify-between border-b border-border px-4 py-2">
+            <span class="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">python</span>
+            <button class="border border-border rounded px-3 py-1 text-xs">复制</button>
+          </div>
+          <pre class="overflow-x-auto whitespace-pre p-4 font-mono text-sm leading-7 text-foreground"><code>import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ.get("DEEPSEEK_API_KEY"),
+    base_url="https://api.deepseek.com",
+)
+
+response = client.chat.completions.create(
+    model="deepseek-v4-flash",
+    messages=[{"role": "user", "content": "你好，请用一句话介绍你自己。"}],
+)
+
+print(response.choices[0].message.content)</code></pre>
+          <div class="border-t border-border bg-muted/20 px-4 py-2.5 text-xs leading-5 text-muted-foreground">使用 OpenAI SDK 调用 DeepSeek API。只需将 base_url 指向 https://api.deepseek.com，api_key 从环境变量读取。成功执行并打印回复即代表配置正确。</div>
+        </div>
+      </div>
+      <!-- Step 5 -->
+      <div class="relative pl-8">
+        <div class="absolute left-0 top-0 flex h-6 w-6 items-center justify-center rounded-full bg-foreground text-xs font-bold text-background">5</div>
+        <h3 class="mb-2 text-base font-semibold">排查常见问题</h3>
+        <p class="mb-3 text-sm leading-6 text-muted-foreground">如果调用失败，优先检查：API Key 是否复制完整、Authorization 格式是否正确、Base URL 是否为 https://api.deepseek.com、模型名称是否拼写正确。</p>
+      </div>
+    </div>
+    <!-- 教程链接 -->
+    <div class="mt-6 rounded-lg border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 px-4 py-3">
+      <p class="text-sm text-emerald-200">需要更详细的图文步骤？查看完整教程：<a href="#" class="font-semibold underline underline-offset-2">DeepSeek 购买教程</a></p>
+    </div>
+  </section>
+
+  <!-- ==================== 代码示例 ==================== -->
+  <section class="mb-8">
+    <h2 class="mb-4 text-xl font-semibold tracking-tight">代码示例</h2>
+    <p class="mb-4 text-sm leading-6 text-muted-foreground">DeepSeek 兼容 OpenAI 接口格式，以下示例使用 OpenAI SDK 调用。只需修改 <code class="rounded border border-border bg-muted px-1 py-0.5 font-mono text-[12px]">base_url</code> 和 <code class="rounded border border-border bg-muted px-1 py-0.5 font-mono text-[12px]">api_key</code>。</p>
+
+    <h3 class="mb-3 text-base font-semibold">Python (OpenAI SDK)</h3>
+    <div class="my-4 w-full rounded-lg border border-border bg-background/45 overflow-hidden mb-6">
+      <div class="flex items-center justify-between border-b border-border px-4 py-2">
+        <span class="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">python</span>
+        <button class="border border-border rounded px-3 py-1 text-xs">复制</button>
+      </div>
+      <pre class="overflow-x-auto whitespace-pre p-4 font-mono text-sm leading-7 text-foreground"><code>import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ.get("DEEPSEEK_API_KEY"),
+    base_url="https://api.deepseek.com",
+)
+
+response = client.chat.completions.create(
+    model="deepseek-v4-flash",
+    messages=[{"role": "user", "content": "你好，请用一句话介绍你自己。"}],
+)
+
+print(response.choices[0].message.content)</code></pre>
+      <div class="border-t border-border bg-muted/20 px-4 py-2.5 text-xs leading-5 text-muted-foreground">使用 OpenAI SDK 调用 DeepSeek API。将 base_url 指向 https://api.deepseek.com，api_key 从环境变量读取。</div>
+    </div>
+
+    <h3 class="mb-3 text-base font-semibold">cURL</h3>
+    <div class="my-4 w-full rounded-lg border border-border bg-background/45 overflow-hidden mb-6">
+      <div class="flex items-center justify-between border-b border-border px-4 py-2">
+        <span class="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">bash</span>
+        <button class="border border-border rounded px-3 py-1 text-xs">复制</button>
+      </div>
+      <pre class="overflow-x-auto whitespace-pre p-4 font-mono text-sm leading-7 text-foreground"><code>curl -X POST https://api.deepseek.com/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $DEEPSEEK_API_KEY" \
+  -d '{
+    "model": "deepseek-v4-flash",
+    "messages": [
+      { "role": "user", "content": "你好，请介绍一下自己" }
+    ],
+    "temperature": 0.7
+  }'</code></pre>
+    </div>
+
+    <!-- 参数说明 -->
+    <div class="rounded-lg border border-border bg-card p-4">
+      <h3 class="mb-3 text-sm font-semibold">关键参数说明</h3>
+      <ul class="space-y-2 text-sm leading-6 text-muted-foreground">
+        <li><code class="rounded border border-border bg-muted px-1 py-0.5 font-mono text-[12px]">base_url</code>：必须指向 https://api.deepseek.com，不是 OpenAI 的地址</li>
+        <li><code class="rounded border border-border bg-muted px-1 py-0.5 font-mono text-[12px]">model</code>：推荐使用 deepseek-v4-flash（推荐，1M 上下文）</li>
+        <li><code class="rounded border border-border bg-muted px-1 py-0.5 font-mono text-[12px]">temperature</code>：控制输出随机性，0.7 适合大多数场景</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ==================== 常见错误 ==================== -->
+  <section class="mb-8">
+    <h2 class="mb-4 text-xl font-semibold tracking-tight">常见错误与排查</h2>
+    <p class="mb-4 text-sm leading-6 text-muted-foreground">接入 DeepSeek API 时可能遇到以下错误，按错误码排查通常可以快速定位问题。</p>
+    <div class="rounded-lg border border-border bg-card overflow-hidden">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-border bg-muted/40">
+            <th class="px-4 py-3 text-left font-semibold">错误码</th>
+            <th class="px-4 py-3 text-left font-semibold">描述</th>
+            <th class="px-4 py-3 text-left font-semibold">解决方案</th>
+            <th class="px-4 py-3 text-left font-semibold w-24">详情</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-border">
+            <td class="px-4 py-3"><code class="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[12px] whitespace-nowrap">401 Unauthorized</code></td>
+            <td class="px-4 py-3 text-muted-foreground">API Key 无效、已过期或未正确传递</td>
+            <td class="px-4 py-3 text-muted-foreground">检查 Authorization 请求头格式是否为 "Bearer sk-xxx"</td>
+            <td class="px-4 py-3"><a href="#" class="underline underline-offset-2 text-xs">查看</a></td>
+          </tr>
+          <tr class="border-b border-border">
+            <td class="px-4 py-3"><code class="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[12px] whitespace-nowrap">403 Forbidden</code></td>
+            <td class="px-4 py-3 text-muted-foreground">当前账号无权限访问该模型或接口</td>
+            <td class="px-4 py-3 text-muted-foreground">确认账号是否已完成实名认证</td>
+            <td class="px-4 py-3"><a href="#" class="underline underline-offset-2 text-xs">查看</a></td>
+          </tr>
+          <tr class="border-b border-border">
+            <td class="px-4 py-3"><code class="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[12px] whitespace-nowrap">404 Model not found</code></td>
+            <td class="px-4 py-3 text-muted-foreground">请求的模型名称不存在或已下线</td>
+            <td class="px-4 py-3 text-muted-foreground">检查模型名称拼写是否正确</td>
+            <td class="px-4 py-3"><a href="#" class="underline underline-offset-2 text-xs">查看</a></td>
+          </tr>
+          <tr class="border-b border-border">
+            <td class="px-4 py-3"><code class="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[12px] whitespace-nowrap">429 Too Many</code></td>
+            <td class="px-4 py-3 text-muted-foreground">超出速率限制</td>
+            <td class="px-4 py-3 text-muted-foreground">降低并发，加入指数退避重试</td>
+            <td class="px-4 py-3"><a href="#" class="underline underline-offset-2 text-xs">查看</a></td>
+          </tr>
+          <tr class="border-b border-border">
+            <td class="px-4 py-3"><code class="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[12px] whitespace-nowrap">Insufficient quota</code></td>
+            <td class="px-4 py-3 text-muted-foreground">账户余额不足</td>
+            <td class="px-4 py-3 text-muted-foreground">到控制台查看余额并充值</td>
+            <td class="px-4 py-3"><a href="#" class="underline underline-offset-2 text-xs">查看</a></td>
+          </tr>
+          <tr>
+            <td class="px-4 py-3"><code class="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[12px] whitespace-nowrap">Timeout</code></td>
+            <td class="px-4 py-3 text-muted-foreground">请求超时</td>
+            <td class="px-4 py-3 text-muted-foreground">将 timeout 设置为 60 秒以上</td>
+            <td class="px-4 py-3"><a href="#" class="underline underline-offset-2 text-xs">查看</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ==================== 常见问题 ==================== -->
+  <section class="mb-8">
+    <h2 class="mb-4 text-xl font-semibold tracking-tight">常见问题</h2>
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div class="border border-border rounded-lg bg-card p-5">
+        <h3 class="text-base font-semibold mb-2">DeepSeek API 国内可以访问吗？</h3>
+        <p class="text-sm leading-6 text-muted-foreground">DeepSeek API 更适合国内用户优先尝试，通常可以直接访问。正式接入前仍建议用免费额度或小额充值跑通真实任务。</p>
+      </div>
+      <div class="border border-border rounded-lg bg-card p-5">
+        <h3 class="text-base font-semibold mb-2">DeepSeek API Key 在哪里创建？</h3>
+        <p class="text-sm leading-6 text-muted-foreground">进入 DeepSeek 控制台后，在 API Key、密钥管理或开发者设置页面创建密钥。可以继续查看本站的 DeepSeek 购买教程。</p>
+      </div>
+      <div class="border border-border rounded-lg bg-card p-5">
+        <h3 class="text-base font-semibold mb-2">DeepSeek API Key 泄露了怎么办？</h3>
+        <p class="text-sm leading-6 text-muted-foreground">立即到控制台删除泄露的 Key 并重新生成。建议把 Key 存在环境变量或 .env 文件中，不要提交到 Git 仓库。</p>
+      </div>
+      <div class="border border-border rounded-lg bg-card p-5">
+        <h3 class="text-base font-semibold mb-2">DeepSeek API 报错 401 / Invalid API Key？</h3>
+        <p class="text-sm leading-6 text-muted-foreground">首先确认 API Key 是否已复制完整，再检查 Authorization 请求头格式是否为 "Bearer sk-xxx"。如果 Key 已删除或过期，需要到控制台重新创建。</p>
+      </div>
+      <div class="border border-border rounded-lg bg-card p-5">
+        <h3 class="text-base font-semibold mb-2">DeepSeek API 适合什么场景？</h3>
+        <p class="text-sm leading-6 text-muted-foreground">DeepSeek 适合的方向包括：高性价比、代码能力强、推理模型、开源。如果你还不确定具体选择，可以先查看场景推荐页。</p>
+      </div>
+      <div class="border border-border rounded-lg bg-card p-5">
+        <h3 class="text-base font-semibold mb-2">接入 DeepSeek API 前要确认什么？</h3>
+        <p class="text-sm leading-6 text-muted-foreground">至少确认官网入口、免费额度或计费规则、Base URL、模型名、API Key 保存方式和限速规则。不要把 API Key 写入前端代码。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 阅读后判断（文章末尾） ==================== -->
+  <section class="mb-8 border-t border-border pt-8">
+    <h2 class="mb-3 text-xl font-semibold tracking-tight">阅读后判断</h2>
+    <p class="mb-5 max-w-3xl text-sm leading-6 text-muted-foreground">如果你已经看完上面的 API 信息、接入步骤、代码示例和常见错误，可以用以下内容快速判断是否适合继续使用 DeepSeek API。</p>
+
+    <!-- QuickConclusionCard -->
+    <div class="border border-border bg-card shadow-sm rounded-lg mb-6">
+      <div class="px-6 py-4 border-b border-border">
+        <h3 class="font-semibold flex flex-wrap items-center gap-3">
+          快速结论
+          <span class="rounded-md bg-amber-100 px-2 py-0.5 text-sm font-semibold text-amber-700 dark:text-amber-300">推荐指数 9.0/10</span>
+        </h3>
+      </div>
+      <div class="px-6 py-4 space-y-4 text-sm">
+        <p class="rounded-md border border-sky-200 bg-sky-50 px-3 py-2 text-sky-900 dark:border-sky-800 dark:bg-sky-950/30 dark:text-sky-100">国内直连 + 有免费额度 + 有购买教程，推荐优先尝试</p>
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <p class="mb-1 text-xs font-medium text-muted-foreground">适合谁</p>
+            <p class="leading-5">国内开发者、初学者、需要快速接入和低门槛试用的项目</p>
+          </div>
+          <div>
+            <p class="mb-1 text-xs font-medium text-muted-foreground">不适合谁</p>
+            <p class="leading-5">需要顶级旗舰模型或特定高级能力的用户</p>
+          </div>
+          <div>
+            <p class="mb-1 text-xs font-medium text-muted-foreground">国内访问</p>
+            <p class="leading-5">无需代理，国内直连</p>
+          </div>
+          <div>
+            <p class="mb-1 text-xs font-medium text-muted-foreground">接入难度</p>
+            <p><span class="font-medium text-emerald-600">简单</span> <span class="text-muted-foreground">— 国内直连，有教程指引</span></p>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-2 border-t border-border pt-4">
+          <button class="border border-border rounded-md px-3 py-1.5 text-sm">官网入口</button>
+          <button class="border border-border rounded-md px-3 py-1.5 text-sm">购买教程</button>
+          <button class="border border-border rounded-md px-3 py-1.5 text-sm">完整测评</button>
+          <button class="border border-border rounded-md px-3 py-1.5 text-sm">场景推荐</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 是否适合你使用 -->
+    <div class="grid grid-cols-1 gap-4 lg:grid-cols-3 mt-6">
+      <div class="lg:col-span-2 border border-border rounded-lg bg-card p-5">
+        <h3 class="font-semibold mb-3">是否适合你使用</h3>
+        <div class="space-y-3 text-sm leading-6 text-muted-foreground">
+          <p>适合初学者、个人开发者、国内项目快速接入和低门槛试用。</p>
+          <p>如果你正在比较 DeepSeek API 怎么买、价格是否合适、能不能国内访问，建议先查看购买教程，再用免费额度或小额充值跑通一个真实任务。</p>
+        </div>
+      </div>
+      <div class="border border-border rounded-lg bg-card p-5">
+        <h3 class="font-semibold mb-3">接入前确认</h3>
+        <ul class="space-y-2 text-sm leading-6 text-muted-foreground">
+          <li>官网入口和控制台地址</li>
+          <li>API Key 创建与保存方式</li>
+          <li>Base URL、模型名和 SDK 兼容性</li>
+          <li>免费额度、限速和计费单位</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 适用场景 ==================== -->
+  <section class="mb-8">
+    <h2 class="mb-4 text-xl font-semibold tracking-tight">适用场景</h2>
+    <div class="rounded-lg border bg-card p-6">
+      <p class="text-sm text-muted-foreground mb-4">想知道 DeepSeek 适合什么场景？查看按用途分类的推荐：</p>
+      <div class="flex flex-wrap gap-2">
+        <button class="border border-border rounded-md px-3 py-1.5 text-sm">编程开发</button>
+        <button class="border border-border rounded-md px-3 py-1.5 text-sm">知识库</button>
+        <button class="border border-border rounded-md px-3 py-1.5 text-sm">内容创作</button>
+        <button class="border border-border rounded-md px-3 py-1.5 text-sm">智能客服</button>
+        <button class="border border-border rounded-md px-3 py-1.5 text-sm">翻译</button>
+        <button class="border border-border rounded-md px-3 py-1.5 text-sm">教育辅导</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 相关 API 推荐 ==================== -->
+  <section class="mb-8">
+    <h2 class="mb-4 text-xl font-semibold tracking-tight">相关 API 推荐</h2>
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div class="border border-border rounded-lg bg-card p-5 hover:border-foreground/30 transition-colors cursor-pointer">
+        <div class="mb-3 flex items-start justify-between gap-3">
+          <h3 class="font-semibold">小米MiMo</h3>
+          <span class="border border-amber-200 bg-amber-50 dark:border-amber-800/50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-md text-sm">新上线</span>
+        </div>
+        <p class="line-clamp-2 text-sm leading-6 text-muted-foreground">小米 MiMo API 怎么买？2026 推理模型接入教程</p>
+      </div>
+      <div class="border border-border rounded-lg bg-card p-5 hover:border-foreground/30 transition-colors cursor-pointer">
+        <div class="mb-3 flex items-start justify-between gap-3">
+          <h3 class="font-semibold">阿里云通义千问</h3>
+          <span class="border border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950/30 text-emerald-700 px-2 py-0.5 rounded-md text-sm">免费</span>
+        </div>
+        <p class="line-clamp-2 text-sm leading-6 text-muted-foreground">通义千问 API 怎么申请？覆盖 Qwen3.7-Max</p>
+      </div>
+      <div class="border border-border rounded-lg bg-card p-5 hover:border-foreground/30 transition-colors cursor-pointer">
+        <div class="mb-3 flex items-start justify-between gap-3">
+          <h3 class="font-semibold">智谱 GLM</h3>
+          <span class="border border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950/30 text-emerald-700 px-2 py-0.5 rounded-md text-sm">免费</span>
+        </div>
+        <p class="line-clamp-2 text-sm leading-6 text-muted-foreground">智谱 GLM API 怎么开通？GLM-5 / GLM-4-Flash</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Footer -->
+<footer class="border-t border-border px-4 py-6 text-center text-sm text-muted-foreground">
+  <p class="text-xs mb-2">注：人民币价格按 1 USD &asymp; 7.25 RMB 估算，实际价格以各平台官方结算为准。</p>
+  <p class="text-xs">API知识站 - 适合初学者的 AI API 学习平台</p>
+</footer>
+</main>
+
+</body>
+</html>

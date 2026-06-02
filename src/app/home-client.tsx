@@ -9,7 +9,7 @@ import { BrandIcon } from '@/components/api/BrandIcon';
 import { apiList, appTutorials } from '@/lib/api-config';
 import { fuzzyScore, sortByFuzzyScore } from '@/lib/fuzzy-search';
 import { searchAll, findExactMatch } from '@/lib/search-index';
-import { ChevronRight, Search } from 'lucide-react';
+import { BookOpen, ChevronRight, Cloud, Home, Menu, Search, X } from 'lucide-react';
 
 const pages = [
   { id: 'cloud-api', name: 'API 列表', desc: '先看官网入口、代理要求和免费额度', url: '/cloud-api', tag: '优先查看' },
@@ -59,6 +59,15 @@ const desktopNavLinks = [
   { name: '购买教程', href: '/tutorial' },
   { name: '模型测评', href: '/api-review' },
   { name: 'API 应用', href: '/app' },
+];
+
+const mobileMenuLinks = [
+  { name: 'AI 入门', href: '/learn', desc: '从基础概念开始' },
+  { name: '购买教程', href: '/tutorial', desc: '注册、支付和 API Key' },
+  { name: 'API 列表', href: '/cloud-api', desc: '官网入口和接入要求' },
+  { name: '应用教程', href: '/app', desc: '把 API 接入常用工具' },
+  { name: '错误解决', href: '/error', desc: '排查 Key、模型和额度问题' },
+  { name: 'API 测评', href: '/api-review', desc: '看模型和平台对比' },
 ];
 
 function accessText(proxy?: boolean) {
@@ -116,6 +125,13 @@ function SearchBar({ query, setQuery, onSubmit, suggestions, showSuggestions, se
 }) {
   const isMobile = variant === 'mobile';
   const searchRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const clearSearch = () => {
+    setQuery('');
+    setShowSuggestions(false);
+    inputRef.current?.focus();
+  };
 
   useEffect(() => {
     if (!showSuggestions) return;
@@ -159,14 +175,25 @@ function SearchBar({ query, setQuery, onSubmit, suggestions, showSuggestions, se
         <div className="relative min-w-0 flex-1">
           <Search className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 text-muted-foreground" style={{ width: isMobile ? 14 : 16, height: isMobile ? 14 : 16 }} />
           <input
+            ref={inputRef}
             type="search"
             value={query}
             onChange={(e) => { setQuery(e.target.value); setShowSuggestions(true); }}
             onFocus={() => setShowSuggestions(true)}
             placeholder={isMobile ? '搜索 DeepSeek、Claude...' : '搜索 DeepSeek、Claude、API Key、提示词、429 报错...'}
             aria-label="搜索 API、教程或工具"
-            className={isMobile ? 'h-12 w-full border-0 bg-transparent pl-5 pr-3 text-[13px] outline-none placeholder:text-gray-400' : 'h-full w-full border-0 bg-transparent pl-5 pr-4 text-sm outline-none placeholder:text-gray-400'}
+            className={isMobile ? 'h-12 w-full border-0 bg-transparent pl-5 pr-11 text-[13px] outline-none placeholder:text-gray-400' : 'h-full w-full border-0 bg-transparent pl-5 pr-4 text-sm outline-none placeholder:text-gray-400'}
           />
+          {isMobile && query.trim() && (
+            <button
+              type="button"
+              aria-label="清除搜索内容"
+              onClick={clearSearch}
+              className="absolute right-0 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground transition-colors duration-100 active:bg-muted"
+            >
+              <X className="size-4" />
+            </button>
+          )}
         </div>
         <button
           type="submit"
@@ -178,14 +205,19 @@ function SearchBar({ query, setQuery, onSubmit, suggestions, showSuggestions, se
       </form>
 
       {showSuggestions && query.trim() && (
-        <div className="absolute left-0 right-0 top-full z-20 mt-2 max-h-[58vh] overflow-y-auto overscroll-contain rounded-lg border border-border bg-card shadow-sm">
+        <div className={isMobile ? 'absolute left-0 right-0 top-full z-20 mt-2 max-h-[50vh] overflow-y-auto overscroll-contain rounded-lg border border-border bg-card shadow-sm' : 'absolute left-0 right-0 top-full z-20 mt-2 max-h-[58vh] overflow-y-auto overscroll-contain rounded-lg border border-border bg-card shadow-sm'}>
+          {isMobile && suggestions.length > 0 && (
+            <div className="border-b border-border px-3 py-2 text-[11px] font-medium text-muted-foreground">
+              搜索建议
+            </div>
+          )}
           {suggestions.length > 0 ? (
             suggestions.map(item => (
               <Link
                 key={item.id}
                 href={item.href}
                 onClick={() => setShowSuggestions(false)}
-                className="flex items-center gap-3 border-b border-border px-3 py-3 last:border-b-0 hover:bg-muted/50 active:bg-muted"
+                className={isMobile ? 'flex min-h-[56px] items-center gap-3 border-b border-border px-3 py-3 last:border-b-0 active:bg-muted' : 'flex items-center gap-3 border-b border-border px-3 py-3 last:border-b-0 hover:bg-muted/50 active:bg-muted'}
               >
                 <span className="rounded-md border border-border bg-muted px-2 py-1 text-[11px] font-medium text-muted-foreground">{item.type}</span>
                 <span className="min-w-0 flex-1">
@@ -206,7 +238,7 @@ function SearchBar({ query, setQuery, onSubmit, suggestions, showSuggestions, se
   );
 }
 
-function Header({ variant }: { variant: 'desktop' | 'mobile' }) {
+function Header({ variant, onMenuOpen }: { variant: 'desktop' | 'mobile'; onMenuOpen?: () => void }) {
   const searchId = `home-search-${variant}`;
 
   return (
@@ -230,9 +262,9 @@ function Header({ variant }: { variant: 'desktop' | 'mobile' }) {
           <Link href="/learn" className="hidden h-10 items-center justify-center rounded-xl bg-primary px-5 text-sm font-medium text-primary-foreground transition-colors hover:opacity-90 md:inline-flex">
             开始学习
           </Link>
-          <Link href="/learn" className="inline-flex h-9 items-center justify-center rounded-xl border border-border bg-card px-3 text-sm font-medium transition-colors hover:bg-muted md:hidden">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-[18px] h-[18px]"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-          </Link>
+          <button type="button" aria-label="打开栏目菜单" onClick={onMenuOpen} className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-card text-foreground transition-colors duration-100 active:bg-muted md:hidden">
+            <Menu className="size-[18px]" />
+          </button>
         </div>
       </div>
     </header>
@@ -241,12 +273,12 @@ function Header({ variant }: { variant: 'desktop' | 'mobile' }) {
 
 function BeginnerRoutePanel({ compact = false, sectionId }: { compact?: boolean; sectionId: string }) {
   return (
-    <section id={sectionId} className={compact ? 'mt-6 rounded-2xl border border-border bg-card p-4' : 'flex h-full flex-col rounded-[20px] border border-border bg-card p-6'}>
+    <section id={sectionId} className={compact ? 'mt-4 rounded-2xl border border-border bg-card p-4' : 'flex h-full flex-col rounded-[20px] border border-border bg-card p-6'}>
       <div className="mb-5">
         <h2 className={compact ? 'text-[17px] font-semibold' : 'text-xl font-semibold'}>4 步开始</h2>
       </div>
       <div className={compact ? 'relative flex-1 pl-11' : 'relative flex-1 pl-[52px]'}>
-        <div className={compact ? 'absolute left-4 top-4 bottom-4 w-[1.5px] bg-border/55' : 'absolute left-[19px] top-5 bottom-5 w-[1.5px] bg-border/50'} />
+        <div className={compact ? 'absolute left-4 top-4 bottom-9 w-[1.5px] bg-border/55' : 'absolute left-[19px] top-5 bottom-5 w-[1.5px] bg-border/50'} />
         {beginnerLearningSteps.map((item, index) => (
           <Link
             key={item.step}
@@ -263,7 +295,7 @@ function BeginnerRoutePanel({ compact = false, sectionId }: { compact?: boolean;
           </Link>
         ))}
       </div>
-      <Link href="/learn" className={compact ? 'mt-4 flex h-10 w-full items-center justify-center rounded-[10px] border border-border text-[13px] font-medium text-foreground transition-colors hover:bg-muted' : 'mt-5 flex h-12 w-full items-center justify-center rounded-xl border border-border text-sm font-medium text-foreground transition-colors hover:bg-muted'}>
+      <Link href="/learn" className={compact ? 'mt-4 flex h-11 w-full items-center justify-center rounded-[10px] border border-border text-[13px] font-medium text-foreground transition-colors active:bg-muted' : 'mt-5 flex h-12 w-full items-center justify-center rounded-xl border border-border text-sm font-medium text-foreground transition-colors hover:bg-muted'}>
         进入学习路线
       </Link>
     </section>
@@ -296,14 +328,18 @@ function Hero({
   const isMobile = variant === 'mobile';
 
   return (
-    <section className={isMobile ? 'px-4 py-8' : 'py-16'}>
+    <section className={isMobile ? 'px-0 py-6' : 'py-16'}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className={isMobile ? 'space-y-6' : 'grid items-start gap-8 lg:grid-cols-[7fr_5fr]'}>
+        <div className={isMobile ? 'space-y-4' : 'grid items-start gap-8 lg:grid-cols-[7fr_5fr]'}>
           <div className="flex min-w-0 flex-col">
-            <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">AI 与 API 学习导航</p>
-            <div className="w-12 h-0.5 bg-primary mb-6" />
+            {!isMobile && (
+              <>
+                <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">AI 与 API 学习导航</p>
+                <div className="w-12 h-0.5 bg-primary mb-6" />
+              </>
+            )}
             {isMobile ? (
-              <p className="text-[28px] font-bold leading-tight tracking-tight mb-3">
+              <p className="text-[26px] font-bold leading-tight tracking-tight mb-2">
                 先看懂 AI，<br />再把 API 用起来
               </p>
             ) : (
@@ -312,9 +348,9 @@ function Hero({
               </h1>
             )}
             <p className={isMobile ? 'text-[13px] text-muted-foreground leading-relaxed mb-5' : 'text-sm text-muted-foreground leading-relaxed max-w-xl mb-6'}>
-              从基础词汇、提示词、API Key 到模型购买与首次调用，把新手真正需要的路径整理成一条清晰路线。
+              {isMobile ? '从 AI 入门到 API 调用，先找到你现在该看的内容。' : '从基础词汇、提示词、API Key 到模型购买与首次调用，把新手真正需要的路径整理成一条清晰路线。'}
             </p>
-            <div className={isMobile ? 'mb-4' : 'mb-5 max-w-2xl'}>
+            <div className={isMobile ? 'mb-3' : 'mb-5 max-w-2xl'}>
               <SearchBar
                 query={query}
                 setQuery={setQuery}
@@ -326,7 +362,7 @@ function Hero({
                 searchId={searchId}
               />
             </div>
-            <div className={isMobile ? 'flex gap-2 mb-3' : 'flex gap-3 mb-4'}>
+            <div className={isMobile ? 'flex gap-2 mb-2' : 'flex gap-3 mb-4'}>
               <Link href={`#${beginnerId}`} className={isMobile ? 'flex flex-1 h-[44px] items-center justify-center rounded-[10px] bg-primary text-primary-foreground text-[13px] font-medium' : 'inline-flex h-12 px-6 items-center justify-center rounded-xl bg-primary text-primary-foreground text-sm font-medium'}>
                 从新手路线开始
               </Link>
@@ -346,9 +382,43 @@ function Hero({
   );
 }
 
-function PurchaseTutorials({ sectionId }: { sectionId: string }) {
+function MobilePurchaseTutorials({ sectionId }: { sectionId: string }) {
   return (
-    <section id={sectionId} className="border-t border-border py-12">
+    <section id={sectionId} className="border-t border-border py-8 md:hidden">
+      <div className="px-4">
+        <div className="mb-4">
+          <p className="mb-2 text-[10px] uppercase tracking-widest text-muted-foreground">购买前先看</p>
+          <h2 className="mb-2 text-xl font-semibold">热门 AI 购买教程</h2>
+          <p className="text-sm leading-6 text-muted-foreground">先选平台，再看注册、支付、API Key 和额度说明。</p>
+        </div>
+        <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-3 max-[639px]:[padding-left:max(1rem,calc((100vw-min(calc(100vw-48px),328px))/2))] max-[639px]:[padding-right:max(1rem,calc((100vw-min(calc(100vw-48px),328px))/2))]">
+          {featuredHotTutorials.map(api => (
+            <Link
+              key={api.id}
+              href={`/tutorial/${api.id}`}
+              className="grid h-[112px] w-[calc(100vw-48px)] max-w-[328px] shrink-0 grid-cols-[56px_minmax(0,1fr)_18px] items-center gap-3 rounded-2xl border border-border bg-card p-4 transition-colors duration-100 active:bg-muted"
+            >
+              <BrandIcon id={api.id} alt={api.name} size="lg" className="justify-self-center rounded-xl" />
+              <span className="flex min-h-16 min-w-0 flex-col justify-center">
+                <span className="block truncate text-[15px] font-semibold leading-5">{api.name} 购买教程</span>
+                <span className="mt-1 block truncate text-xs leading-4 text-muted-foreground">{api.tutorial?.steps.length || 0} 个步骤 · {api.badge.text}</span>
+                <span className="mt-1.5 inline-flex h-7 w-fit items-center rounded-lg border border-border px-3 text-xs font-medium text-foreground">查看教程</span>
+              </span>
+              <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
+            </Link>
+          ))}
+        </div>
+        <Link href="/tutorial" className="inline-flex min-h-11 items-center rounded-lg text-sm font-medium text-foreground active:text-muted-foreground">
+          全部购买教程 →
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+function DesktopPurchaseTutorials({ sectionId }: { sectionId: string }) {
+  return (
+    <section id={sectionId} className="hidden border-t border-border py-12 md:block">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-6">
           <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">购买前先看</p>
@@ -379,7 +449,8 @@ function PurchaseTutorials({ sectionId }: { sectionId: string }) {
   );
 }
 
-function UserEntrySection() {
+function UserEntrySection({ variant }: { variant: 'desktop' | 'mobile' }) {
+  const isMobile = variant === 'mobile';
   const icons = [
     <svg key="book" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-[18px] h-[18px]"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>,
     <svg key="cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-[18px] h-[18px]"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>,
@@ -387,22 +458,22 @@ function UserEntrySection() {
   ];
 
   return (
-    <section className="py-12">
+    <section className={isMobile ? 'py-8' : 'py-12'}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 className="text-2xl font-semibold mb-6">你现在要解决什么？</h2>
-        <div className="grid gap-5 md:grid-cols-3">
+        <h2 className={isMobile ? 'mb-4 text-xl font-semibold' : 'text-2xl font-semibold mb-6'}>你现在要解决什么？</h2>
+        <div className={isMobile ? 'grid gap-3' : 'grid gap-5 md:grid-cols-3'}>
           {userEntryCards.map((card, index) => (
             <Link
               key={card.href}
               href={card.href}
-              className="flex min-h-[220px] flex-col rounded-2xl border border-border bg-muted/30 p-6 transition-colors hover:bg-muted/40 duration-150"
+              className={isMobile ? 'flex min-h-[156px] flex-col rounded-2xl border border-border bg-muted/30 p-4 transition-colors duration-100 active:bg-muted/60' : 'flex min-h-[220px] flex-col rounded-2xl border border-border bg-muted/30 p-6 transition-colors hover:bg-muted/40 duration-150'}
             >
-              <div className="w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center mb-4 text-muted-foreground">
+              <div className={isMobile ? 'mb-3 flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-muted-foreground' : 'w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center mb-4 text-muted-foreground'}>
                 {icons[index]}
               </div>
               <h3 className="text-base font-semibold mb-2">{card.title}</h3>
-              <p className="flex-1 text-sm text-muted-foreground leading-relaxed mb-4">{card.desc}</p>
-              <span className="mt-auto inline-flex h-12 w-fit items-center justify-center rounded-xl border border-border px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted">
+              <p className={isMobile ? 'mb-3 line-clamp-2 flex-1 text-sm leading-6 text-muted-foreground' : 'flex-1 text-sm text-muted-foreground leading-relaxed mb-4'}>{card.desc}</p>
+              <span className={isMobile ? 'mt-auto inline-flex h-11 w-fit items-center justify-center rounded-xl border border-border px-4 text-sm font-medium text-foreground' : 'mt-auto inline-flex h-12 w-fit items-center justify-center rounded-xl border border-border px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted'}>
                 {card.action}
               </span>
             </Link>
@@ -448,10 +519,82 @@ function Footer() {
   );
 }
 
+function MobileMenuSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
+  if (!open) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 md:hidden">
+      <button
+        type="button"
+        aria-label="关闭栏目菜单"
+        onClick={onClose}
+        className="mobile-sheet-fade absolute inset-0 bg-background/70"
+      />
+      <div className="mobile-sheet-panel absolute inset-x-0 bottom-0 rounded-t-3xl border border-border bg-card px-4 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-3 shadow-lg">
+        <div className="mb-3 flex items-center justify-between">
+          <p className="text-sm font-semibold">栏目入口</p>
+          <button
+            type="button"
+            aria-label="关闭栏目菜单"
+            onClick={onClose}
+            className="flex h-11 w-11 items-center justify-center rounded-xl text-muted-foreground active:bg-muted"
+          >
+            <X className="size-4" />
+          </button>
+        </div>
+        <div className="grid gap-2">
+          {mobileMenuLinks.map(link => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={onClose}
+              className="flex min-h-12 items-center justify-between rounded-xl border border-border bg-background px-4 py-3 active:bg-muted"
+            >
+              <span>
+                <span className="block text-sm font-medium">{link.name}</span>
+                <span className="mt-0.5 block text-xs text-muted-foreground">{link.desc}</span>
+              </span>
+              <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MobileBottomNav({ onMenuOpen }: { onMenuOpen: () => void }) {
+  const itemClass = 'flex min-h-12 flex-1 flex-col items-center justify-center gap-1 rounded-xl text-[11px] font-medium text-muted-foreground active:bg-muted active:text-foreground';
+
+  return (
+    <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 px-3 pb-[calc(0.5rem+env(safe-area-inset-bottom))] pt-2 backdrop-blur md:hidden" aria-label="移动端底部导航">
+      <div className="mx-auto flex max-w-md gap-1">
+        <Link href="/" className={itemClass}>
+          <Home className="size-5" />
+          <span>首页</span>
+        </Link>
+        <Link href="/tutorial" className={itemClass}>
+          <BookOpen className="size-5" />
+          <span>教程</span>
+        </Link>
+        <Link href="/cloud-api" className={itemClass}>
+          <Cloud className="size-5" />
+          <span>API</span>
+        </Link>
+        <button type="button" onClick={onMenuOpen} className={itemClass} aria-label="打开栏目菜单">
+          <Menu className="size-5" />
+          <span>菜单</span>
+        </button>
+      </div>
+    </nav>
+  );
+}
+
 function HomeShell({ variant }: { variant: 'desktop' | 'mobile' }) {
   const router = useRouter();
   const [query, setQuery] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { suggestions, exactMatch, appExactMatch } = useSearch(query, variant === 'mobile' ? 6 : 8);
   const searchId = `home-search-${variant}`;
   const beginnerId = `beginner-route-${variant}`;
@@ -467,8 +610,8 @@ function HomeShell({ variant }: { variant: 'desktop' | 'mobile' }) {
   }, [exactMatch, suggestions, router]);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Header variant={variant} />
+    <div className={variant === 'mobile' ? 'min-h-screen bg-background pb-[calc(86px+env(safe-area-inset-bottom))] text-foreground' : 'min-h-screen bg-background text-foreground'}>
+      <Header variant={variant} onMenuOpen={() => setMobileMenuOpen(true)} />
       <main>
         <Hero
           query={query}
@@ -482,10 +625,20 @@ function HomeShell({ variant }: { variant: 'desktop' | 'mobile' }) {
           beginnerId={beginnerId}
           purchaseId={purchaseId}
         />
-        <PurchaseTutorials sectionId={purchaseId} />
-        <UserEntrySection />
+        {variant === 'mobile' ? (
+          <MobilePurchaseTutorials sectionId={purchaseId} />
+        ) : (
+          <DesktopPurchaseTutorials sectionId={purchaseId} />
+        )}
+        <UserEntrySection variant={variant} />
       </main>
       <Footer />
+      {variant === 'mobile' && (
+        <>
+          <MobileBottomNav onMenuOpen={() => setMobileMenuOpen(true)} />
+          <MobileMenuSheet open={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+        </>
+      )}
     </div>
   );
 }

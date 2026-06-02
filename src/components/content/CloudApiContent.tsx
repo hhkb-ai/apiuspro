@@ -78,7 +78,7 @@ function APICard({ api }: { api: APIConfig }) {
       <div className="mt-5 flex gap-2">
         <Button
           asChild
-          className="flex-1 rounded-xl focus-visible:border-slate-400 focus-visible:ring-slate-400/40 dark:focus-visible:border-slate-500 dark:focus-visible:ring-slate-500/40"
+          className="official-entry-link official-entry-button flex-1 rounded-xl border border-transparent bg-[#14181f] text-white shadow-none outline-none ring-0 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0"
           size="sm"
         >
           <a href={api.url} target="_blank" rel="noopener noreferrer">

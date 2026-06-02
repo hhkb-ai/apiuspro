@@ -1,0 +1,1868 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API知识站 - 简单漂亮的前端界面预览</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS 变量与设计系统 (咖啡色/奶油色主题) */
+        :root {
+            --background: #faf8f4;
+            --foreground: #24211d;
+            --card: #fffdf8;
+            --card-foreground: #24211d;
+            --border: #ded4c6;
+            --ring: #9a5a35;
+            --muted: #f5efe6;
+            --muted-foreground: #57504a;
+            --accent: #f0ebe3;
+            --accent-foreground: #24211d;
+            --primary: #2b2621;
+            --primary-foreground: #fffdf8;
+            --radius: 12px;
+            --shadow: 0 4px 20px -2px rgba(43, 38, 33, 0.06), 0 2px 8px -1px rgba(43, 38, 33, 0.04);
+            --shadow-hover: 0 12px 30px -4px rgba(43, 38, 33, 0.12), 0 4px 16px -2px rgba(43, 38, 33, 0.06);
+            
+            --success-bg: #e8f5e9;
+            --success-text: #2e7d32;
+            --success-border: #c8e6c9;
+            
+            --warning-bg: #fff8e1;
+            --warning-text: #f57f17;
+            --warning-border: #ffe082;
+            
+            --danger-bg: #ffebee;
+            --danger-text: #c62828;
+            --danger-border: #ffcdd2;
+        }
+
+        :root.dark {
+            --background: #0f0d0b;
+            --foreground: #ede7dd;
+            --card: #1a1714;
+            --card-foreground: #ede7dd;
+            --border: #332c24;
+            --ring: #c8946c;
+            --muted: #242019;
+            --muted-foreground: #a89888;
+            --accent: #2e2821;
+            --accent-foreground: #ede7dd;
+            --primary: #ede7dd;
+            --primary-foreground: #1a1714;
+            --shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4), 0 2px 8px -1px rgba(0, 0, 0, 0.3);
+            --shadow-hover: 0 12px 30px -4px rgba(0, 0, 0, 0.6), 0 4px 16px -2px rgba(0, 0, 0, 0.4);
+
+            --success-bg: rgba(46, 125, 50, 0.15);
+            --success-text: #81c784;
+            --success-border: rgba(46, 125, 50, 0.3);
+            
+            --warning-bg: rgba(245, 127, 23, 0.15);
+            --warning-text: #ffd54f;
+            --warning-border: rgba(245, 127, 23, 0.3);
+            
+            --danger-bg: rgba(198, 40, 40, 0.15);
+            --danger-text: #e57373;
+            --danger-border: rgba(198, 40, 40, 0.3);
+        }
+
+        /* 基础重置 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.15s ease;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--foreground);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(154, 90, 53, 0.06) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(200, 148, 108, 0.06) 0px, transparent 50%),
+                radial-gradient(at 50% 100%, rgba(154, 90, 53, 0.03) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* 布局容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* 顶部导航 */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: rgba(250, 248, 244, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+        }
+        :root.dark header {
+            background-color: rgba(15, 13, 11, 0.85);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 20px;
+            color: var(--foreground);
+        }
+
+        .logo-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--ring);
+            box-shadow: 0 0 10px var(--ring);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-link {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--muted-foreground);
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--foreground);
+            background-color: var(--accent);
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .theme-btn {
+            background: none;
+            border: 1px solid var(--border);
+            padding: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+            color: var(--foreground);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+        }
+        .theme-btn:hover {
+            background-color: var(--accent);
+        }
+
+        .theme-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .theme-btn .sun { display: block; }
+        .theme-btn .moon { display: none; }
+        :root.dark .theme-btn .sun { display: none; }
+        :root.dark .theme-btn .moon { display: block; }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--primary-foreground);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        /* Hero 主视觉区 */
+        .hero {
+            padding: 60px 0 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: var(--accent);
+            color: var(--foreground);
+            border: 1px solid var(--border);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 24px;
+        }
+
+        .hero-badge span {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #2e7d32;
+        }
+        :root.dark .hero-badge span {
+            background-color: #81c784;
+        }
+
+        .hero h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 42px;
+            font-weight: 800;
+            line-height: 1.25;
+            letter-spacing: -0.5px;
+            margin-bottom: 16px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--ring) 0%, #d4855a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 16px;
+            color: var(--muted-foreground);
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+
+        /* 搜索框 */
+        .search-container {
+            max-width: 620px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            padding: 6px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .search-box:focus-within {
+            border-color: var(--ring);
+            box-shadow: 0 0 0 3px rgba(154, 90, 53, 0.15);
+        }
+
+        .search-icon {
+            color: var(--muted-foreground);
+            margin-left: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 12px 16px;
+            font-size: 16px;
+            color: var(--foreground);
+            outline: none;
+            width: 100%;
+        }
+
+        .search-input::placeholder {
+            color: var(--muted-foreground);
+            opacity: 0.7;
+        }
+
+        .search-btn {
+            background-color: var(--primary);
+            color: var(--primary-foreground);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* 主体网格布局 */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 32px;
+            padding: 40px 0 80px;
+        }
+
+        /* 侧边栏 */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .sidebar-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted-foreground);
+            margin-bottom: 12px;
+        }
+
+        .category-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .category-item button {
+            width: 100%;
+            background: none;
+            border: none;
+            text-align: left;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--muted-foreground);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .category-item button:hover {
+            background-color: var(--accent);
+            color: var(--foreground);
+        }
+
+        .category-item.active button {
+            background-color: var(--primary);
+            color: var(--primary-foreground);
+        }
+
+        .category-count {
+            font-size: 11px;
+            background-color: var(--accent);
+            color: var(--muted-foreground);
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+        .category-item.active .category-count {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: var(--primary-foreground);
+        }
+
+        /* 内容区域 */
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        /* 视图切换与过滤器 */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
+        }
+
+        .toolbar-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .view-controls {
+            display: flex;
+            gap: 8px;
+            border: 1px solid var(--border);
+            padding: 2px;
+            border-radius: 6px;
+            background-color: var(--accent);
+        }
+
+        .view-btn {
+            background: none;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: var(--muted-foreground);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .view-btn.active {
+            background-color: var(--card);
+            color: var(--foreground);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        }
+
+        /* 卡片网格 */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .api-card {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            position: relative;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+        }
+
+        .api-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--ring);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .card-icon-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .api-icon {
+            font-size: 24px;
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background-color: var(--muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .api-name {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 6px;
+            border: 1px solid transparent;
+        }
+
+        .badge-warning {
+            background-color: var(--warning-bg);
+            color: var(--warning-text);
+            border-color: var(--warning-border);
+        }
+
+        .badge-success {
+            background-color: var(--success-bg);
+            color: var(--success-text);
+            border-color: var(--success-border);
+        }
+
+        .badge-sky {
+            background-color: var(--sky-bg);
+            color: var(--sky-text);
+            border-color: var(--sky-border);
+        }
+
+        .api-desc {
+            font-size: 13px;
+            color: var(--muted-foreground);
+            margin-bottom: 20px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            height: 42px;
+        }
+
+        .api-meta {
+            border-top: 1px solid var(--border);
+            padding-top: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .meta-row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .meta-label {
+            color: var(--muted-foreground);
+        }
+
+        .meta-value {
+            font-weight: 500;
+        }
+
+        .card-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .btn-outline {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--foreground);
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+        .btn-outline:hover {
+            background-color: var(--accent);
+            border-color: var(--foreground);
+        }
+
+        .btn-card-primary {
+            background-color: var(--primary);
+            color: var(--primary-foreground);
+            border: none;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+        .btn-card-primary:hover {
+            opacity: 0.9;
+        }
+
+        /* 表格视图 */
+        .table-view-container {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            display: none;
+        }
+
+        .api-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .api-table th {
+            background-color: var(--muted);
+            color: var(--muted-foreground);
+            font-weight: 600;
+            padding: 14px 20px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .api-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        .api-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .api-table tr:hover td {
+            background-color: rgba(154, 90, 53, 0.02);
+        }
+
+        .table-api-name {
+            font-weight: 700;
+        }
+
+        /* 场景推荐 */
+        .scenarios-section {
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .section-header {
+            margin-bottom: 24px;
+        }
+
+        .section-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .section-header p {
+            color: var(--muted-foreground);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .scenario-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .scenario-card {
+            border: 1px solid var(--border);
+            background-color: var(--card);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .scenario-card:hover {
+            transform: translateY(-1px);
+            border-color: var(--ring);
+        }
+
+        .scenario-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            font-size: 18px;
+        }
+
+        .scenario-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .scenario-desc {
+            font-size: 13px;
+            color: var(--muted-foreground);
+            line-height: 1.5;
+        }
+
+        /* 调试沙箱与代码块 */
+        .sandbox-section {
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .sandbox-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .sandbox-left {
+            padding: 32px;
+            border-right: 1px solid var(--border);
+        }
+
+        .sandbox-right {
+            background-color: #1e1b17;
+            color: #ede7dd;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        :root.dark .sandbox-right {
+            background-color: #141210;
+        }
+
+        .sandbox-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sandbox-desc {
+            font-size: 13px;
+            color: var(--muted-foreground);
+            margin-bottom: 24px;
+        }
+
+        .select-group {
+            margin-bottom: 20px;
+        }
+
+        .select-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted-foreground);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .api-selector-btn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .api-selector-btn {
+            background-color: var(--background);
+            border: 1px solid var(--border);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--foreground);
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .api-selector-btn:hover {
+            background-color: var(--accent);
+        }
+        .api-selector-btn.active {
+            border-color: var(--ring);
+            background-color: var(--accent);
+            font-weight: 600;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .code-lang-tabs {
+            display: flex;
+            gap: 4px;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 3px;
+            border-radius: 6px;
+        }
+
+        .code-tab {
+            background: none;
+            border: none;
+            color: #a89888;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .code-tab.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ede7dd;
+        }
+
+        .copy-btn {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #ede7dd;
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .copy-btn:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .code-container {
+            flex: 1;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .code-block {
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            color: #f3eee6;
+            overflow-x: auto;
+            height: 200px;
+        }
+
+        .code-desc {
+            font-size: 11px;
+            color: #a89888;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 12px;
+        }
+
+        /* 模态框样式 */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            width: 90%;
+            max-width: 650px;
+            max-height: 85vh;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--muted-foreground);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-close:hover {
+            background-color: var(--accent);
+            color: var(--foreground);
+        }
+
+        .modal-body {
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .step-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .step-item {
+            display: flex;
+            gap: 16px;
+        }
+
+        .step-number {
+            width: 28px;
+            height: 28px;
+            background-color: var(--primary);
+            color: var(--primary-foreground);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .step-details {
+            flex: 1;
+        }
+
+        .step-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .step-desc {
+            font-size: 13px;
+            color: var(--muted-foreground);
+        }
+
+        .step-box {
+            background-color: var(--muted);
+            border: 1px solid var(--border);
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        .warning-box {
+            background-color: var(--warning-bg);
+            color: var(--warning-text);
+            border: 1px solid var(--warning-border);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            margin-top: 16px;
+        }
+
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--border);
+            background-color: var(--muted);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 900px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                display: none;
+            }
+            .sandbox-grid {
+                grid-template-columns: 1fr;
+            }
+            .sandbox-left {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 {
+                font-size: 28px;
+            }
+            .nav-links {
+                display: none;
+            }
+            .search-box {
+                flex-direction: column;
+                gap: 8px;
+                padding: 10px;
+            }
+            .search-input {
+                padding: 8px 12px;
+            }
+            .search-btn {
+                width: 100%;
+            }
+            .card-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部导航栏 -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <div class="logo-dot"></div>
+                API知识站
+            </div>
+            
+            <nav class="nav-links">
+                <a href="#" class="nav-link active">首页</a>
+                <a href="#api-list-section" class="nav-link">API官网</a>
+                <a href="#scenarios-section" class="nav-link">场景推荐</a>
+                <a href="#sandbox-section" class="nav-link">在线调试</a>
+            </nav>
+            
+            <div class="actions">
+                <button class="theme-btn" id="theme-toggle" aria-label="切换主题">
+                    <!-- Sun Icon -->
+                    <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+                    </svg>
+                    <!-- Moon Icon -->
+                    <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+                    </svg>
+                </button>
+                <a href="https://www.apiuspro.cn" target="_blank" class="btn-primary">
+                    访问主站
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体区域 -->
+    <main class="container">
+        
+        <!-- Hero 区域 -->
+        <section class="hero">
+            <div class="hero-badge">
+                <span></span> 2026 最新 AI 部署与购买教程已更新
+            </div>
+            <h1>让复杂的 <span>AI API 接入</span> 触手可及</h1>
+            <p>专注于解决“买哪个 API、在哪里买、怎么注册充值、怎么创建 API Key 以及如何无缝接入本地工具”的问题。</p>
+            
+            <div class="search-container">
+                <div class="search-box">
+                    <span class="search-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.3-4.3"></path>
+                        </svg>
+                    </span>
+                    <input type="text" id="api-search" class="search-input" placeholder="输入关键字搜索 API，例如：DeepSeek, MiMo..." oninput="handleSearch()">
+                    <button class="search-btn" onclick="handleSearchClick()">搜索</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 主体布局 -->
+        <div class="main-layout" id="api-list-section">
+            
+            <!-- 侧边栏分类 -->
+            <aside class="sidebar">
+                <div>
+                    <h3 class="sidebar-title">快捷分类</h3>
+                    <ul class="category-list">
+                        <li class="category-item active" data-category="all">
+                            <button onclick="filterCategory('all')">全部 API <span class="category-count" id="count-all">6</span></button>
+                        </li>
+                        <li class="category-item" data-category="direct">
+                            <button onclick="filterCategory('direct')">国内直连 <span class="category-count" id="count-direct">4</span></button>
+                        </li>
+                        <li class="category-item" data-category="proxy">
+                            <button onclick="filterCategory('proxy')">海外网络 <span class="category-count" id="count-proxy">2</span></button>
+                        </li>
+                        <li class="category-item" data-category="free">
+                            <button onclick="filterCategory('free')">含有免费额度 <span class="category-count" id="count-free">4</span></button>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="sidebar-title">友情提示</h3>
+                    <div style="font-size: 13px; color: var(--muted-foreground); background-color: var(--card); border: 1px solid var(--border); padding: 16px; border-radius: var(--radius);">
+                        <p style="margin-bottom: 8px; font-weight: 600; color: var(--foreground);">防泄露原则：</p>
+                        不要在前端代码、公开仓库或截图中暴露您的 API Key。建议使用环境变量或 <code>.env</code> 文件保存。
+                    </div>
+                </div>
+            </aside>
+
+            <!-- 核心展示区 -->
+            <div class="content-area">
+                
+                <!-- 工具栏 -->
+                <div class="toolbar">
+                    <div class="toolbar-title" id="list-title">所有大模型 API</div>
+                    <div class="view-controls">
+                        <button class="view-btn active" id="btn-grid-view" onclick="setViewMode('grid')">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                            卡片
+                        </button>
+                        <button class="view-btn" id="btn-table-view" onclick="setViewMode('table')">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="3" y1="6" x2="21" y2="6"></line>
+                                <line x1="3" y1="12" x2="21" y2="12"></line>
+                                <line x1="3" y1="18" x2="21" y2="18"></line>
+                            </svg>
+                            表格
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 卡片网格视图 -->
+                <div class="cards-grid" id="api-cards-container">
+                    <!-- 卡片动态填充 -->
+                </div>
+
+                <!-- 表格视图 -->
+                <div class="table-view-container" id="api-table-container">
+                    <table class="api-table">
+                        <thead>
+                            <tr>
+                                <th>API 名称</th>
+                                <th>网络要求</th>
+                                <th>免费额度</th>
+                                <th>亮点特点</th>
+                                <th style="text-align: right;">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="api-table-body">
+                            <!-- 表格行动态填充 -->
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 场景推荐区 -->
+        <section class="scenarios-section" id="scenarios-section">
+            <div class="section-header">
+                <h2>按使用场景推荐</h2>
+                <p>根据您的具体需求与核心痛点，匹配最适合的 API 选型方案</p>
+            </div>
+            
+            <div class="scenario-grid">
+                <div class="scenario-card">
+                    <div class="scenario-icon" style="background-color: var(--danger-bg); color: var(--danger-text);">💻</div>
+                    <div class="scenario-title">编程开发与代码重构</div>
+                    <div class="scenario-desc">需要进行大批量的代码自动补全、Bug 修复或理解整个工程目录。首选 <strong>Claude 3.7 Sonnet</strong> (推理较强，最懂程序员) 或 <strong>DeepSeek R1</strong> (极致性价比)。</div>
+                </div>
+                <div class="scenario-card">
+                    <div class="scenario-icon" style="background-color: var(--success-bg); color: var(--success-text);">📚</div>
+                    <div class="scenario-title">超长文档与学术文献分析</div>
+                    <div class="scenario-desc">需要一次性上传几百页的 PDF 报告或阅读整个书籍。首选 <strong>月之暗面 Kimi</strong> (支持 128K 乃至数百万上下文，解析文件稳健)。</div>
+                </div>
+                <div class="scenario-card">
+                    <div class="scenario-icon" style="background-color: var(--warning-bg); color: var(--warning-text);">🤖</div>
+                    <div class="scenario-title">智能客服与本地助手</div>
+                    <div class="scenario-desc">高频次响应，极速返回，要求稳定且成本低廉。首选 <strong>通义千问 (Qwen-Plus/Turbo)</strong> 或 <strong>DeepSeek V3</strong>，直连速度极快。</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 调试沙箱与代码块 -->
+        <section class="sandbox-section" id="sandbox-section">
+            <div class="section-header">
+                <h2>在线调试与接入 Sandbox</h2>
+                <p>选择您的 API 与开发语言，获取无缝适配的 API Key 首次调用代码模板</p>
+            </div>
+
+            <div class="sandbox-grid">
+                <!-- 左侧配置 -->
+                <div class="sandbox-left">
+                    <div class="sandbox-title">💡 调用配置</div>
+                    <p class="sandbox-desc">在下方选择你想要测试接入的大模型 API，即可实时查看生成在右侧的代码参数配置。</p>
+                    
+                    <div class="select-group">
+                        <label class="select-label">第一步：选择目标 API</label>
+                        <div class="api-selector-btn-grid" id="sandbox-api-selectors">
+                            <!-- 动态填充 -->
+                        </div>
+                    </div>
+                    
+                    <div class="select-group" style="margin-top: 30px;">
+                        <label class="select-label">核心参数一览</label>
+                        <div style="background-color: var(--background); border: 1px solid var(--border); padding: 16px; border-radius: 8px; font-size: 13px;">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                                <span style="color:var(--muted-foreground)">接口端点 (Base URL):</span>
+                                <strong id="sb-base-url" style="font-family:'Fira Code', monospace; font-size:11px;">https://api.deepseek.com</strong>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                                <span style="color:var(--muted-foreground)">测试模型 (Model Name):</span>
+                                <strong id="sb-model-name" style="font-family:'Fira Code', monospace;">deepseek-chat</strong>
+                            </div>
+                            <div style="display:flex; justify-content:space-between;">
+                                <span style="color:var(--muted-foreground)">授权头 (Authorization):</span>
+                                <strong style="font-family:'Fira Code', monospace; font-size:11px;">Bearer $API_KEY</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右侧代码 -->
+                <div class="sandbox-right">
+                    <div>
+                        <div class="code-header">
+                            <div class="code-lang-tabs">
+                                <button class="code-tab active" onclick="selectLang('python')">Python</button>
+                                <button class="code-tab" onclick="selectLang('nodejs')">Node.js</button>
+                                <button class="code-tab" onclick="selectLang('curl')">cURL</button>
+                            </div>
+                            <button class="copy-btn" onclick="copyCode()">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                <span id="copy-btn-text">复制代码</span>
+                            </button>
+                        </div>
+                        <div class="code-container">
+                            <pre class="code-block" id="sandbox-code">正在加载代码...</pre>
+                        </div>
+                    </div>
+                    <div class="code-desc" id="sandbox-code-explanation">
+                        使用 OpenAI SDK 进行标准调用。确保您已经使用环境变量设置了对应的 API Key。
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 页脚 -->
+    <footer style="border-t: 1px solid var(--border); padding: 40px 0; text-align: center; font-size: 13px; color: var(--muted-foreground); margin-top: 60px; background-color: var(--card);">
+        <div class="container">
+            <p style="margin-bottom: 8px;">API知识站 - 2026 前端交互与视觉预览草稿</p>
+            <p>基于 Next.js 16 + Tailwind CSS v4 与 shadcn/ui 设计理念构建</p>
+        </div>
+    </footer>
+
+    <!-- 教程购买模态框 -->
+    <div class="modal" id="tutorial-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modal-title">购买教程</div>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- 动态教程步骤 -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn-outline" onclick="closeModal()">关闭</button>
+                <button class="btn-card-primary" id="modal-external-btn" onclick="openExternalUrl()">访问开放平台</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS 逻辑代码 -->
+    <script>
+        // 大数据配置
+        const apiData = [
+            {
+                id: 'deepseek',
+                name: 'DeepSeek',
+                desc: '高性能开源模型，在代码与推理领域能力比肩顶尖闭源，拥有极其恐怖的超低调用价格。',
+                url: 'https://platform.deepseek.com/',
+                free: '赠送 500 万 Tokens',
+                proxy: false,
+                features: ['极高性价比', '推理模型 R1', '代码极其优秀', '国内直连'],
+                badge: { text: '热门推荐', type: 'warning' },
+                icon: '🔵',
+                baseUrl: 'https://api.deepseek.com/v1',
+                testModel: 'deepseek-chat',
+                tutorial: {
+                    title: 'DeepSeek API 购买与调用教程',
+                    steps: [
+                        { title: '注册账号', desc: '访问平台 https://platform.deepseek.com 注册并用手机号登录。' },
+                        { title: '实名认证', desc: '在控制台进行实名，个人身份证或企业营业执照认证。' },
+                        { title: '创建 API Key', desc: '前往 API Keys 菜单，生成以 sk- 开头的密钥，务必立即保存（仅显示一次）。' },
+                        { title: '充值账户', desc: '支持支付宝与微信充值，新用户注册通常自带免费测试额度。' }
+                    ],
+                    warning: '不要将 Key 提交到 Github，避免账号在 1 分钟内由于扣费导致停机。'
+                },
+                code: {
+                    python: `import os\nfrom openai import OpenAI\n\nclient = OpenAI(\n    api_key=os.environ.get("DEEPSEEK_API_KEY"),\n    base_url="https://api.deepseek.com/v1",\n)\n\nresponse = client.chat.completions.create(\n    model="deepseek-chat",\n    messages=[\n        {"role": "user", "content": "你好，请用一句话介绍你自己。"}\n    ],\n)\nprint(response.choices[0].message.content)`,
+                    nodejs: `const { OpenAI } = require("openai");\n\nconst client = new OpenAI({\n    apiKey: process.env.DEEPSEEK_API_KEY,\n    baseURL: "https://api.deepseek.com/v1"\n});\n\nasync function main() {\n    const response = await client.chat.completions.create({\n        model: "deepseek-chat",\n        messages: [{ role: "user", content: "你好，请用一句话介绍你自己。" }]\n    });\n    console.log(response.choices[0].message.content);\n}\nmain();`,
+                    curl: `curl -X POST https://api.deepseek.com/v1/chat/completions \\\n  -H "Content-Type: application/json" \\\n  -H "Authorization: Bearer $DEEPSEEK_API_KEY" \\\n  -d '{\n    "model": "deepseek-chat",\n    "messages": [{"role": "user", "content": "你好，请用一句话介绍你自己。"}]\n  }'`
+                }
+            },
+            {
+                id: 'mimo',
+                name: '小米 MiMo',
+                desc: '小米出品的全新推理大模型，2026年首发推出，针对数学推理、逻辑推导以及指令遵循深度优化。',
+                url: 'https://platform.xiaomimimo.com/',
+                free: 'Orbit 计划限时免费',
+                proxy: false,
+                features: ['数学推导', '指令遵循', '新上线', '国内直连'],
+                badge: { text: '新上线', type: 'warning' },
+                icon: '🟠',
+                baseUrl: 'https://api.xiaomimimo.com/v1',
+                testModel: 'mimo-v2-flash',
+                tutorial: {
+                    title: '小米 MiMo 开发者 API 获取指南',
+                    steps: [
+                        { title: '绑定邮箱', desc: '前往小米账号中心 id.mi.com，确保您的账号已绑定个人邮箱。' },
+                        { title: '登录平台', desc: '使用小米账号登录 MiMo 开放平台（platform.xiaomimimo.com）。' },
+                        { title: '申请 Orbit 计划', desc: '点击申请限时免费计划，获取早期代币（Token）赠送。' },
+                        { title: '生成 API Key', desc: '在控制台生成密钥，填入对应的 OpenAI SDK 即可实现一键迁移。' }
+                    ],
+                    warning: 'Orbit 计划赠送的免费额度有过期时间限制，获取后请在 30 天内尽快测试。'
+                },
+                code: {
+                    python: `import os\nfrom openai import OpenAI\n\nclient = OpenAI(\n    api_key=os.environ.get("MIMO_API_KEY"),\n    base_url="https://api.xiaomimimo.com/v1",\n)\n\nresponse = client.chat.completions.create(\n    model="mimo-v2-flash",\n    messages=[\n        {"role": "user", "content": "你好，我想测试一下你的数学与推理能力。"}\n    ],\n)\nprint(response.choices[0].message.content)`,
+                    nodejs: `const { OpenAI } = require("openai");\n\nconst client = new OpenAI({\n    apiKey: process.env.MIMO_API_KEY,\n    baseURL: "https://api.xiaomimimo.com/v1"\n});\n\nasync function main() {\n    const response = await client.chat.completions.create({\n        model: "mimo-v2-flash",\n        messages: [{ role: "user", content: "你好，我想测试一下你的数学与推理能力。" }]\n    });\n    console.log(response.choices[0].message.content);\n}\nmain();`,
+                    curl: `curl -X POST https://api.xiaomimimo.com/v1/chat/completions \\\n  -H "Content-Type: application/json" \\\n  -H "Authorization: Bearer $MIMO_API_KEY" \\\n  -d '{\n    "model": "mimo-v2-flash",\n    "messages": [{"role": "user", "content": "你好！"}]\n  }'`
+                }
+            },
+            {
+                id: 'claude',
+                name: 'Claude 3.7 Sonnet',
+                desc: '目前行业内最优秀的多模态大模型，原生支持系统推理过程与极致编程自动化，是工程师的首选。',
+                url: 'https://console.anthropic.com/',
+                free: '无 (海外注册绑定信用卡)',
+                proxy: true,
+                features: ['最强编程', '长上下文', '系统推理', '需代理'],
+                badge: { text: '极力推荐', type: 'sky' },
+                icon: '🟤',
+                baseUrl: 'https://api.anthropic.com/v1',
+                testModel: 'claude-3-7-sonnet-20250219',
+                tutorial: {
+                    title: 'Claude API 购买与环境搭建教程',
+                    steps: [
+                        { title: '海外环境准备', desc: '准备稳定的独立全局代理节点，避免使用共享或公共机房 IP 注册。' },
+                        { title: '注册 Anthropic 账号', desc: '访问 console.anthropic.com，使用谷歌账号或海外邮箱（如 Outlook）注册。' },
+                        { title: '绑定信用卡', desc: '前往 Billing 页面，使用 WildCard 等海外虚拟信用卡进行小额充值和额度激活。' },
+                        { title: '创建 API Key', desc: '创建完 Key 后可以选用 CC Switch 转发，解决国内开发者直连调用限速和代理困难问题。' }
+                    ],
+                    warning: 'Anthropic 对代理风控极为严苛，请务必保证充值付款信用卡卡段没有被列入黑名单。'
+                },
+                code: {
+                    python: `# 需安装 anthropic SDK: pip install anthropic\nimport os\nfrom anthropic import Anthropic\n\nclient = Anthropic(api_key=os.environ.get("CLAUDE_API_KEY"))\n\nmessage = client.messages.create(\n    model="claude-3-7-sonnet-20250219",\n    max_tokens=1024,\n    messages=[{"role": "user", "content": "你好，请介绍你的原生推理能力。"}]\n)\nprint(message.content[0].text)`,
+                    nodejs: `const Anthropic = require("@anthropic-ai/sdk");\n\nconst anthropic = new Anthropic({\n  apiKey: process.env.CLAUDE_API_KEY,\n});\n\nasync function main() {\n  const message = await anthropic.messages.create({\n    model: "claude-3-7-sonnet-20250219",\n    max_tokens: 1024,\n    messages: [{ role: "user", content: "你好，请介绍你的原生推理能力。" }],\n  });\n  console.log(message.content[0].text);\n}\nmain();`,
+                    curl: `curl https://api.anthropic.com/v1/messages \\\n  -H "x-api-key: $CLAUDE_API_KEY" \\\n  -H "anthropic-version: 2023-06-01" \\\n  -H "content-type: application/json" \\\n  -d '{\n    "model": "claude-3-7-sonnet-20250219",\n    "max_tokens": 1024,\n    "messages": [{"role": "user", "content": "你好！"}]\n  }'`
+                }
+            },
+            {
+                id: 'kimi',
+                name: '月之暗面 Kimi',
+                desc: '拥有极其出色的超长中文上下文理解能力，深度整合了网页搜索以及精准的跨文档逻辑分析。',
+                url: 'https://platform.moonshot.cn/',
+                free: '赠送 15 元测试额度',
+                proxy: false,
+                features: ['128K上下文', '联网检索', '文件处理', '国内直连'],
+                badge: { text: '中文长文本', type: 'success' },
+                icon: '🟢',
+                baseUrl: 'https://api.moonshot.cn/v1',
+                testModel: 'moonshot-v1-8k',
+                tutorial: {
+                    title: 'Kimi (Moonshot) API 创建与首调指南',
+                    steps: [
+                        { title: '注册控制台', desc: '打开 platform.moonshot.cn，通过手机号验证直接注册登录。' },
+                        { title: '获取免费额度', desc: '新注册账号即刻赠送价值 15 元的 Token 调用额度。' },
+                        { title: '新建 API 密钥', desc: '在 API Keys 页面点击“创建新密钥”，生成 sk- 格式字符串。' },
+                        { title: '兼容性配置', desc: '使用 OpenAI 兼容模式，设置 Base URL 为 https://api.moonshot.cn/v1。' }
+                    ],
+                    warning: '如果用来总结超长论文，请更换为 moonshot-v1-128k 模型，8k 默认模型会引发溢出截断。'
+                },
+                code: {
+                    python: `import os\nfrom openai import OpenAI\n\nclient = OpenAI(\n    api_key=os.environ.get("MOONSHOT_API_KEY"),\n    base_url="https://api.moonshot.cn/v1",\n)\n\nresponse = client.chat.completions.create(\n    model="moonshot-v1-8k",\n    messages=[\n        {"role": "user", "content": "你好，请在一句话内总结你的长文本优势。"}\n    ],\n)\nprint(response.choices[0].message.content)`,
+                    nodejs: `const { OpenAI } = require("openai");\n\nconst client = new OpenAI({\n    apiKey: process.env.MOONSHOT_API_KEY,\n    baseURL: "https://api.moonshot.cn/v1"\n});\n\nasync function main() {\n    const response = await client.chat.completions.create({\n        model: "moonshot-v1-8k",\n        messages: [{ role: "user", content: "你好，请在一句话内总结你的长文本优势。" }]\n    });\n    console.log(response.choices[0].message.content);\n}\nmain();`,
+                    curl: `curl -X POST https://api.moonshot.cn/v1/chat/completions \\\n  -H "Content-Type: application/json" \\\n  -H "Authorization: Bearer $MOONSHOT_API_KEY" \\\n  -d '{\n    "model": "moonshot-v1-8k",\n    "messages": [{"role": "user", "content": "你好！"}]\n  }'`
+                }
+            },
+            {
+                id: 'aliyun',
+                name: '通义千问 (阿里云)',
+                desc: '阿里云倾力打造的企业级旗舰模型，支持大规模中文交互、跨领域长文本处理与极其卓越的多模态视觉解析。',
+                url: 'https://dashscope.aliyun.com/',
+                free: '各模型赠送首月百万 Tokens',
+                proxy: false,
+                features: ['多模态支持', '大厂保障', '性价比极高', '国内直连'],
+                badge: { text: '免费额度大', type: 'success' },
+                icon: '🟢',
+                baseUrl: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
+                testModel: 'qwen-plus',
+                tutorial: {
+                    title: '阿里云通义千问百炼平台注册与获取教程',
+                    steps: [
+                        { title: '注册实名', desc: '访问阿里云官网 aliyun.com，注册并实名，推荐个人支付宝快速验证。' },
+                        { title: '开通百炼平台', desc: '搜索并进入“大模型服务平台百炼”或 DashScope 平台点击立即开通。' },
+                        { title: '领取免费额度', desc: '新用户点击百炼主页的免费资源包，一键激活首月通义模型大礼包。' },
+                        { title: '创建 API-KEY', desc: '前往左侧 API-KEY 管理界面，创建主密钥并以环境变量储存。' }
+                    ],
+                    warning: '首月赠送的百万 Token 资源包到期后，将自动变更为后付费按量付费，请注意控制用量。'
+                },
+                code: {
+                    python: `import os\nfrom openai import OpenAI\n\nclient = OpenAI(\n    api_key=os.environ.get("DASHSCOPE_API_KEY"),\n    base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",\n)\n\nresponse = client.chat.completions.create(\n    model="qwen-plus",\n    messages=[\n        {"role": "user", "content": "你好，请推荐通义千问适合的接入场景。"}\n    ],\n)\nprint(response.choices[0].message.content)`,
+                    nodejs: `const { OpenAI } = require("openai");\n\nconst client = new OpenAI({\n    apiKey: process.env.DASHSCOPE_API_KEY,\n    baseURL: "https://dashscope.aliyuncs.com/compatible-mode/v1"\n});\n\nasync function main() {\n    const response = await client.chat.completions.create({\n        model: "qwen-plus",\n        messages: [{ role: "user", content: "你好，请推荐通义千问适合的接入场景。" }]\n    });\n    console.log(response.choices[0].message.content);\n}\nmain();`,
+                    curl: `curl -X POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions \\\n  -H "Content-Type: application/json" \\\n  -H "Authorization: Bearer $DASHSCOPE_API_KEY" \\\n  -d '{\n    "model": "qwen-plus",\n    "messages": [{"role": "user", "content": "你好！"}]\n  }'`
+                }
+            },
+            {
+                id: 'openai',
+                name: 'OpenAI GPT-4o',
+                desc: '大模型时代的开创者与经典基准，在多模态实时交互、函数调用（Function Calling）等开发级场景中稳定性极强。',
+                url: 'https://platform.openai.com/',
+                free: '无 (海外信用卡绑定)',
+                proxy: true,
+                features: ['生态最完整', '函数调用', '多模态', '需代理'],
+                badge: { text: '行业标杆', type: 'sky' },
+                icon: '🟤',
+                baseUrl: 'https://api.openai.com/v1',
+                testModel: 'gpt-4o',
+                tutorial: {
+                    title: 'OpenAI 官方 API Key 开通教程',
+                    steps: [
+                        { title: '解决网络障碍', desc: '必须使用纯净非共享的海外独立 IP 连接。' },
+                        { title: '注册 OpenAI 账号', desc: '访问 platform.openai.com，通过验证邮箱直接完成开发者认证。' },
+                        { title: '添加付款卡', desc: '进入 Billing 菜单绑定海外银行卡，最低充值 5 美元即可激活接口。' },
+                        { title: '管理配额限制', desc: '刚激活的用户属于 Tier 1 级别，可以通过充值升级以消除并发限制。' }
+                    ],
+                    warning: '由于 OpenAI 的反作弊系统较严，建议不要使用多人共享的代理通道访问其官网。'
+                },
+                code: {
+                    python: `import os\nfrom openai import OpenAI\n\nclient = OpenAI(\n    api_key=os.environ.get("OPENAI_API_KEY"),\n    base_url="https://api.openai.com/v1",\n)\n\nresponse = client.chat.completions.create(\n    model="gpt-4o",\n    messages=[\n        {"role": "user", "content": "你好，请介绍你的函数调用稳定性优势。"}\n    ],\n)\nprint(response.choices[0].message.content)`,
+                    nodejs: `const { OpenAI } = require("openai");\n\nconst client = new OpenAI({\n    apiKey: process.env.OPENAI_API_KEY,\n    baseURL: "https://api.openai.com/v1"\n});\n\nasync function main() {\n    const response = await client.chat.completions.create({\n        model: "gpt-4o",\n        messages: [{ role: "user", content: "你好，请介绍你的函数调用稳定性优势。" }]\n    });\n    console.log(response.choices[0].message.content);\n}\nmain();`,
+                    curl: `curl -X POST https://api.openai.com/v1/chat/completions \\\n  -H "Content-Type: application/json" \\\n  -H "Authorization: Bearer $OPENAI_API_KEY" \\\n  -d '{\n    "model": "gpt-4o",\n    "messages": [{"role": "user", "content": "你好！"}]\n  }'`
+                }
+            }
+        ];
+
+        // 全局状态
+        let currentCategory = 'all';
+        let searchQuery = '';
+        let viewMode = 'grid';
+        let selectedSandboxApi = 'deepseek';
+        let selectedSandboxLang = 'python';
+
+        // 初始化
+        window.addEventListener('DOMContentLoaded', () => {
+            // 暗色模式状态恢复
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            }
+            
+            // 主题切换绑定
+            document.getElementById('theme-toggle').addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+                const isDark = document.documentElement.classList.contains('dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            });
+
+            // 统计侧边栏各项个数
+            updateCounts();
+
+            // 渲染列表
+            renderAPIs();
+
+            // 渲染调试沙箱的 API 按钮
+            renderSandboxSelectors();
+
+            // 渲染调试沙箱代码块
+            updateSandboxCode();
+        });
+
+        // 统计个数
+        function updateCounts() {
+            document.getElementById('count-all').innerText = apiData.length;
+            document.getElementById('count-direct').innerText = apiData.filter(api => !api.proxy).length;
+            document.getElementById('count-proxy').innerText = apiData.filter(api => api.proxy).length;
+            document.getElementById('count-free').innerText = apiData.filter(api => api.free && api.free !== '无').length;
+        }
+
+        // 过滤分类
+        function filterCategory(category) {
+            currentCategory = category;
+            
+            // 切换侧边栏高亮
+            document.querySelectorAll('.category-item').forEach(item => {
+                if (item.getAttribute('data-category') === category) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+
+            // 更新标题
+            const titles = {
+                'all': '所有大模型 API',
+                'direct': '国内直连大模型 API (免代理)',
+                'proxy': '海外直连大模型 API (需代理)',
+                'free': '附带免费体验额度大模型 API'
+            };
+            document.getElementById('list-title').innerText = titles[category] || '大模型 API';
+
+            renderAPIs();
+        }
+
+        // 搜索处理
+        function handleSearch() {
+            searchQuery = document.getElementById('api-search').value.toLowerCase().trim();
+            renderAPIs();
+        }
+
+        function handleSearchClick() {
+            handleSearch();
+            // 滚动到列表区域
+            document.getElementById('api-list-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 切换视图模式 (grid / table)
+        function setViewMode(mode) {
+            viewMode = mode;
+            document.getElementById('btn-grid-view').classList.toggle('active', mode === 'grid');
+            document.getElementById('btn-table-view').classList.toggle('active', mode === 'table');
+
+            if (mode === 'grid') {
+                document.getElementById('api-cards-container').style.display = 'grid';
+                document.getElementById('api-table-container').style.display = 'none';
+            } else {
+                document.getElementById('api-cards-container').style.display = 'none';
+                document.getElementById('api-table-container').style.display = 'block';
+            }
+            renderAPIs();
+        }
+
+        // 数据过滤的核心计算
+        function getFilteredData() {
+            return apiData.filter(api => {
+                // 分类过滤
+                if (currentCategory === 'direct' && api.proxy) return false;
+                if (currentCategory === 'proxy' && !api.proxy) return false;
+                if (currentCategory === 'free' && (!api.free || api.free === '无')) return false;
+
+                // 搜索框过滤
+                if (searchQuery) {
+                    const matchName = api.name.toLowerCase().includes(searchQuery);
+                    const matchDesc = api.desc.toLowerCase().includes(searchQuery);
+                    const matchFeatures = api.features.some(f => f.toLowerCase().includes(searchQuery));
+                    return matchName || matchDesc || matchFeatures;
+                }
+
+                return true;
+            });
+        }
+
+        // 渲染 API 界面数据
+        function renderAPIs() {
+            const filtered = getFilteredData();
+            const cardsContainer = document.getElementById('api-cards-container');
+            const tableBody = document.getElementById('api-table-body');
+            
+            // 1. 清空旧数据
+            cardsContainer.innerHTML = '';
+            tableBody.innerHTML = '';
+
+            if (filtered.length === 0) {
+                const emptyHtml = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--muted-foreground);">未找到匹配的 API，可以尝试清除搜索或选择其他分类。</div>`;
+                cardsContainer.innerHTML = emptyHtml;
+                tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--muted-foreground); padding: 40px;">未找到匹配的 API</td></tr>`;
+                return;
+            }
+
+            // 2. 渲染卡片视图
+            filtered.forEach(api => {
+                const badgeClass = api.badge.type === 'warning' ? 'badge-warning' : (api.badge.type === 'sky' ? 'badge-sky' : 'badge-success');
+                const proxyText = api.proxy ? '需要代理' : '国内直连';
+                const proxyBadge = api.proxy ? 'badge-warning' : 'badge-success';
+                
+                const cardHtml = `
+                    <div class="api-card" onclick="selectSandboxApi('${api.id}')">
+                        <div>
+                            <div class="card-header">
+                                <div class="card-icon-title">
+                                    <div class="api-icon">${api.icon}</div>
+                                    <div>
+                                        <div class="api-name">${api.name}</div>
+                                        <span class="badge ${proxyBadge}" style="margin-top: 4px; display: inline-block;">${proxyText}</span>
+                                    </div>
+                                </div>
+                                <span class="badge ${badgeClass}">${api.badge.text}</span>
+                            </div>
+                            <p class="api-desc">${api.desc}</p>
+                            <div class="api-meta">
+                                <div class="meta-row">
+                                    <span class="meta-label">免费试用</span>
+                                    <span class="meta-value" style="color: var(--ring)">${api.free}</span>
+                                </div>
+                                <div class="meta-row">
+                                    <span class="meta-label">关键能力</span>
+                                    <span class="meta-value">${api.features.slice(0, 2).join(' · ')}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn-outline" onclick="event.stopPropagation(); openTutorial('${api.id}')">
+                                购买教程
+                            </button>
+                            <a href="${api.url}" target="_blank" class="btn-card-primary" onclick="event.stopPropagation();">
+                                官网入口
+                            </a>
+                        </div>
+                    </div>
+                `;
+                cardsContainer.insertAdjacentHTML('beforeend', cardHtml);
+
+                // 3. 渲染表格视图
+                const tableRowHtml = `
+                    <tr onclick="selectSandboxApi('${api.id}')" style="cursor: pointer;">
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span style="font-size: 20px;">${api.icon}</span>
+                                <span class="table-api-name">${api.name}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge ${proxyBadge}">${proxyText}</span>
+                        </td>
+                        <td style="color: var(--ring); font-weight: 500;">
+                            ${api.free}
+                        </td>
+                        <td style="color: var(--muted-foreground);">
+                            ${api.features.join('、')}
+                        </td>
+                        <td style="text-align: right;">
+                            <div style="display: inline-flex; gap: 8px;">
+                                <button class="btn-outline" style="padding: 6px 12px;" onclick="event.stopPropagation(); openTutorial('${api.id}')">教程</button>
+                                <a href="${api.url}" target="_blank" class="btn-card-primary" style="padding: 6px 12px;" onclick="event.stopPropagation();">官网</a>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                tableBody.insertAdjacentHTML('beforeend', tableRowHtml);
+            });
+        }
+
+        // 渲染在线调试沙箱的 API 选项按钮
+        function renderSandboxSelectors() {
+            const container = document.getElementById('sandbox-api-selectors');
+            container.innerHTML = '';
+            
+            // 挑选几个核心的 API 放在调试沙箱中
+            apiData.forEach(api => {
+                const activeClass = api.id === selectedSandboxApi ? 'active' : '';
+                const btnHtml = `
+                    <button class="api-selector-btn ${activeClass}" onclick="selectSandboxApi('${api.id}')">
+                        <span>${api.icon}</span>
+                        <span>${api.name}</span>
+                    </button>
+                `;
+                container.insertAdjacentHTML('beforeend', btnHtml);
+            });
+        }
+
+        // 切换调试沙箱的 API 并实时更新代码
+        function selectSandboxApi(id) {
+            selectedSandboxApi = id;
+            
+            // 更新 selectors
+            document.querySelectorAll('.api-selector-btn').forEach(btn => {
+                const text = btn.innerText;
+                const apiObj = apiData.find(a => a.id === id);
+                if (apiObj && text.includes(apiObj.name)) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            // 更新 Base URL 和 Model Name 的面板标签
+            const targetApi = apiData.find(api => api.id === id);
+            if (targetApi) {
+                document.getElementById('sb-base-url').innerText = targetApi.baseUrl;
+                document.getElementById('sb-model-name').innerText = targetApi.testModel;
+            }
+
+            // 更新右侧代码块
+            updateSandboxCode();
+            
+            // 滚动到 sandbox 部分（如果是通过点击卡片触发的）
+            // 如果是在可见范围内就不主动滚动了
+        }
+
+        // 切换代码语言
+        function selectLang(lang) {
+            selectedSandboxLang = lang;
+            
+            // 切换 Tab 高亮
+            document.querySelectorAll('.code-tab').forEach(tab => {
+                if (tab.innerText.toLowerCase() === lang) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+
+            updateSandboxCode();
+        }
+
+        // 实时更新代码框内容
+        function updateSandboxCode() {
+            const apiObj = apiData.find(api => api.id === selectedSandboxApi);
+            if (!apiObj) return;
+
+            const codeStr = apiObj.code[selectedSandboxLang] || '';
+            const codeBlock = document.getElementById('sandbox-code');
+            
+            // 做简单的逃逸，保证能安全放入 HTML 中
+            codeBlock.textContent = codeStr;
+
+            // 更新说明
+            const explanations = {
+                'python': `使用官方 OpenAI SDK 进行标准调用。请注意设置您的本地环境变量 <code>os.environ.get</code>。`,
+                'nodejs': `使用官方 npm <code>openai</code> 包进行接口集成。接口结构与 OpenAI 完全一致，适合无缝平替。`,
+                'curl': `在 Linux/macOS 终端或 Windows Powershell 中，用 curl 工具发起极速网关状态自检与测试。`
+            };
+            document.getElementById('sandbox-code-explanation').innerHTML = explanations[selectedSandboxLang] || '';
+        }
+
+        // 复制代码功能
+        function copyCode() {
+            const codeText = document.getElementById('sandbox-code').textContent;
+            navigator.clipboard.writeText(codeText).then(() => {
+                const copyBtnText = document.getElementById('copy-btn-text');
+                copyBtnText.innerText = '已复制！';
+                setTimeout(() => {
+                    copyBtnText.innerText = '复制代码';
+                }, 2000);
+            }).catch(err => {
+                alert('复制代码失败，请手动选择复制。');
+            });
+        }
+
+        // 打开购买教程模态框
+        let currentModalUrl = '';
+        function openTutorial(id) {
+            const api = apiData.find(a => a.id === id);
+            if (!api) return;
+
+            currentModalUrl = api.url;
+            document.getElementById('modal-title').innerText = api.tutorial.title;
+            
+            const modalBody = document.getElementById('modal-body');
+            modalBody.innerHTML = '';
+
+            // 渲染步骤
+            let stepsHtml = '<div class="step-list">';
+            api.tutorial.steps.forEach((step, index) => {
+                stepsHtml += `
+                    <div class="step-item">
+                        <div class="step-number">${index + 1}</div>
+                        <div class="step-details">
+                            <div class="step-title">${step.title}</div>
+                            <div class="step-desc">${step.desc}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            stepsHtml += '</div>';
+
+            // 渲染警告信息
+            if (api.tutorial.warning) {
+                stepsHtml += `
+                    <div class="warning-box">
+                        <strong>⚠️ 安全警告：</strong> ${api.tutorial.warning}
+                    </div>
+                `;
+            }
+
+            modalBody.innerHTML = stepsHtml;
+            document.getElementById('tutorial-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('tutorial-modal').style.display = 'none';
+        }
+
+        function openExternalUrl() {
+            if (currentModalUrl) {
+                window.open(currentModalUrl, '_blank');
+            }
+            closeModal();
+        }
+
+        // 点击外部关闭模态框
+        window.onclick = function(event) {
+            const modal = document.getElementById('tutorial-modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>

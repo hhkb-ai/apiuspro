@@ -1,0 +1,2 @@
+
+D:\projects>  "D:\node\\node.exe"  "D:\node\\node_modules\corepack\dist\corepack.js" pnpm exec tsx -e import("./src/lib/api-config").then(m=,"appTutorials","faqCategories"].includes(k))))

@@ -452,12 +452,12 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                 {/* 图片展示 */}
                 {step.image && (
                   <div className="my-4 max-w-full min-w-0 overflow-hidden rounded-lg border border-border bg-background/40 dark:bg-background/50">
-                    <div className="relative aspect-[16/9] w-full max-w-full overflow-hidden">
+                    <div className="relative aspect-[16/8.2] w-full max-w-full overflow-hidden">
                       <Image
                         src={step.image}
                         alt={step.title}
                         fill
-                        className="object-contain"
+                        className="scale-[1.05] object-cover"
                         sizes="(min-width: 1280px) 760px, (min-width: 768px) calc(100vw - 18rem), calc(100vw - 2rem)"
                         priority={stepIdx === 0}
                       />
