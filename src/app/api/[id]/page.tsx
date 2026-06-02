@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BrandIcon } from '@/components/api/BrandIcon';
+import { CostComparisonCalculator } from '@/components/api/CostComparisonCalculator';
 import { TutorialCard } from '@/components/tutorial/TutorialCard';
 import { APIConfig, visibleAPIList, visibleProxyServices } from '@/lib/api-config';
 import { QuickConclusionCard } from '@/components/api/QuickConclusionCard';
@@ -229,7 +230,7 @@ export default async function APIDetailPage({ params }: { params: Promise<{ id: 
 
         <section>
           <h2 className="mb-4 text-xl font-semibold tracking-tight">适用场景</h2>
-          <div className="rounded-lg border bg-card p-6">
+          <div className="rounded-2xl border bg-card p-6">
             <p className="text-sm text-muted-foreground mb-4">
               想知道 {api.name} 适合什么场景？查看按用途分类的推荐：
             </p>
@@ -271,6 +272,8 @@ export default async function APIDetailPage({ params }: { params: Promise<{ id: 
             ))}
           </div>
         </section>
+
+        {api.id === 'deepseek' && <CostComparisonCalculator />}
       </div>
     </SidebarLayout>
   );

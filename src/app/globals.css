@@ -130,7 +130,7 @@ html, body {
   --secondary: #1a1a1a;
   --secondary-foreground: #ededed;
   --muted: #1a1a1a;
-  --muted-foreground: #888888;
+  --muted-foreground: #a1a1aa;
   --accent: #1a1a1a;
   --accent-foreground: #ededed;
   --destructive: oklch(0.704 0.191 22.216);

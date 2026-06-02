@@ -63,7 +63,7 @@ export default async function LearnArticlePage({ params }: { params: Promise<{ s
 
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_280px]">
           <main className="min-w-0">
-            <article className="rounded-lg border bg-card p-5 sm:p-7">
+            <article className="rounded-2xl border bg-card p-5 sm:p-7">
               <div className="mb-5 flex flex-wrap gap-2">
                 <Badge variant="outline" className="border-border bg-muted text-muted-foreground">{article.readingTime}</Badge>
                 {article.tags.map((tag) => (
@@ -74,7 +74,7 @@ export default async function LearnArticlePage({ params }: { params: Promise<{ s
               <p className="mt-3 text-base leading-7 text-muted-foreground">{article.description}</p>
 
               {article.cover?.src && (
-                <figure className="my-7 overflow-hidden rounded-lg border border-border bg-background">
+                <figure className="my-7 overflow-hidden rounded-xl border border-border bg-background">
                   <Image
                     src={article.cover.src}
                     alt={article.cover.alt}
@@ -92,28 +92,28 @@ export default async function LearnArticlePage({ params }: { params: Promise<{ s
 
             <nav className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
               {previous ? (
-                <Link href={`/learn/${previous.slug}`} className="rounded-lg border bg-card p-4 transition-colors hover:border-foreground/30">
+                <Link href={`/learn/${previous.slug}`} className="rounded-xl border bg-card p-4 transition-colors hover:border-foreground/30">
                   <p className="text-xs text-muted-foreground">上一篇</p>
                   <p className="mt-1 text-sm font-semibold">{previous.title}</p>
                 </Link>
               ) : (
-                <div className="rounded-lg border bg-card p-4 text-sm text-muted-foreground">已经是第一篇</div>
+                <div className="rounded-xl border bg-card p-4 text-sm text-muted-foreground">已经是第一篇</div>
               )}
               {next ? (
-                <Link href={`/learn/${next.slug}`} className="rounded-lg border bg-card p-4 transition-colors hover:border-foreground/30">
+                <Link href={`/learn/${next.slug}`} className="rounded-xl border bg-card p-4 transition-colors hover:border-foreground/30">
                   <p className="text-xs text-muted-foreground">下一篇</p>
                   <p className="mt-1 text-sm font-semibold">{next.title}</p>
                 </Link>
               ) : (
-                <div className="rounded-lg border bg-card p-4 text-sm text-muted-foreground">已经是最后一篇</div>
+                <div className="rounded-xl border bg-card p-4 text-sm text-muted-foreground">已经是最后一篇</div>
               )}
             </nav>
 
-            <section className="mt-6 rounded-lg border bg-card p-5">
+            <section className="mt-6 rounded-2xl border bg-card p-5">
               <h2 className="text-xl font-semibold tracking-tight">相关入口</h2>
               <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {relatedLinks.map((item) => (
-                  <Link key={item.href} href={item.href} className="rounded-lg border border-border p-4 text-sm font-semibold transition-colors hover:border-foreground/30">
+                  <Link key={item.href} href={item.href} className="rounded-xl border border-border p-4 text-sm font-semibold transition-colors hover:border-foreground/30">
                     {item.title}
                   </Link>
                 ))}

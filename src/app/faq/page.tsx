@@ -108,7 +108,7 @@ export default function FAQPage() {
 
           <div className="flex flex-col">
           {/* 使用前准备 */}
-          <section className="order-2 mb-8 rounded-lg border bg-card p-5 md:order-1">
+          <section className="order-2 mb-8 rounded-2xl border bg-card p-5 md:order-1">
             <h2 className="font-semibold">使用前准备</h2>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
               在提问或排查之前，确认以下信息已经准备好，能帮你更快找到答案：

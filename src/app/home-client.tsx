@@ -8,6 +8,7 @@ import { BeianLinks } from '@/components/layout/BeianLinks';
 import { BrandIcon } from '@/components/api/BrandIcon';
 import { apiList, appTutorials } from '@/lib/api-config';
 import { fuzzyScore, sortByFuzzyScore } from '@/lib/fuzzy-search';
+import { searchAll, findExactMatch } from '@/lib/search-index';
 import { ChevronRight, Search } from 'lucide-react';
 
 const pages = [
@@ -76,28 +77,27 @@ function useSearch(rawQuery: string, maxResults: number) {
   const normalizedQuery = useDeferredValue(rawQuery.toLowerCase().trim());
 
   const result = useMemo(() => {
-    if (!normalizedQuery) return { suggestions: [] as Suggestion[], exactMatch: null, appExactMatch: null };
+    if (!normalizedQuery) return { suggestions: [] as Suggestion[], exactMatch: null as { href: string } | null, appExactMatch: null };
 
-    const apiMatches = sortByFuzzyScore(apiList, normalizedQuery, api => [api.id, api.name, api.desc, api.free, ...api.features])
-      .slice(0, maxResults > 6 ? 4 : 3)
-      .map(api => ({ id: `api-${api.id}`, name: api.name, desc: `${accessText(api.proxy)} · ${api.features.slice(0, 2).join('、')}`, href: `/api/${api.id}`, type: 'API' }));
+    // 使用统一搜索索引
+    const allResults = searchAll(normalizedQuery, maxResults);
 
-    const tutorialMatches = sortByFuzzyScore(tutorialsList, normalizedQuery, api => [api.id, api.name, api.tutorial?.title, api.tutorial?.subtitle, ...api.features])
-      .slice(0, maxResults > 6 ? 3 : 2)
-      .map(api => ({ id: `tut-${api.id}`, name: api.tutorial?.title || `${api.name} 购买教程`, desc: '注册、支付、API Key 创建', href: `/tutorial/${api.id}`, type: '教程' }));
+    // 转换为 Suggestion 格式
+    const suggestions: Suggestion[] = allResults.map(item => ({
+      id: item.id,
+      name: item.name,
+      desc: item.desc,
+      href: item.href,
+      type: item.type,
+    }));
 
-    const appMatches = sortByFuzzyScore(appTutorials, normalizedQuery, app => [app.id, app.name, app.desc, app.badge.text])
-      .slice(0, maxResults > 6 ? 3 : 2)
-      .map(app => ({ id: `app-${app.id}`, name: app.name, desc: app.desc, href: `/app/${app.id}`, type: '应用' }));
-
-    const pageMatches = sortByFuzzyScore(pages, normalizedQuery, page => [page.id, page.name, page.desc, page.tag])
-      .slice(0, maxResults > 6 ? 3 : 2)
-      .map(page => ({ id: `pg-${page.id}`, name: page.name, desc: page.desc, href: page.url, type: '页面' }));
+    // 精确匹配
+    const exactHref = findExactMatch(normalizedQuery);
 
     return {
-      suggestions: [...apiMatches, ...tutorialMatches, ...appMatches, ...pageMatches].slice(0, maxResults),
-      exactMatch: apiList.find(api => fuzzyScore(normalizedQuery, [api.id, api.name]) >= 85) ?? null,
-      appExactMatch: appTutorials.find(app => fuzzyScore(normalizedQuery, [app.id, app.name]) >= 85) ?? null,
+      suggestions,
+      exactMatch: exactHref ? { href: exactHref } : null,
+      appExactMatch: null, // 已在 findExactMatch 中处理
     };
   }, [normalizedQuery, maxResults]);
 
@@ -246,7 +246,7 @@ function BeginnerRoutePanel({ compact = false, sectionId }: { compact?: boolean;
         <h2 className={compact ? 'text-[17px] font-semibold' : 'text-xl font-semibold'}>4 步开始</h2>
       </div>
       <div className={compact ? 'relative flex-1 pl-11' : 'relative flex-1 pl-[52px]'}>
-        <div className={compact ? 'absolute left-4 top-4 bottom-4 w-[1.5px] bg-border' : 'absolute left-[19px] top-5 bottom-5 w-0.5 bg-border'} />
+        <div className={compact ? 'absolute left-4 top-4 bottom-4 w-[1.5px] bg-border/55' : 'absolute left-[19px] top-5 bottom-5 w-[1.5px] bg-border/50'} />
         {beginnerLearningSteps.map((item, index) => (
           <Link
             key={item.step}
@@ -459,11 +459,12 @@ function HomeShell({ variant }: { variant: 'desktop' | 'mobile' }) {
 
   const submitSearch = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const href = appExactMatch ? `/app/${appExactMatch.id}` : exactMatch ? `/api/${exactMatch.id}` : suggestions[0]?.href;
+    // exactMatch 现在是 href 字符串，直接使用
+    const href = exactMatch?.href || suggestions[0]?.href;
     if (!href) return;
     router.push(href);
     setShowSuggestions(false);
-  }, [appExactMatch, exactMatch, suggestions, router]);
+  }, [exactMatch, suggestions, router]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">

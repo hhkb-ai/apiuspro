@@ -82,12 +82,12 @@ export default function ErrorSolutionPage() {
           </Card>
         </section>
 
-        <section className="mb-8 rounded-lg border border-sky-200 bg-sky-50 dark:bg-sky-950/30 px-5 py-4 text-sky-900 dark:text-sky-100">
+        <section className="mb-8 rounded-2xl border border-sky-200 bg-sky-50 dark:bg-sky-950/30 px-5 py-4 text-sky-900 dark:text-sky-100">
           <p className="text-sm font-semibold">先按这个顺序排查</p>
           <div className="mt-3 grid gap-3 text-sm leading-6 md:grid-cols-4">
             {['API Key 是否有效', 'Base URL 是否匹配', '模型名是否存在', '额度与限流是否触发'].map((item, index) => (
-              <div key={item} className="rounded-md border border-sky-200 bg-white/55 p-3">
-                <span className="mr-2 font-semibold">{index + 1}.</span>
+              <div key={item} className="rounded-xl border border-sky-200 bg-white/70 p-3 text-sky-950 shadow-sm dark:border-sky-700/70 dark:bg-sky-950/60 dark:text-sky-50">
+                <span className="mr-2 font-semibold text-sky-700 dark:text-sky-200">{index + 1}.</span>
                 {item}
               </div>
             ))}

@@ -64,7 +64,7 @@ function renderInline(text: string): ReactNode[] {
 
     if (part.startsWith('`') && part.endsWith('`')) {
       return (
-        <code key={index} className="break-words rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[0.92em] text-foreground">
+        <code key={index} className="break-words rounded border border-zinc-700 bg-zinc-900 px-1.5 py-0.5 font-mono text-[0.92em] text-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100">
           {part.slice(1, -1)}
         </code>
       );
@@ -184,7 +184,7 @@ function parseTable(lines: string[]) {
           {body.map((row, rowIndex) => (
             <tr key={rowIndex} className="border-b border-border last:border-0">
               {row.map((cell, cellIndex) => (
-                <td key={`${rowIndex}-${cellIndex}`} className="whitespace-nowrap px-3 py-2 text-muted-foreground">{renderInline(cell)}</td>
+                <td key={`${rowIndex}-${cellIndex}`} className="whitespace-nowrap px-3 py-2 text-zinc-700 dark:text-zinc-200">{renderInline(cell)}</td>
               ))}
             </tr>
           ))}
@@ -284,7 +284,7 @@ export function LearnMarkdown({ content }: { content: string }) {
       }
 
       nodes.push(
-        <blockquote key={`quote-${index}`} className="my-5 rounded-lg border-l-4 border-border bg-muted px-4 py-3 text-sm leading-6 text-muted-foreground">
+        <blockquote key={`quote-${index}`} className="my-5 rounded-lg border-l-4 border-border bg-muted px-4 py-3 text-sm leading-6 text-zinc-700 dark:text-zinc-200">
           {quoteLines.map((quote, quoteIndex) => <p key={quoteIndex}>{renderInline(quote)}</p>)}
         </blockquote>
       );

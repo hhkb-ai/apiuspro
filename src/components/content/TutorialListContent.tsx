@@ -10,50 +10,6 @@ import { apiList, appTutorials, APIConfig, AppTutorial } from '@/lib/api-config'
 import { RememberListLink } from '@/components/navigation/ReturnNavigation';
 import { sortByFuzzyScore } from '@/lib/fuzzy-search';
 
-const beginnerSteps = [
-  { step: '01', title: '认识 AI', desc: '理解 AI、模型、网页聊天和 API 的区别。' },
-  { step: '02', title: '理解 API 三件套', desc: '搞懂 API Key、Base URL、模型名称。' },
-  { step: '03', title: '学会写提示词', desc: '用角色、背景、任务、要求、输出格式提高 AI 回复质量。' },
-  { step: '04', title: '发出第一次请求', desc: '看懂 URL、Headers、Body 和 JSON 返回。' },
-  { step: '05', title: '处理报错与成本', desc: '排查 401、403、429、余额不足、模型名错误。' },
-  { step: '06', title: '使用 AI 编程工具', desc: '学习 Codex、Claude Code、CC Switch 如何接入项目。' },
-];
-
-const beginnerFlow = ['AI 基础', 'API Key', 'Base URL', '模型名称', '第一次调用', 'AI 工具'];
-
-const beginnerGuides = [
-  {
-    title: 'AI 新手入门 01：AI、模型和使用方式',
-    desc: '先搞懂 AI 是什么、模型是什么、网页聊天和 API 的区别。',
-    path: '/learn/ai-basics',
-  },
-  {
-    title: 'AI 新手入门 02：Token、上下文和 API Key',
-    desc: '理解 Token、上下文、API Key 安全。',
-    path: '/learn/token-context-api-key',
-  },
-  {
-    title: 'AI 新手入门 03：提示词、提问方式和常用场景',
-    desc: '学会写清楚需求，让 AI 输出更准确。',
-    path: '/learn/prompting',
-  },
-  {
-    title: 'AI 新手入门 04：学习路径、常见错误和 API 配置',
-    desc: '了解新手学习路线和 API Key、Base URL、模型名称。',
-    path: '/learn/api-config-basics',
-  },
-  {
-    title: 'AI 新手入门 05：第一次调用 API 和安全使用',
-    desc: '用最小示例理解一次 API 调用。',
-    path: '/learn/first-api-call',
-  },
-  {
-    title: 'AI 新手入门 06：Codex 和 Claude Code 辅助开发',
-    desc: '学会用 AI 工具修改项目、测试、提交。',
-    path: '/learn/codex-claude-code',
-  },
-];
-
 const toolEntrances = [
   {
     title: 'Codex',
@@ -139,65 +95,9 @@ function AppTutorialCard({ app }: { app: AppTutorial }) {
   );
 }
 
-function BeginnerRouteSection() {
-  return (
-    <section className="order-2 mb-8 rounded-2xl border bg-card p-5">
-      <div className="mb-4">
-        <p className="text-sm font-medium text-muted-foreground">新手路线</p>
-        <h2 className="mt-1 text-xl font-semibold tracking-tight">从 AI 基础到第一次 API 调用</h2>
-        <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
-          按顺序理解 AI、API Key、Base URL、模型名称，再进入 DeepSeek、MiMo、Codex 和 Claude Code 实操。
-        </p>
-      </div>
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
-        {beginnerSteps.map((item) => (
-          <article key={item.step} className="rounded-xl border border-border bg-background p-4">
-            <span className="text-xs font-semibold text-muted-foreground">{item.step}</span>
-            <h3 className="mt-1 text-base font-semibold text-foreground">{item.title}</h3>
-            <p className="mt-2 text-sm leading-6 text-muted-foreground">{item.desc}</p>
-          </article>
-        ))}
-      </div>
-      <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-        {beginnerFlow.map((item, index) => (
-          <span key={item} className="inline-flex items-center gap-2">
-            <span className="rounded-full border border-border bg-muted px-2.5 py-1">{item}</span>
-            {index < beginnerFlow.length - 1 && <span aria-hidden="true">&#8594;</span>}
-          </span>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function BeginnerGuideSection() {
-  return (
-    <section id="beginner-guides" className="order-3 mb-8 scroll-mt-24 space-y-4">
-      <div>
-        <h2 className="text-xl font-semibold tracking-tight">推荐学习文章</h2>
-        <p className="mt-1 text-sm text-muted-foreground">每篇只讲 3 个知识点，适合第一次系统学习 AI 和 API 的用户。</p>
-      </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {beginnerGuides.map((guide) => (
-          <article key={guide.path} className="flex min-h-44 flex-col rounded-2xl border bg-card p-5">
-            <div className="mb-3 flex items-start justify-between gap-3">
-              <h3 className="text-base font-semibold leading-6">{guide.title}</h3>
-              <Badge variant="outline" className="shrink-0 border-border bg-muted text-muted-foreground">即将上线</Badge>
-            </div>
-            <p className="flex-1 text-sm leading-6 text-muted-foreground">{guide.desc}</p>
-            <a href="#beginner-guides" className="mt-5 inline-flex min-h-[44px] items-center justify-center rounded-xl border border-border px-3 text-sm font-medium text-muted-foreground">
-              暂不跳转
-            </a>
-          </article>
-        ))}
-      </div>
-    </section>
-  );
-}
-
 function ToolEntranceSection() {
   return (
-    <section className="order-4 mb-10 space-y-4">
+    <section className="mt-10 space-y-4">
       <div>
         <h2 className="text-xl font-semibold tracking-tight">把 API 接入到真实工具里</h2>
         <p className="mt-1 text-sm text-muted-foreground">学会 API Key、Base URL 和模型名称后，可以继续学习 Codex、Claude Code、CC Switch 等 AI 工具。</p>
@@ -245,13 +145,13 @@ export function TutorialListContent() {
     : [];
 
   return (
-    <div className="flex flex-col">
-      <h1 className="sr-only">AI 与 API 新手学习中心</h1>
-      <form className="order-1 mb-8 max-w-xl" role="search" onSubmit={(event) => event.preventDefault()}>
+    <div className="mx-auto flex w-full max-w-7xl flex-col px-4 py-6 sm:px-6 lg:px-8 xl:px-10">
+      <h1 className="sr-only">AI API 购买教程大全</h1>
+      <form className="mb-8 max-w-xl" role="search" onSubmit={(event) => event.preventDefault()}>
         <div className="relative">
           <Input
             type="text"
-            placeholder="搜索 DeepSeek、MiMo、API Key、Base URL、Codex、Claude Code..."
+            placeholder="搜索 DeepSeek、OpenAI、Claude、API Key、Base URL..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="h-11 pr-20"
@@ -273,11 +173,7 @@ export function TutorialListContent() {
         )}
       </form>
 
-      <BeginnerRouteSection />
-      <BeginnerGuideSection />
-      <ToolEntranceSection />
-
-      <section className="order-5 space-y-4">
+      <section className="space-y-4">
         <div>
           <h2 className="text-xl font-semibold tracking-tight">选择一个 API 平台开始实操</h2>
           <p className="mt-1 text-sm text-muted-foreground">学完 API Key、Base URL、模型名称后，可以选择一个平台完成注册、充值、创建密钥和首次调用。</p>
@@ -298,8 +194,10 @@ export function TutorialListContent() {
         </div>
       </section>
 
+      <ToolEntranceSection />
+
       {hasSearch && (
-        <section className="order-6 mt-10 space-y-4">
+        <section className="mt-10 space-y-4">
           <div className="flex items-end justify-between gap-3">
             <div>
               <h2 className="text-xl font-semibold tracking-tight">API 应用教程</h2>
@@ -320,7 +218,7 @@ export function TutorialListContent() {
       )}
 
       {/* 常见问题 */}
-      <section className="order-7 mt-10">
+      <section className="mt-10">
         <h2 className="mb-4 text-xl font-semibold tracking-tight">常见问题</h2>
         <div className="space-y-3">
           {[

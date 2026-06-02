@@ -76,9 +76,15 @@ function APICard({ api }: { api: APIConfig }) {
 
       <p className="flex-1 text-sm leading-6 text-muted-foreground">{api.desc}</p>
       <div className="mt-5 flex gap-2">
-        <a href={api.url} target="_blank" rel="noopener noreferrer" className="flex-1">
-          <Button className="w-full rounded-xl" size="sm">官网入口</Button>
-        </a>
+        <Button
+          asChild
+          className="flex-1 rounded-xl focus-visible:border-slate-400 focus-visible:ring-slate-400/40 dark:focus-visible:border-slate-500 dark:focus-visible:ring-slate-500/40"
+          size="sm"
+        >
+          <a href={api.url} target="_blank" rel="noopener noreferrer">
+            官网入口
+          </a>
+        </Button>
         <RememberListLink href={`/api/${api.id}`} listLabel="API 列表" className="flex-1">
           <Button variant="outline" className="w-full rounded-xl" size="sm">详细说明</Button>
         </RememberListLink>
@@ -189,7 +195,7 @@ export function CloudApiContent() {
   ] as const;
 
   return (
-    <div className="flex flex-col">
+    <div className="mx-auto flex w-full max-w-7xl flex-col px-4 py-6 sm:px-6 lg:px-8 xl:px-10">
       <h1 className="sr-only">AI API 官网入口与对比</h1>
       <section className="order-3 mb-4 grid grid-cols-1 gap-4 md:order-1 md:grid-cols-3">
         {decisionGuides.map((guide) => (

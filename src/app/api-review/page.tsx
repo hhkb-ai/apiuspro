@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { BrandIcon } from '@/components/api/BrandIcon';
+import { CostComparisonCalculator } from '@/components/api/CostComparisonCalculator';
 import { getReviewScore, reviewDetails, reviewRatingWeightDescription } from '@/lib/review-config';
 import type { ReviewDetail } from '@/lib/review-config';
 import { BreadcrumbSchema } from '@/components/seo/structured-data';
@@ -190,6 +191,8 @@ export default function APIReviewPage() {
             </div>
           </div>
         </details>
+
+        <CostComparisonCalculator />
 
         <section className="space-y-7">
           {reviews.map((review) => (

@@ -505,3 +505,85 @@ SEO/deployment impact:
 
 - Updates visible Claude content and API review copy to the latest Anthropic Claude Opus 4.8 announcement.
 - Keeps existing route URLs, sitemap generation, canonical configuration, robots behavior, and structured-data components unchanged.
+
+### 2026-05-31 Homepage redesign, BrandIcon, dark mode, and SEO fixes
+
+Commit `1c50a18` — 22 files, +486/-656.
+
+Commit scope:
+
+- Redesign homepage: replace old hero/sidebar/table layout with simplified Hero + UserEntrySection + PurchaseTutorials in `src/app/home-client.tsx`. Merge MobileHome and DesktopHome into single `HomeShell` component.
+- Integrate `BrandIcon` component into API detail, tutorial, error, cloud-api, use-case, app, and content pages.
+- Fix dark mode contrast for badges, links, and text across `globals.css` and 10+ page/component files.
+- Fix SEO: eliminate duplicate H1 on homepage (mobile `<h1>` changed to `<p>`), add `<h1 class="sr-only">` to `/tutorial` and `/cloud-api` pages.
+- Shorten `/api-review/:slug` description template in `tdk.json` to stay within 160 char limit.
+- Simplify GPT-5.5 `tlDr` in `review-config.ts` from 136 to 91 chars for SEO compliance.
+
+Explicitly excluded from this commit:
+
+- Untracked files: `.claude/`, `.codex-video-analysis/`, `.tmp-playwright/`, `CLAUDE.md`, `docs/`, `index.html`, preview files, `rollback-backups/`, `scripts/test-*.mjs`, `skills/`, `src/components/api/APIInfoTable.tsx`, `src/components/api/BrandIcon.tsx`, `src/components/api/CollapsibleSection.tsx`, `test-artifacts/`, 百度索引修复方案.md
+
+Verification completed:
+
+```bash
+pnpm run ts-check  # passed
+pnpm run lint  # passed (2 warnings, 0 errors)
+pnpm run build  # passed (73 pages)
+```
+
+Page regression: 18 pages returned HTTP 200.
+SEO scan: 23 pages checked — all have exactly 1 H1, description ≤ 160 chars, and canonical URL.
+Mobile: iPhone SE (375px), iPhone 14 (390px), iPad (768px) — no horizontal overflow on any page.
+
+### 2026-05-31 Mobile overflow hardening for code blocks and text containers
+
+Commit `c14a3d3` — 2 files, +5/-5.
+
+Commit scope:
+
+- Add `max-w-full` to `<pre>` code block container in `src/app/local-deploy/page.tsx`.
+- Add `overflow-hidden break-words` to RichText containers in `src/components/content/AppTutorialContent.tsx` (section overview and step description paragraphs).
+
+Explicitly excluded from this commit:
+
+- Same untracked files as previous commit.
+
+Verification completed:
+
+```bash
+pnpm run ts-check  # passed
+pnpm run lint  # passed
+pnpm run build  # passed (73 pages)
+```
+
+Mobile: iPhone SE (375px), iPhone 14 (390px), iPad (768px) — no page-level horizontal overflow. Code blocks and tables correctly use internal `overflow-x-auto` scrollbars.
+
+SEO/deployment impact:
+
+- No route, metadata, sitemap, robots, or structured-data changes in either commit.
+
+### 2026-06-01 Baidu analytics script for traffic verification
+
+Commit scope:
+
+- Add the Baidu analytics script `hm.js?6f89f211fef6ae8ad990792cb14c63a1` to the global app layout in `src/app/layout.tsx`.
+- Keep the existing Baidu auto-push script, 51.la script, metadata verification tags, sitemap, robots, and route structure unchanged.
+
+Explicitly excluded from this commit:
+
+- Existing untracked local preview, backup, test, Claude/Codex, helper, and unrelated component files.
+- Existing uncommitted maintenance-log entries that predate this Baidu analytics change.
+
+Verification completed:
+
+```bash
+corepack pnpm run ts-check  # passed
+corepack pnpm run lint  # passed (2 warnings, 0 errors; existing home-client unused vars)
+node_modules\.bin\next.CMD build  # passed (73 pages)
+node_modules\.bin\tsup.CMD src/server.ts --format cjs --platform node --target node20 --outDir dist --no-splitting --no-minify  # passed
+```
+
+SEO/deployment impact:
+
+- Enables Baidu traffic verification and analytics collection across all pages after client hydration.
+- Does not change canonical URLs, Open Graph/Twitter metadata, JSON-LD, sitemap, robots, or page content.

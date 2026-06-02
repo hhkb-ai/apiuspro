@@ -4,8 +4,8 @@ import { BreadcrumbSchema } from '@/components/seo/structured-data';
 import { TutorialListContent } from '@/components/content/TutorialListContent';
 
 export const metadata: Metadata = {
-  title: 'AI 与 API 新手学习中心',
-  description: '从 AI 基础、API Key、Base URL、模型名称，到 Codex、Claude Code、CC Switch 工具接入，按步骤学习 AI 的实际使用方法。',
+  title: 'AI API 购买教程大全',
+  description: 'DeepSeek、OpenAI、Claude、通义千问、Gemini、Kimi 等主流 AI API 的注册、充值、API Key 创建和首次调用教程。',
 };
 
 export default function TutorialPage() {
