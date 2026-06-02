@@ -4,6 +4,7 @@ import { OrganizationSchema, SiteIntentFAQSchema, WebSiteSchema } from '@/compon
 import { ThemeProvider } from '@/components/theme-provider';
 import { ReturnPositionRestorer } from '@/components/navigation/ReturnNavigation';
 import './globals.css';
+import './tutorial-overrides.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.apiuspro.cn'),
