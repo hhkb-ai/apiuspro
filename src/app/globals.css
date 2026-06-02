@@ -215,6 +215,33 @@ body {
   box-shadow: inset 0 0 0 2px rgba(163, 163, 163, 0.75) !important;
 }
 
+/* 首页“4 步开始”时间线：隐藏旧的父级整条竖线，改为只给非最后步骤绘制连接线 */
+#beginner-route-desktop > div:nth-of-type(2) > div:first-child,
+#beginner-route-mobile > div:nth-of-type(2) > div:first-child {
+  display: none;
+}
+
+#beginner-route-desktop > div:nth-of-type(2) > a:not(:last-child)::after,
+#beginner-route-mobile > div:nth-of-type(2) > a:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  z-index: 0;
+  width: 1.5px;
+  pointer-events: none;
+  background: color-mix(in srgb, var(--border) 55%, transparent);
+}
+
+#beginner-route-desktop > div:nth-of-type(2) > a:not(:last-child)::after {
+  left: -32px;
+  height: calc(100% + 0.75rem);
+}
+
+#beginner-route-mobile > div:nth-of-type(2) > a:not(:last-child)::after {
+  left: -26px;
+  height: calc(100% + 0.625rem);
+}
+
 @media (max-width: 767px) {
   body {
     -webkit-tap-highlight-color: transparent;
@@ -258,217 +285,4 @@ body {
 .content-article h4 {
   font-weight: 700;
   line-height: 1.35;
-}
-.content-article p,
-.content-article li {
-  font-weight: 400;
-  line-height: 1.8;
-}
-@media (max-width: 640px) {
-  .content-article h1 { font-size: 1.5rem; }
-  .content-article h2 { font-size: 1.25rem; }
-  .content-article h3 { font-size: 1.1rem; }
-}
-/* Code blocks: darker bg, larger font, better mono stack */
-.content-article pre {
-  font-family: 'JetBrains Mono', 'Fira Code', 'Source Code Pro', 'SF Mono', 'Cascadia Code', Menlo, Consolas, 'Courier New', monospace;
-  font-size: 14px;
-  line-height: 1.75;
-  background: #f0ebe3;
-  color: var(--foreground);
-}
-.content-article pre .token.comment,
-.content-article pre .hljs-comment,
-.content-article pre .comment,
-.content-article pre .italic,
-.content-article pre span[style*="italic"] {
-  font-family: inherit !important;
-  font-style: normal !important;
-}
-@media (prefers-color-scheme: dark) {
-  .content-article pre {
-    background: #1e1b17;
-    color: #ede7dd;
-  }
-}
-.dark .content-article pre {
-  background: #1e1b17;
-  color: #ede7dd;
-}
-/* Copyable code block containers (have border + toolbar) */
-.content-article pre:has(+ button),
-.content-article div:has(> pre) > pre {
-  border-radius: 0;
-}
-/* Inline code */
-.content-article code:not(pre code) {
-  font-size: 13px;
-  padding: 1px 5px;
-  border-radius: 4px;
-}
-
-/* 教程正文外部链接：避免浅色模式下显示成深色块 */
-.content-article main a[target="_blank"] {
-  border: 1px solid #bae6fd;
-  background: #f0f9ff;
-  color: #0369a1;
-}
-.content-article main a[target="_blank"]:hover {
-  background: #e0f2fe;
-  color: #075985;
-}
-.dark .content-article main a[target="_blank"] {
-  border-color: #075985;
-  background: rgb(8 47 73 / 0.3);
-  color: #7dd3fc;
-}
-.dark .content-article main a[target="_blank"]:hover {
-  background: rgb(12 74 110 / 0.4);
-  color: #bae6fd;
-}
-
-/* 应用教程页文字高亮兜底：让 Codex 安装教程中的 mark、行内代码和重点标签更明显 */
-.content-article main mark {
-  border: 1px solid #facc15;
-  background: #fef3c7;
-  color: #78350f;
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.35);
-}
-.dark .content-article main mark {
-  border-color: rgb(250 204 21 / 0.72);
-  background: rgb(113 63 18 / 0.58);
-  color: #fef3c7;
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.08);
-}
-.content-article main code:not(pre code) {
-  border-color: #c4b5fd;
-  background: #f5f3ff;
-  color: #5b21b6;
-  font-weight: 600;
-}
-.dark .content-article main code:not(pre code) {
-  border-color: rgb(167 139 250 / 0.58);
-  background: rgb(76 29 149 / 0.42);
-  color: #ddd6fe;
-}
-.content-article main strong[class*="bg-muted"] {
-  border: 1px solid #bae6fd;
-  background: #e0f2fe;
-  color: #075985;
-}
-.dark .content-article main strong[class*="bg-muted"] {
-  border-color: rgb(56 189 248 / 0.55);
-  background: rgb(7 89 133 / 0.38);
-  color: #bae6fd;
-}
-.dark .content-article main [class*="text-sky-700"],
-.dark .content-article main [class*="text-sky-800"],
-.dark .content-article main [class*="text-sky-900"] {
-  color: #bae6fd;
-}
-.dark .content-article main [class*="text-emerald-700"],
-.dark .content-article main [class*="text-emerald-800"] {
-  color: #a7f3d0;
-}
-.dark .content-article main [class*="text-amber-700"],
-.dark .content-article main [class*="text-amber-800"] {
-  color: #fde68a;
-}
-.dark .content-article main [class*="text-rose-700"],
-.dark .content-article main [class*="text-rose-800"] {
-  color: #fecdd3;
-}
-
-/* 首页使用场景卡片：修复深色模式下浅色卡片和低对比文字 */
-.dark a[href="/use-case/coding"],
-.dark a[href="/use-case/knowledge"],
-.dark a[href="/use-case/content-creation"],
-.dark a[href="/use-case/translation"],
-.dark a[href="/use-case/chatbot"],
-.dark a[href="/use-case/education"] {
-  opacity: 1;
-}
-.dark a[href="/use-case/coding"] {
-  border-color: rgb(244 63 94 / 0.65);
-  background: rgb(136 19 55 / 0.42);
-  color: #fff1f2;
-}
-.dark a[href="/use-case/knowledge"] {
-  border-color: rgb(52 211 153 / 0.65);
-  background: rgb(6 95 70 / 0.42);
-  color: #ecfdf5;
-}
-.dark a[href="/use-case/content-creation"] {
-  border-color: rgb(167 139 250 / 0.68);
-  background: rgb(91 33 182 / 0.42);
-  color: #f5f3ff;
-}
-.dark a[href="/use-case/translation"] {
-  border-color: rgb(56 189 248 / 0.68);
-  background: rgb(7 89 133 / 0.42);
-  color: #f0f9ff;
-}
-.dark a[href="/use-case/chatbot"] {
-  border-color: rgb(251 191 36 / 0.68);
-  background: rgb(146 64 14 / 0.42);
-  color: #fffbeb;
-}
-.dark a[href="/use-case/education"] {
-  border-color: rgb(251 146 60 / 0.68);
-  background: rgb(154 52 18 / 0.42);
-  color: #fff7ed;
-}
-.dark a[href="/use-case/coding"]:hover,
-.dark a[href="/use-case/knowledge"]:hover,
-.dark a[href="/use-case/content-creation"]:hover,
-.dark a[href="/use-case/translation"]:hover,
-.dark a[href="/use-case/chatbot"]:hover,
-.dark a[href="/use-case/education"]:hover {
-  filter: brightness(1.14);
-}
-.dark a[href="/use-case/coding"] p,
-.dark a[href="/use-case/knowledge"] p,
-.dark a[href="/use-case/content-creation"] p,
-.dark a[href="/use-case/translation"] p,
-.dark a[href="/use-case/chatbot"] p,
-.dark a[href="/use-case/education"] p {
-  color: currentColor;
-  opacity: 0.88;
-}
-.dark a[href="/use-case/coding"] svg,
-.dark a[href="/use-case/knowledge"] svg,
-.dark a[href="/use-case/content-creation"] svg,
-.dark a[href="/use-case/translation"] svg,
-.dark a[href="/use-case/chatbot"] svg,
-.dark a[href="/use-case/education"] svg {
-  color: currentColor;
-  opacity: 0.95;
-}
-.dark a[href="/use-case/coding"] span:first-child {
-  background: rgb(244 63 94 / 0.2);
-  color: #ffe4e6;
-}
-.dark a[href="/use-case/knowledge"] span:first-child {
-  background: rgb(52 211 153 / 0.2);
-  color: #d1fae5;
-}
-.dark a[href="/use-case/content-creation"] span:first-child {
-  background: rgb(167 139 250 / 0.22);
-  color: #ede9fe;
-}
-.dark a[href="/use-case/translation"] span:first-child {
-  background: rgb(56 189 248 / 0.22);
-  color: #e0f2fe;
-}
-.dark a[href="/use-case/chatbot"] span:first-child {
-  background: rgb(251 191 36 / 0.22);
-  color: #fef3c7;
-}
-.dark a[href="/use-case/education"] span:first-child {
-  background: rgb(251 146 60 / 0.22);
-  color: #ffedd5;
-}
-
-::selection {
-  background: color-mix(in oklab, var(--foreground) 14%, transparent);
 }
