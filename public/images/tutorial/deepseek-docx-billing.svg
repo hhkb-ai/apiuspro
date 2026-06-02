@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" role="img" aria-label="DeepSeek 充值页面截图示意">
+  <rect width="1200" height="620" fill="#15161a"/>
+  <rect x="0" y="0" width="300" height="620" fill="#111216"/>
+  <text x="38" y="72" fill="#f7f7f7" font-family="Arial, sans-serif" font-size="30" font-weight="700">deepseek</text>
+  <rect x="24" y="198" width="252" height="58" rx="18" fill="#34363b"/>
+  <text x="92" y="235" fill="#ffffff" font-family="Arial, sans-serif" font-size="20" font-weight="700">充值</text>
+  <text x="92" y="156" fill="#ffffff" font-family="Arial, sans-serif" font-size="20">用量信息</text>
+  <text x="92" y="320" fill="#ffffff" font-family="Arial, sans-serif" font-size="20">账单</text>
+  <text x="92" y="380" fill="#ffffff" font-family="Arial, sans-serif" font-size="20">接口文档</text>
+  <g transform="translate(360 78)">
+    <text x="0" y="0" fill="#ffffff" font-family="Arial, sans-serif" font-size="40" font-weight="700">充值</text>
+    <rect x="0" y="58" width="210" height="44" rx="14" fill="#24262b"/>
+    <rect x="0" y="58" width="105" height="44" rx="14" fill="#3b3d42"/>
+    <text x="24" y="87" fill="#fff" font-family="Arial, sans-serif" font-size="16" font-weight="700">在线充值</text>
+    <text x="124" y="87" fill="#c9cdd5" font-family="Arial, sans-serif" font-size="16" font-weight="700">对公汇款</text>
+    <text x="0" y="150" fill="#d7d8dd" font-family="Arial, sans-serif" font-size="19">支付金额</text>
+    <g font-family="Arial, sans-serif" font-size="20" font-weight="700">
+      <rect x="0" y="170" width="66" height="44" rx="10" fill="#ffffff"/><text x="18" y="199" fill="#111">¥10</text>
+      <rect x="82" y="170" width="66" height="44" rx="10" fill="#3a3c42"/><text x="100" y="199" fill="#fff">¥20</text>
+      <rect x="164" y="170" width="78" height="44" rx="10" fill="#3a3c42"/><text x="186" y="199" fill="#fff">¥50</text>
+      <rect x="258" y="170" width="82" height="44" rx="10" fill="#3a3c42"/><text x="278" y="199" fill="#fff">¥100</text>
+      <rect x="356" y="170" width="82" height="44" rx="10" fill="#3a3c42"/><text x="376" y="199" fill="#fff">¥300</text>
+      <rect x="454" y="170" width="82" height="44" rx="10" fill="#3a3c42"/><text x="474" y="199" fill="#fff">¥500</text>
+      <rect x="552" y="170" width="94" height="44" rx="10" fill="#3a3c42"/><text x="572" y="199" fill="#fff">自定义</text>
+    </g>
+    <text x="0" y="260" fill="#d7d8dd" font-family="Arial, sans-serif" font-size="19">支付方式</text>
+    <rect x="0" y="280" width="820" height="60" rx="10" fill="#15161a" stroke="#f0f0f0" stroke-width="3"/>
+    <text x="55" y="319" fill="#ffffff" font-family="Arial, sans-serif" font-size="24" font-weight="700">支付宝</text>
+    <rect x="0" y="358" width="820" height="60" rx="10" fill="#15161a" stroke="#303238" stroke-width="1.5"/>
+    <text x="55" y="397" fill="#ffffff" font-family="Arial, sans-serif" font-size="24">微信支付</text>
+    <rect x="0" y="465" width="820" height="50" rx="12" fill="#f5f6f8"/>
+    <text x="376" y="497" fill="#111" font-family="Arial, sans-serif" font-size="20">去支付</text>
+  </g>
+</svg>
