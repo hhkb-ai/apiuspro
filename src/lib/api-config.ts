@@ -392,7 +392,7 @@ for block in message.content:
         {
           title: '充值并确认余额',
           description: '正式持续调用通常需要账户余额，测试前先确认充值和账单状态。',
-          image: '/images/tutorial/deepseek-docx-2.png',
+          image: '/images/tutorial/deepseek-docx-billing.svg',
           items: [
             '进入账单、余额或 Usage 页面',
             '选择合适充值档位，例如 10、20、50 或 100 元',
@@ -435,7 +435,7 @@ print(response.choices[0].message.content)`,
         {
           title: '选择模型并控制成本',
           description: '首次跑通后，再根据速度、推理能力和成本切换模型。',
-          image: '/images/tutorial/deepseek-docx-4.png',
+          image: '/images/tutorial/deepseek-docx-models-pricing.svg',
           items: [
             'deepseek-v4-flash：官方 V4 Flash 模型，支持 1M 上下文、最高 384K 输出、思考/非思考双模式，适合实时对话、客服和高频调用',
             'deepseek-v4-pro：官方 V4 Pro 模型，支持 1M 上下文、最高 384K 输出、思考/非思考双模式，适合复杂代码、长文档、Agent 和技术问答',
@@ -3729,7 +3729,7 @@ export const appTutorials: AppTutorial[] = [
           }
         ],
         tips: [
-          'Windows 用户更稳的路径是 WSL2；原生 Windows 支持仍属于 early beta，遇到路径、编码或子进程问题时优先切到 WSL2。',
+          'Windows 原生安装目前已正式可用，CLI、TUI、gateway 和 tools 都能原生运行。若需要 dashboard 的 /chat 嵌入终端面板，仍建议使用 WSL2。',
           '如果你只是想购买和调用 API，不需要 Agent 工作流，可以先看本站的 API 购买教程和模型选择页面。'
         ]
       },
@@ -3740,7 +3740,7 @@ export const appTutorials: AppTutorial[] = [
           {
             title: 'Linux / macOS / WSL2 前置检查',
             description: '官方推荐的一键安装路径适用于 Linux、macOS 和 Windows WSL2。',
-            image: '/images/tutorial/hermes-agent-install.png',
+            image: '/images/tutorial/hermes-agent-prereq.png',
             code: 'git --version',
             items: [
               '打开终端',
@@ -3751,7 +3751,7 @@ export const appTutorials: AppTutorial[] = [
           },
           {
             title: 'Windows 原生安装前确认',
-            description: 'Windows 10/11 可以尝试官方 PowerShell 安装器，但目前属于 early beta。',
+            description: 'Windows 10/11 可以使用官方 PowerShell 安装器或桌面安装包。',
             items: [
               '使用 PowerShell 或 Windows Terminal',
               '安装后需要重新打开一个终端窗口',
@@ -3810,6 +3810,17 @@ export const appTutorials: AppTutorial[] = [
               'hermes doctor 用来检查配置、依赖和环境问题',
               'doctor 报错时先按提示修复，不要继续叠加其它功能'
             ]
+          },
+          {
+            title: 'pip 安装（最简单方式）',
+            description: '如果你有 Python 3.11+ 环境，pip 安装是最简单的路径。',
+            image: '/images/tutorial/hermes-agent-pip.png',
+            code: 'pip install hermes-agent\nhermes postinstall',
+            items: [
+              'pip 安装后需要运行 hermes postinstall 补装 Node.js、浏览器依赖、ripgrep 和 ffmpeg',
+              'PyPI 版本跟随 tagged release，不一定包含 main 分支最新提交',
+              '想要最新版本仍用 curl git installer'
+            ]
           }
         ],
         tips: [
@@ -3819,20 +3830,20 @@ export const appTutorials: AppTutorial[] = [
       },
       {
         title: 'Windows 原生安装方式',
-        content: '如果你不想使用 WSL2，可以尝试官方 Windows PowerShell 安装器。官方说明里 Windows 原生仍是 early beta，因此本教程建议把它作为可选路径。',
+        content: 'Windows 10/11 可以直接使用官方 PowerShell 安装器或桌面安装包，CLI、TUI、gateway 和 tools 都能原生运行。',
         steps: [
           {
             title: '在 PowerShell 里运行安装器',
             description: '打开 PowerShell 或 Windows Terminal，执行官方 Windows 安装命令。',
-            image: '/images/tutorial/hermes-agent-install.png',
-            code: 'irm https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.ps1 | iex',
+            image: '/images/tutorial/hermes-agent-install-windows.png',
+            code: 'iex (irm https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.ps1)',
             items: [
               '默认不需要管理员权限',
               '安装目录通常在 %LOCALAPPDATA%\\hermes',
               '安装器会把 hermes 加到用户 PATH',
               '安装完成后必须重新打开终端'
             ],
-            warning: 'Windows 原生路径还在 early beta。如果遇到路径、编码、子进程或 dashboard 终端面板问题，优先改用 WSL2。'
+            warning: 'Windows 原生路径目前已正式可用。如果遇到 dashboard 的 /chat 嵌入终端面板问题，可以改用 WSL2。'
           },
           {
             title: '重新打开终端并验证',
@@ -3842,6 +3853,16 @@ export const appTutorials: AppTutorial[] = [
               '如果找不到命令，检查用户 PATH 是否生效',
               '如果 doctor 提示缺少配置，继续运行 hermes setup 或 hermes model',
               '如果中文输出或路径异常，先尝试 WSL2 版本'
+            ]
+          },
+          {
+            title: '桌面安装包（可选）',
+            description: 'Nous 官方提供 Windows 桌面安装包，首次启动时自动完成依赖安装。',
+            image: '/images/tutorial/hermes-agent-desktop.png',
+            items: [
+              '从官方安装页下载 Hermes Desktop .exe 安装包',
+              '首次启动会调用 install.ps1 完成 uv、Python、Node.js 等依赖安装',
+              '适合不想手动操作 PowerShell 的用户'
             ]
           }
         ],
@@ -3885,6 +3906,18 @@ export const appTutorials: AppTutorial[] = [
               '能正常回复，说明模型和认证基本可用',
               '不能回复，先检查 Key、Base URL、模型名和额度',
               '不要在基础对话失败时继续配置 gateway、cron 或 MCP'
+            ]
+          },
+          {
+            title: 'Nous Portal 一键设置（可选）',
+            description: '如果你不想逐个配置 API Key，可以用 Nous Portal 统一管理。',
+            image: '/images/tutorial/hermes-agent-portal.png',
+            code: 'hermes setup --portal\nhermes portal status',
+            items: [
+              'hermes setup --portal 会引导你通过 OAuth 登录 Nous Portal',
+              'Portal 会自动配置 provider 和 Tool Gateway',
+              'hermes portal status 用来检查路由状态',
+              '适合不想手动管理多个 API Key 的用户'
             ]
           }
         ],
@@ -3962,7 +3995,7 @@ export const appTutorials: AppTutorial[] = [
           },
           {
             title: 'Windows 原生路径异常',
-            description: 'Windows early beta 路径可能遇到编码、子进程或终端能力差异。',
+            description: 'Windows 原生路径可能遇到编码、子进程或终端能力差异。',
             items: [
               '先重新打开 PowerShell',
               '确认安装目录在 %LOCALAPPDATA%\\hermes',
@@ -3974,6 +4007,22 @@ export const appTutorials: AppTutorial[] = [
         tips: [
           '排错时先保留最简单的配置：一个 provider、一个模型、一个普通聊天请求。',
           '不要把 token、Key 或完整配置文件发到公开页面；需要求助时先脱敏。'
+        ]
+      },
+      {
+        title: '常用命令速查',
+        content: '下面是安装和日常使用中最常用的命令。',
+        steps: [
+          {
+            title: '核心命令',
+            description: '安装、健康检查、模型配置和日常使用的最常用命令。',
+            code: 'hermes --version          # 版本\nhermes doctor             # 健康检查\nhermes model              # 配置模型\nhermes setup              # 完整设置向导\nhermes chat -q "hello"    # 快速测试\nhermes update             # 更新到最新版'
+          },
+          {
+            title: '扩展功能',
+            description: '工具配置、Skills 管理、编辑器集成和 Web Dashboard 等进阶命令。',
+            code: 'hermes tools              # 配置工具\nhermes skills browse      # 浏览 skills\nhermes skills search k8s  # 搜索 skills\nhermes skills install openai/skills/k8s  # 安装 skill\nhermes acp                # 编辑器集成\nhermes dashboard          # 启动 Web dashboard\nhermes auth               # 管理凭据'
+          }
         ]
       }
     ]
