@@ -97,6 +97,65 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       'GPT-5.5 是 OpenAI 官方文档确认的最新旗舰模型，模型 ID 为 gpt-5.5，Pro 版本模型 ID 为 gpt-5.5-pro，适合复杂专业工作、编码和工具型 Agent。当前没有官方 GPT-5.5D / gpt-5.5d 模型 ID；上线内容应统一写作 GPT-5.5 / GPT-5.5 Pro，并保留官方快照与价格条件说明。价格信息以 OpenAI 官方文档为准：https://platform.openai.com/docs/pricing',
   },
 
+  minimax: {
+    slug: 'minimax',
+    name: 'MiniMax M3',
+    icon: '⚡',
+    badges: [
+      { label: 'M3最新', variant: 'success' },
+      { label: 'Token Plan' },
+      { label: '1M上下文' },
+    ],
+    tlDr:
+      'MiniMax M3 是 2026-06-01 发布的最新 M 系列模型，主打代码、Agent、1M 上下文和原生多模态；适合 AI Coding 工具、长上下文仓库分析和多步骤 Agent，但购买前要分清 Token Plan、Credits 与 Pay-as-you-go 的 Key 和计费体系。',
+    ratings: [
+      { label: '质量', score: 4.6, detail: '官方定位为 Coding & Agentic Frontier，在 SWE-Bench Pro、Terminal-Bench、MCP Atlas 等代码和 Agent 基准上给出较强成绩。' },
+      { label: '速度', score: 4.2, detail: 'M3 支持 thinking 开关；关闭 thinking 更适合低延迟对话和补全，复杂 Agent 任务开启 thinking 但延迟会更高。' },
+      { label: '性价比', score: 4.4, detail: '官方 Token Plan 口径为 Plus $20/月、Max $50/月、Ultra $120/月，并给出较高 M3 月度 token 额度；PAYG 在发布初期有 7 天 50% off。' },
+      { label: '稳定性', score: 4.0, detail: 'M3 刚发布，API、Token Plan、Priority 通道和区域价格仍可能快速调整，生产接入前建议小流量压测。' },
+    ],
+    pros: [
+      'MiniMax-M3 支持 1,000,000 token 上下文，官方说明 512K 以内覆盖多数对话和编程场景',
+      '原生多模态，支持文本、图像、视频、工具调用和 thinking block，适合复杂 Agent 工作流',
+      'Token Plan 适合个人开发者和小团队固定预算使用，文本、图像、语音、音乐资源共享额度池',
+      '同时支持 Anthropic SDK 和 OpenAI / Responses 兼容接入，AI Coding 工具适配成本低',
+      '官方 M3 发布页给出 SWE-Bench Pro 59.0、Terminal-Bench 2.1 66.0、MCP Atlas 74.2 等代码/Agent 基准数据',
+      'MiniMax Code、Codex、Claude Code、Cline、OpenClaw 等 AI Coding 工具已有官方配置指引',
+    ],
+    cons: [
+      'Token Plan Subscription Key、Credits 和 Pay-as-you-go API Key 是不同体系，初次接入容易填错 Key',
+      'M3 刚发布，价格、额度、Priority 开放状态和区域支付口径变化较快',
+      '超过 512K 输入 token 会进入更高长上下文价格，仓库级分析和长视频任务需要提前预算',
+      '官方性能数据以内部评测和发布页为主，正式业务仍需要用自己的任务复测',
+      '如果只做轻量中文对话或低成本高频客服，DeepSeek、Qwen、豆包等国内模型可能更简单',
+    ],
+    benchmarks: [
+      { name: 'SWE-Bench Pro', values: { 'MiniMax M3': '59.0%' } },
+      { name: 'Terminal-Bench 2.1', values: { 'MiniMax M3': '66.0%' } },
+      { name: 'SWE-fficiency', values: { 'MiniMax M3': '34.8%' } },
+      { name: 'KernelBench Hard', values: { 'MiniMax M3': '28.8%' } },
+      { name: 'MCP Atlas', values: { 'MiniMax M3': '74.2%' } },
+      { name: 'BrowseComp', values: { 'MiniMax M3': '83.5' } },
+    ],
+    pricing: [
+      { model: 'Token Plan Plus', input: '$20/月', output: '约 1.7B M3 tokens/月' },
+      { model: 'Token Plan Max', input: '$50/月', output: '约 5.1B M3 tokens/月' },
+      { model: 'Token Plan Ultra', input: '$120/月', output: '约 9.8B M3 tokens/月' },
+      { model: 'PAYG M3 标准 ≤512K', input: '$0.60/百万输入（发布 7 天 $0.30）', output: '$2.40/百万输出（发布 7 天 $1.20）' },
+      { model: 'PAYG M3 标准 >512K', input: '$1.20/百万输入', output: '$4.80/百万输出' },
+      { model: 'PAYG M3 Priority ≤512K', input: '$0.90/百万输入（发布 7 天 $0.45）', output: '$3.60/百万输出（发布 7 天 $1.80）' },
+    ],
+    useCases: [
+      'AI Coding 工具：Codex、Claude Code、Cline、OpenClaw、MiniMax Code 等需要长上下文和 Agent 执行的工作流',
+      '仓库级代码分析：长上下文读取代码库、测试日志、设计文档，再生成修改计划',
+      '多模态 Agent：需要图像、视频、工具调用和 thinking block 的自动化流程',
+      '个人/小团队固定预算：使用 Token Plan 控制月度成本，再用 Credits 覆盖溢出',
+      '不适合：只需要稳定低价中文聊天、客服或轻量批处理的项目，优先对比 DeepSeek V4 Flash、Qwen3.6 Flash 和豆包',
+    ],
+    conclusion:
+      'MiniMax M3 是 2026 年 6 月值得补充到购买教程和测评列表的新模型：它的价值不在普通聊天，而在长上下文、代码工程、Agent 和多模态工具调用。采购时最重要的是先选计费路径：Token Plan 适合固定额度和 AI Coding 工具，Pay-as-you-go 适合标准 API 按量接入；同时注意 512K 输入 token 以上的长上下文价格和 Key 类型差异。价格、额度和区域支付口径以 MiniMax 官方控制台为准。',
+  },
+
   tongyi: {
     slug: 'tongyi',
     name: '阿里云通义千问',
@@ -469,6 +528,7 @@ export const reviewSlugByApiId: Record<string, string> = {
   doubao: 'doubao',
   deepseek: 'deepseek',
   gemini: 'gemini',
+  minimax: 'minimax',
 };
 
 export function getReviewDetail(slug: string): ReviewDetail | undefined {

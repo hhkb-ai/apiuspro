@@ -196,6 +196,7 @@ print(response.choices[0].message.content)`,
         {
           title: '确认 MiniMax M3 的购买方式',
           description: 'MiniMax 现在同时提供 Token Plan 订阅、Credits 预付余额和 Pay-as-you-go 按量计费。购买前先决定你要用哪一种 Key，避免把不同计费体系混在一起。',
+          image: '/images/tutorial/minimax-m3-overview.png',
           items: [
             'Token Plan：适合个人开发者、小团队和 AI Coding 工具，按月获得共享额度',
             'Credits：预付余额，和 Token Plan 使用同一类 Subscription Key，可覆盖额度溢出',
@@ -210,6 +211,7 @@ print(response.choices[0].message.content)`,
         {
           title: '注册并登录 MiniMax 开放平台',
           description: '进入 MiniMax 开放平台后完成登录。中国大陆用户通常可使用手机号或微信登录，国际用户可使用邮箱登录。',
+          image: '/images/tutorial/minimax-m3-login.png',
           items: [
             '访问 MiniMax 开放平台：https://platform.minimax.io/',
             '点击登录入口，选择手机号、邮箱或微信扫码登录',
@@ -224,6 +226,7 @@ print(response.choices[0].message.content)`,
           title: '订阅 Token Plan 或充值 Credits',
           description: '如果你主要用 M3 做编程 Agent、长上下文或多模态任务，优先看 Token Plan；如果只是临时补额度，可以看 Credits。',
           important: true,
+          image: '/images/tutorial/minimax-m3-token-plan.png',
           items: [
             'Token Plan 入口：https://platform.minimax.io/subscribe/token-plan',
             '官方 M3 发布页给出的 2026-06-01 口径：Plus $20/月约 1.7B M3 tokens，Max $50/月约 5.1B，Ultra $120/月约 9.8B',
@@ -240,6 +243,7 @@ print(response.choices[0].message.content)`,
           title: '获取正确的 Key',
           description: 'MiniMax 官方文档把 Pay-as-you-go API Key 和 Token Plan Subscription Key 分开。接入前先确认你的工具要用哪一种。',
           important: true,
+          image: '/images/tutorial/minimax-m3-api-key.png',
           items: [
             'Pay-as-you-go：进入 API Keys 页面，点击 Create new secret key',
             'Token Plan：进入 Billing / Token Plan 页面，查看或复制 Subscription Key',
@@ -254,6 +258,7 @@ print(response.choices[0].message.content)`,
         {
           title: '配置 MiniMax-M3 并首次调用',
           description: 'MiniMax 官方推荐 Anthropic SDK，同时也支持 OpenAI 兼容接入。M3 的官方模型名为 MiniMax-M3。',
+          image: '/images/tutorial/minimax-m3-model-select.png',
           items: [
             'Anthropic 兼容 Base URL：https://api.minimax.io/anthropic',
             'OpenAI / Responses 兼容 Base URL：https://api.minimax.io/v1',
@@ -294,6 +299,7 @@ for block in message.content:
         {
           title: '按 M3 价格和上下文长度控制成本',
           description: 'M3 的 API 价格会根据输入长度和服务等级变化。普通对话和大部分编程任务优先控制在 512K 输入以内。',
+          image: '/images/tutorial/minimax-m3-usage.png',
           items: [
             'Pay-as-you-go 标准通道：≤512K 输入 token 官方标价为 $0.60/百万输入、$2.40/百万输出；发布初期 7 天 50% off 为 $0.30/$1.20',
             '>512K 输入 token 会进入更高长上下文价格，官方标准通道标价为 $1.20/百万输入、$4.80/百万输出',

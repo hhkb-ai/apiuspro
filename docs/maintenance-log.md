@@ -624,3 +624,39 @@ SEO/deployment impact:
 
 - Homepage component organization changed, but URLs, canonical behavior, structured data, sitemap, robots, and page content data remain unchanged.
 - `src/lib/search-index.ts` now builds successfully without changing the search ranking algorithm or route targets.
+
+### 2026-06-03 MiniMax M3 review and tutorial images
+
+Commit scope:
+
+- Add MiniMax M3 to the API review details and link it from the MiniMax API detail page.
+- Update the review index notice and tutorial index description so MiniMax M3 appears in the current content set.
+- Attach six MiniMax M3 tutorial screenshots to the matching tutorial steps: overview, login, Token Plan, API Key, model selection, and usage.
+- Preserve the existing DeepSeek tutorial screenshot override and `object-cover` rendering from the upstream fix.
+
+Explicitly excluded from this commit:
+
+- Local test artifacts: `test-artifacts/mobile-home-test/`, `test-artifacts/tutorial-image-audit.md`.
+- Existing untracked Hermes tutorial image files under `public/images/tutorial/hermes-agent-*.png`.
+- Stashed DeepSeek PNG experiments and the old tutorial detail `object-contain` image rendering change.
+
+Verification completed:
+
+```bash
+corepack pnpm exec eslint src/lib/api-config.ts src/lib/review-config.ts src/app/tutorial/page.tsx src/app/api-review/page.tsx  # passed
+corepack pnpm ts-check  # passed
+corepack pnpm exec next build  # passed (76 static pages)
+corepack pnpm exec tsup src/server.ts --format cjs --platform node --target node20 --outDir dist --no-splitting --no-minify  # passed
+```
+
+Browser verification completed on local preview `http://127.0.0.1:5000/`:
+
+- `/tutorial/minimax`, `/api/minimax`, `/api-review/minimax`, `/tutorial`, and `/api-review` returned 200.
+- 390px mobile and 1440px desktop `/tutorial/minimax` had no page-level horizontal overflow.
+- 390px mobile `/tutorial/minimax` rendered all six MiniMax tutorial images through Next Image after scrolling each image into view.
+
+SEO/deployment impact:
+
+- Adds one review detail route entry for `/api-review/minimax` and updates MiniMax-related list copy.
+- Adds six static tutorial images under `public/images/tutorial/`.
+- No sitemap, robots, canonical, base UI component, navigation, or unrelated layout changes.

@@ -5,7 +5,7 @@ import { TutorialListContent } from '@/components/content/TutorialListContent';
 
 export const metadata: Metadata = {
   title: 'AI API 购买教程大全',
-  description: 'DeepSeek、OpenAI、Claude、通义千问、Gemini、Kimi 等主流 AI API 的注册、充值、API Key 创建和首次调用教程。',
+  description: 'DeepSeek、MiniMax M3、OpenAI、Claude、通义千问、Gemini、Kimi 等主流 AI API 的注册、充值、API Key 创建和首次调用教程。',
 };
 
 export default function TutorialPage() {
