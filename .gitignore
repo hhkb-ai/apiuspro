@@ -104,6 +104,18 @@ Desktop.ini
 .codex/
 .codex-preview/
 
+# Local AI / analysis artifacts
+.codex-video-analysis/
+test-artifacts/
+rollback-backups/
+.claude/
+
+# Temporary local outputs
+*.bak
+*.backup
+*.orig
+*.rej
+
 # Local drafts and generated planning artifacts
 /assets/
 /deploy/
