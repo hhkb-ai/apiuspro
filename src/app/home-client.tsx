@@ -1,21 +1,13 @@
 'use client';
 
-import { useDeferredValue, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { ThemeToggle } from '@/components/theme-toggle';
-import { BeianLinks } from '@/components/layout/BeianLinks';
 import { BrandIcon } from '@/components/api/BrandIcon';
-import { apiList, appTutorials } from '@/lib/api-config';
-import { fuzzyScore, sortByFuzzyScore } from '@/lib/fuzzy-search';
-import { searchAll, findExactMatch } from '@/lib/search-index';
+import { apiList } from '@/lib/api-config';
+import { useDismissibleSuggestions } from '@/hooks/use-dismissible-suggestions';
+import { type HomeSearchSuggestion, useHomeSearch } from '@/hooks/use-home-search';
 import { BookOpen, ChevronRight, Cloud, Home, Menu, Search, X } from 'lucide-react';
-
-const pages = [
-  { id: 'cloud-api', name: 'API 列表', desc: '先看官网入口、代理要求和免费额度', url: '/cloud-api', tag: '优先查看' },
-  { id: 'tutorial', name: '购买教程', desc: '按步骤完成注册、支付与 API Key 创建', url: '/tutorial', tag: '新手推荐' },
-  { id: 'local-deploy', name: '本地部署', desc: '笔记本也能跑！Ollama 一键部署开源模型', url: '/local-deploy', tag: '进阶路线' },
-];
 
 const beginnerLearningSteps = [
   { step: '01', title: 'AI 常识', desc: '看懂模型、Token、上下文', href: '/learn/ai-basics' },
@@ -70,94 +62,28 @@ const mobileMenuLinks = [
   { name: 'API 测评', href: '/api-review', desc: '看模型和平台对比' },
 ];
 
-function accessText(proxy?: boolean) {
-  return proxy ? '需要代理' : '无需代理';
-}
-
-interface Suggestion {
-  id: string;
-  name: string;
-  desc: string;
-  href: string;
-  type: string;
-}
-
 type SearchBarProps = {
   query: string;
   setQuery: (q: string) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  suggestions: Suggestion[];
+  suggestions: HomeSearchSuggestion[];
   showSuggestions: boolean;
   setShowSuggestions: (s: boolean) => void;
+  primeSearch: () => void;
   searchId: string;
 };
 
-function useSearch(rawQuery: string, maxResults: number) {
-  const normalizedQuery = useDeferredValue(rawQuery.toLowerCase().trim());
-
-  const result = useMemo(() => {
-    if (!normalizedQuery) return { suggestions: [] as Suggestion[], exactMatch: null as { href: string } | null, appExactMatch: null };
-
-    // 使用统一搜索索引
-    const allResults = searchAll(normalizedQuery, maxResults);
-
-    // 转换为 Suggestion 格式
-    const suggestions: Suggestion[] = allResults.map(item => ({
-      id: item.id,
-      name: item.name,
-      desc: item.desc,
-      href: item.href,
-      type: item.type,
-    }));
-
-    // 精确匹配
-    const exactHref = findExactMatch(normalizedQuery);
-
-    return {
-      suggestions,
-      exactMatch: exactHref ? { href: exactHref } : null,
-      appExactMatch: null, // 已在 findExactMatch 中处理
-    };
-  }, [normalizedQuery, maxResults]);
-
-  return result;
-}
-
-function DesktopSearchBar({ query, setQuery, onSubmit, suggestions, showSuggestions, setShowSuggestions, searchId }: SearchBarProps) {
-  const searchRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!showSuggestions) return;
-
-    function handlePointerDown(event: PointerEvent) {
-      if (!searchRef.current?.contains(event.target as Node)) {
-        setShowSuggestions(false);
-      }
-    }
-
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') {
-        setShowSuggestions(false);
-      }
-    }
-
-    document.addEventListener('pointerdown', handlePointerDown);
-    document.addEventListener('keydown', handleKeyDown);
-    return () => {
-      document.removeEventListener('pointerdown', handlePointerDown);
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [setShowSuggestions, showSuggestions]);
+function DesktopSearchBar({ query, setQuery, onSubmit, suggestions, showSuggestions, setShowSuggestions, primeSearch, searchId }: SearchBarProps) {
+  const dismissSuggestions = useCallback(() => {
+    setShowSuggestions(false);
+  }, [setShowSuggestions]);
+  const { containerRef, handleBlur } = useDismissibleSuggestions<HTMLDivElement>(showSuggestions, dismissSuggestions);
 
   return (
     <div
-      ref={searchRef}
+      ref={containerRef}
       className="relative"
-      onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
-          setShowSuggestions(false);
-        }
-      }}
+      onBlur={handleBlur}
     >
       <form
         id={searchId}
@@ -171,7 +97,7 @@ function DesktopSearchBar({ query, setQuery, onSubmit, suggestions, showSuggesti
             type="search"
             value={query}
             onChange={(e) => { setQuery(e.target.value); setShowSuggestions(true); }}
-            onFocus={() => setShowSuggestions(true)}
+            onFocus={() => { primeSearch(); setShowSuggestions(true); }}
             placeholder="搜索 DeepSeek、Claude、API Key、提示词、429 报错..."
             aria-label="搜索 API、教程或工具"
             className="h-full w-full border-0 bg-transparent pl-5 pr-4 text-sm outline-none placeholder:text-gray-400"
@@ -180,7 +106,6 @@ function DesktopSearchBar({ query, setQuery, onSubmit, suggestions, showSuggesti
         <button
           type="submit"
           className="hidden"
-          disabled={!query.trim() || suggestions.length === 0}
         >
           <Search className="w-4 h-4" />
         </button>
@@ -193,7 +118,7 @@ function DesktopSearchBar({ query, setQuery, onSubmit, suggestions, showSuggesti
               <Link
                 key={item.id}
                 href={item.href}
-                onClick={() => setShowSuggestions(false)}
+                onClick={dismissSuggestions}
                 className="flex items-center gap-3 border-b border-border px-3 py-3 last:border-b-0 hover:bg-muted/50 active:bg-muted"
               >
                 <span className="rounded-md border border-border bg-muted px-2 py-1 text-[11px] font-medium text-muted-foreground">{item.type}</span>
@@ -215,48 +140,24 @@ function DesktopSearchBar({ query, setQuery, onSubmit, suggestions, showSuggesti
   );
 }
 
-function MobileSearchBar({ query, setQuery, onSubmit, suggestions, showSuggestions, setShowSuggestions, searchId }: SearchBarProps) {
-  const searchRef = useRef<HTMLDivElement>(null);
+function MobileSearchBar({ query, setQuery, onSubmit, suggestions, showSuggestions, setShowSuggestions, primeSearch, searchId }: SearchBarProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const dismissSuggestions = useCallback(() => {
+    setShowSuggestions(false);
+  }, [setShowSuggestions]);
+  const { containerRef, handleBlur } = useDismissibleSuggestions<HTMLDivElement>(showSuggestions, dismissSuggestions);
 
   const clearSearch = () => {
     setQuery('');
-    setShowSuggestions(false);
+    dismissSuggestions();
     inputRef.current?.focus();
   };
 
-  useEffect(() => {
-    if (!showSuggestions) return;
-
-    function handlePointerDown(event: PointerEvent) {
-      if (!searchRef.current?.contains(event.target as Node)) {
-        setShowSuggestions(false);
-      }
-    }
-
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') {
-        setShowSuggestions(false);
-      }
-    }
-
-    document.addEventListener('pointerdown', handlePointerDown);
-    document.addEventListener('keydown', handleKeyDown);
-    return () => {
-      document.removeEventListener('pointerdown', handlePointerDown);
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [setShowSuggestions, showSuggestions]);
-
   return (
     <div
-      ref={searchRef}
+      ref={containerRef}
       className="relative"
-      onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
-          setShowSuggestions(false);
-        }
-      }}
+      onBlur={handleBlur}
     >
       <form
         id={searchId}
@@ -271,7 +172,7 @@ function MobileSearchBar({ query, setQuery, onSubmit, suggestions, showSuggestio
             type="search"
             value={query}
             onChange={(e) => { setQuery(e.target.value); setShowSuggestions(true); }}
-            onFocus={() => setShowSuggestions(true)}
+            onFocus={() => { primeSearch(); setShowSuggestions(true); }}
             placeholder="搜索 DeepSeek、Claude..."
             aria-label="搜索 API、教程或工具"
             className="h-12 w-full border-0 bg-transparent pl-5 pr-11 text-[13px] outline-none placeholder:text-gray-400"
@@ -290,7 +191,6 @@ function MobileSearchBar({ query, setQuery, onSubmit, suggestions, showSuggestio
         <button
           type="submit"
           className="hidden"
-          disabled={!query.trim() || suggestions.length === 0}
         >
           <Search className="w-4 h-4" />
         </button>
@@ -308,7 +208,7 @@ function MobileSearchBar({ query, setQuery, onSubmit, suggestions, showSuggestio
               <Link
                 key={item.id}
                 href={item.href}
-                onClick={() => setShowSuggestions(false)}
+                onClick={dismissSuggestions}
                 className="flex min-h-[56px] items-center gap-3 border-b border-border px-3 py-3 last:border-b-0 active:bg-muted"
               >
                 <span className="rounded-md border border-border bg-muted px-2 py-1 text-[11px] font-medium text-muted-foreground">{item.type}</span>
@@ -387,7 +287,7 @@ function BeginnerRoutePanel({ compact = false, sectionId }: { compact?: boolean;
       </div>
       <div className={compact ? 'relative flex-1 pl-11' : 'relative flex-1 pl-[52px]'}>
         <div className={compact ? 'absolute left-4 top-4 bottom-9 w-[1.5px] bg-border/55' : 'absolute left-[19px] top-5 bottom-5 w-[1.5px] bg-border/50'} />
-        {beginnerLearningSteps.map((item, index) => (
+        {beginnerLearningSteps.map((item) => (
           <Link
             key={item.step}
             href={item.href}
@@ -417,6 +317,7 @@ function DesktopHero({
   suggestions,
   showSuggestions,
   setShowSuggestions,
+  primeSearch,
   searchId,
   beginnerId,
   purchaseId,
@@ -424,9 +325,10 @@ function DesktopHero({
   query: string;
   setQuery: (q: string) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  suggestions: Suggestion[];
+  suggestions: HomeSearchSuggestion[];
   showSuggestions: boolean;
   setShowSuggestions: (s: boolean) => void;
+  primeSearch: () => void;
   searchId: string;
   beginnerId: string;
   purchaseId: string;
@@ -452,6 +354,7 @@ function DesktopHero({
                 suggestions={suggestions}
                 showSuggestions={showSuggestions}
                 setShowSuggestions={setShowSuggestions}
+                primeSearch={primeSearch}
                 searchId={searchId}
               />
             </div>
@@ -482,6 +385,7 @@ function MobileHero({
   suggestions,
   showSuggestions,
   setShowSuggestions,
+  primeSearch,
   searchId,
   beginnerId,
   purchaseId,
@@ -489,9 +393,10 @@ function MobileHero({
   query: string;
   setQuery: (q: string) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  suggestions: Suggestion[];
+  suggestions: HomeSearchSuggestion[];
   showSuggestions: boolean;
   setShowSuggestions: (s: boolean) => void;
+  primeSearch: () => void;
   searchId: string;
   beginnerId: string;
   purchaseId: string;
@@ -515,6 +420,7 @@ function MobileHero({
                 suggestions={suggestions}
                 showSuggestions={showSuggestions}
                 setShowSuggestions={setShowSuggestions}
+                primeSearch={primeSearch}
                 searchId={searchId}
               />
             </div>
@@ -784,21 +690,18 @@ function MobileBottomNav({ onMenuOpen }: { onMenuOpen: () => void }) {
 }
 
 function DesktopHome() {
-  const router = useRouter();
-  const [query, setQuery] = useState('');
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const { suggestions, exactMatch } = useSearch(query, 8);
+  const {
+    query,
+    setQuery,
+    showSuggestions,
+    setShowSuggestions,
+    suggestions,
+    submitSearch,
+    primeSearch,
+  } = useHomeSearch(8);
   const searchId = 'home-search-desktop';
   const beginnerId = 'beginner-route-desktop';
   const purchaseId = 'purchase-tutorials-desktop';
-
-  const submitSearch = useCallback((e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const href = exactMatch?.href || suggestions[0]?.href;
-    if (!href) return;
-    router.push(href);
-    setShowSuggestions(false);
-  }, [exactMatch, suggestions, router]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -811,6 +714,7 @@ function DesktopHome() {
           suggestions={suggestions}
           showSuggestions={showSuggestions}
           setShowSuggestions={setShowSuggestions}
+          primeSearch={primeSearch}
           searchId={searchId}
           beginnerId={beginnerId}
           purchaseId={purchaseId}
@@ -824,22 +728,19 @@ function DesktopHome() {
 }
 
 function MobileHome() {
-  const router = useRouter();
-  const [query, setQuery] = useState('');
-  const [showSuggestions, setShowSuggestions] = useState(false);
+  const {
+    query,
+    setQuery,
+    showSuggestions,
+    setShowSuggestions,
+    suggestions,
+    submitSearch,
+    primeSearch,
+  } = useHomeSearch(6);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { suggestions, exactMatch } = useSearch(query, 6);
   const searchId = 'home-search-mobile';
   const beginnerId = 'beginner-route-mobile';
   const purchaseId = 'purchase-tutorials-mobile';
-
-  const submitSearch = useCallback((e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const href = exactMatch?.href || suggestions[0]?.href;
-    if (!href) return;
-    router.push(href);
-    setShowSuggestions(false);
-  }, [exactMatch, suggestions, router]);
 
   return (
     <div className="min-h-screen bg-background pb-[calc(86px+env(safe-area-inset-bottom))] text-foreground">
@@ -852,6 +753,7 @@ function MobileHome() {
           suggestions={suggestions}
           showSuggestions={showSuggestions}
           setShowSuggestions={setShowSuggestions}
+          primeSearch={primeSearch}
           searchId={searchId}
           beginnerId={beginnerId}
           purchaseId={purchaseId}
