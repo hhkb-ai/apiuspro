@@ -457,7 +457,7 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
                         src={step.image}
                         alt={step.title}
                         fill
-                        className="scale-[1.05] object-cover"
+                        className={step.imageFit === 'contain' ? 'object-contain' : 'scale-[1.05] object-cover'}
                         sizes="(min-width: 1280px) 760px, (min-width: 768px) calc(100vw - 18rem), calc(100vw - 2rem)"
                         priority={stepIdx === 0}
                       />

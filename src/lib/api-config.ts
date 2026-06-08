@@ -263,18 +263,19 @@ for block in message.content:
         {
           title: '按 M3 价格和上下文长度控制成本',
           description: 'M3 的 API 价格会根据输入长度和服务等级变化。普通对话和大部分编程任务优先控制在 512K 输入以内。',
-          image: '/images/tutorial/minimax-m3-usage.png',
+          image: '/images/tutorial/minimax-m3-pricing.png',
+          imageFit: 'contain',
           items: [
-            'Pay-as-you-go 标准通道：≤512K 输入 token 官方标价为 $0.60/百万输入、$2.40/百万输出；发布初期 7 天 50% off 为 $0.30/$1.20',
-            '>512K 输入 token 会进入更高长上下文价格，官方标准通道标价为 $1.20/百万输入、$4.80/百万输出',
-            'Priority 通道可通过 service_tier=priority 获得更稳定调度，价格高于标准通道，官方说明早期需联系销售或等待开放',
+            'MiniMax-M3 标准通道：上下文 ≤512K 时，输入 ¥2.1/百万 tokens、输出 ¥8.4/百万 tokens、缓存读取 ¥0.42/百万 tokens',
+            'MiniMax-M3 标准通道：上下文 512K~1M 时，输入 ¥4.2/百万 tokens、输出 ¥16.8/百万 tokens、缓存读取 ¥0.84/百万 tokens；超过 512K tokens 的能力限时限量供应，如需使用请联系销售',
+            'MiniMax-M2.7：输入 ¥2.1/百万 tokens、输出 ¥8.4/百万 tokens、缓存读取 ¥0.42/百万 tokens、缓存写入 ¥2.625/百万 tokens；MiniMax-M2.7-highspeed 输入 ¥4.2/百万 tokens、输出 ¥16.8/百万 tokens、缓存读取 ¥0.42/百万 tokens、缓存写入 ¥2.625/百万 tokens',
             'M3 可切换 thinking 开关；复杂 Agent/推理任务开启 thinking，低延迟对话和补全可关闭 thinking',
             '用量统计页面定期查看 token 消耗、额度条和 Credits 余额'
           ],
           whereToClick: '控制台 → Usage / Billing / Token Plan',
           expectedResult: '能看到本月用量、剩余额度和是否触发 Credits 或 Pay-as-you-go 扣费',
           failureChecklist: ['大仓库/长视频/超长文档是否触发 >512K 长上下文价格', '是否误用 Priority 通道', '是否把 Token Plan 额度用完后开始扣 Credits 或 PAYG 余额'],
-          warning: 'M3 刚发布，价格、折扣期、Priority 开放状态和长上下文额度可能变化，请以 MiniMax 官方 Pricing 页面为准。'
+          warning: 'M3 价格、折扣、长上下文开放状态和额度可能变化，请以 MiniMax 官方 Pricing 页面和控制台为准。'
         }
       ],
       tips: [
@@ -356,7 +357,7 @@ for block in message.content:
         {
           title: '充值并确认余额',
           description: '正式持续调用通常需要账户余额，测试前先确认充值和账单状态。',
-          image: '/images/tutorial/deepseek-docx-billing.svg',
+          image: '/images/tutorial/deepseek-docx-billing.png',
           items: [
             '进入账单、余额或 Usage 页面',
             '选择合适充值档位，例如 10、20、50 或 100 元',
@@ -399,7 +400,7 @@ print(response.choices[0].message.content)`,
         {
           title: '选择模型并控制成本',
           description: '首次跑通后，再根据速度、推理能力和成本切换模型。',
-          image: '/images/tutorial/deepseek-docx-models-pricing.svg',
+          image: '/images/tutorial/deepseek-docx-models-pricing.png',
           items: [
             'deepseek-v4-flash：官方 V4 Flash 模型，支持 1M 上下文、最高 384K 输出、思考/非思考双模式，适合实时对话、客服和高频调用',
             'deepseek-v4-pro：官方 V4 Pro 模型，支持 1M 上下文、最高 384K 输出、思考/非思考双模式，适合复杂代码、长文档、Agent 和技术问答',

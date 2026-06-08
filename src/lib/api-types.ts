@@ -3,6 +3,7 @@ export interface TutorialStep {
   title: string;
   description: string;
   image?: string;
+  imageFit?: 'cover' | 'contain';
   items?: string[];
   code?: string;
   codeLanguage?: string;

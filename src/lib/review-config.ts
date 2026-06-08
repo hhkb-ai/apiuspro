@@ -111,7 +111,7 @@ export const reviewDetails: Record<string, ReviewDetail> = {
     ratings: [
       { label: '质量', score: 4.6, detail: '官方定位为 Coding & Agentic Frontier，在 SWE-Bench Pro、Terminal-Bench、MCP Atlas 等代码和 Agent 基准上给出较强成绩。' },
       { label: '速度', score: 4.2, detail: 'M3 支持 thinking 开关；关闭 thinking 更适合低延迟对话和补全，复杂 Agent 任务开启 thinking 但延迟会更高。' },
-      { label: '性价比', score: 4.4, detail: '官方 Token Plan 口径为 Plus $20/月、Max $50/月、Ultra $120/月，并给出较高 M3 月度 token 额度；PAYG 在发布初期有 7 天 50% off。' },
+      { label: '性价比', score: 4.4, detail: '官方 Token Plan 口径为 Plus $20/月、Max $50/月、Ultra $120/月；PAYG 标准通道当前显示 M3 ≤512K 为 ¥2.1/百万输入、¥8.4/百万输出。' },
       { label: '稳定性', score: 4.0, detail: 'M3 刚发布，API、Token Plan、Priority 通道和区域价格仍可能快速调整，生产接入前建议小流量压测。' },
     ],
     pros: [
@@ -141,9 +141,10 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       { model: 'Token Plan Plus', input: '$20/月', output: '约 1.7B M3 tokens/月' },
       { model: 'Token Plan Max', input: '$50/月', output: '约 5.1B M3 tokens/月' },
       { model: 'Token Plan Ultra', input: '$120/月', output: '约 9.8B M3 tokens/月' },
-      { model: 'PAYG M3 标准 ≤512K', input: '$0.60/百万输入（发布 7 天 $0.30）', output: '$2.40/百万输出（发布 7 天 $1.20）' },
-      { model: 'PAYG M3 标准 >512K', input: '$1.20/百万输入', output: '$4.80/百万输出' },
-      { model: 'PAYG M3 Priority ≤512K', input: '$0.90/百万输入（发布 7 天 $0.45）', output: '$3.60/百万输出（发布 7 天 $1.80）' },
+      { model: 'PAYG M3 标准 ≤512K', input: '¥2.1/百万；缓存读 ¥0.42/百万', output: '¥8.4/百万' },
+      { model: 'PAYG M3 标准 512K~1M', input: '¥4.2/百万；缓存读 ¥0.84/百万', output: '¥16.8/百万' },
+      { model: 'MiniMax-M2.7', input: '¥2.1/百万；缓存读 ¥0.42/百万；缓存写 ¥2.625/百万', output: '¥8.4/百万' },
+      { model: 'MiniMax-M2.7-highspeed', input: '¥4.2/百万；缓存读 ¥0.42/百万；缓存写 ¥2.625/百万', output: '¥16.8/百万' },
     ],
     useCases: [
       'AI Coding 工具：Codex、Claude Code、Cline、OpenClaw、MiniMax Code 等需要长上下文和 Agent 执行的工作流',
