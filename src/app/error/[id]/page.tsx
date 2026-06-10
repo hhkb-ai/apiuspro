@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   if (!solution) return { title: '错误解决方案未找到' };
 
   return {
-    title: `${solution.shortTitle} 怎么解决 | API知识站`,
+    title: `${solution.shortTitle} 怎么解决`,
     description: solution.summary,
     alternates: {
       canonical: `https://www.apiuspro.cn/error/${solution.id}`,
@@ -121,7 +121,7 @@ export default async function ErrorSolutionDetailPage({ params }: { params: Prom
         <DetailBackNav listHref="/error" listLabel="错误解决列表" />
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_240px]">
-          <main className="min-w-0">
+          <div className="min-w-0">
             <div className="mb-8 border-b pb-8">
               <div className="mb-4 flex flex-wrap items-center gap-3">
                 <Badge variant="outline" className={statusClass(solution.statusLabel)}>
@@ -247,7 +247,7 @@ export default async function ErrorSolutionDetailPage({ params }: { params: Prom
                 </div>
               </SectionShell>
             </div>
-          </main>
+          </div>
 
           <aside className="hidden lg:block">
             <div className="sticky top-8 space-y-6">
