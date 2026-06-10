@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 export function BeianLinks() {
   return (
     <div className="flex flex-col items-center justify-center gap-2">
@@ -17,13 +15,12 @@ export function BeianLinks() {
         target="_blank"
         className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
       >
-        <Image
-          src="/images/beian.png"
-          alt="公安备案图标"
-          width={16}
-          height={16}
-          className="h-4 w-4"
-        />
+        <span
+          aria-hidden="true"
+          className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-sm border border-current text-[10px] font-semibold leading-none"
+        >
+          安
+        </span>
         粤公网安备44162102000181号
       </a>
     </div>
