@@ -610,7 +610,7 @@ function Footer() {
         <div className="flex flex-col justify-between gap-3 border-t border-border pt-6 sm:flex-row sm:items-center">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3.5 h-3.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            hello@apiuspro.com
+            adabcee775@gmail.com
           </div>
           <div className="text-xs text-muted-foreground">
             <p>&copy; 2026 ApiUsPro. 保留所有权利。</p>
