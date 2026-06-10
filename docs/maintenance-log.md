@@ -72,6 +72,38 @@ git status --short
 
 ## 变更记录
 
+### 2026-06-10 PR batch merge and safe main deploy
+
+Deployment scope for this push:
+
+- Merge PR #2 (`fix: update home footer contact email`) into clean `main`.
+- Merge PR #1 (`fix: redirect tongyi tutorial alias`) into clean `main`.
+- Merge `origin/fix/local-safe-qa-improvements` into clean `main`.
+- Keep the current dirty `D:\projects` working tree out of the build and deployment path.
+
+Merged content summary:
+
+- Homepage footer contact email update.
+- Tongyi tutorial alias redirect and localized not-found handling.
+- Analytics and page QA improvements from `fix/local-safe-qa-improvements`.
+- QA reports already committed on the merged branch.
+
+Explicitly excluded from this deployment:
+
+- Uncommitted dirty files in the primary `D:\projects` checkout.
+- `test-artifacts/mobile-home-test/`.
+- `.claude/launch.json`.
+
+Verification completed before deployment:
+
+```bash
+corepack pnpm install --prefer-frozen-lockfile --prod=false  # passed after network approval
+.\node_modules\.bin\tsc.cmd -p tsconfig.json --noEmit  # passed
+.\node_modules\.bin\eslint.cmd  # 0 errors, 3 existing warnings in scripts/test-mobile-home.mjs
+.\node_modules\.bin\next.cmd build  # passed
+.\node_modules\.bin\tsup.cmd src/server.ts --format cjs --platform node --target node20 --outDir dist --no-splitting --no-minify  # passed
+```
+
 ### 2026-06-10 Footer 备案信息修复
 
 Deployment scope for this push:
