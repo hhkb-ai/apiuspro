@@ -111,21 +111,35 @@ export default function RootLayout({
             `,
           }}
         />
-        <Script charSet="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js" strategy="lazyOnload" />
+        <Script
+          id="LA_COLLECT"
+          src="https://sdk.51.la/js-sdk-pro.min.js"
+          strategy="beforeInteractive"
+        />
         <Script id="la-collect-init" strategy="beforeInteractive">
           {`
             (function(){
               var retries = 0;
+              var maxRetries = 30;
+              var retryInterval = 300;
               function initLA(){
                 if (window.LA && window.LA.init) {
-                  window.LA.init({id:"3Ptg8CrG0LkgsgHo",ck:"3Ptg8CrG0LkgsgHo"});
+                  try {
+                    window.LA.init({id:"3Ptg8CrG0LkgsgHo",ck:"3Ptg8CrG0LkgsgHo"});
+                    console.log('51.la initialized successfully');
+                  } catch(err) {
+                    console.error('51.la initialization error:', err);
+                  }
                   return;
                 }
-                if (retries < 20) {
+                if (retries < maxRetries) {
                   retries += 1;
-                  window.setTimeout(initLA, 200);
+                  window.setTimeout(initLA, retryInterval);
+                } else {
+                  console.warn('51.la SDK did not load after ' + maxRetries + ' retries');
                 }
               }
+              window.addEventListener('load', initLA);
               initLA();
             })();
           `}

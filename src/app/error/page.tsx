@@ -9,7 +9,7 @@ import { RememberListLink } from '@/components/navigation/ReturnNavigation';
 import { errorSolutions } from '@/lib/error-solution-config';
 
 export const metadata: Metadata = {
-  title: 'API 错误解决指南 | API知识站',
+  title: 'API 错误解决指南',
   description: '覆盖 401、403、404 model not found、429、timeout、insufficient quota、invalid API key 和 Base URL 配置错误，按认证、权限、模型、限流、额度与网络链路拆解原因，并提供可复制的 curl、Python 和 SDK 修复示例。',
   alternates: {
     canonical: 'https://www.apiuspro.cn/error',
@@ -113,7 +113,7 @@ export default function ErrorSolutionPage() {
                     <Button variant="outline" size="sm">查看解决方案</Button>
                   </RememberListLink>
                   <Link href={`/error/${solution.id}#fix-examples`} className="inline-flex">
-                    <Button variant="ghost" size="sm">复制修复示例</Button>
+                    <Button variant="ghost" size="sm">查看修复示例</Button>
                   </Link>
                 </div>
               </CardContent>
