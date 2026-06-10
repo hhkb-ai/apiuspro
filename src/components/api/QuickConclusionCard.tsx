@@ -85,22 +85,22 @@ export function QuickConclusionCard({ api, reviewSlug }: QuickConclusionCardProp
 
   const actionLinks = (
     <div className="flex flex-wrap gap-2 border-t border-border pt-4">
-      <a href={api.url} target="_blank" rel="noopener noreferrer">
-        <Button variant="outline" size="sm" className="border-border bg-background text-foreground hover:bg-muted">官网入口</Button>
-      </a>
+      <Button variant="outline" size="sm" className="border-border bg-background text-foreground hover:bg-muted" asChild>
+        <a href={api.url} target="_blank" rel="noopener noreferrer">官网入口</a>
+      </Button>
       {api.tutorial && (
-        <Link href={`/tutorial/${api.id}`}>
-          <Button variant="outline" size="sm" className="border-border bg-background text-foreground hover:bg-muted">购买教程</Button>
-        </Link>
+        <Button variant="outline" size="sm" className="border-border bg-background text-foreground hover:bg-muted" asChild>
+          <Link href={`/tutorial/${api.id}`}>购买教程</Link>
+        </Button>
       )}
       {reviewSlug && (
-        <Link href={`/api-review/${reviewSlug}`}>
-          <Button variant="outline" size="sm" className="border-border bg-background text-foreground hover:bg-muted">完整测评</Button>
-        </Link>
+        <Button variant="outline" size="sm" className="border-border bg-background text-foreground hover:bg-muted" asChild>
+          <Link href={`/api-review/${reviewSlug}`}>完整测评</Link>
+        </Button>
       )}
-      <Link href="/use-case/coding">
-        <Button variant="outline" size="sm" className="border-border bg-background text-foreground hover:bg-muted">场景推荐</Button>
-      </Link>
+      <Button variant="outline" size="sm" className="border-border bg-background text-foreground hover:bg-muted" asChild>
+        <Link href="/use-case/coding">场景推荐</Link>
+      </Button>
     </div>
   );
 

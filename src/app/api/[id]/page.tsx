@@ -138,18 +138,18 @@ export default async function APIDetailPage({ params }: { params: Promise<{ id: 
           </div>
           <div className="flex flex-wrap gap-2">
             {api.tutorial && (
-              <Link href={`/tutorial/${api.id}`}>
-                <Button variant="outline">{api.name} 购买教程</Button>
-              </Link>
+              <Button variant="outline" asChild>
+                <Link href={`/tutorial/${api.id}`}>{api.name} 购买教程</Link>
+              </Button>
             )}
             {reviewSlug && (
-              <Link href={`/api-review/${reviewSlug}`}>
-                <Button variant="outline">{api.name} 完整测评</Button>
-              </Link>
+              <Button variant="outline" asChild>
+                <Link href={`/api-review/${reviewSlug}`}>{api.name} 完整测评</Link>
+              </Button>
             )}
-            <a href={api.url} target="_blank" rel="noopener noreferrer">
-              <Button>访问官网</Button>
-            </a>
+            <Button asChild>
+              <a href={api.url} target="_blank" rel="noopener noreferrer">访问官网</a>
+            </Button>
           </div>
         </div>
 
