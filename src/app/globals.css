@@ -354,6 +354,25 @@ body {
   color: #bae6fd;
 }
 
+.footer-beian-link,
+.content-article main a.footer-beian-link[target="_blank"],
+.footer-beian-link:focus,
+.footer-beian-link:focus-visible,
+.footer-beian-link:active {
+  border: 0 !important;
+  border-radius: 0;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+  padding: 0;
+}
+
+.footer-beian-link:hover,
+.content-article main a.footer-beian-link[target="_blank"]:hover {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
 /* 应用教程页文字高亮兜底：让 Codex 安装教程中的 mark、行内代码和重点标签更明显 */
 .content-article main mark {
   border: 1px solid #facc15;

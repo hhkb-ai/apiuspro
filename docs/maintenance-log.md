@@ -72,6 +72,37 @@ git status --short
 
 ## 变更记录
 
+### 2026-06-10 Footer 备案信息修复
+
+Deployment scope for this push:
+
+- Update the shared footer备案 component in `src/components/layout/BeianLinks.tsx` so ICP and公安备案 links render as plain text links without button-like borders, rings, outlines, shadows, or blue background.
+- Add scoped `.footer-beian-link` CSS in `src/app/globals.css` to override the article external-link style only for footer备案 links.
+- Reuse `BeianLinks` in the homepage footer in `src/app/home-client.tsx` so `/` shows both备案号.
+- Add `BeianLinks` to the independent `src/app/local-deploy/page.tsx` footer.
+
+Explicitly excluded from this commit:
+
+- Existing unrelated local edits in `src/app/api/[id]/page.tsx`.
+- Existing unrelated local edits in `src/components/api/QuickConclusionCard.tsx`.
+- Existing unrelated button-link edits in `src/app/home-client.tsx` outside the footer备案 import/render hunk.
+- Other unstaged local edits shown by `git status`, including non-footer `local-deploy` copy and generated/build-touched files.
+
+Verification completed:
+
+```bash
+.\node_modules\.bin\tsc.cmd -p tsconfig.json --noEmit  # passed
+.\node_modules\.bin\eslint.cmd src\app\home-client.tsx src\app\local-deploy\page.tsx src\components\layout\BeianLinks.tsx  # 0 errors, 2 pre-existing warnings in home-client purchaseId
+.\node_modules\.bin\next.cmd build  # passed
+.\node_modules\.bin\tsup.cmd src/server.ts --format cjs --platform node --target node20 --outDir dist --no-splitting --no-minify  # passed
+```
+
+Browser verification:
+
+- Checked visible footer备案 links on `/`, `/learn`, `/tutorial`, `/app`, `/error`, `/learn/ai-basics`, `/tutorial/deepseek`, `/app/ccswitch`, `/api-review/deepseek`, and `/local-deploy`.
+- Desktop and mobile homepage each rendered exactly two visible备案 links.
+- Runtime styles for the备案 links had no border, no visible outline, no box shadow, and transparent background.
+
 ### 2026-05-16
 
 本地已关联 GitHub 仓库 `hhkb-ai/apiuspro`，远程 `origin/main` 可访问。

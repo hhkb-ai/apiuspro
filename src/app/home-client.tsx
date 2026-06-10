@@ -3,6 +3,7 @@
 import { useCallback, useRef, useState } from 'react';
 import Link from 'next/link';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { BeianLinks } from '@/components/layout/BeianLinks';
 import { BrandIcon } from '@/components/api/BrandIcon';
 import { apiList } from '@/lib/api-config';
 import { useDismissibleSuggestions } from '@/hooks/use-dismissible-suggestions';
@@ -611,7 +612,12 @@ function Footer() {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3.5 h-3.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
             hello@apiuspro.com
           </div>
-          <p className="text-xs text-muted-foreground">&copy; 2026 ApiUsPro. 保留所有权利。</p>
+          <div className="text-xs text-muted-foreground">
+            <p>&copy; 2026 ApiUsPro. 保留所有权利。</p>
+            <div className="mt-2">
+              <BeianLinks />
+            </div>
+          </div>
         </div>
       </div>
     </footer>

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { BeianLinks } from '@/components/layout/BeianLinks';
 import { BreadcrumbSchema, HowToSchema, ArticleSchema } from '@/components/seo/structured-data';
 import { generateMetadata as generateTdkMetadata } from '@/lib/tdk';
 
@@ -742,6 +743,9 @@ export default function LocalDeployPage() {
         {/* 页脚 */}
         <footer className="border-t border-border px-6 py-8 text-center text-sm text-muted-foreground">
           <p>API知识站 - 适合初学者的 AI API 学习平台</p>
+          <div className="mt-3">
+            <BeianLinks />
+          </div>
           <div className="mt-2">
             <Link href="/" className="transition-colors hover:text-foreground">返回首页</Link>
           </div>
