@@ -9,7 +9,7 @@ const brandIconById: Record<string, { src?: string; alt: string; fallback: strin
   openai: { src: '/images/brands/openai.svg', alt: 'OpenAI', fallback: 'OAI' },
   'gpt-5.5': { src: '/images/brands/openai.svg', alt: 'OpenAI', fallback: 'OAI' },
   claude: { src: '/images/brands/claude.png', alt: 'Claude', fallback: 'C' },
-  gemini: { src: '/images/brands/gemini.svg', alt: 'Gemini', fallback: 'G' },
+  gemini: { alt: 'Gemini', fallback: 'G' },
   aliyun: { src: '/images/brands/aliyun.svg', alt: '阿里云通义千问', fallback: '通' },
   tongyi: { src: '/images/brands/aliyun.svg', alt: '阿里云通义千问', fallback: '通' },
   kimi: { src: '/images/brands/kimi.ico', alt: 'Kimi', fallback: 'K' },
