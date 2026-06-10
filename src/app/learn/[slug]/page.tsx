@@ -27,11 +27,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const article = getLearnArticleBySlug(slug);
 
   if (!article) {
-    return { title: '文章未找到 - API知识站' };
+    return { title: '文章未找到' };
   }
 
   return {
-    title: `${article.title} - API知识站`,
+    title: article.title,
     description: article.description,
   };
 }
@@ -62,7 +62,7 @@ export default async function LearnArticlePage({ params }: { params: Promise<{ s
         </div>
 
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_280px]">
-          <main className="min-w-0">
+          <div className="min-w-0">
             <article className="rounded-2xl border bg-card p-5 sm:p-7">
               <div className="mb-5 flex flex-wrap gap-2">
                 <Badge variant="outline" className="border-border bg-muted text-muted-foreground">{article.readingTime}</Badge>
@@ -119,7 +119,7 @@ export default async function LearnArticlePage({ params }: { params: Promise<{ s
                 ))}
               </div>
             </section>
-          </main>
+          </div>
 
           <aside className="lg:sticky lg:top-24 lg:self-start">
             <div className="rounded-lg border bg-card p-4">
