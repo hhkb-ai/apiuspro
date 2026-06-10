@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
         statusCode: 301,
       },
       {
+        source: '/tutorial/tongyi',
+        destination: '/tutorial/aliyun',
+        statusCode: 301,
+      },
+      {
         source: '/story',
         destination: '/use-case',
         statusCode: 301,
