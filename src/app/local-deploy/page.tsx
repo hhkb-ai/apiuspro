@@ -69,7 +69,7 @@ const deploySteps = [
     title: '检查电脑配置',
     description: '本地部署对电脑配置有一定要求，请先确认您的电脑是否满足。',
     items: [
-      '内存（RAM）：最低8GB，推荐16GB，32GB更佳',
+      '内存（RAM）：轻量模型 2-4GB 可运行，主流模型建议 8GB，推荐 16GB 或以上',
       '存储空间：至少10GB可用空间（用于存放模型文件）',
       '显卡（可选）：NVIDIA显卡可加速推理，无显卡也可用CPU运行',
       '操作系统：Windows 10/11、macOS、Linux 均支持',
@@ -77,7 +77,7 @@ const deploySteps = [
     code: '# Windows 用户查看内存：\n# 右键"此电脑" → 属性 → 查看"已安装的RAM"\n\n# 或者在 PowerShell 中运行：\nwmic memorychip get capacity',
     codeLanguage: 'bash',
     codeExplanation: '运行后会显示内存条容量（单位是字节），除以 1073741824 就是 GB 数。',
-    warning: '如果您的电脑内存低于8GB，建议先升级内存或使用云端API服务。',
+    warning: '如果您的电脑内存低于 8GB，可以尝试轻量模型（如 Qwen3 0.6B），但运行主流模型建议 8GB 或以上，否则建议使用云端 API 服务。',
   },
   {
     title: '安装 Ollama',
@@ -333,7 +333,7 @@ export default function LocalDeployPage() {
         name="如何在笔记本电脑上本地部署AI大模型"
         description="使用Ollama在笔记本电脑上部署Gemma 4等AI大模型的完整教程"
         totalTime="PT30M"
-        supply={['笔记本电脑（8GB+ RAM）', '稳定的网络连接']}
+        supply={['笔记本电脑（4GB+ RAM，推荐 8GB 或以上）', '稳定的网络连接']}
         tool={['Ollama', '终端/命令行']}
         steps={[
           { name: '安装 Ollama', text: '访问 https://ollama.ai 下载并安装 Ollama' },
@@ -363,7 +363,7 @@ export default function LocalDeployPage() {
             </h1>
             <p className="text-[15px] leading-7 text-muted-foreground max-w-2xl">
               本教程面向初学者，教您如何使用 Ollama 在笔记本电脑上部署和运行 AI 大模型。
-              无需昂贵硬件，3GB 内存即可开始体验本地 AI。
+              最小可从 2GB 内存的超轻量模型开始体验；建议至少 8GB 内存以运行常用开源模型，16GB 或以上可获得更流畅的体验。
             </p>
             <div className="mt-4 flex gap-3">
               <a href="https://ollama.ai" target="_blank" rel="noopener noreferrer">
@@ -410,7 +410,7 @@ export default function LocalDeployPage() {
               <p className="text-sm font-semibold text-amber-800 dark:text-amber-200">不适合谁</p>
               <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700 dark:text-amber-300">
                 <li>• 需要稳定代码生成、复杂推理或生产环境 SLA（请看 <Link href="/cloud-api" className="text-foreground hover:underline">云端 API 官网入口</Link>）</li>
-                <li>• 电脑内存低于 8GB 且不想升级硬件</li>
+                <li>• 电脑内存低于 2GB 且不想升级硬件</li>
                 <li>• 需要多模态、长上下文、函数调用等高级能力</li>
                 <li>• 不想占用本机资源，希望直接接入应用（请看 <Link href="/tutorial" className="text-foreground hover:underline">AI API 购买教程</Link>）</li>
               </ul>

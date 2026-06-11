@@ -750,3 +750,29 @@ SEO/deployment impact:
 
 - Homepage tutorial ordering changes visible content priority only; canonical URLs, structured data, sitemap, robots, and analytics scripts are unchanged.
 - The Next.js root pin is a build-environment fix and should not change runtime routes or rendered page content.
+
+### 2026-06-12 Homepage CTA routing deploy
+
+Commit scope:
+
+- Change the homepage hero CTA buttons from in-page anchors to full routes: `/learn` and `/tutorial`.
+- Keep the local deploy memory guidance aligned with tiered hardware expectations: 2GB ultra-light models, 8GB mainstream models, and 16GB+ recommended.
+
+Explicitly excluded from this commit:
+
+- Local Codex transcript export folders: `codex-selected-projects-export-20260608-155336/` and `codex-selected-projects-export-20260608-155655/`.
+- No changes to analytics scripts, Redis/PostgreSQL, 1Panel monitor scripts, sitemap, robots, canonical URLs, or auth/security settings.
+
+Verification completed:
+
+```bash
+node_modules\.bin\tsc.CMD -p tsconfig.json --noEmit  # passed
+node_modules\.bin\eslint.CMD src\app\home-client.tsx src\app\local-deploy\page.tsx  # passed
+node_modules\.bin\next.CMD build  # passed (75 static pages)
+node_modules\.bin\tsup.CMD .\src\server.ts --format cjs --platform node --target node20 --outDir dist --no-splitting --no-minify  # passed with filesystem escalation for Windows worktree metadata access
+```
+
+SEO/deployment impact:
+
+- Homepage CTA destinations change from same-page scrolling to existing first-level routes, improving expected navigation behavior.
+- Local deploy copy changes content wording only; route structure and structured data component usage remain unchanged.
