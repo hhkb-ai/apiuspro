@@ -360,10 +360,10 @@ function DesktopHero({
               />
             </div>
             <div className="mb-4 flex gap-3">
-              <Link href={`#${beginnerId}`} className="inline-flex h-12 items-center justify-center rounded-xl bg-primary px-6 text-sm font-medium text-primary-foreground">
+              <Link href="/learn" className="inline-flex h-12 items-center justify-center rounded-xl bg-primary px-6 text-sm font-medium text-primary-foreground">
                 从新手路线开始
               </Link>
-              <Link href={`#${purchaseId}`} className="inline-flex h-12 items-center justify-center rounded-xl border border-border px-6 text-sm font-medium text-foreground">
+              <Link href="/tutorial" className="inline-flex h-12 items-center justify-center rounded-xl border border-border px-6 text-sm font-medium text-foreground">
                 查看购买教程
               </Link>
             </div>
@@ -426,10 +426,10 @@ function MobileHero({
               />
             </div>
             <div className="mb-2 flex gap-2">
-              <Link href={`#${beginnerId}`} className="flex h-[44px] flex-1 items-center justify-center rounded-[10px] bg-primary text-[13px] font-medium text-primary-foreground">
+              <Link href="/learn" className="flex h-[44px] flex-1 items-center justify-center rounded-[10px] bg-primary text-[13px] font-medium text-primary-foreground">
                 从新手路线开始
               </Link>
-              <Link href={`#${purchaseId}`} className="flex h-[44px] flex-1 items-center justify-center rounded-[10px] border border-border text-[13px] font-medium text-foreground">
+              <Link href="/tutorial" className="flex h-[44px] flex-1 items-center justify-center rounded-[10px] border border-border text-[13px] font-medium text-foreground">
                 查看购买教程
               </Link>
             </div>

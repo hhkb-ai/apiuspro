@@ -27,11 +27,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const article = getLearnArticleBySlug(slug);
 
   if (!article) {
-    return { title: '文章未找到 - API知识站' };
+    return { title: '文章未找到' };
   }
 
   return {
-    title: `${article.title} - API知识站`,
+    title: `${article.title}`,
     description: article.description,
   };
 }

@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   if (!solution) return { title: '错误解决方案未找到' };
 
   return {
-    title: `${solution.shortTitle} 怎么解决 | API知识站`,
+    title: `${solution.shortTitle} 怎么解决`,
     description: solution.summary,
     alternates: {
       canonical: `https://www.apiuspro.cn/error/${solution.id}`,
