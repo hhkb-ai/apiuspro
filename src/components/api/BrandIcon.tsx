@@ -16,7 +16,7 @@ const brandIconById: Record<string, { src?: string; alt: string; fallback: strin
   doubao: { src: '/images/brands/doubao.png', alt: '豆包', fallback: '豆' },
   zhipu: { src: '/images/brands/zhipu.png', alt: '智谱 GLM', fallback: 'GLM' },
   minimax: { alt: 'MiniMax', fallback: 'MM' },
-  mimo: { alt: '小米 MiMo', fallback: 'Mi' },
+  mimo: { src: '/images/brands/xiaomi.svg', alt: '小米 MiMo', fallback: 'Mi' },
   tencent: { alt: '腾讯混元', fallback: '混' },
 };
 

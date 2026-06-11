@@ -723,3 +723,30 @@ SEO/deployment impact:
 - Adds one review detail route entry for `/api-review/minimax` and updates MiniMax-related list copy.
 - Adds six static tutorial images under `public/images/tutorial/`.
 - No sitemap, robots, canonical, base UI component, navigation, or unrelated layout changes.
+
+### 2026-06-11 Homepage MiMo tutorial priority and build-root fix
+
+Commit scope:
+
+- Move the homepage purchase tutorial priority from Claude/Gemini toward MiMo while keeping Claude and Gemini available later in the same list.
+- Add the official Xiaomi brand SVG for the MiMo tutorial card and wire it through `BrandIcon`.
+- Pin the Next.js build root to the project directory in `next.config.ts` so local Windows builds do not scan the parent user directory.
+
+Explicitly excluded from this commit:
+
+- Local Codex transcript export folders: `codex-selected-projects-export-20260608-155336/` and `codex-selected-projects-export-20260608-155655/`.
+- No changes to API data, tutorial content, route structure, sitemap, robots, analytics scripts, Redis/PostgreSQL, or 1Panel monitor scripts.
+
+Verification completed:
+
+```bash
+node_modules\.bin\tsc.CMD -p tsconfig.json --noEmit  # passed
+node_modules\.bin\eslint.CMD src\app\home-client.tsx src\components\api\BrandIcon.tsx next.config.ts  # passed
+node_modules\.bin\next.CMD build  # passed (75 static pages)
+node_modules\.bin\tsup.CMD src/server.ts --format cjs --platform node --target node20 --outDir dist --no-splitting --no-minify  # passed with filesystem escalation for Windows worktree metadata access
+```
+
+SEO/deployment impact:
+
+- Homepage tutorial ordering changes visible content priority only; canonical URLs, structured data, sitemap, robots, and analytics scripts are unchanged.
+- The Next.js root pin is a build-environment fix and should not change runtime routes or rendered page content.

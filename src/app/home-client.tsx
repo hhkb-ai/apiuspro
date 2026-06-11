@@ -39,7 +39,7 @@ const userEntryCards = [
 ];
 
 const tutorialsList = apiList.filter(api => api.tutorial);
-const tutorialPriority = ['deepseek', 'openai', 'claude', 'gemini', 'aliyun', 'kimi', 'doubao', 'zhipu', 'tencent', 'mimo'];
+const tutorialPriority = ['deepseek', 'openai', 'mimo', 'aliyun', 'kimi', 'doubao', 'zhipu', 'tencent', 'claude', 'gemini'];
 const hotTutorials = [...tutorialsList].sort((a, b) => {
   const aPriority = tutorialPriority.indexOf(a.id);
   const bPriority = tutorialPriority.indexOf(b.id);
