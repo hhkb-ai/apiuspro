@@ -8,7 +8,7 @@ import { BreadcrumbSchema } from '@/components/seo/structured-data';
 import { getAllLearnArticles } from '@/lib/learn-config';
 
 export const metadata: Metadata = {
-  title: 'AI 新手学习中心',
+  title: 'AI新手入门-API知识站 | 从零开始学习AI API',
   description: '从 AI 基础、提示词、Token、上下文、API Key、Base URL、模型名称，到第一次 API 调用、Codex 和 Claude Code，按路线学习 AI。',
 };
 

@@ -4,7 +4,7 @@ import { BreadcrumbSchema } from '@/components/seo/structured-data';
 import { CloudApiContent } from '@/components/content/CloudApiContent';
 
 export const metadata: Metadata = {
-  title: 'AI API 官网入口与对比',
+  title: 'AI API官网大全-API知识站 | 国内外大模型API入口',
   description: '汇总 DeepSeek、OpenAI、Claude、通义千问、Gemini、Kimi、智谱等国内外主流 AI API 的官网入口、API Key 创建位置、Base URL 和模型名称，按无需代理和需要代理分类整理，帮你快速找到目标平台并开始接入。',
 };
 

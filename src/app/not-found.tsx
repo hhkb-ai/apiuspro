@@ -4,7 +4,7 @@ import { SidebarLayout } from '@/components/layout/SidebarLayout';
 import { Button } from '@/components/ui/button';
 
 export const metadata: Metadata = {
-  title: '页面未找到',
+  title: '页面未找到-API知识站',
   description: '你访问的页面不存在或已移动。可以返回首页、学习中心或购买教程列表继续浏览 API知识站。',
 };
 

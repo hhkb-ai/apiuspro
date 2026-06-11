@@ -4,7 +4,7 @@ import { BreadcrumbSchema } from '@/components/seo/structured-data';
 import { TutorialListContent } from '@/components/content/TutorialListContent';
 
 export const metadata: Metadata = {
-  title: 'AI API 购买教程大全',
+  title: 'AI API购买教程-API知识站 | DeepSeek OpenAI Claude订阅教程',
   description: 'DeepSeek、MiniMax M3、OpenAI、Claude、通义千问、Gemini、Kimi 等主流 AI API 的注册、充值、API Key 创建和首次调用教程。',
 };
 

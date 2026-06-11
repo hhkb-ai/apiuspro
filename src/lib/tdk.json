@@ -1,12 +1,31 @@
 {
   "routes": {
     "/": {
-      "title": "AI API 购买教程、价格对比与接入指南",
+      "title": "API知识站-AI API购买教程与接入指南 | DeepSeek API教程",
       "description": "API知识站覆盖 DeepSeek、OpenAI、Claude、通义千问、Gemini、Kimi 等 10+ 主流 AI API 的官网入口、价格对比、免费额度、购买教程与本地部署指南，适合零基础初学者快速完成选型、注册和首次调用。",
-      "keywords": ["API知识站", "AI API", "API购买教程", "API测评", "本地部署", "OpenAI", "Claude", "Gemini", "DeepSeek", "通义千问", "API怎么买", "API免费额度", "API注册教程", "AI编程助手", "AI API对比", "API代充", "API订阅", "国内AI API"],
+      "keywords": [
+        "API知识站",
+        "AI API",
+        "API购买教程",
+        "API测评",
+        "本地部署",
+        "OpenAI",
+        "Claude",
+        "Gemini",
+        "DeepSeek",
+        "通义千问",
+        "API怎么买",
+        "API免费额度",
+        "API注册教程",
+        "AI编程助手",
+        "AI API对比",
+        "API代充",
+        "API订阅",
+        "国内AI API"
+      ],
       "canonical": "https://www.apiuspro.cn",
       "openGraph": {
-        "title": "AI API 购买教程、价格对比与接入指南",
+        "title": "API知识站-AI API购买教程与接入指南 | DeepSeek API教程",
         "description": "API知识站覆盖 DeepSeek、OpenAI、Claude、通义千问、Gemini 等 10+ 主流 AI API，提供官网入口、价格对比、免费额度、购买教程与本地部署指南，适合零基础用户快速上手。",
         "url": "https://www.apiuspro.cn",
         "siteName": "API知识站",
@@ -15,12 +34,25 @@
       }
     },
     "/cloud-api": {
-      "title": "AI API 官网大全 — 国内外主流大模型 API 官方入口汇总",
+      "title": "AI API官网大全-API知识站 | 国内外大模型API入口",
       "description": "汇总 DeepSeek、OpenAI、Claude、通义千问、Gemini、Kimi、智谱 GLM 等 11 个国内外主流 AI API 官网入口，按无需代理和需要代理分类整理，含免费额度、功能特性、适用场景及详细接入说明。",
-      "keywords": ["AI API官网", "API官网入口", "OpenAI官网", "Claude官网", "DeepSeek官网", "通义千问官网", "Gemini官网", "无需代理的AI API", "国内能用的AI API", "API免费额度", "大模型API入口", "AI API列表"],
+      "keywords": [
+        "AI API官网",
+        "API官网入口",
+        "OpenAI官网",
+        "Claude官网",
+        "DeepSeek官网",
+        "通义千问官网",
+        "Gemini官网",
+        "无需代理的AI API",
+        "国内能用的AI API",
+        "API免费额度",
+        "大模型API入口",
+        "AI API列表"
+      ],
       "canonical": "https://www.apiuspro.cn/cloud-api",
       "openGraph": {
-        "title": "AI API 官网大全 — 国内外主流大模型 API 官方入口汇总",
+        "title": "AI API官网大全-API知识站 | 国内外大模型API入口",
         "description": "汇总 DeepSeek、OpenAI、Claude、通义千问、Gemini 等 11 个国内外主流 AI API 官网入口，按无需代理和需要代理分类，含免费额度与功能特性说明。",
         "url": "https://www.apiuspro.cn/cloud-api",
         "siteName": "API知识站",
@@ -29,12 +61,17 @@
       }
     },
     "/api/:id": {
-      "title": "{{name}} API | 官网入口、购买教程与接入指南",
+      "title": "{{name}} API-AI API官网-API知识站",
       "description": "{{name}} API 详细指南：{{desc}}。{{free}}，{{proxy}}。本站提供官网入口、分步购买教程、API Key 创建方法与首次调用代码示例，帮助你快速完成接入。",
-      "keywords": ["{{name}} API", "{{name}}怎么买", "{{name}}购买教程", "{{name}}免费额度"],
+      "keywords": [
+        "{{name}} API",
+        "{{name}}怎么买",
+        "{{name}}购买教程",
+        "{{name}}免费额度"
+      ],
       "canonical": "https://www.apiuspro.cn/api/{{id}}",
       "openGraph": {
-        "title": "{{name}} API | 官网入口、购买教程与接入指南",
+        "title": "{{name}} API-AI API官网-API知识站",
         "description": "{{name}} API 详细指南：{{desc}}。汇总官网入口、访问条件、免费额度、购买教程、API Key 创建方法和首次调用示例，帮助你先确认成本与接入门槛，再开始真实项目调试。",
         "url": "https://www.apiuspro.cn/api/{{id}}",
         "siteName": "API知识站",
@@ -43,12 +80,23 @@
       }
     },
     "/tutorial": {
-      "title": "AI API 购买教程大全 — 零基础国内用户订阅与接入指南",
+      "title": "AI API购买教程-API知识站 | DeepSeek OpenAI Claude订阅教程",
       "description": "提供 DeepSeek、OpenAI、Claude、通义千问、Gemini、Kimi 等主流 AI API 的完整购买教程，涵盖国内支付方案、注册认证步骤、API Key 创建与安全保存、首次调用代码示例，零基础也能按步骤完成接入。",
-      "keywords": ["API购买教程", "API怎么买", "API订阅教程", "API注册教程", "OpenAI怎么买", "Claude怎么买", "DeepSeek怎么买", "国内买API", "API支付方式", "API信用卡"],
+      "keywords": [
+        "API购买教程",
+        "API怎么买",
+        "API订阅教程",
+        "API注册教程",
+        "OpenAI怎么买",
+        "Claude怎么买",
+        "DeepSeek怎么买",
+        "国内买API",
+        "API支付方式",
+        "API信用卡"
+      ],
       "canonical": "https://www.apiuspro.cn/tutorial",
       "openGraph": {
-        "title": "AI API 购买教程大全 — 零基础国内用户订阅与接入指南",
+        "title": "AI API购买教程-API知识站 | DeepSeek OpenAI Claude订阅教程",
         "description": "提供 DeepSeek、OpenAI、Claude、通义千问、Gemini 等主流 AI API 的完整购买教程，涵盖国内支付方案、注册认证步骤、API Key 创建与首次调用示例。",
         "url": "https://www.apiuspro.cn/tutorial",
         "siteName": "API知识站",
@@ -57,12 +105,17 @@
       }
     },
     "/tutorial/:id": {
-      "title": "{{name}} 购买教程 — 注册、支付与 API Key 接入指南",
+      "title": "{{name}}购买教程-AI API购买教程-API知识站",
       "description": "{{name}} 购买教程：{{subtitle}}。{{proxy}}，按步骤完成账号注册、支付方式选择、API Key 创建、安全保存和首次调用验证，并补充常见失败点，帮助初学者减少配置错误。",
-      "keywords": ["{{name}}购买教程", "{{name}}怎么买", "{{name}}订阅", "{{name}}注册教程"],
+      "keywords": [
+        "{{name}}购买教程",
+        "{{name}}怎么买",
+        "{{name}}订阅",
+        "{{name}}注册教程"
+      ],
       "canonical": "https://www.apiuspro.cn/tutorial/{{id}}",
       "openGraph": {
-        "title": "{{name}} 购买教程",
+        "title": "{{name}}购买教程-AI API购买教程-API知识站",
         "description": "{{name}} 购买教程：{{subtitle}}。覆盖注册、支付、API Key 创建、安全保存、首次调用和常见错误排查，适合第一次接入该平台 API 的用户。",
         "url": "https://www.apiuspro.cn/tutorial/{{id}}",
         "siteName": "API知识站",
@@ -71,12 +124,21 @@
       }
     },
     "/api-review": {
-      "title": "AI API 完整测评对比 | 性能、价格与选购建议",
+      "title": "AI API测评-API知识站 | 价格性能对比与选型建议",
       "description": "DeepSeek、OpenAI、Claude、通义千问、Gemini、Kimi 等主流 AI API 的深度测评对比，含基准测试数据、Token 定价分析、代码能力评分和选购建议。",
-      "keywords": ["AI API测评", "API对比", "Claude和GPT哪个好", "DeepSeek和ChatGPT对比", "API性能测试", "API价格对比", "大模型评测", "API选购指南"],
+      "keywords": [
+        "AI API测评",
+        "API对比",
+        "Claude和GPT哪个好",
+        "DeepSeek和ChatGPT对比",
+        "API性能测试",
+        "API价格对比",
+        "大模型评测",
+        "API选购指南"
+      ],
       "canonical": "https://www.apiuspro.cn/api-review",
       "openGraph": {
-        "title": "AI API 完整测评对比 | 性能、价格与选购建议",
+        "title": "AI API测评-API知识站 | 价格性能对比与选型建议",
         "description": "DeepSeek、OpenAI、Claude、通义千问、Gemini、Kimi 等主流 AI API 的深度测评对比，含基准测试数据、Token 定价分析和选购建议。",
         "url": "https://www.apiuspro.cn/api-review",
         "siteName": "API知识站",
@@ -85,12 +147,17 @@
       }
     },
     "/api-review/:slug": {
-      "title": "{{name}} 完整测评 | 性能对比、价格与购买建议",
+      "title": "{{name}}测评-AI API测评-API知识站",
       "description": "{{name}} 深度测评：{{tlDr}}。含基准测试、定价对比、优缺点和选购建议。",
-      "keywords": ["{{name}}测评", "{{name}}怎么样", "{{name}}价格", "{{name}}对比"],
+      "keywords": [
+        "{{name}}测评",
+        "{{name}}怎么样",
+        "{{name}}价格",
+        "{{name}}对比"
+      ],
       "canonical": "https://www.apiuspro.cn/api-review/{{slug}}",
       "openGraph": {
-        "title": "{{name}} 完整测评",
+        "title": "{{name}}测评-AI API测评-API知识站",
         "description": "{{name}} 深度测评：{{tlDr}}。含基准测试、定价对比、优缺点和选购建议。",
         "url": "https://www.apiuspro.cn/api-review/{{slug}}",
         "siteName": "API知识站",
@@ -99,12 +166,19 @@
       }
     },
     "/app": {
-      "title": "API 应用教程 — Claude Code、OpenClaw 等 AI 工具使用指南",
+      "title": "AI工具教程-API知识站 | Claude Code Codex CC Switch使用指南",
       "description": "围绕 Claude Code、OpenClaw、CC Switch、Obsidian 插件等常见 AI 工具整理的安装、配置与使用教程，涵盖 API Key 管理、多模型切换和工作流自动化。",
-      "keywords": ["Claude Code教程", "AI工具教程", "Claude Code安装", "OpenClaw使用教程", "AI应用教程", "API应用案例"],
+      "keywords": [
+        "Claude Code教程",
+        "AI工具教程",
+        "Claude Code安装",
+        "OpenClaw使用教程",
+        "AI应用教程",
+        "API应用案例"
+      ],
       "canonical": "https://www.apiuspro.cn/app",
       "openGraph": {
-        "title": "API 应用教程",
+        "title": "AI工具教程-API知识站 | Claude Code Codex CC Switch使用指南",
         "description": "围绕 Claude Code、OpenClaw、CC Switch 等 AI 工具整理的安装、配置与使用教程，涵盖 API Key 管理和多模型切换。",
         "url": "https://www.apiuspro.cn/app",
         "siteName": "API知识站",
@@ -113,12 +187,17 @@
       }
     },
     "/app/:id": {
-      "title": "{{name}} 使用教程 — 安装、配置与实战指南",
+      "title": "{{name}}使用教程-AI工具教程-API知识站",
       "description": "{{name}} 使用教程：{{desc}}。覆盖安装准备、关键配置、API Key 或模型接入、常见问题、实战示例和相关工具建议，帮助你把 AI 工具真正接入日常工作流。",
-      "keywords": ["{{name}}教程", "{{name}}安装", "{{name}}配置", "{{name}}使用"],
+      "keywords": [
+        "{{name}}教程",
+        "{{name}}安装",
+        "{{name}}配置",
+        "{{name}}使用"
+      ],
       "canonical": "https://www.apiuspro.cn/app/{{id}}",
       "openGraph": {
-        "title": "{{name}} 使用教程",
+        "title": "{{name}}使用教程-AI工具教程-API知识站",
         "description": "{{name}} 使用教程：{{desc}}。包含安装步骤、配置方法、API 接入、常见问题、实战示例和相关工具建议，适合按步骤完成工具落地。",
         "url": "https://www.apiuspro.cn/app/{{id}}",
         "siteName": "API知识站",
@@ -127,12 +206,19 @@
       }
     },
     "/use-case": {
-      "title": "场景推荐 — 按需求选 AI API",
+      "title": "AI API场景推荐-API知识站 | 编程写作知识库模型选择",
       "description": "不知道该用哪个 AI API？按编程开发、知识库、内容创作、智能客服、翻译和教育辅导六大实际场景推荐最合适的模型，含首选、备选方案及选购要点。",
-      "keywords": ["AI API场景推荐", "AI编程助手推荐", "AI知识库API", "AI翻译API", "AI客服API", "AI写作API"],
+      "keywords": [
+        "AI API场景推荐",
+        "AI编程助手推荐",
+        "AI知识库API",
+        "AI翻译API",
+        "AI客服API",
+        "AI写作API"
+      ],
       "canonical": "https://www.apiuspro.cn/use-case",
       "openGraph": {
-        "title": "场景推荐 — 按需求选 AI API",
+        "title": "AI API场景推荐-API知识站 | 编程写作知识库模型选择",
         "description": "按编程开发、知识库、内容创作、智能客服、翻译和教育辅导六大实际场景推荐最合适的 AI API，含首选和备选方案。",
         "url": "https://www.apiuspro.cn/use-case",
         "siteName": "API知识站",
@@ -141,12 +227,16 @@
       }
     },
     "/use-case/:id": {
-      "title": "{{name}} — AI API 场景推荐",
+      "title": "{{name}}-AI API场景推荐-API知识站",
       "description": "{{description}}推荐 {{apiNames}} 等 {{count}} 个 API，含综合评分、优缺点对比、适用场景分析与购买教程链接。",
-      "keywords": ["{{name}}", "AI API场景推荐", "{{name}}推荐"],
+      "keywords": [
+        "{{name}}",
+        "AI API场景推荐",
+        "{{name}}推荐"
+      ],
       "canonical": "https://www.apiuspro.cn/use-case/{{id}}",
       "openGraph": {
-        "title": "{{name}} — AI API 场景推荐",
+        "title": "{{name}}-AI API场景推荐-API知识站",
         "description": "{{description}}推荐 {{apiNames}} 等 {{count}} 个 API，结合评分对比、优缺点、适用任务、成本和教程入口，帮助你按真实场景选择模型。",
         "url": "https://www.apiuspro.cn/use-case/{{id}}",
         "siteName": "API知识站",
@@ -155,12 +245,19 @@
       }
     },
     "/local-deploy": {
-      "title": "AI大模型本地部署教程 2026 | Ollama、Gemma 4、Qwen笔记本部署指南",
+      "title": "本地部署教程-API知识站 | Ollama Qwen开源模型部署",
       "description": "面向初学者的 AI 大模型本地部署教程：使用 Ollama 在笔记本电脑上部署 Gemma 4、Qwen3.6 等开源模型，含硬件要求、安装步骤、模型选择对比及常见问题排查。",
-      "keywords": ["AI大模型本地部署", "Ollama安装教程", "本地运行大模型", "笔记本跑大模型", "开源模型部署", "离线AI"],
+      "keywords": [
+        "AI大模型本地部署",
+        "Ollama安装教程",
+        "本地运行大模型",
+        "笔记本跑大模型",
+        "开源模型部署",
+        "离线AI"
+      ],
       "canonical": "https://www.apiuspro.cn/local-deploy",
       "openGraph": {
-        "title": "AI大模型本地部署教程",
+        "title": "本地部署教程-API知识站 | Ollama Qwen开源模型部署",
         "description": "面向初学者的 AI 大模型本地部署教程：使用 Ollama 在笔记本电脑上部署 Gemma 4、Qwen3.6 等开源模型，含硬件要求与安装步骤。",
         "url": "https://www.apiuspro.cn/local-deploy",
         "siteName": "API知识站",
@@ -169,12 +266,19 @@
       }
     },
     "/faq": {
-      "title": "常见问题 FAQ — AI API 接入全流程答疑",
+      "title": "API常见问题-API知识站 | API Key支付限流报错答疑",
       "description": "AI API 接入全流程常见问题解答：涵盖注册验证、支付方式选择、API Key 安全保存、调用频率限制、代理配置、模型选择及费用控制等高频问题，帮你快速排查接入障碍。",
-      "keywords": ["API常见问题", "API Key安全", "API调用限制", "API报错怎么办", "API支付问题", "API注册问题"],
+      "keywords": [
+        "API常见问题",
+        "API Key安全",
+        "API调用限制",
+        "API报错怎么办",
+        "API支付问题",
+        "API注册问题"
+      ],
       "canonical": "https://www.apiuspro.cn/faq",
       "openGraph": {
-        "title": "常见问题 FAQ",
+        "title": "API常见问题-API知识站 | API Key支付限流报错答疑",
         "description": "AI API 接入全流程常见问题解答，覆盖注册验证、支付方式、API Key 安全、调用限制、代理配置、模型选择、费用控制和排错路径。",
         "url": "https://www.apiuspro.cn/faq",
         "siteName": "API知识站",

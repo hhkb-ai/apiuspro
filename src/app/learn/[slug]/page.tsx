@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 
   return {
-    title: article.title,
+    title: `${article.title}-AI新手入门-API知识站`,
     description: article.description,
   };
 }
