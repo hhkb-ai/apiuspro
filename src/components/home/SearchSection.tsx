@@ -80,7 +80,7 @@ export default function SearchSection() {
   return (
     <div className="relative mx-auto mt-9 max-w-4xl">
       <p className="mb-3 text-center text-sm font-medium text-foreground">搜索 API 或工具名称</p>
-      <div className="flex gap-3 rounded-lg border bg-card p-2 shadow-sm">
+      <div className="flex gap-3 rounded-lg border bg-card p-2 shadow-sm dark:border-neutral-800 dark:bg-background dark:shadow-none">
         <Input
           type="search"
           placeholder="搜索 API 名称，如 OpenAI、通义千问..."
@@ -94,7 +94,7 @@ export default function SearchSection() {
           onKeyDown={handleKeyDown}
           onCompositionStart={() => { isComposingRef.current = true; }}
           onCompositionEnd={() => { isComposingRef.current = false; }}
-          className="h-12 flex-1 border-0 bg-transparent px-4 text-base shadow-none focus-visible:ring-0"
+          className="h-12 flex-1 border-0 bg-transparent px-4 text-base shadow-none placeholder:text-muted-foreground focus-visible:ring-0 dark:text-foreground"
         />
         <Button
           className="h-12 px-7"
