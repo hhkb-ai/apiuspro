@@ -83,7 +83,7 @@ function NumberField({
   return (
     <label className="block">
       <span className="text-sm font-medium text-foreground">{label}</span>
-      <div className="mt-2 flex min-h-11 items-center rounded-xl border border-border bg-background px-3 focus-within:border-foreground/40">
+      <div className="mt-1.5 flex min-h-10 items-center rounded-lg border border-border bg-background px-3 focus-within:border-foreground/40">
         <input
           type="number"
           min={min}
@@ -91,7 +91,7 @@ function NumberField({
           step={step}
           value={value}
           onChange={(event) => onChange(clampNumber(event.target.value, min, min, max))}
-          className="min-w-0 flex-1 bg-transparent py-2 text-sm outline-none"
+          className="min-w-0 flex-1 bg-transparent py-1.5 text-sm outline-none"
         />
         {suffix && <span className="ml-2 shrink-0 text-xs text-muted-foreground">{suffix}</span>}
       </div>
@@ -100,6 +100,7 @@ function NumberField({
 }
 
 export function CostComparisonCalculator() {
+  const [isOpen, setIsOpen] = useState(false);
   const [deepSeekModelId, setDeepSeekModelId] = useState(deepSeekModels[0].id);
   const [openAIModelId, setOpenAIModelId] = useState(openAIModels[0].id);
   const [requestsPerDay, setRequestsPerDay] = useState(1000);
@@ -144,82 +145,100 @@ export function CostComparisonCalculator() {
   }, [cacheHitRate, deepSeekModelId, inputTokens, openAIModelId, outputTokens, requestsPerDay]);
 
   return (
-    <section className="mb-8 overflow-hidden rounded-2xl border border-border bg-card">
-      <div className="border-b border-border bg-muted/25 px-5 py-5 sm:px-6">
-        <p className="text-sm font-medium text-muted-foreground">Cost Calculator</p>
-        <h2 className="mt-1 text-xl font-semibold tracking-tight">DeepSeek vs OpenAI 实时成本计算器</h2>
-        <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
-          输入每天请求量和平均 Token，用站内价格估算 DeepSeek 与 OpenAI 的日成本、月成本和节省金额。
-        </p>
-      </div>
+    <section className="mb-6 overflow-hidden rounded-xl border border-border bg-card">
+      <button
+        type="button"
+        aria-expanded={isOpen}
+        aria-controls="cost-comparison-calculator-panel"
+        onClick={() => setIsOpen((current) => !current)}
+        className="flex w-full flex-col gap-3 px-4 py-3 text-left transition-colors hover:bg-muted/30 sm:flex-row sm:items-center sm:justify-between"
+      >
+        <span>
+          <span className="block text-sm font-semibold text-foreground">成本计算器</span>
+          <span className="mt-0.5 block text-xs leading-5 text-muted-foreground">
+            DeepSeek vs OpenAI 成本估算，默认参数：DeepSeek V4 Flash vs OpenAI GPT-5.5
+          </span>
+        </span>
+        <span className="inline-flex w-fit shrink-0 items-center rounded-full border border-border px-3 py-1 text-xs font-medium text-foreground">
+          {isOpen ? '收起计算器' : '展开计算器'}
+        </span>
+      </button>
 
-      <div className="grid gap-0 lg:grid-cols-[minmax(0,1fr)_340px]">
-        <div className="space-y-5 p-5 sm:p-6">
-          <div className="grid gap-4 md:grid-cols-2">
-            <label className="block">
-              <span className="text-sm font-medium text-foreground">DeepSeek 模型</span>
-              <select
-                value={deepSeekModelId}
-                onChange={(event) => setDeepSeekModelId(event.target.value)}
-                className="mt-2 min-h-11 w-full rounded-xl border border-border bg-background px-3 text-sm outline-none focus:border-foreground/40"
-              >
-                {deepSeekModels.map((model) => (
-                  <option key={model.id} value={model.id}>{model.name}</option>
-                ))}
-              </select>
-            </label>
-            <label className="block">
-              <span className="text-sm font-medium text-foreground">OpenAI 模型</span>
-              <select
-                value={openAIModelId}
-                onChange={(event) => setOpenAIModelId(event.target.value)}
-                className="mt-2 min-h-11 w-full rounded-xl border border-border bg-background px-3 text-sm outline-none focus:border-foreground/40"
-              >
-                {openAIModels.map((model) => (
-                  <option key={model.id} value={model.id}>{model.name}</option>
-                ))}
-              </select>
-            </label>
+      {isOpen && (
+        <div id="cost-comparison-calculator-panel" className="border-t border-border">
+          <div className="px-4 py-3 text-xs leading-5 text-muted-foreground">
+            输入每天请求量和平均 Token，用站内价格估算日成本、月成本和节省金额。
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <NumberField label="每天请求量" value={requestsPerDay} min={1} max={10_000_000} suffix="次/天" onChange={setRequestsPerDay} />
-            <NumberField label="平均输入" value={inputTokens} min={0} max={1_000_000} suffix="Token/次" onChange={setInputTokens} />
-            <NumberField label="平均输出" value={outputTokens} min={0} max={384_000} suffix="Token/次" onChange={setOutputTokens} />
-            <NumberField label="缓存命中" value={cacheHitRate} min={0} max={100} suffix="%" onChange={setCacheHitRate} />
-          </div>
+          <div className="grid gap-0 lg:grid-cols-[minmax(0,1fr)_280px]">
+            <div className="space-y-4 p-4 pt-0">
+              <div className="grid gap-3 md:grid-cols-2">
+                <label className="block">
+                  <span className="text-sm font-medium text-foreground">DeepSeek 模型</span>
+                  <select
+                    value={deepSeekModelId}
+                    onChange={(event) => setDeepSeekModelId(event.target.value)}
+                    className="mt-1.5 min-h-10 w-full rounded-lg border border-border bg-background px-3 text-sm outline-none focus:border-foreground/40"
+                  >
+                    {deepSeekModels.map((model) => (
+                      <option key={model.id} value={model.id}>{model.name}</option>
+                    ))}
+                  </select>
+                </label>
+                <label className="block">
+                  <span className="text-sm font-medium text-foreground">OpenAI 模型</span>
+                  <select
+                    value={openAIModelId}
+                    onChange={(event) => setOpenAIModelId(event.target.value)}
+                    className="mt-1.5 min-h-10 w-full rounded-lg border border-border bg-background px-3 text-sm outline-none focus:border-foreground/40"
+                  >
+                    {openAIModels.map((model) => (
+                      <option key={model.id} value={model.id}>{model.name}</option>
+                    ))}
+                  </select>
+                </label>
+              </div>
 
-          <div className="grid gap-3 rounded-xl border border-border bg-background/55 p-4 text-sm text-muted-foreground sm:grid-cols-2">
-            <p><span className="font-medium text-foreground">日输入量：</span>{Math.round(result.dailyInputTokens).toLocaleString('zh-CN')} Token</p>
-            <p><span className="font-medium text-foreground">日输出量：</span>{Math.round(result.dailyOutputTokens).toLocaleString('zh-CN')} Token</p>
-            <p><span className="font-medium text-foreground">DeepSeek 单价：</span>输入 ¥{result.deepSeek.inputCnyPerMillion}/百万，输出 ¥{result.deepSeek.outputCnyPerMillion}/百万</p>
-            <p><span className="font-medium text-foreground">OpenAI 折算：</span>输入 ${(result.openAI.inputUsdPerMillion).toFixed(1)}/百万，输出 ${(result.openAI.outputUsdPerMillion).toFixed(1)}/百万</p>
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                <NumberField label="每天请求量" value={requestsPerDay} min={1} max={10_000_000} suffix="次/天" onChange={setRequestsPerDay} />
+                <NumberField label="平均输入" value={inputTokens} min={0} max={1_000_000} suffix="Token/次" onChange={setInputTokens} />
+                <NumberField label="平均输出" value={outputTokens} min={0} max={384_000} suffix="Token/次" onChange={setOutputTokens} />
+                <NumberField label="缓存命中" value={cacheHitRate} min={0} max={100} suffix="%" onChange={setCacheHitRate} />
+              </div>
+
+              <div className="grid gap-2 rounded-lg border border-border bg-background/55 p-3 text-xs leading-5 text-muted-foreground sm:grid-cols-2">
+                <p><span className="font-medium text-foreground">日输入量：</span>{Math.round(result.dailyInputTokens).toLocaleString('zh-CN')} Token</p>
+                <p><span className="font-medium text-foreground">日输出量：</span>{Math.round(result.dailyOutputTokens).toLocaleString('zh-CN')} Token</p>
+                <p><span className="font-medium text-foreground">DeepSeek 单价：</span>输入 ¥{result.deepSeek.inputCnyPerMillion}/百万，输出 ¥{result.deepSeek.outputCnyPerMillion}/百万</p>
+                <p><span className="font-medium text-foreground">OpenAI 折算：</span>输入 ${(result.openAI.inputUsdPerMillion).toFixed(1)}/百万，输出 ${(result.openAI.outputUsdPerMillion).toFixed(1)}/百万</p>
+              </div>
+            </div>
+
+            <aside className="border-t border-border bg-background/40 p-4 lg:border-l lg:border-t-0">
+              <div className="grid gap-2 sm:grid-cols-3 lg:grid-cols-1">
+                <div className="rounded-lg border border-border bg-card p-3">
+                  <p className="text-xs text-muted-foreground">DeepSeek 月成本</p>
+                  <p className="mt-1 text-xl font-semibold">{formatCurrency(result.monthlyDeepSeek)}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">日成本 {formatCurrency(result.deepSeekDaily)}</p>
+                </div>
+                <div className="rounded-lg border border-border bg-card p-3">
+                  <p className="text-xs text-muted-foreground">OpenAI 月成本</p>
+                  <p className="mt-1 text-xl font-semibold">{formatCurrency(result.monthlyOpenAI)}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">日成本 {formatCurrency(result.openAIDaily)}</p>
+                </div>
+                <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-200">
+                  <p className="text-xs font-medium">预计每月节省</p>
+                  <p className="mt-1 text-xl font-semibold">{formatCurrency(result.monthlySavings)}</p>
+                  <p className="mt-1 text-xs">OpenAI 约为 DeepSeek 的 {formatTimes(result.ratio)}</p>
+                </div>
+              </div>
+              <p className="mt-3 text-xs leading-5 text-muted-foreground">
+                说明：OpenAI 按 1 USD ≈ 7.25 RMB 折算；DeepSeek 缓存命中仅作用于输入 Token。实际账单以各平台控制台为准。
+              </p>
+            </aside>
           </div>
         </div>
-
-        <aside className="border-t border-border bg-background/40 p-5 sm:p-6 lg:border-l lg:border-t-0">
-          <div className="grid gap-3">
-            <div className="rounded-xl border border-border bg-card p-4">
-              <p className="text-xs text-muted-foreground">DeepSeek 月成本</p>
-              <p className="mt-1 text-2xl font-semibold">{formatCurrency(result.monthlyDeepSeek)}</p>
-              <p className="mt-1 text-xs text-muted-foreground">日成本 {formatCurrency(result.deepSeekDaily)}</p>
-            </div>
-            <div className="rounded-xl border border-border bg-card p-4">
-              <p className="text-xs text-muted-foreground">OpenAI 月成本</p>
-              <p className="mt-1 text-2xl font-semibold">{formatCurrency(result.monthlyOpenAI)}</p>
-              <p className="mt-1 text-xs text-muted-foreground">日成本 {formatCurrency(result.openAIDaily)}</p>
-            </div>
-            <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-200">
-              <p className="text-xs font-medium">预计每月节省</p>
-              <p className="mt-1 text-2xl font-semibold">{formatCurrency(result.monthlySavings)}</p>
-              <p className="mt-1 text-xs">OpenAI 约为 DeepSeek 的 {formatTimes(result.ratio)}</p>
-            </div>
-          </div>
-          <p className="mt-4 text-xs leading-5 text-muted-foreground">
-            说明：OpenAI 按 1 USD ≈ 7.25 RMB 折算；DeepSeek 缓存命中仅作用于输入 Token。实际账单以各平台控制台为准。
-          </p>
-        </aside>
-      </div>
+      )}
     </section>
   );
 }
