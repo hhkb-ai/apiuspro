@@ -1,15 +1,14 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { BrandIcon } from '@/components/api/BrandIcon';
 import { apiList, APIConfig } from '@/lib/api-config';
 import { RememberListLink } from '@/components/navigation/ReturnNavigation';
-import { fuzzyScore, sortByFuzzyScore } from '@/lib/fuzzy-search';
+import { sortByFuzzyScore } from '@/lib/fuzzy-search';
 
 const decisionGuides = [
   {
@@ -43,7 +42,6 @@ function badgeClass(type: string) {
 }
 
 function APICard({ api }: { api: APIConfig }) {
-  // 速览信息
   const scenario = api.features.slice(0, 2).join('、');
   const proxyInfo = api.proxy ? '需要代理' : '无需代理';
   const targetUsers = api.proxy ? '企业/研究' : '初学者/开发者';
@@ -58,7 +56,6 @@ function APICard({ api }: { api: APIConfig }) {
         <Badge variant="outline" className={badgeClass(api.badge.type)}>{api.badge.text}</Badge>
       </div>
 
-      {/* 速览信息 */}
       <div className="mb-3 space-y-1 text-xs text-muted-foreground">
         <div className="flex items-center gap-2">
           <span className="font-medium text-foreground">适用：</span>
@@ -113,38 +110,11 @@ function APISection({ title, desc, items }: { title: string; desc: string; items
 }
 
 export function CloudApiContent() {
-  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<'all' | 'no-proxy' | 'need-proxy'>('all');
 
-  const allAPIs = useMemo(() => [...apiList], []);
-
-  const matchedAPI = useMemo(() => {
-    if (!searchQuery.trim()) return null;
-    return allAPIs.find(api => fuzzyScore(searchQuery, [api.id, api.name]) >= 85) ?? null;
-  }, [searchQuery, allAPIs]);
-
-  const searchSuggestions = useMemo(() => {
-    if (!searchQuery.trim() || matchedAPI) return [];
-    return sortByFuzzyScore(
-      allAPIs,
-      searchQuery,
-      api => [api.id, api.name, api.desc, api.free, ...api.features],
-    )
-      .slice(0, 5);
-  }, [searchQuery, matchedAPI, allAPIs]);
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (matchedAPI) {
-      router.push(`/api/${matchedAPI.id}`);
-      return;
-    }
-
-    const firstSuggestion = searchSuggestions[0];
-    if (firstSuggestion) {
-      router.push(`/api/${firstSuggestion.id}`);
-    }
   };
 
   const handleSearchShortcut = (query: string) => {
@@ -211,7 +181,6 @@ export function CloudApiContent() {
         ))}
       </section>
 
-      {/* 快速决策条 */}
       <div className="order-4 mb-8 rounded-lg border bg-card p-4 md:order-2">
         <p className="text-sm font-medium mb-3">我想做：</p>
         <div className="flex flex-wrap gap-2">
@@ -237,49 +206,24 @@ export function CloudApiContent() {
 
       <form className="order-1 mb-4 max-w-xl md:order-3" onSubmit={handleSubmit} role="search">
         <div className="relative">
-        <Input
-          type="search"
-          placeholder="搜索 API 名称，如 OpenAI、通义千问..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="h-11 pr-24"
-        />
-        {searchQuery && (
-          <button
-            type="button"
-            onClick={clearSearch}
-            className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md px-3 py-2 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-          >
-            清除
-          </button>
-        )}
-        {searchSuggestions.length > 0 && (
-          <div className="absolute left-0 right-0 top-full z-10 mt-2 overflow-hidden rounded-lg border bg-card shadow-sm">
-            {searchSuggestions.map((api) => (
-              <Link
-                key={api.id}
-                href={`/api/${api.id}`}
-                className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-muted/70"
-                onClick={() => setSearchQuery('')}
-              >
-                <BrandIcon id={api.id} alt={api.name} size="sm" />
-                <span className="min-w-0">
-                  <span className="block truncate font-medium">{api.name}</span>
-                  <span className="block truncate text-sm text-muted-foreground">{api.desc}</span>
-                </span>
-              </Link>
-            ))}
-          </div>
-        )}
+          <Input
+            type="search"
+            placeholder="搜索 API 名称，如 OpenAI、通义千问..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="h-11 pr-24"
+          />
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={clearSearch}
+              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md px-3 py-2 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            >
+              清除
+            </button>
+          )}
         </div>
       </form>
-
-      {matchedAPI && (
-        <div className="order-1 mb-4 flex items-center gap-2 text-sm md:order-4">
-          <span className="text-muted-foreground">找到「{matchedAPI.name}」</span>
-          <Button type="button" size="sm" onClick={() => router.push(`/api/${matchedAPI.id}`)}>直接跳转</Button>
-        </div>
-      )}
 
       <div className="order-1 mb-8 flex flex-wrap gap-2 md:order-5">
         {filters.map(filter => (
@@ -295,84 +239,81 @@ export function CloudApiContent() {
         ))}
       </div>
 
-    <div className="order-2 space-y-10 md:order-6">
-      {(activeFilter === 'all' || activeFilter === 'no-proxy') && (
-        <APISection title="无需代理" desc="国内直连，适合入门、测试和快速集成。" items={noProxy} />
+      <div className="order-2 space-y-10 md:order-6">
+        {(activeFilter === 'all' || activeFilter === 'no-proxy') && (
+          <APISection title="无需代理" desc="国内直连，适合入门、测试和快速集成。" items={noProxy} />
+        )}
+
+        {(activeFilter === 'all' || activeFilter === 'need-proxy') && (
+          <APISection title="需要代理" desc="国际主流 API，通常需要稳定网络和国际支付方式。" items={needProxy} />
+        )}
+      </div>
+
+      {noProxy.length === 0 && needProxy.length === 0 && (
+        <div className="order-2 rounded-lg border bg-card py-12 text-center text-muted-foreground md:order-6">
+          没有找到匹配的 API
+        </div>
       )}
 
-      {(activeFilter === 'all' || activeFilter === 'need-proxy') && (
-        <APISection title="需要代理" desc="国际主流 API，通常需要稳定网络和国际支付方式。" items={needProxy} />
-      )}
-    </div>
+      <div className="order-5 mt-10 rounded-lg border bg-card p-6 md:order-7">
+        <h2 className="font-semibold">AI API 选择检查清单</h2>
+        <div className="mt-3 grid gap-4 text-sm leading-6 text-muted-foreground md:grid-cols-2">
+          <ul className="space-y-2">
+            <li>先确认是否能国内直连，避免注册后无法稳定调用。</li>
+            <li>查看免费额度和最低充值门槛，先小额验证真实任务。</li>
+            <li>确认是否兼容 OpenAI SDK、Base URL 和常见工具配置。</li>
+          </ul>
+          <ul className="space-y-2">
+            <li>做编程任务看代码能力和长上下文，做文档任务看文件处理能力。</li>
+            <li>正式接入前记录 API Key、限速、计费单位和账单提醒。</li>
+            <li>不知道选哪个？查看 <Link href="/use-case" className="text-foreground hover:underline">按场景推荐</Link>。</li>
+          </ul>
+        </div>
+      </div>
 
-    {noProxy.length === 0 && needProxy.length === 0 && (
-      <div className="order-2 rounded-lg border bg-card py-12 text-center text-muted-foreground md:order-6">
-        没有找到匹配的 API
-      </div>
-    )}
+      <section className="order-6 mt-10 md:order-8">
+        <h2 className="mb-4 text-xl font-semibold tracking-tight">常见问题</h2>
+        <div className="space-y-3">
+          {[
+            {
+              q: '无需代理和需要代理的 API 有什么区别？',
+              a: '无需代理的 API（如 DeepSeek、通义千问）国内直接访问，注册和调用门槛低。需要代理的 API（如 Claude、OpenAI）模型能力通常更强，但需要稳定的网络环境和国际支付方式。',
+            },
+            {
+              q: '我可以同时使用多个 API 吗？',
+              a: '可以。很多开发者会根据任务类型切换 API：日常用 DeepSeek 省钱，复杂任务用 Claude 或 OpenAI。用 CC Switch 可以方便地在多个 API 之间切换。',
+            },
+            {
+              q: '怎么判断一个 API 是否适合我？',
+              a: '先明确你的任务类型（编程、写作、客服等），然后看场景推荐页面。最靠谱的方法是用真实样本测试——大多数 API 都有免费额度，先试再买。',
+            },
+          ].map((faq) => (
+            <div key={faq.q} className="rounded-lg border bg-card p-5">
+              <h3 className="text-sm font-semibold">{faq.q}</h3>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">{faq.a}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
-    <div className="order-5 mt-10 rounded-lg border bg-card p-6 md:order-7">
-      <h2 className="font-semibold">AI API 选择检查清单</h2>
-      <div className="mt-3 grid gap-4 text-sm leading-6 text-muted-foreground md:grid-cols-2">
-        <ul className="space-y-2">
-          <li>先确认是否能国内直连，避免注册后无法稳定调用。</li>
-          <li>查看免费额度和最低充值门槛，先小额验证真实任务。</li>
-          <li>确认是否兼容 OpenAI SDK、Base URL 和常见工具配置。</li>
-        </ul>
-        <ul className="space-y-2">
-          <li>做编程任务看代码能力和长上下文，做文档任务看文件处理能力。</li>
-          <li>正式接入前记录 API Key、限速、计费单位和账单提醒。</li>
-          <li>不知道选哪个？查看 <Link href="/use-case" className="text-foreground hover:underline">按场景推荐</Link>。</li>
-        </ul>
-      </div>
-    </div>
-
-    {/* 常见问题 */}
-    <section className="order-6 mt-10 md:order-8">
-      <h2 className="mb-4 text-xl font-semibold tracking-tight">常见问题</h2>
-      <div className="space-y-3">
-        {[
-          {
-            q: '无需代理和需要代理的 API 有什么区别？',
-            a: '无需代理的 API（如 DeepSeek、通义千问）国内直接访问，注册和调用门槛低。需要代理的 API（如 Claude、OpenAI）模型能力通常更强，但需要稳定的网络环境和国际支付方式。',
-          },
-          {
-            q: '我可以同时使用多个 API 吗？',
-            a: '可以。很多开发者会根据任务类型切换 API：日常用 DeepSeek 省钱，复杂任务用 Claude 或 OpenAI。用 CC Switch 可以方便地在多个 API 之间切换。',
-          },
-          {
-            q: '怎么判断一个 API 是否适合我？',
-            a: '先明确你的任务类型（编程、写作、客服等），然后看场景推荐页面。最靠谱的方法是用真实样本测试——大多数 API 都有免费额度，先试再买。',
-          },
-        ].map((faq) => (
-          <div key={faq.q} className="rounded-lg border bg-card p-5">
-            <h3 className="text-sm font-semibold">{faq.q}</h3>
-            <p className="mt-2 text-sm leading-6 text-muted-foreground">{faq.a}</p>
-          </div>
-        ))}
-      </div>
-    </section>
-
-    {/* 适合谁 / 不适合谁 */}
-    <section className="order-7 mt-10 grid grid-cols-1 gap-4 md:order-9 md:grid-cols-2">
-      <div className="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 p-5">
-        <p className="text-sm font-semibold text-emerald-800 dark:text-emerald-200">适合谁</p>
-        <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700 dark:text-emerald-300">
-          <li>• 已经确定要用哪个 API，需要快速找到官网和控制台</li>
-          <li>• 想按「无需代理 / 需要代理」分类浏览所有可用 API</li>
-          <li>• 需要对比不同 API 的功能特性和免费额度</li>
-        </ul>
-      </div>
-      <div className="rounded-lg border border-amber-200 bg-amber-50 dark:bg-amber-950/30 p-5">
-        <p className="text-sm font-semibold text-amber-800 dark:text-amber-200">不适合谁</p>
-        <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700 dark:text-amber-300">
-          <li>• 不确定该用哪个 API（请看 <Link href="/use-case" className="text-foreground hover:underline">场景推荐</Link>）</li>
-          <li
->• 第一次买 API，需要注册指导（请看 <Link href="/tutorial" className="text-foreground hover:underline">购买教程</Link>）</li>
-          <li>• 想看详细测评和基准数据（请看 <Link href="/api-review" className="text-foreground hover:underline">API 测评</Link>）</li>
-        </ul>
-      </div>
-    </section>
+      <section className="order-7 mt-10 grid grid-cols-1 gap-4 md:order-9 md:grid-cols-2">
+        <div className="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 p-5">
+          <p className="text-sm font-semibold text-emerald-800 dark:text-emerald-200">适合谁</p>
+          <ul className="mt-2 space-y-1.5 text-sm leading-6 text-emerald-700 dark:text-emerald-300">
+            <li>• 已经确定要用哪个 API，需要快速找到官网和控制台</li>
+            <li>• 想按「无需代理 / 需要代理」分类浏览所有可用 API</li>
+            <li>• 需要对比不同 API 的功能特性和免费额度</li>
+          </ul>
+        </div>
+        <div className="rounded-lg border border-amber-200 bg-amber-50 dark:bg-amber-950/30 p-5">
+          <p className="text-sm font-semibold text-amber-800 dark:text-amber-200">不适合谁</p>
+          <ul className="mt-2 space-y-1.5 text-sm leading-6 text-amber-700 dark:text-amber-300">
+            <li>• 不确定该用哪个 API（请看 <Link href="/use-case" className="text-foreground hover:underline">场景推荐</Link>）</li>
+            <li>• 第一次买 API，需要注册指导（请看 <Link href="/tutorial" className="text-foreground hover:underline">购买教程</Link>）</li>
+            <li>• 想看详细测评和基准数据（请看 <Link href="/api-review" className="text-foreground hover:underline">API 测评</Link>）</li>
+          </ul>
+        </div>
+      </section>
     </div>
   );
 }
