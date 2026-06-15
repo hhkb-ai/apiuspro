@@ -250,9 +250,6 @@ function DesktopHeader({ searchId }: { searchId: string }) {
             <Search className="w-5 h-5" />
           </a>
           <ThemeToggle />
-          <Link href="/learn" className="hidden h-10 items-center justify-center rounded-xl bg-primary px-5 text-sm font-medium text-primary-foreground transition-colors hover:opacity-90 md:inline-flex">
-            开始学习
-          </Link>
         </div>
       </div>
     </header>
@@ -304,9 +301,6 @@ function BeginnerRoutePanel({ compact = false, sectionId }: { compact?: boolean;
           </Link>
         ))}
       </div>
-      <Link href="/learn" className={compact ? 'mt-4 flex h-11 w-full items-center justify-center rounded-[10px] border border-border text-[13px] font-medium text-foreground transition-colors active:bg-muted' : 'mt-5 flex h-12 w-full items-center justify-center rounded-xl border border-border text-sm font-medium text-foreground transition-colors hover:bg-muted'}>
-        进入学习路线
-      </Link>
     </section>
   );
 }
