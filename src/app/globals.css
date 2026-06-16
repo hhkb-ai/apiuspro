@@ -221,6 +221,15 @@ body {
   display: none;
 }
 
+#beginner-route-desktop {
+  align-self: start;
+  height: auto;
+}
+
+#beginner-route-desktop > div:nth-of-type(2) {
+  flex: none;
+}
+
 #beginner-route-desktop > div:nth-of-type(2) > a:not(:last-child)::after,
 #beginner-route-mobile > div:nth-of-type(2) > a:not(:last-child)::after {
   content: "";
