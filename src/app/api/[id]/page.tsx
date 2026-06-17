@@ -13,6 +13,7 @@ import { QuickConclusionCard } from '@/components/api/QuickConclusionCard';
 import { getReviewSlugByAPIId } from '@/lib/review-config';
 import { ArticleSchema, BreadcrumbSchema, FAQSchema } from '@/components/seo/structured-data';
 import { DetailBackNav } from '@/components/navigation/ReturnNavigation';
+import { BreadcrumbNav } from '@/components/navigation/BreadcrumbNav';
 import { SITE_PUBLISHED_AT, getApiUpdatedAt } from '@/lib/content-updates';
 import { generateMetadata as generateTdkMetadata } from '@/lib/tdk';
 
@@ -126,6 +127,11 @@ export default async function APIDetailPage({ params }: { params: Promise<{ id: 
       <FAQSchema items={faqItems} />
       <div className="mx-auto max-w-6xl p-6 lg:p-8">
         <DetailBackNav listHref="/cloud-api" listLabel="API 列表" />
+        <BreadcrumbNav items={[
+          { label: '首页', href: '/' },
+          { label: 'API官网', href: '/cloud-api' },
+          { label: api.name },
+        ]} />
 
         <div className="mb-8 flex flex-col justify-between gap-5 border-b border-border pb-8 lg:flex-row lg:items-start">
           <div>

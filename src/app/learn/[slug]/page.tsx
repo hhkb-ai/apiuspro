@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { BreadcrumbSchema } from '@/components/seo/structured-data';
 import { LearnMarkdown, getMarkdownHeadings } from '@/components/learn/LearnMarkdown';
+import { BreadcrumbNav } from '@/components/navigation/BreadcrumbNav';
 import { getAllLearnArticles, getLearnArticleBySlug, getPreviousAndNextArticle } from '@/lib/learn-config';
 
 const relatedLinks = [
@@ -70,7 +71,12 @@ export default async function LearnArticlePage({ params }: { params: Promise<{ s
                   <Badge key={tag} variant="outline" className="border-border bg-card text-muted-foreground">{tag}</Badge>
                 ))}
               </div>
-              <h1 className="text-3xl font-semibold tracking-tight">{article.title}</h1>
+              <BreadcrumbNav items={[
+              { label: '首页', href: '/' },
+              { label: 'AI新手学习中心', href: '/learn' },
+              { label: article.title },
+            ]} />
+            <h1 className="text-3xl font-semibold tracking-tight">{article.title}</h1>
               <p className="mt-3 text-base leading-7 text-muted-foreground">{article.description}</p>
 
               {article.cover?.src && (

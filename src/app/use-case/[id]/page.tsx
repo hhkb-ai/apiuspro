@@ -9,6 +9,7 @@ import { getUseCaseById, getAllUseCaseIds } from '@/lib/use-case-config';
 import { apiList } from '@/lib/api-config';
 import { reviewSlugByApiId } from '@/lib/review-config';
 import { BreadcrumbSchema } from '@/components/seo/structured-data';
+import { BreadcrumbNav } from '@/components/navigation/BreadcrumbNav';
 import { generateMetadata as generateTdkMetadata } from '@/lib/tdk';
 
 const BASE_URL = 'https://www.apiuspro.cn';
@@ -80,7 +81,12 @@ export default async function UseCaseDetailPage({ params }: { params: Promise<{ 
         {/* Hero */}
         <div className="mb-8">
           <p className="text-sm font-medium text-muted-foreground">Use Case</p>
-          <h1 className="mt-1 text-3xl font-semibold tracking-tight">{uc.name}</h1>
+          <BreadcrumbNav items={[
+          { label: '首页', href: '/' },
+          { label: 'AI API场景推荐', href: '/use-case' },
+          { label: uc.name },
+        ]} />
+        <h1 className="mt-1 text-3xl font-semibold tracking-tight">{uc.name}</h1>
           <p className="mt-2 max-w-3xl text-muted-foreground">
             {uc.heroDescription}
           </p>

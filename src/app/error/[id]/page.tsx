@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BrandIcon } from '@/components/api/BrandIcon';
 import { BreadcrumbSchema, TechArticleSchema } from '@/components/seo/structured-data';
 import { DetailBackNav, RememberListLink } from '@/components/navigation/ReturnNavigation';
+import { BreadcrumbNav } from '@/components/navigation/BreadcrumbNav';
 import { CodeBlock } from '@/components/tutorial/CodeBlock';
 import { apiList, type APIConfig } from '@/lib/api-config';
 import {
@@ -119,6 +120,12 @@ export default async function ErrorSolutionDetailPage({ params }: { params: Prom
 
       <div className="mx-auto max-w-6xl p-6 lg:p-8">
         <DetailBackNav listHref="/error" listLabel="错误解决列表" />
+        <BreadcrumbNav items={[
+          { label: '首页', href: '/' },
+          { label: '错误解决', href: '/error' },
+          { label: solution.shortTitle },
+        ]} />
+
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_240px]">
           <div className="min-w-0">

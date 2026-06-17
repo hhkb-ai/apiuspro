@@ -9,6 +9,7 @@ import { apiList, getAPIById, SHOW_PROXY_CONTENT, type APIConfig } from '@/lib/a
 import { BreadcrumbSchema, HowToSchema, TechArticleSchema } from '@/components/seo/structured-data';
 import { CodeBlock } from '@/components/tutorial/CodeBlock';
 import { DetailBackNav } from '@/components/navigation/ReturnNavigation';
+import { BreadcrumbNav } from '@/components/navigation/BreadcrumbNav';
 import { generateMetadata as generateTdkMetadata } from '@/lib/tdk';
 
 const ARTICLE_DATE_PUBLISHED = '2026-05-11';
@@ -240,6 +241,11 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
       <header className="sticky top-0 z-50 border-b border-border bg-card">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center gap-y-2">
           <DetailBackNav listHref="/tutorial" listLabel="教程列表" className="mb-0" />
+          <BreadcrumbNav items={[
+            { label: '首页', href: '/' },
+            { label: '购买教程', href: '/tutorial' },
+            { label: tutorial.title },
+          ]} />
           <span className="mx-3 text-border">|</span>
           <BrandIcon id={api.id} alt={api.name} size="sm" />
           <span className="truncate text-sm font-semibold text-foreground">{api.name} 购买教程</span>
