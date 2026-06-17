@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { BeianLinks } from '@/components/layout/BeianLinks';
 import { appTutorials } from '@/lib/api-config';
 import { ArticleSchema, BreadcrumbSchema, HowToSchema } from '@/components/seo/structured-data';
+import { BreadcrumbNav } from '@/components/navigation/BreadcrumbNav';
 import { CcswitchContentPage } from '@/components/content/CcswitchContentPage';
 import { OpenclawFeishuContentPage } from '@/components/content/OpenclawFeishuContentPage';
 import { AppTutorialContent } from '@/components/content/AppTutorialContent';
@@ -67,6 +68,11 @@ export default async function AppTutorialPage({ params }: { params: Promise<{ id
         totalTime="PT30M"
         tool={['浏览器', '终端', tutorial.name]}
       />
+      <BreadcrumbNav items={[
+          { label: '首页', href: '/' },
+          { label: 'API应用', href: '/app' },
+          { label: tutorial.name },
+        ]} />
       <AppTutorialContent id={id} />
       <footer className="border-t border-border bg-card">
         <div className="max-w-[1200px] mx-auto px-6 py-6">

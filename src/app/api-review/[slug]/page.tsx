@@ -9,6 +9,7 @@ import { BrandIcon } from '@/components/api/BrandIcon';
 import { getReviewDetail, getAllReviewSlugs } from '@/lib/review-config';
 import { BreadcrumbSchema, ArticleSchema } from '@/components/seo/structured-data';
 import { DetailBackNav } from '@/components/navigation/ReturnNavigation';
+import { BreadcrumbNav } from '@/components/navigation/BreadcrumbNav';
 import { generateMetadata as generateTdkMetadata } from '@/lib/tdk';
 
 const ARTICLE_DATE_PUBLISHED = '2026-05-11';
@@ -75,6 +76,12 @@ export default async function ReviewDetailPage({ params }: { params: Promise<{ s
       />
       <div className="mx-auto max-w-5xl p-6 lg:p-8">
         <DetailBackNav listHref="/api-review" listLabel="测评列表" />
+        <BreadcrumbNav items={[
+          { label: '首页', href: '/' },
+          { label: 'API测评', href: '/api-review' },
+          { label: review.name },
+        ]} />
+
 
         {/* 标题 */}
         <div className="mb-8 border-b pb-8">
