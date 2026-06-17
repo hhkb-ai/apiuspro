@@ -1,4 +1,3 @@
-import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { BeianLinks } from '@/components/layout/BeianLinks';
 import { appTutorials } from '@/lib/api-config';
@@ -12,16 +11,6 @@ const ARTICLE_DATE_MODIFIED = '2026-05-11';
 
 export function generateStaticParams() {
   return appTutorials.map((t) => ({ id: t.id }));
-}
-
-export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
-  const { id } = await params;
-  const tutorial = appTutorials.find((t) => t.id === id);
-  if (!tutorial) return { title: '未找到教程' };
-  return {
-    title: `${tutorial.name} 使用教程`,
-    description: tutorial.desc,
-  };
 }
 
 export default async function AppTutorialPage({ params }: { params: Promise<{ id: string }> }) {
