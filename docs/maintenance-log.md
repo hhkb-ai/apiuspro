@@ -776,3 +776,31 @@ SEO/deployment impact:
 
 - Homepage CTA destinations change from same-page scrolling to existing first-level routes, improving expected navigation behavior.
 - Local deploy copy changes content wording only; route structure and structured data component usage remain unchanged.
+
+### 2026-06-18 Tutorial breadcrumb header layout
+
+Commit scope:
+
+- Split the tutorial detail sticky header into an action/status row and a dedicated breadcrumb row.
+- Keep return controls, provider status, official-site link, breadcrumb labels, and tutorial content unchanged.
+- Allow long breadcrumb titles to wrap naturally on narrow screens without competing with the return buttons.
+
+Explicitly excluded from this commit:
+
+- Unconfirmed homepage beginner-route layout experiments.
+- Local QA reports, screenshots, browser artifacts, and unrelated untracked directories.
+- No changes to the tutorial list search, tutorial content, sitemap, robots, analytics, auth, or deployment configuration.
+
+Verification completed:
+
+```bash
+pnpm exec tsc -p tsconfig.json --noEmit  # passed
+pnpm exec eslint "src/app/tutorial/[id]/page.tsx"  # passed
+pnpm exec next build  # passed (75 static pages)
+pnpm exec tsup src/server.ts --format cjs --platform node --target node20 --outDir dist --no-splitting --no-minify  # passed
+```
+
+SEO/deployment impact:
+
+- Visual navigation layout only; breadcrumb content and structured data remain unchanged.
+- Improves desktop hierarchy and mobile wrapping without changing route behavior.

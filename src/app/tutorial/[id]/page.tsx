@@ -239,30 +239,33 @@ export default async function TutorialDetailPage({ params }: { params: Promise<{
       <div className="min-h-screen bg-background content-article overflow-safe">
       {/* ── 顶部导航栏 ── */}
       <header className="sticky top-0 z-50 border-b border-border bg-card">
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center gap-y-2">
-          <DetailBackNav listHref="/tutorial" listLabel="教程列表" className="mb-0" />
-          <BreadcrumbNav items={[
-            { label: '首页', href: '/' },
-            { label: '购买教程', href: '/tutorial' },
-            { label: tutorial.title },
-          ]} />
-          <span className="mx-3 text-border">|</span>
-          <BrandIcon id={api.id} alt={api.name} size="sm" />
-          <span className="truncate text-sm font-semibold text-foreground">{api.name} 购买教程</span>
-          <span className={`ml-2 text-[11px] font-semibold px-2 py-0.5 rounded-full ${
-            needProxy ? 'border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300' : 'border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700'
-          }`}>
-            {needProxy ? '需要代理' : '无需代理'}
-          </span>
-          <div className="ml-auto flex shrink-0 items-center gap-2">
-            <a
-              href={api.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-md bg-foreground px-4 py-1.5 text-[12px] font-semibold text-background transition-colors hover:bg-foreground/90"
-            >
-              访问官网
-            </a>
+        <div className="mx-auto max-w-[1200px] px-4 py-3 sm:px-6">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <DetailBackNav listHref="/tutorial" listLabel="教程列表" className="mb-0" />
+            <div className="flex min-w-0 flex-wrap items-center justify-end gap-2">
+              <BrandIcon id={api.id} alt={api.name} size="sm" />
+              <span className="truncate text-sm font-semibold text-foreground">{api.name} 购买教程</span>
+              <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${
+                needProxy ? 'border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300' : 'border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700'
+              }`}>
+                {needProxy ? '需要代理' : '无需代理'}
+              </span>
+              <a
+                href={api.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-md bg-foreground px-4 py-1.5 text-[12px] font-semibold text-background transition-colors hover:bg-foreground/90"
+              >
+                访问官网
+              </a>
+            </div>
+          </div>
+          <div className="mt-3 border-t border-border/70 pt-3 [&>nav]:mb-0">
+            <BreadcrumbNav items={[
+              { label: '首页', href: '/' },
+              { label: '购买教程', href: '/tutorial' },
+              { label: tutorial.title },
+            ]} />
           </div>
         </div>
       </header>
