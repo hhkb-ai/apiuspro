@@ -126,9 +126,8 @@ export default function RootLayout({
                 if (window.LA && window.LA.init) {
                   try {
                     window.LA.init({id:"3Ptg8CrG0LkgsgHo",ck:"3Ptg8CrG0LkgsgHo"});
-                    console.log('51.la initialized successfully');
                   } catch(err) {
-                    console.error('51.la initialization error:', err);
+                    // 51.la init error silently ignored in production
                   }
                   return;
                 }
@@ -136,7 +135,7 @@ export default function RootLayout({
                   retries += 1;
                   window.setTimeout(initLA, retryInterval);
                 } else {
-                  console.warn('51.la SDK did not load after ' + maxRetries + ' retries');
+                  // 51.la SDK failed to load after max retries
                 }
               }
               window.addEventListener('load', initLA);

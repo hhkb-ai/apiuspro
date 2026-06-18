@@ -31,6 +31,15 @@ const eslintConfig = defineConfig([
     'dist/**',
     // Script files (CommonJS):
     'scripts/**/*.js',
+    // Non-source directories:
+    '.codex/**',
+    'deploy/**',
+    'logs/**',
+    'output/**',
+    'outputs/**',
+    'rollback-backups/**',
+    'test-artifacts/**',
+    'xiaotdiandi/**',
   ]),
 ]);
 
