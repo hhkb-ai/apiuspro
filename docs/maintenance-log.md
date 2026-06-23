@@ -804,3 +804,32 @@ SEO/deployment impact:
 
 - Visual navigation layout only; breadcrumb content and structured data remain unchanged.
 - Improves desktop hierarchy and mobile wrapping without changing route behavior.
+
+### 2026-06-23 GLM-5.2 review SEO follow-up
+
+Commit scope:
+
+- Update sitemap content timestamps for `/api-review` and `/api-review/zhipu` after the GLM-5.2 review content refresh.
+- Keep route structure, canonical URLs, robots, structured data components, analytics scripts, and deployment configuration unchanged.
+
+Explicitly excluded from this commit:
+
+- The existing dirty working tree in `D:\projects`, including documentation governance files, local cleanup output, and unrelated UI/component changes.
+- API detail/tutorial copy for the broader 智谱 entry, because this task is scoped to the GLM review update and sitemap freshness.
+
+Verification completed:
+
+```bash
+git diff --check  # passed
+corepack pnpm install --frozen-lockfile  # passed
+corepack pnpm exec tsc -p tsconfig.json --noEmit  # passed
+corepack pnpm exec eslint  # passed with 3 pre-existing warnings in scripts/test-mobile-home.mjs
+corepack pnpm exec next build  # passed (75 static pages)
+corepack pnpm exec tsup src/server.ts --format cjs --platform node --target node20 --outDir dist --no-splitting --no-minify  # passed
+corepack pnpm exec tsx -e "import sitemap from './src/app/sitemap'; ..."  # passed; /api-review and /api-review/zhipu lastModified = 2026-06-23T00:00:00.000Z
+```
+
+SEO/deployment impact:
+
+- Sitemap `lastModified` now matches the 2026-06-23 content update for the API review index and 智谱 GLM review detail page.
+- No URL, canonical, sitemap coverage, robots, or metadata template behavior is changed.
