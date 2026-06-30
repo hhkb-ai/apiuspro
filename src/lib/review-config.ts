@@ -441,7 +441,7 @@ export const reviewDetails: Record<string, ReviewDetail> = {
     ratings: [
       { label: '质量', score: 4.8, detail: '官方定位 V4 Pro 为面向 Agent 编码、世界知识、数学/STEM/代码推理的旗舰开源模型；Flash 更偏快速和高性价比。' },
       { label: '速度', score: 4.6, detail: 'Flash 参数规模更小，适合实时对话和高频任务；Pro 更适合高难推理和长上下文任务。' },
-      { label: '性价比', score: 5.0, detail: '官方按人民币/百万 token 计费，V4 Flash 成本低；V4 Pro 当前有折扣期，正式上线前必须复核官方定价页。' },
+      { label: '性价比', score: 5.0, detail: '官方按人民币/百万 token 计费，V4 Flash 缓存命中 ¥0.02/百万输入、未命中 ¥1/百万输入、输出 ¥2/百万；V4 Pro 为 ¥0.025、¥3、¥6。' },
       { label: '稳定性', score: 4.2, detail: '高峰期算力紧张，Pro 可能变慢或排队。建议做好重试和备用方案。' },
     ],
     pros: [
@@ -462,8 +462,8 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       '中文写作美感：在极难的文学性创作上，Claude Opus 4.8 仍稍强',
     ],
     pricing: [
-      { model: 'deepseek-v4-flash', input: '¥1/百万；缓存命中 ¥0.02/百万', output: '¥2/百万' },
-      { model: 'deepseek-v4-pro（折扣期）', input: '¥3/百万；缓存命中 ¥0.025/百万', output: '¥6/百万' },
+      { model: 'deepseek-v4-flash', input: '缓存命中 ¥0.02/百万；缓存未命中 ¥1/百万', output: '¥2/百万；并发 2500' },
+      { model: 'deepseek-v4-pro', input: '缓存命中 ¥0.025/百万；缓存未命中 ¥3/百万', output: '¥6/百万；并发 500' },
       { model: '兼容别名', input: 'deepseek-chat / deepseek-reasoner', output: '2026-07-24 15:59 UTC 后退役' },
     ],
     useCases: [
@@ -474,7 +474,7 @@ export const reviewDetails: Record<string, ReviewDetail> = {
       '不适合：需原生多模态识别、极致文学创作美感、或极高 SLA 的企业关键链路',
     ],
     conclusion:
-      'DeepSeek V4 的更新重点是低价、1M 长上下文、384K 最大输出和兼容接口。日常办公和代码助手优先试 V4 Flash；复杂推理、长文档和高质量代码任务再上 V4 Pro。注意 Pro 折扣期、并发限制，以及 deepseek-chat / deepseek-reasoner 在 2026-07-24 15:59 UTC 后退役。',
+      'DeepSeek V4 的更新重点是低价、1M 长上下文、384K 最大输出和兼容接口。日常办公和代码助手优先试 V4 Flash；复杂推理、长文档和高质量代码任务再上 V4 Pro。注意官方并发限制（Flash 2500、Pro 500），以及 deepseek-chat / deepseek-reasoner 在 2026-07-24 15:59 UTC 后退役。',
   },
 
   gemini: {

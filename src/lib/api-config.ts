@@ -405,13 +405,14 @@ print(response.choices[0].message.content)`,
             'deepseek-v4-flash：官方 V4 Flash 模型，支持 1M 上下文、最高 384K 输出、思考/非思考双模式，适合实时对话、客服和高频调用',
             'deepseek-v4-pro：官方 V4 Pro 模型，支持 1M 上下文、最高 384K 输出、思考/非思考双模式，适合复杂代码、长文档、Agent 和技术问答',
             'deepseek-chat / deepseek-reasoner：旧兼容别名，当前分别路由到 deepseek-v4-flash 的非思考/思考模式，将在 2026-07-24 15:59 UTC 后完全退役',
-            '官方人民币价格：v4-flash 为缓存命中 0.02 元/百万输入、缓存未命中 1 元/百万输入、2 元/百万输出；v4-pro 折扣期为 0.025 元、3 元、6 元',
+            '官方人民币价格：deepseek-v4-flash 为缓存命中 0.02 元/百万输入、缓存未命中 1 元/百万输入、2 元/百万输出；deepseek-v4-pro 为缓存命中 0.025 元/百万输入、缓存未命中 3 元/百万输入、6 元/百万输出',
+            '官方并发限制：deepseek-v4-flash 为 2500，deepseek-v4-pro 为 500；更高并发或限速细节以官方文档和控制台为准',
             '在控制台查看用量、余额和预算告警'
           ],
           whereToClick: '控制台 → 模型列表或文档页面',
           expectedResult: '页面显示 deepseek-v4-flash、deepseek-v4-pro，以及 deepseek-chat / deepseek-reasoner 兼容别名和退役时间说明',
           failureChecklist: ['确认当前使用的模型名称拼写正确', '在控制台查看用量是否正常累计'],
-          warning: '模型名称、免费试用、价格和折扣期会随平台调整，正式使用前请以控制台和官方文档为准。'
+          warning: '模型名称、免费试用、价格和限流策略会随平台调整，正式使用前请以控制台和官方文档为准。'
         }
       ],
       tips: [

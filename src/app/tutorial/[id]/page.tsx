@@ -50,7 +50,10 @@ const TUTORIAL_HIGHLIGHT_TERMS: Record<string, HighlightTerm[]> = {
     { text: '0.02 元/百万输入', className: COMMON_HIGHLIGHT_CLASSES.cost },
     { text: '1 元/百万输入', className: COMMON_HIGHLIGHT_CLASSES.cost },
     { text: '2 元/百万输出', className: COMMON_HIGHLIGHT_CLASSES.cost },
-    { text: '0.025 元、3 元、6 元', className: COMMON_HIGHLIGHT_CLASSES.cost },
+    { text: '0.025 元/百万输入', className: COMMON_HIGHLIGHT_CLASSES.cost },
+    { text: '3 元/百万输入', className: COMMON_HIGHLIGHT_CLASSES.cost },
+    { text: '6 元/百万输出', className: COMMON_HIGHLIGHT_CLASSES.cost },
+    { text: '并发限制', className: COMMON_HIGHLIGHT_CLASSES.cost },
   ],
 };
 

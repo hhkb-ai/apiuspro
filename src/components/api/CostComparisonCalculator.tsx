@@ -15,7 +15,7 @@ const deepSeekModels = [
   },
   {
     id: 'deepseek-v4-pro',
-    name: 'DeepSeek V4 Pro（折扣期）',
+    name: 'DeepSeek V4 Pro',
     inputCnyPerMillion: 3,
     cachedInputCnyPerMillion: 0.025,
     outputCnyPerMillion: 6,
