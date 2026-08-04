@@ -68,11 +68,11 @@ export const faqCategories = [
     items: [
       {
         question: '这么多 AI 模型，到底该选哪个？',
-        answer: '根据使用场景选择：①编程开发和 Agent 任务优先测试通义千问 Qwen3.7-Max、Claude、DeepSeek V4 Pro/Flash 或 OpenAI；②内容创作和中文场景优先看通义千问 Qwen3.6-Plus / Flash、Kimi K2.6 和豆包；③长文档/多模态看 Gemini 3.5 Flash、Gemini 3.1 Pro Preview、Claude Opus 4.8；④预算有限先测 DeepSeek V4 Flash、Qwen3.6-Flash、豆包和国产免费额度；⑤企业级应用按云生态选阿里云百炼、火山方舟、腾讯云/TokenHub。建议先用各平台免费额度跑真实任务，再做最终决定。详见本站 API 测评页面。'
+        answer: '根据使用场景选择：①编程开发和 Agent 任务优先测试通义千问 Qwen3.7-Max、Claude Opus 5、DeepSeek V4 Pro/Flash 或 OpenAI GPT-5.6；②内容创作和中文场景优先看通义千问 Qwen3.7-Plus、Kimi K3 和豆包 2.1；③长文档/多模态看 Gemini 3.6 Flash、Gemini 3.1 Pro Preview、Claude Opus 5；④预算有限先测 DeepSeek V4 Flash、Qwen3.6-Flash、豆包 2.1 Turbo 和国产免费额度；⑤企业级应用按云生态选阿里云百炼、火山方舟、腾讯云 TokenHub。建议先用各平台免费额度跑真实任务，再做最终决定。详见本站 API 测评页面。'
       },
       {
-        question: 'GPT-5.5、Claude Opus、DeepSeek V4 之间怎么选？',
-        answer: '三个模型各有优势：①GPT-5.5：OpenAI 官方确认的最新旗舰模型，模型 ID 为 gpt-5.5，适合复杂专业工作、编码、工具型 Agent 和长上下文检索，但价格高且国内通常需要代理；②Claude Opus / Sonnet：长文档、代码理解和安全输出强，但国内使用成本和账号风险更高；③DeepSeek V4：Flash 便宜快速，Pro 更适合复杂推理和长上下文，国内直连且兼容 OpenAI/Anthropic 接口。简单总结：极致能力先看官方 GPT-5.5 / Claude，性价比和国内直连看 DeepSeek。当前 OpenAI 官方文档未确认 GPT-5.5D / gpt-5.5d。'
+        question: 'GPT-5.6、Claude Opus、DeepSeek V4 之间怎么选？',
+        answer: '三个模型各有优势：①GPT-5.6：OpenAI 官方最新旗舰系列，模型 ID 为 gpt-5.6-sol / terra / luna，适合复杂专业工作、编码、工具型 Agent 和长上下文检索，但价格高且国内通常需要代理；②Claude Opus / Sonnet：长文档、代码理解和安全输出强（当前最新为 Opus 5、Sonnet 5），但国内使用成本和账号风险更高；③DeepSeek V4：Flash 便宜快速，Pro 更适合复杂推理和长上下文，国内直连且兼容 OpenAI/Anthropic 接口。简单总结：极致能力先看官方 GPT-5.6 / Claude，性价比和国内直连看 DeepSeek。OpenAI 官方从未确认 GPT-5.5D / gpt-5.5d。'
       },
       {
         question: '免费模型和付费模型差距大吗？',
@@ -101,7 +101,7 @@ export const faqCategories = [
       },
       {
         question: '如何处理长文本输入超过 Token 限制的问题？',
-        answer: '各模型的 Token 限制不同，超限后会报错。解决方案：①使用 tiktoken 等库预先计算 Token 数，超过限制时自动截断或分段；②使用摘要模型先压缩长文本，再输入主模型处理；③选择上下文窗口更大的模型（如 OpenAI 官方 GPT-5.5 1M、DeepSeek V4 1M、Claude 长上下文模型等，具体以上线时官方文档为准）；④超长文档采用“分段处理 + 合并结果”；⑤在 prompt 中明确只关注关键部分，减少无用上下文。注意：GPT-5.5 超过 272K 输入 token 的请求会触发更高计费，上下文越长成本越高且响应越慢。'
+        answer: '各模型的 Token 限制不同，超限后会报错。解决方案：①使用 tiktoken 等库预先计算 Token 数，超过限制时自动截断或分段；②使用摘要模型先压缩长文本，再输入主模型处理；③选择上下文窗口更大的模型（如 OpenAI GPT-5.6 约 1M、DeepSeek V4 1M、Claude Opus 5 1M 等，具体以上线时官方文档为准）；④超长文档采用“分段处理 + 合并结果”；⑤在 prompt 中明确只关注关键部分，减少无用上下文。注意：超过官方长上下文阈值（如 GPT-5.5 超过 272K 输入 token）会触发更高计费，上下文越长成本越高且响应越慢。'
       },
       {
         question: '什么是 Token？怎么计算？',
@@ -122,7 +122,7 @@ export const faqCategories = [
       },
       {
         question: 'Gemma 4、Qwen3 和 Qwen3.6 有什么区别？',
-        answer: '三个都是2026年最新的开源模型：①Gemma 4：Google发布，采用Sparse MoE架构，原生支持多模态（文本+视觉），有1B/4B/12B三种尺寸；②Qwen3：阿里云发布，中文能力最强，有0.6B/1.7B/4B/8B/14B等多种尺寸；③Qwen3.6：阿里云最新发布，MoE架构（35B总参/3B激活），编程能力突出。选择建议：入门选Qwen3-0.6B，中文场景选Qwen3，编程场景选Qwen3.6，需要图片理解选Gemma4。'
+        answer: '都是目前可本地部署的开源模型：①Gemma 4：Google发布，采用Sparse MoE架构，原生支持多模态（文本+视觉），有1B/4B/12B三种尺寸；②Qwen3：阿里云发布，中文能力最强，有0.6B/1.7B/4B/8B/14B等多种尺寸；③Qwen3.6：阿里云发布，MoE架构（35B总参/3B激活），编程能力突出（阿里云此后又发布了更新的 Qwen3.7/Qwen3.8 系列）。选择建议：入门选Qwen3-0.6B，中文场景选Qwen3，编程场景选Qwen3.6，需要图片理解选Gemma4。'
       },
       {
         question: 'Ollama 是什么？怎么安装？',
@@ -138,7 +138,7 @@ export const faqCategories = [
       },
       {
         question: '本地模型运行速度很慢怎么办？',
-        answer: '优化方法：①使用更小的模型，如 Qwen3-0.6B 速度最快；②减少上下文长度，设置为 2048-4096 即可满足大部分对话需求；③如果有 NVIDIA 显卡，确保 Ollama 使用 GPU 推理（运行 nvidia-smi 检查）；④关闭其他大型应用释放内存；⑤笔记本用户保持电源连接并启用高性能模式；⑥Qwen3 和 Gemma4 都采用 MoE 架构，激活参数少，推理速度比传统 Dense 模型更快。'
+        answer: '优化方法：①使用更小的模型，如 Qwen3-0.6B 速度最快；②减少上下文长度，设置为 2048-4096 即可满足大部分对话需求；③如果有 NVIDIA 显卡，确保 Ollama 使用 GPU 推理（运行 nvidia-smi 检查）；④关闭其他大型应用释放内存；⑤笔记本用户保持电源连接并启用高性能模式；⑥Qwen3 的 MoE 变体（如 30B-A3B）和 Gemma4 都采用 MoE 架构，激活参数少，推理速度比传统 Dense 模型更快。'
       }
     ]
   }

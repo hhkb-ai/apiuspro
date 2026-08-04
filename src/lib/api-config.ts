@@ -12,11 +12,11 @@ export const apiList: APIConfig[] = [
   {
     id: 'mimo',
     name: '小米MiMo',
-    desc: '小米 MiMo API 怎么买？2026 推理模型接入教程，含 mimo-v2.5-pro 等新模型信息',
+    desc: '小米 MiMo API 怎么买？2026 推理模型接入教程，含 MiMo-V2.5 系列与 2026-05 永久降价（最高 99%）信息',
     url: 'https://platform.xiaomimimo.com/',
     free: 'Orbit 计划与免费 Token 以官方控制台为准',
     proxy: false,
-    features: ['推理能力强', 'mimo-v2.5-pro', '数学能力突出', '小米出品'],
+    features: ['推理能力强', 'MiMo-V2.5-Pro', '2026-05 永久降价', '小米出品'],
     icon: '🟠',
     badge: { text: '新上线', type: 'warning' },
     tutorial: {
@@ -128,6 +128,8 @@ print(response.choices[0].message.content)`,
       tips: [
         '推荐用 .env 或环境变量保存 API Key',
         'MiMo 擅长推理和数学任务，适合相关场景使用',
+        'MiMo-V2.5 系列已于 2026-05-27 起永久降价（最高 99%）：V2.5-Pro 输入 ¥3/百万（缓存命中 ¥0.025）、输出 ¥6/百万；V2.5 输入 ¥1/百万（缓存命中 ¥0.02）、输出 ¥2/百万，且不再区分 256K 内外的档位',
+        '官方 Token Plan 套餐即将下线，新接入建议直接使用 V2.5 系列按量 API',
         '如果要接入 Claude Code、Codex、Gemini CLI、OpenCode 等 AI 工具，建议使用 CC Switch 统一管理 API Key、Base URL 和模型切换',
         '具体模型名称、套餐价格和优惠活动请以官方文档为准'
       ],
@@ -193,7 +195,7 @@ print(response.choices[0].message.content)`,
           image: '/images/tutorial/minimax-m3-token-plan.png',
           items: [
             'Token Plan 入口：https://platform.minimax.io/subscribe/token-plan',
-            '官方 M3 发布页给出的 2026-06-01 口径：Plus $20/月约 1.7B M3 tokens，Max $50/月约 5.1B，Ultra $120/月约 9.8B',
+            '官方 M3 发布页给出的 2026-06-01 口径：Plus $20/月、Max $50/月、Ultra $120/月；官方 Token Plan 迁移指南标注新增 Ultra 档约 12.5B M3 tokens/月（含每天 5 次视频生成），Plus/Max 档确切容量以控制台为准',
             '你提供的订阅教程里还记录了人民币区域口径：Plus 约 49 元/月、Max 约 119 元/月、Ultra 约 469 元/月',
             '订阅或充值后在 Billing / Token Plan 页面查看额度条、到期时间和可用资源',
             'MiniMax 官方文档说明，Token Plan 的文本、图像、语音、音乐等资源共享同一额度池'
@@ -283,6 +285,7 @@ for block in message.content:
         'MiniMax-M3 适合代码、Agent、长上下文、多模态输入和 AI Coding 工具',
         'Token Plan Key 和 Pay-as-you-go API Key 不要混用，出错时先检查 Key 类型',
         'M3 的 1M 上下文很适合仓库级分析，但超过 512K 输入可能触发更高价格',
+        '旧模型 MiniMax-M2.5 / M2.1 已被官方标记为 Legacy，M2.5 在腾讯云 CloudBase 等平台将于 2026-08-07 下线并自动迁移到 M3，新项目不要再用',
         '如果你要接入 Codex、Claude Code、Cline、OpenClaw 等工具，优先看 MiniMax 官方的 AI Coding Tools 文档'
       ],
       warnings: [
@@ -402,9 +405,9 @@ print(response.choices[0].message.content)`,
           description: '首次跑通后，再根据速度、推理能力和成本切换模型。',
           image: '/images/tutorial/deepseek-docx-models-pricing.png',
           items: [
-            'deepseek-v4-flash：官方 V4 Flash 模型，支持 1M 上下文、最高 384K 输出、思考/非思考双模式，适合实时对话、客服和高频调用',
-            'deepseek-v4-pro：官方 V4 Pro 模型，支持 1M 上下文、最高 384K 输出、思考/非思考双模式，适合复杂代码、长文档、Agent 和技术问答',
-            'deepseek-chat / deepseek-reasoner：旧兼容别名，当前分别路由到 deepseek-v4-flash 的非思考/思考模式，将在 2026-07-24 15:59 UTC 后完全退役',
+            'deepseek-v4-flash：官方 V4 Flash 模型，支持 1M 上下文、最高 384K 输出、思考/非思考双模式，适合实时对话、客服和高频调用；已于 2026-07-31 上线正式版公测（Agent 能力增强、原生支持 Responses API）',
+            'deepseek-v4-pro：官方 V4 Pro 模型，支持 1M 上下文、最高 384K 输出、思考/非思考双模式，适合复杂代码、长文档、Agent 和技术问答；官方正式版即将发布，当前仍为 API 预览版',
+            'deepseek-chat / deepseek-reasoner：旧兼容别名，已于 2026-07-24 15:59 UTC 完全退役，不再可用，请改用 deepseek-v4-flash / deepseek-v4-pro',
             '官方人民币价格：deepseek-v4-flash 为缓存命中 0.02 元/百万输入、缓存未命中 1 元/百万输入、2 元/百万输出；deepseek-v4-pro 为缓存命中 0.025 元/百万输入、缓存未命中 3 元/百万输入、6 元/百万输出',
             '官方并发限制：deepseek-v4-flash 为 2500，deepseek-v4-pro 为 500；更高并发或限速细节以官方文档和控制台为准',
             '在控制台查看用量、余额和预算告警'
@@ -418,7 +421,7 @@ print(response.choices[0].message.content)`,
       tips: [
         '推荐用 .env 或环境变量保存 DEEPSEEK_API_KEY',
         'OpenAI SDK 兼容模式最适合迁移已有代码',
-        '新项目优先使用 deepseek-v4-flash 或 deepseek-v4-pro，不要继续把 deepseek-chat / deepseek-reasoner 当作长期模型名',
+        'deepseek-chat / deepseek-reasoner 旧别名已于 2026-07-24 15:59 UTC 退役，新项目一律使用 deepseek-v4-flash / deepseek-v4-pro',
         '个人开发者可先从 deepseek-v4-flash 开始控制成本'
       ],
       warnings: [
@@ -436,16 +439,16 @@ print(response.choices[0].message.content)`,
   {
     id: 'aliyun',
     name: '阿里云通义千问',
-    desc: '通义千问 API 怎么申请？覆盖 Qwen3.7-Max、Qwen3.6-Plus / Qwen3.6-Flash 与百炼模型广场',
+    desc: '通义千问 API 怎么申请？覆盖 Qwen3.8-Max-Preview、Qwen3.7-Max / Qwen3.7-Plus 与百炼模型广场',
     url: 'https://dashscope.aliyun.com/',
     free: '免费额度与试用模型以百炼控制台为准',
     proxy: false,
-    features: ['Qwen3.7-Max', 'Qwen3.6', '多模型支持', '百炼生态'],
+    features: ['Qwen3.8-Max-Preview', 'Qwen3.7-Max', 'Qwen3.7-Plus', '百炼生态'],
     icon: '🟢',
     badge: { text: '免费', type: 'success' },
     tutorial: {
       title: '通义千问 API 购买与接入教程（免费额度申请）',
-    subtitle: '通过阿里云百炼或 DashScope 开通服务、获取密钥并调用最新 Qwen3.7-Max',
+    subtitle: '通过阿里云百炼或 DashScope 开通服务、获取密钥并调用最新旗舰模型（Qwen3.7-Max / Qwen3.8-Max-Preview）',
       steps: [
         {
           title: '准备阿里云账号',
@@ -490,7 +493,7 @@ print(response.choices[0].message.content)`,
         },
         {
           title: '配置环境变量并首次调用 Qwen3.7-Max',
-          description: '通义千问支持 OpenAI 兼容接口。2026 年 5 月百炼已列出 qwen3.7-max，适合先用真实任务验证最新旗舰模型。',
+          description: '通义千问支持 OpenAI 兼容接口。百炼已列出 qwen3.7-max 正式版与 qwen3.8-max-preview（Token Plan），适合先用真实任务验证最新旗舰模型。',
           image: '/images/tutorial/qwen-docx-2.png',
           items: [
             '安装 openai 与 python-dotenv',
@@ -522,15 +525,16 @@ print(response.choices[0].message.content)`,
           description: '通义千问覆盖 Agent 旗舰、通用、低成本和长上下文场景，按任务和预算选择即可。',
           image: '/images/tutorial/qwen-docx-2.png',
           items: [
-            'Qwen3.7-Max：最新旗舰 Agent 模型，1M 上下文、64k 最大输出，适合复杂推理、代码工程、办公自动化和长周期工具调用',
-            'Qwen3.6-Plus：能力与成本均衡，1M 上下文，适合多数生产对话、知识库、摘要和代码任务',
-            'Qwen3.6-Flash：低成本高频调用，适合简单对话、翻译、分类和批量处理',
-            'qwen-plus / qwen-plus-latest：适合新手先跑通兼容接口，再按效果切换到 Qwen3.7-Max 或 Qwen3.6 系列'
+            'Qwen3.8-Max-Preview：2026-07 上线的预览版旗舰，原生 1M 上下文、官方将开源；目前仅 Token Plan 个人版/团队版可调用，未开放常规按量 API',
+            'Qwen3.7-Max：当前最新正式版旗舰 Agent 模型，1M 上下文、64k 最大输出，适合复杂推理、代码工程、办公自动化和长周期工具调用；国内百炼原价 12 元/百万输入、36 元/百万输出，常有 5 折活动价 6 元/18 元',
+            'Qwen3.7-Plus：2026-07 上线的多模态均衡款（支持文/图/短视频输入），1M 上下文、原价 2 元/8 元每百万 token，官方当前首选推荐，可替代 Qwen3.6-Plus',
+            'Qwen3.6-Flash：低成本高频调用，适合简单对话、翻译、分类和批量处理；Qwen3.7-Flash 已进入官方模型列表',
+            'qwen-plus / qwen-plus-latest：适合新手先跑通兼容接口；注意官方已将 qwen-plus、qwen3.6-plus 等列为「旧版模型，不再作为首选推荐」'
           ],
           whereToClick: '控制台 → 模型列表或文档页面',
-          expectedResult: '页面显示 qwen3.7-max、qwen3.6-plus、qwen3.6-flash 等模型名称、上下文和价格',
-          failureChecklist: ['确认模型名称拼写正确，例如 qwen3.7-max', '如果账号暂未开放旗舰模型，先用 qwen3.6-plus 或 qwen-plus 跑通接口'],
-          warning: 'qwen3.7-max 国内百炼价格当前为 12 元/百万输入 Token、36 元/百万输出 Token；价格、免费额度和上下文长度会随平台更新，正式购买前以控制台为准。'
+          expectedResult: '页面显示 qwen3.8-max-preview、qwen3.7-max、qwen3.7-plus、qwen3.6-flash 等模型名称、上下文和价格',
+          failureChecklist: ['确认模型名称拼写正确，例如 qwen3.7-max', 'Qwen3.8-Max-Preview 仅 Token Plan 可用，账号未开通时先用 qwen3.7-max 或 qwen3.7-plus 跑通接口'],
+          warning: 'qwen3.7-max 国内百炼原价 12 元/百万输入 Token、36 元/百万输出 Token（常有限时 5 折）；Qwen3.8-Max-Preview 仅 Token Plan 调用。价格、免费额度和上下文长度会随平台更新，正式购买前以控制台为准。'
         },
         {
           title: '查看用量与控制成本',
@@ -566,11 +570,11 @@ print(response.choices[0].message.content)`,
   {
     id: 'zhipu',
     name: '智谱AI',
-    desc: '智谱 AI 注册与免费试用教程，覆盖 GLM-5、GLM-5.1 与 Agentic Coding 场景',
+    desc: '智谱 AI 注册与免费试用教程，覆盖 GLM-5.2（1M 上下文）与 Agentic Coding 场景',
     url: 'https://open.bigmodel.cn/',
     free: '免费试用',
     proxy: false,
-    features: ['GLM-5/5.1', '200K上下文', 'Agentic Coding', '开源生态'],
+    features: ['GLM-5.2', '1M上下文', 'Agentic Coding', '开源生态'],
     icon: '🟢',
     badge: { text: '免费', type: 'success' },
     tutorial: {
@@ -683,11 +687,11 @@ print(response.choices[0].message.content)`,
   {
     id: 'kimi',
     name: '月之暗面 Kimi',
-    desc: 'Kimi API 怎么用？长文本处理教程，覆盖 Kimi K2.5/K2.6 与 256K 上下文（K2.5/K2.6 模型名称和 256K 上下文信息待官方确认）',
+    desc: 'Kimi API 怎么用？长文本处理教程，覆盖 Kimi K3（1M 上下文、原生视觉）与新一代旗舰',
     url: 'https://platform.moonshot.cn/',
     free: '免费额度与模型价格以控制台为准',
     proxy: false,
-    features: ['256K上下文（待确认）', 'Kimi K2.6（待确认）', '文件解析', '联网搜索'],
+    features: ['Kimi K3', '1M上下文', '原生视觉', '文件解析'],
     icon: '🟢',
     badge: { text: '免费', type: 'success' },
     tutorial: {
@@ -761,10 +765,11 @@ $env:MOONSHOT_API_KEY="sk-your-api-key-here"`,
             'moonshot-v1-8k：适合基础对话和功能验证',
             'moonshot-v1-32k：适合较长文本生成与摘要',
             'moonshot-v1-128k：适合长文档处理和资料问答',
-            'kimi-k2.5 / kimi-k2.6：适合深度推理、Agent 和多模态任务（模型名称待官方确认）'
+            'kimi-k3：2026-07 发布的最新旗舰，2.8T MoE、1M 上下文、原生视觉理解，适合长程编程、复杂推理和 Agent 任务；已承诺开源',
+            '价格注意：Kimi K3 输入 ¥20/百万（缓存命中 ¥2）、输出 ¥100/百万，较上一代 K2.6 整体涨超 3 倍；因算力原因 C 端新用户订阅已暂停'
           ],
           whereToClick: '开放平台文档或控制台 → 模型列表',
-          expectedResult: '页面显示 moonshot-v1-8k/32k/128k、kimi-k2.5/k2.6 等模型信息（K2.5/K2.6 模型名称待官方确认）',
+          expectedResult: '页面显示 moonshot-v1-8k/32k/128k、kimi-k3 等模型信息',
           failureChecklist: ['确认模型名称拼写正确', '首次使用建议从 moonshot-v1-8k 开始测试'],
           warning: '模型列表、免费额度和价格可能变化，购买前以开放平台控制台为准。'
         },
@@ -833,11 +838,11 @@ print(completion.choices[0].message.content)`,
   {
     id: 'tencent',
     name: '腾讯混元',
-    desc: '腾讯混元 API 怎么开通？覆盖 TokenHub 迁移提示、Hunyuan TurboS/T1 与企业接入',
+    desc: '腾讯混元 API 怎么开通？覆盖 TokenHub 新入口、Hy3 旗舰与企业接入',
     url: 'https://cloud.tencent.com/product/hunyuan',
     free: '新用户优惠',
     proxy: false,
-    features: ['TokenHub迁移', '多模态', '企业集成', '微信生态'],
+    features: ['Hy3 旗舰', 'TokenHub 入口', '企业集成', '微信生态'],
     icon: '🟢',
     badge: { text: '免费', type: 'success' },
     tutorial: {
@@ -846,11 +851,11 @@ print(completion.choices[0].message.content)`,
       steps: [
         {
           title: '注册账号并开通混元',
-          description: '先注册腾讯云账号并完成认证，然后在混元大模型控制台开通服务。',
+          description: '先注册腾讯云账号并完成认证，然后在 TokenHub（腾讯混元新能力入口）开通服务。',
           image: '/images/tutorial/tencent-pdf-setup.png',
           items: [
             '访问腾讯云官网注册账号：https://cloud.tencent.com，国内用户按提示完成实名认证',
-            '登录后进入「混元大模型控制台」',
+            '登录后进入 TokenHub 控制台：https://console.cloud.tencent.com/tokenhub/models',
             '阅读并同意服务条款，点击「立即开通」'
           ],
           whereToClick: '浏览器访问 cloud.tencent.com → 注册/登录 → 混元大模型控制台 → 立即开通',
@@ -874,27 +879,27 @@ print(completion.choices[0].message.content)`,
         },
         {
           title: '配置环境变量并首次调用',
-          description: '混元 API 兼容 OpenAI 接口，可用标准 OpenAI SDK 快速完成调用。',
+          description: '混元新能力已迁移到 TokenHub，接口兼容 OpenAI，可用标准 OpenAI SDK 快速完成调用。',
           image: '/images/tutorial/tencent-pdf-python.png',
           items: [
-            '将 SecretId / SecretKey 写入运行环境',
-            'base_url 设置为 https://api.hunyuan.cloud.tencent.com/v1',
-            '先用 hunyuan-turbos-latest 做基础对话测试'
+            '将 TokenHub 的 API Key 写入运行环境',
+            'base_url 设置为 https://tokenhub.tencentmaas.com/v1',
+            '先用 hy3 做基础对话测试'
           ],
           whereToClick: '终端运行 pip install openai，创建 .env 写入 TENCENT_SECRET_KEY',
           expectedResult: 'Python 脚本成功打印腾讯混元的自我介绍回复，无报错',
-          failureChecklist: ['确认 TENCENT_SECRET_KEY 环境变量已设置', '检查 base_url 是否为 https://api.hunyuan.cloud.tencent.com/v1', '如报错 401，检查密钥是否正确'],
+          failureChecklist: ['确认 TENCENT_SECRET_KEY 环境变量已设置', '检查 base_url 是否为 https://tokenhub.tencentmaas.com/v1', '如报错 401，检查密钥是否正确'],
           codeLanguage: 'python',
           code: `import os
 from openai import OpenAI
 
 client = OpenAI(
     api_key=os.environ.get("TENCENT_SECRET_KEY"),
-    base_url="https://api.hunyuan.cloud.tencent.com/v1",
+    base_url="https://tokenhub.tencentmaas.com/v1",
 )
 
 completion = client.chat.completions.create(
-    model="hunyuan-turbos-latest",
+    model="hy3",
     messages=[{"role": "user", "content": "你好，请介绍一下腾讯混元"}],
 )
 
@@ -903,18 +908,18 @@ print(completion.choices[0].message.content)`,
         },
         {
           title: '按场景选择模型',
-          description: '混元提供轻量、通用、推理、多模态和翻译模型，按任务成本和能力选择即可。腾讯云已提示新能力会逐步迁移到 TokenHub，新项目要先确认入口。',
+          description: '旧版混元模型（hunyuan-lite、hunyuan-turbos、hunyuan-t1 等）已于 2026-06-22 下线，新能力统一在 TokenHub 提供，按任务成本和能力选择即可。',
           image: '/images/tutorial/tencent-pdf-models.png',
           items: [
-            'hunyuan-lite：轻量快速，适合基础对话和低成本场景',
-            'hunyuan-turbos-latest：主力通用模型，适合内容创作和代码生成；新模型请同步查看 TokenHub',
-            'hunyuan-t1-latest：适合复杂推理、逻辑分析和代码调试',
-            'hunyuan-vision / Hunyuan-MT-7B：分别面向多模态和翻译任务'
+            'hy3：最新旗舰语言模型，256K 上下文，输入 ¥1/百万、输出 ¥4/百万（缓存命中 ¥0.25），适合通用对话、内容创作和代码生成',
+            'hy3-preview：Hy3 预览版，多数旧模型的下线替代入口',
+            'hy-vision-2.0-instruct：多模态理解最新版，面向图像理解任务',
+            'hy-mt2-pro / plus / lite：智能翻译第二代，替代旧翻译模型（开源侧为 Hy-MT2-7B）'
           ],
-          whereToClick: '控制台 → 模型列表或文档页面',
-          expectedResult: '页面显示 hunyuan-lite、hunyuan-turbos-latest、hunyuan-t1-latest，或 TokenHub 推荐的新模型入口',
-          failureChecklist: ['确认模型名称拼写正确', '首次测试建议用 hunyuan-turbos-latest'],
-          warning: '免费额度、后付费规则、模型价格和 TokenHub 迁移策略可能调整，正式使用前以腾讯云控制台为准。'
+          whereToClick: 'TokenHub 控制台 → 模型列表或文档页面',
+          expectedResult: '页面显示 hy3、hy3-preview、hy-vision-2.0-instruct、hy-mt2 等 TokenHub 模型入口',
+          failureChecklist: ['确认模型名称拼写正确', '首次测试建议用 hy3'],
+          warning: '免费额度、后付费规则、模型价格和 TokenHub 入口可能调整；混元大模型平台将于 2026-09-30 停服，正式使用前以 TokenHub 控制台为准。'
         },
         {
           title: '开启流式输出与进阶调用',
@@ -947,7 +952,7 @@ print(completion.choices[0].message.content)`,
         '优先把密钥放到环境变量或 .env 文件中，避免硬编码泄露',
         '内容生成可适当提高 temperature，代码生成建议使用较低 temperature',
         '模型默认不启用联网搜索，如需搜索能力需按接口文档开启对应参数',
-        '新项目优先确认 TokenHub 是否已经成为推荐入口，避免接入即将停止新增能力的旧入口'
+        '新项目直接接入 TokenHub（OpenAI 兼容 base_url https://tokenhub.tencentmaas.com/v1），旧混元大模型平台将于 2026-09-30 停服，不要接入旧入口'
       ],
       warnings: [
         '混元 API 通常为后付费模式，建议在费用中心开启预算或费用预警',
@@ -964,11 +969,11 @@ print(completion.choices[0].message.content)`,
   {
     id: 'doubao',
     name: '字节豆包',
-    desc: '火山方舟豆包 API 注册与接入教程，覆盖 Doubao-Seed-1.6、Seed-Code 与 Responses API',
+    desc: '火山方舟豆包 API 注册与接入教程，覆盖豆包 2.1 系列、Doubao-Seed-Evolving 与 Responses API',
     url: 'https://www.volcengine.com/product/doubao',
     free: '免费额度',
     proxy: false,
-    features: ['Doubao-Seed-1.6', 'Seed-Code', 'Responses API', '高性价比'],
+    features: ['豆包 2.1', 'Seed-Evolving', 'Responses API', '高性价比'],
     icon: '🟢',
     badge: { text: '免费', type: 'success' },
     tutorial: {
@@ -1050,14 +1055,15 @@ print(response.choices[0].message.content)`,
           title: '选择模型与购买方式',
           description: '测试跑通后，再按质量、速度和成本选择正式模型，并确认免费额度、资源包或后付费规则。',
           items: [
-            '轻量对话：优先选择 Doubao-Seed-1.6 系列中速度快、成本低的模型',
-            '复杂推理或代码任务：优先测试 Doubao-Seed-Code 或更高能力的旗舰模型',
+            '豆包 2.1 Pro：2026-06 发布的旗舰模型，输入 ¥6/百万、输出 ¥30/百万（缓存命中 ¥1.2），Coding / Agent / 视觉语言三大方向提升',
+            '豆包 2.1 Turbo：高频调用场景，价格为 Pro 的一半（约 ¥3/¥15）',
+            'Doubao-Seed-Evolving：面向 Coding 与 Agent 场景的版本，每月迭代 2-4 次',
             'Agent 工作流：优先查看 Responses API、Agent Plan 和工具调用能力',
             '图像、语音、Embedding 等任务：选择对应专项模型',
             '购买前查看计费项、免费额度、资源包有效期和后付费开关'
           ],
           whereToClick: '控制台 → 模型列表或计费页面',
-          expectedResult: '页面显示文本、视觉、语音、Embedding、代码等模型及价格信息',
+          expectedResult: '页面显示豆包 2.1 Pro / 2.1 Turbo、Seed-Evolving 及文本、视觉、语音、Embedding 等模型及价格信息',
           failureChecklist: ['确认所选模型支持当前任务类型', '购买前查看免费额度和资源包有效期']
         },
         {
@@ -1078,7 +1084,7 @@ print(response.choices[0].message.content)`,
         '个人开发者建议先用免费额度或小额充值完成端到端测试',
         '已有 OpenAI SDK 项目可优先用兼容模式迁移，改动最少',
         '模型名、Endpoint ID、地域和接入地址尽量从控制台复制，避免手填出错',
-        '代码任务优先单独测试 Seed-Code，普通聊天和内容任务优先测试 Doubao-Seed-1.6'
+        '代码和 Agent 任务优先测试豆包 2.1 Pro 或 Seed-Evolving，普通聊天和内容任务优先测试 2.1 Turbo 控本'
       ],
       warnings: [
         '价格、免费额度和模型列表会随平台更新，购买前以火山引擎控制台为准',
@@ -1096,15 +1102,15 @@ print(response.choices[0].message.content)`,
   {
     id: 'openai',
     name: 'OpenAI GPT',
-    desc: 'OpenAI API 怎么购买和首次调用？覆盖 Billing、API Key、官方 GPT-5.5 / GPT-5.5 pro 与常见报错排查',
+    desc: 'OpenAI API 怎么购买和首次调用？覆盖 Billing、API Key、官方 GPT-5.6 系列与常见报错排查',
     url: 'https://platform.openai.com/',
     proxy: true,
-    features: ['GPT-5.5', 'GPT-5.5 pro', '1M上下文', '工具调用强'],
+    features: ['GPT-5.6 系列', 'gpt-5.6-sol', '1M上下文', '工具调用强'],
     icon: '🟠',
     badge: { text: '需代理', type: 'warning' },
     tutorial: {
       title: 'OpenAI API 购买与首次调用教程（2026最新，适合开发者）',
-      subtitle: '从 OpenAI Platform 账号、Billing 付款、API Key 创建到使用官方模型 ID gpt-5.5 完成首次调用',
+      subtitle: '从 OpenAI Platform 账号、Billing 付款、API Key 创建到使用官方模型 ID gpt-5.6-sol 完成首次调用',
       steps: [
         {
           title: '准备 OpenAI Platform 账号',
@@ -1167,8 +1173,8 @@ print(response.choices[0].message.content)`,
           codeExplanation: '把真实 Key 写入 .env，代码中通过环境变量读取，不要直接写在源码里。'
         },
         {
-          title: '用 Python 调用官方 GPT-5.5',
-          description: '第一次测试只做最小请求，使用官方模型 ID gpt-5.5；如果你看到 GPT-5.5D / gpt-5.5d，应先要求来源，因为 OpenAI 官方文档当前未列出这个模型 ID。',
+          title: '用 Python 调用官方 GPT-5.6 Sol',
+          description: '第一次测试只做最小请求，使用最新旗舰模型 ID gpt-5.6-sol；如果你看到 GPT-5.5D / gpt-5.5d，应先要求来源，因为 OpenAI 官方文档从未列出这个模型 ID。',
           image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=450&fit=crop',
           items: [
             '从 .env 读取 OPENAI_API_KEY',
@@ -1188,36 +1194,36 @@ load_dotenv()
 client = OpenAI()
 
 response = client.responses.create(
-    model="gpt-5.5",
+    model="gpt-5.6-sol",
     input="请用一句话说明 OpenAI API 已经接入成功。"
 )
 
 print(response.output_text)`,
-          codeExplanation: '使用 OpenAI SDK 的 Responses API 发起一次最小调用。OpenAI 官方文档确认的模型 ID 是 gpt-5.5，当前快照为 gpt-5.5-2026-04-23。能打印 output_text 即代表 API Key、Billing、网络和模型权限基本正常。'
+          codeExplanation: '使用 OpenAI SDK 的 Responses API 发起一次最小调用。OpenAI 官方最新旗舰模型 ID 是 gpt-5.6-sol；上一代 gpt-5.5 仍可用但已非最新。能打印 output_text 即代表 API Key、Billing、网络和模型权限基本正常。'
         },
         {
           title: '按任务选择模型并控制成本',
           description: '跑通后再根据任务切换模型，不要所有任务都默认使用最贵模型。',
           items: [
-            'GPT-5.5：官方最新旗舰模型，适合复杂专业工作、编码、长上下文检索、工具型 Agent 和生产级助手',
-            'GPT-5.5 pro：更高计算量版本，适合更难的 Responses API 异步任务；请求可能需要数分钟，建议配合 background mode',
-            '标准价格：gpt-5.5 在 <272K 上下文下为 $5 输入 / $30 输出每百万 token（约 ¥36/¥218）；gpt-5.5-pro 为 $30 / $180 每百万 token（约 ¥218/¥1,305）',
-            'Batch/Flex：gpt-5.5 在 <272K 上下文下为 $2.5 输入 / $15 输出每百万 token（约 ¥18/¥109），适合离线批量任务',
-            '长上下文成本：GPT-5.5 超过 272K 输入 token 的请求会按官方规则加价，正式上线前必须重新核对 Pricing 页面',
-            '较轻量模型：适合摘要、分类、客服、批量结构化等成本敏感任务',
-            '长上下文任务先压缩材料，再提交必要内容，避免无效 token 成本',
+            'GPT-5.6 Sol：官方最新旗舰，1.05M 上下文、128K 输出，适合复杂专业工作、编码、长上下文检索、工具型 Agent 和生产级助手',
+            'GPT-5.6 Terra：中档，适合日常 Agent 和大多数生产任务，价格更低',
+            'GPT-5.6 Luna：低成本档（输入 $0.20/百万），适合高频、成本敏感和批量任务',
+            'GPT-5.6 系列价格：Sol $5 输入/$30 输出、Terra $2/$12、Luna $0.20/$1.20（每百万 token，2026-07-30 调整后）',
+            '上一代 GPT-5.5：仍可用、价格未变（$5/$30），但已不是最新旗舰；gpt-5.5-pro 为 $30/$180，适合更难的异步任务（配合 background mode）',
+            'Batch：价格 5 折，适合离线批量任务；官方现行服务层级为 Standard / Batch / Fast（原 Priority）',
+            '长上下文成本：超过官方阈值（如 GPT-5.5 超过 272K 输入）会按规则加价，正式上线前必须重新核对 Pricing 页面',
             '高并发任务使用 Batch 或队列，避免触发 429'
           ],
           whereToClick: 'Platform → Docs / Models / Usage 页面查看模型、价格和用量',
           expectedResult: '根据任务选择了模型，并能在 Usage 中看到调用记录',
           failureChecklist: ['模型名要以官方文档和控制台为准', '如果模型不可用，检查 Project 权限', '如果成本异常，先降低上下文长度和输出长度'],
-          warning: '模型价格、上下文和权限会随平台变化，正式上线前以控制台和官方文档为准；当前官方文档未确认 GPT-5.5D / gpt-5.5d。'
+          warning: '模型价格、上下文和权限会随平台变化，正式上线前以控制台和官方文档为准；OpenAI 官方从未确认 GPT-5.5D / gpt-5.5d。'
         }
       ],
       tips: [
         '先用免费或小额度真实任务测试，再决定是否长期使用 OpenAI API',
         'ChatGPT 订阅和 API Billing 独立计费，排查 quota 时优先看 Platform Billing',
-        'GPT-5.5 官方模型 ID 是 gpt-5.5，Pro 版本是 gpt-5.5-pro；不要把未证实的 GPT-5.5D 写入生产文案',
+        '最新旗舰模型 ID 是 gpt-5.6-sol（系列含 terra/luna）；上一代 gpt-5.5 / gpt-5.5-pro 仍可用但已非最新；不要把未证实的 GPT-5.5D 写入生产文案',
         '参考 OpenAI 官方 Latest model、Models 和 Pricing 页面核对模型快照、工具支持、上下文和价格',
         '把 API Key 放在 .env、环境变量或密钥管理器里，不要硬编码',
         '如果要接入 Claude Code、Codex、Gemini CLI、OpenCode 等工具，建议用 CC Switch 统一管理 Key、Base URL 和模型名'
@@ -1238,10 +1244,10 @@ print(response.output_text)`,
   {
     id: 'claude',
     name: 'Anthropic Claude',
-    desc: 'Claude 国内怎么订阅？覆盖 Opus 4.8、Sonnet 4.6、Haiku 4.5 与 1M 上下文',
+    desc: 'Claude 国内怎么订阅？覆盖 Opus 5、Sonnet 5、Haiku 4.5、Fable 5 与 1M 上下文',
     url: 'https://www.anthropic.com/',
     proxy: true,
-    features: ['Opus 4.8', 'Sonnet 4.6', '1M上下文', '安全可靠'],
+    features: ['Opus 5', 'Sonnet 5', 'Fable 5', '1M上下文'],
     icon: '🟠',
     badge: { text: '需代理', type: 'warning' },
     tutorial: {
@@ -1267,9 +1273,9 @@ print(response.output_text)`,
           title: '了解 Claude 三档订阅套餐',
           description: 'Claude 提供三档个人订阅，先了解区别再决定。',
           items: [
-            'Claude Pro · $20/月（约¥145） — 可用 Opus 4.8，有月度用量上限，适合轻度使用',
-            'Claude Max 5x · $100/月（约¥725） — 可用 Opus 4.8，使用额度约为 Pro 的 5 倍，适合重度依赖 AI 的专业人士',
-            'Claude Max 20x · $200/月（约¥1,450） — 可用 Opus 4.8，使用额度约为 Pro 的 20 倍，适合团队或核心生产力'
+            'Claude Pro · $20/月（约¥145） — 可用 Opus 5（Pro 最强模型），有月度用量上限，适合轻度使用',
+            'Claude Max 5x · $100/月（约¥725） — 可用 Opus 5（Claude Max 默认模型），使用额度约为 Pro 的 5 倍，适合重度依赖 AI 的专业人士',
+            'Claude Max 20x · $200/月（约¥1,450） — 可用 Opus 5（Claude Max 默认模型），使用额度约为 Pro 的 20 倍，适合团队或核心生产力'
           ],
           whereToClick: '浏览器访问 claude.ai → 登录 → 左下角头像 → Plans',
           expectedResult: '页面显示 Pro($20/¥145)、Max 5x($100/¥725)、Max 20x($200/¥1,450) 三档套餐',
@@ -1321,10 +1327,10 @@ print(response.output_text)`,
             '左下角头像 → Upgrade to Pro 或 Plans → 对比三档套餐 → Subscribe',
             '输入卡号、有效期、CVV 和账单地址',
             '关键：账单地址必须与 IP 所在国家一致，否则大概率被封',
-            '验证通过后账号立即升级，在对话界面即可选择 Opus 4.8 模型'
+            '验证通过后账号立即升级，在对话界面即可选择 Opus 5 模型'
           ],
           whereToClick: 'claude.ai → Log in → Continue with Google → 左下角头像 → Plans → Subscribe',
-          expectedResult: '验证通过后账号立即升级，对话界面可选 Opus 4.8 模型',
+          expectedResult: '验证通过后账号立即升级，对话界面可选 Opus 5 模型',
           failureChecklist: ['账单地址必须与 IP 所在国家一致（最关键）', '确认卡号、有效期和 CVV 填写正确', '如支付被拒，不要重试，换方案']
         },
         {
@@ -1336,15 +1342,15 @@ print(response.output_text)`,
             '注意：App Store 订阅价格通常比官网贵约 30%（苹果渠道费）'
           ],
           whereToClick: 'App Store 搜索 Claude → 下载 → 谷歌账号登录 → 左上角菜单 → Upgrade to Claude Pro',
-          expectedResult: 'App 内显示已升级为 Pro，可选择 Opus 4.8 模型',
+          expectedResult: 'App 内显示已升级为 Pro，可选择 Opus 5 模型',
           failureChecklist: ['确认 Apple ID 为美区且有足够余额', 'App Store 订阅价格通常比官网贵约 30%']
         },
         {
           title: '路线三：API 按量购买（仅限开发者）',
           description: '不是程序员或没打算把 AI 嵌入到自己做的软件里，可以跳过本节。普通用户用订阅套餐就全包含了。',
           items: [
-            'API = 程序向 Claude Opus 4.8 提问的"后门"，适合把 AI 嵌入自己的软件中',
-            '按 Token 计费：Opus 4.8 常规调用输入 $5/百万 Token、输出 $25/百万 Token（约 ¥36/¥181）',
+            'API = 程序向 Claude Opus 5 提问的"后门"，适合把 AI 嵌入自己的软件中',
+            '按 Token 计费：Opus 5 常规调用输入 $5/百万 Token、输出 $25/百万 Token（约 ¥36/¥181），fast mode 另按 $10/$50 计费',
             'https://console.anthropic.com → 登录 → API Keys → 创建新密钥 → 立刻复制保存'
           ],
           whereToClick: 'console.anthropic.com → 登录 → API Keys → 创建新密钥',
@@ -1357,14 +1363,14 @@ import anthropic
 client = anthropic.Anthropic(api_key="YOUR_API_KEY")
 
 message = client.messages.create(
-    model="claude-opus-4-8",
+    model="claude-opus-5",
     max_tokens=1024,
     messages=[
         {"role": "user", "content": "请为我创作一个科幻小说的开头。"}
     ]
 )
 print(message.content)`,
-          codeExplanation: '使用 Anthropic 官方 Python SDK 调用 Claude Opus 4.8 模型，让它创作一个科幻小说开头并打印结果。替换 YOUR_API_KEY 为真实密钥后即可运行。',
+          codeExplanation: '使用 Anthropic 官方 Python SDK 调用 Claude Opus 5 模型，让它创作一个科幻小说开头并打印结果。替换 YOUR_API_KEY 为真实密钥后即可运行。',
           warning: 'API Key 创建后仅显示一次，必须立刻复制保存。API 计费与 Claude 订阅是两套独立的计费系统。'
         },
         {
@@ -1378,13 +1384,13 @@ print(message.content)`,
             'Pro（$20/月，约¥145）适合大多数人，先买一个月试试，随时可取消续费'
           ],
           whereToClick: '选择合规的第三方代充平台或中转平台，确认有"封号包退款"承诺',
-          expectedResult: '支付完成，Claude 账号已升级，可使用 Opus 4.8',
+          expectedResult: '支付完成，Claude 账号已升级，可使用 Opus 5',
           failureChecklist: ['代充平台是否承诺封号退款', '下单前是否搜索了平台评价', 'Pro($20/月，约¥145) 适合大多数人，先买一个月试试'],
           warning: 'Claude 封号是全球性问题，没有任何渠道能 100% 避免。保护资金的最佳方式是选择承诺封号退款的代充平台。'
         }
       ],
       tips: [
-        'Claude Opus 4.8 常规调用输入 $5/百万 token、输出 $25/百万 token；fast mode 另按 $10/$50 计费',
+        'Claude Opus 5 常规调用输入 $5/百万 token、输出 $25/百万 token（fast mode $10/$50）；Sonnet 5 为 $3/$15（2026-08-31 前推广价 $2/$10）；Haiku 4.5 为 $1/$5',
         '官网直充用户务必确保 IP、账单地址所属国家一致，这是避免封号的关键',
         '第三方代充平台是当前国内用户风险最低的方式，前提是选择有"封号包退款"承诺的正规商家',
         '先买一个月 Pro（$20）试试，合适再升级 Max，切莫一上来就买年付'
@@ -1395,10 +1401,10 @@ print(message.content)`,
         'API Key 绝对不要提交到公开仓库或前端代码',
         '账单地址与 IP 所在国不一致 = 极高概率被封'
       ],
-      advantages: ['200K 超长上下文', '代码能力业界领先', '安全可靠', 'iOS App 体验优秀'],
+      advantages: ['1M 超长上下文', '代码能力业界领先', '安全可靠', 'iOS App 体验优秀'],
       estimatedTime: '约 15 分钟',
       prerequisites: ['Google 账号（Claude 使用 Google 一键登录）', '合适的网络环境（需能访问 claude.ai）', 'Visa/Mastercard 国际信用卡或代充平台'],
-      successSign: 'Claude 对话界面可选择 Opus 4.8 模型，或 API Key 创建成功并能完成代码调用',
+      successSign: 'Claude 对话界面可选择 Opus 5 模型，或 API Key 创建成功并能完成代码调用',
       commonPitfall: 'IP 地址与账单地址国家不一致导致封号（最常见原因）；使用虚拟信用卡被拒付率极高；新用户操作稍有不慎刚付款就被封',
       securityReminder: 'API Key 创建后仅显示一次，必须立刻复制保存。不要提交到公开仓库或前端代码。Claude 风控全球最严，2025 下半年封禁 145 万账号'
     }
@@ -1406,10 +1412,10 @@ print(message.content)`,
   {
     id: 'gemini',
     name: 'Google Gemini',
-    desc: 'Gemini API 国内使用、免费额度与订阅购买教程，覆盖 Gemini 3.5 Flash 与 3.1 Pro Preview',
+    desc: 'Gemini API 国内使用、免费额度与订阅购买教程，覆盖 Gemini 3.6 Flash 与 3.1 Pro Preview',
     url: 'https://ai.google.dev/',
     proxy: true,
-    features: ['Gemini 3.5 Flash', 'Gemini 3.1 Pro Preview', '多模态', '免费 API'],
+    features: ['Gemini 3.6 Flash', 'Gemini 3.5 Flash-Lite', '多模态', '免费 API'],
     icon: '🟠',
     badge: { text: '需代理', type: 'warning' },
     tutorial: {
@@ -1473,18 +1479,18 @@ print(message.content)`,
           warning: '涉及账号、支付和订阅的操作都应使用本人账号和官方支持渠道，避免后续产生无法申诉的账户或资金风险。'
         },
         {
-          title: '路线一：网页端订阅 Gemini Advanced',
+          title: '路线一：网页端订阅 Google AI Pro（原 Gemini Advanced）',
           description: '如果你的账号地区和支付方式被 Google 支持，网页端订阅是最直接的方式。',
           important: true,
           items: [
-            'https://gemini.google.com → 登录 → 左下角或设置菜单 → 升级到 Gemini Advanced',
-            'Gemini Advanced 订阅价格约 $19.99/月（约¥145），含 Google One AI Premium 权益',
+            'https://gemini.google.com → 登录 → 左下角或设置菜单 → 升级到 Google AI Pro（原 Gemini Advanced）',
+            'Google AI Pro（原 Gemini Advanced） 订阅价格约 $19.99/月（约¥145），含 Google One AI Premium 权益',
             '对比页面展示的套餐、模型权益、存储权益、试用期和续费价格',
             '确认自动续费、税费、退款条款后，再填写 Google 支持的付款方式',
             '确认总额无误后提交，验证通过后账号立即升级，邮箱收到确认邮件'
           ],
-          whereToClick: 'gemini.google.com → 登录 → 设置菜单 → 升级到 Gemini Advanced → 选套餐 → 订阅',
-          expectedResult: '验证通过后账号立即升级，邮箱收到确认邮件，Gemini Advanced 功能可用（订阅约 $19.99/月，约¥145）',
+          whereToClick: 'gemini.google.com → 登录 → 设置菜单 → 升级到 Google AI Pro（原 Gemini Advanced） → 选套餐 → 订阅',
+          expectedResult: '验证通过后账号立即升级，邮箱收到确认邮件，Google AI Pro（原 Gemini Advanced） 功能可用（订阅约 $19.99/月，约¥145）',
           failureChecklist: ['页面提示地区不可用时，说明当前账号暂不支持该订阅', '支付失败时先核对卡片是否支持海外/线上订阅扣款', '连续失败不要反复提交，先等待或更换官方支持的支付方式']
         },
         {
@@ -1496,7 +1502,7 @@ print(message.content)`,
             '支付前确认应用商店账号地区、余额、礼品卡来源和自动续费规则符合平台条款',
             '订阅成功后，通常可在网页端和 App 端同步看到 Advanced 权益'
           ],
-          whereToClick: 'Gemini App 或 Google App → 登录 → 头像/设置 → 升级 Gemini Advanced → 选择套餐',
+          whereToClick: 'Gemini App 或 Google App → 登录 → 头像/设置 → 升级 Google AI Pro（原 Gemini Advanced） → 选择套餐',
           expectedResult: 'App 内显示已订阅或可管理订阅，网页端同步显示 Advanced 权益',
           failureChecklist: ['下载应用和付款建议使用同一个本人账号', '支付失败时检查应用商店账单设置和余额', '订阅后未同步时，退出重登并等待账单状态刷新']
         },
@@ -1547,7 +1553,7 @@ export GEMINI_API_KEY="你的 API Key"
           items: [
             '如果我是 Gemini，我会建议你先确认自己的真实任务：日常聊天、内容创作、长文档、多模态、代码分析，消耗额度完全不是一回事',
             '不要只因为“高级”“降价”“Deep Think”这些词就直接付费。先看结算页、额度说明和取消规则，再用真实任务测试',
-            '订阅 Gemini Advanced 不等于 API 调用免费。网页端会员、Google One 权益和开发者 API 计费是不同体系',
+            '订阅 Google AI Pro（原 Gemini Advanced） 不等于 API 调用免费。网页端会员、Google One 权益和开发者 API 计费是不同体系',
             '如果只是轻度使用，免费版或低成本 API 测试可能已经够用；如果是重度长文档和多模态任务，就要把额度、延迟和账单都算进去',
             '最稳妥的策略：先用免费额度或短周期订阅跑真实任务，确认效果、稳定性和成本后，再决定是否长期使用'
           ],
@@ -1573,7 +1579,7 @@ export GEMINI_API_KEY="你的 API Key"
       advantages: ['多模态能力强', '长上下文', 'Google 生态', 'AI Studio 快速创建 Key', '适合文档与图像理解', '可接入开发工具'],
       estimatedTime: '约 15 分钟',
       prerequisites: ['本人 Google 账号', '可合规访问 Google 服务的稳定网络环境', 'Google 官方支持的付款方式（如适用）', '开发者需要准备 Google AI Studio 或 Google Cloud 项目'],
-      successSign: 'Gemini Advanced 权益在网页或 App 中显示可用，或 API Key 能在本地完成一次测试调用',
+      successSign: 'Google AI Pro（原 Gemini Advanced） 权益在网页或 App 中显示可用，或 API Key 能在本地完成一次测试调用',
       commonPitfall: '把网页订阅和 API 额度混为一谈；使用旧价格/旧配额下单；把 API Key 写进前端或公开仓库',
       securityReminder: 'API Key 创建后要安全保存。不要提交到公开仓库或前端代码。网页订阅、Google One 和 API 计费通常是独立体系，扣费前要分别确认。'
     }

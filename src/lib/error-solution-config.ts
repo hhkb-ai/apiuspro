@@ -250,7 +250,7 @@ print(response.choices[0].message.content)`,
     apiSpecialCases: [
       {
         api: 'DeepSeek',
-        note: 'DeepSeek V4 新项目优先用 deepseek-v4-flash 或 deepseek-v4-pro；deepseek-chat、deepseek-reasoner 仅作为旧项目兼容别名，并将在 2026-07-24 15:59 UTC 后退役。'
+        note: 'DeepSeek V4 新项目优先用 deepseek-v4-flash 或 deepseek-v4-pro；deepseek-chat、deepseek-reasoner 旧别名已于 2026-07-24 15:59 UTC 退役，旧项目必须改用新模型名。'
       },
       {
         api: 'Kimi',

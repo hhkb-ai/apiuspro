@@ -24,14 +24,32 @@ const deepSeekModels = [
 
 const openAIModels = [
   {
+    id: 'gpt-5.6-sol',
+    name: 'OpenAI GPT-5.6 Sol',
+    inputUsdPerMillion: 5,
+    outputUsdPerMillion: 30,
+  },
+  {
+    id: 'gpt-5.6-terra',
+    name: 'OpenAI GPT-5.6 Terra',
+    inputUsdPerMillion: 2,
+    outputUsdPerMillion: 12,
+  },
+  {
+    id: 'gpt-5.6-luna',
+    name: 'OpenAI GPT-5.6 Luna',
+    inputUsdPerMillion: 0.2,
+    outputUsdPerMillion: 1.2,
+  },
+  {
     id: 'gpt-5.5',
     name: 'OpenAI GPT-5.5',
     inputUsdPerMillion: 5,
     outputUsdPerMillion: 30,
   },
   {
-    id: 'gpt-5.5-batch-flex',
-    name: 'GPT-5.5 Batch/Flex',
+    id: 'gpt-5.5-batch',
+    name: 'GPT-5.5 Batch',
     inputUsdPerMillion: 2.5,
     outputUsdPerMillion: 15,
   },
@@ -156,7 +174,7 @@ export function CostComparisonCalculator() {
         <span>
           <span className="block text-sm font-semibold text-foreground">成本计算器</span>
           <span className="mt-0.5 block text-xs leading-5 text-muted-foreground">
-            DeepSeek vs OpenAI 成本估算，默认参数：DeepSeek V4 Flash vs OpenAI GPT-5.5
+            DeepSeek vs OpenAI 成本估算，默认参数：DeepSeek V4 Flash vs OpenAI GPT-5.6 Sol
           </span>
         </span>
         <span className="inline-flex w-fit shrink-0 items-center rounded-full border border-border px-3 py-1 text-xs font-medium text-foreground">

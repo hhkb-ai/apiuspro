@@ -265,7 +265,7 @@ const localCloudDecision = [
 const faqs = [
   {
     question: 'Qwen3.6 是什么？和 Qwen3 有什么区别？',
-    answer: 'Qwen3.6 是阿里云发布的新一代模型，采用 MoE（混合专家）架构，总参数 35B 但激活参数仅 3B，推理速度快。相比 Qwen3，Qwen3.6 编程能力更强，适合代码生成和编程辅助任务。',
+    answer: 'Qwen3.6 是阿里云发布的 MoE（混合专家）架构模型，总参数 35B 但激活参数仅 3B，推理速度快。相比 Qwen3，Qwen3.6 编程能力更强，适合代码生成和编程辅助任务；阿里云此后又发布了更新的 Qwen3.7 / Qwen3.8 系列，能力更强但对硬件要求更高。',
   },
   {
     question: 'Gemma 4 和 Gemma 3 有什么区别？',
